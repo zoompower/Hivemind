@@ -46,7 +46,7 @@ public static class GameWorld
         for (int i = 0; i < amount; i++)
         {
             GameObject newResource = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            newResource.transform.position = new Vector3(UnityEngine.Random.Range(-100f, 100f), 0.5f, UnityEngine.Random.Range(-100f, 100f));
+            newResource.transform.position = new Vector3(UnityEngine.Random.Range(-50f, 50f), 0.5f, UnityEngine.Random.Range(-50f, 50f));
             resources.Add(newResource.transform);
         }
     }
