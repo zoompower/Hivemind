@@ -11,17 +11,18 @@ public class Gathering : MonoBehaviour
         Idle,
         MovingToResource,
         Gathering,
-        MovingToStorage,
+        MovingTostorage,
     }
 
     private State state;
     private int inventoryAmount;
-    public List<Transform> Resources;
-    private Transform Target;
-    public Transform Storage;
+    private Transform target;
+    private Transform storage;
 
     private void Awake()
     {
+        GameWorld.CreateNewResource(10);
+        storage = GameWorld.GetStorage();
         state = State.Idle;
     }
 
@@ -30,53 +31,45 @@ public class Gathering : MonoBehaviour
         switch (state)
         {
             case State.Idle:
-                if (Resources.Count > 0)
+                target = GameWorld.FindNearestResource(transform.position);
+                if (target != null)
                 {
-                    Target = findNearestResource();
                     state = State.MovingToResource;
                 }
                 break;
             case State.MovingToResource:
-                transform.LookAt(Target);
-                transform.position = Vector3.MoveTowards(transform.position, Target.position, 0.05f);
-                if (Vector3.Distance(transform.position, Target.position) < 0.001f)
+                if(target == null)
+                {
+                    target = GameWorld.FindNearestResource(transform.position);
+                    if (target == null)
+                    {
+                        state = State.MovingTostorage;
+                    }
+                    break;
+                }
+                transform.LookAt(target);
+                transform.position = Vector3.MoveTowards(transform.position, target.position, 0.1f);
+                if (Vector3.Distance(transform.position, target.position) < 0.1f)
                 {
                     state = State.Gathering;
                 }
                 break;
             case State.Gathering:
-                Debug.Log("Gathering...");
-                Resources.Remove(Target);
+                GameWorld.RemoveResource(target);
                 inventoryAmount++;
-                state = State.MovingToStorage;
-                Destroy(Target.gameObject);
+                state = State.MovingTostorage;
+                Destroy(target.gameObject);
                 break;
-            case State.MovingToStorage:
-                transform.LookAt(Storage);
-                transform.position = Vector3.MoveTowards(transform.position, Storage.position, 0.05f);
-                if (Vector3.Distance(transform.position, Storage.position) < 0.001f)
+            case State.MovingTostorage:
+                transform.LookAt(storage);
+                transform.position = Vector3.MoveTowards(transform.position, storage.position, 0.1f);
+                if (Vector3.Distance(transform.position, storage.position) < 1f)
                 {
                     GameResources.AddResourceAmount(inventoryAmount);
-                    Debug.Log("Depositing Resources...");
                     inventoryAmount = 0;
                     state = State.Idle;
                 }
                 break;
         }
-    }
-    private Transform findNearestResource()
-    {
-        Transform closest = null;
-        float minDistance = 100000000000000f;
-        foreach(Transform resource in Resources)
-        {
-            float dist = Vector3.Distance(transform.position, resource.position);
-            if (dist < minDistance)
-            {
-                closest = resource;
-                minDistance = dist;
-            }
-        }
-        return closest;
     }
 }
