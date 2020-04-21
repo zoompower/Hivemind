@@ -13,20 +13,23 @@ public class CameraController : MonoBehaviour
 
         var movement = new Vector3();
 
-        if (Input.mousePosition.x < EdgeSize || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        movement.x += (Input.GetAxis("Horizontal") * MovementSpeed) * Time.deltaTime;
+        movement.z += (Input.GetAxis("Vertical") * MovementSpeed) * Time.deltaTime;
+        
+        if (Input.mousePosition.x < EdgeSize)
         {
             movement.x -= MovementSpeed * Time.deltaTime;
         }
-        if (Input.mousePosition.x > Screen.width - EdgeSize || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.mousePosition.x > Screen.width - EdgeSize)
         {
             movement.x += MovementSpeed * Time.deltaTime;
         }
 
-        if (Input.mousePosition.y < EdgeSize || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if (Input.mousePosition.y < EdgeSize)
         {
             movement.z -= MovementSpeed * Time.deltaTime;
         }
-        if (Input.mousePosition.y > Screen.height - EdgeSize || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.mousePosition.y > Screen.height - EdgeSize)
         {
             movement.z += MovementSpeed * Time.deltaTime;
         }
