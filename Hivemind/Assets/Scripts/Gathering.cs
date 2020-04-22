@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Gathering : MonoBehaviour
 {
@@ -13,19 +14,19 @@ public class Gathering : MonoBehaviour
         Gathering,
         MovingTostorage,
     }
-
-    public float Speed = 0.05f;
     public int CarryAmount = 3;
 
     private State state;
     private int inventoryAmount;
     private ResourceNode target;
     private Transform storage;
-    private float speed;
+    private NavMeshAgent agent;
+    private float baseSpeed;
 
     private void Awake()
     {
-        speed = Speed;
+        agent = gameObject.GetComponent<NavMeshAgent>();
+        baseSpeed = agent.speed;
         GameWorld.CreateNewResource(10);
         storage = GameWorld.GetStorage();
         state = State.Idle;
@@ -53,8 +54,8 @@ public class Gathering : MonoBehaviour
                     break;
                 }
                 transform.LookAt(target.GetPosition());
-                transform.position = Vector3.MoveTowards(transform.position, target.GetPosition(), speed);
-                if (Vector3.Distance(transform.position, target.GetPosition()) < 0.1f)
+                agent.SetDestination(target.GetPosition());
+                if (Vector3.Distance(transform.position, target.GetPosition()) < 2f)
                 {
                     state = State.Gathering;
                 }
@@ -62,11 +63,7 @@ public class Gathering : MonoBehaviour
             case State.Gathering:
                 target.GrabResource();
                 inventoryAmount++;
-                speed = speed * 0.8f;
-                if (speed < 0.02f)
-                {
-                    speed = 0.02f;
-                }
+                agent.speed *= 0.9f;
                 if (inventoryAmount >= CarryAmount)
                 {
                     state = State.MovingTostorage;
@@ -78,12 +75,12 @@ public class Gathering : MonoBehaviour
                 break;
             case State.MovingTostorage:
                 transform.LookAt(storage);
-                transform.position = Vector3.MoveTowards(transform.position, storage.position, speed);
-                if (Vector3.Distance(transform.position, storage.position) < 1f)
+                agent.SetDestination(storage.position);
+                if (Vector3.Distance(transform.position, storage.position) < 5f)
                 {
                     GameResources.AddResourceAmount(inventoryAmount);
                     inventoryAmount = 0;
-                    speed = Speed;
+                    agent.speed = baseSpeed;
                     state = State.Idle;
                 }
                 break;

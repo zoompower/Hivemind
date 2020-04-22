@@ -35,22 +35,19 @@ public class ResourceNode
         switch (amount)
         {
             case 0:
-                mesh.material.SetColor("_Color", Color.black);
+                mesh.material.SetColor("_Color", new Color(0f, 0f, 0f));
                 break;
             case 1:
-                mesh.material.SetColor("_Color", Color.gray);
+                mesh.material.SetColor("_Color", new Color(0.25f, 0.25f, 0.25f));
                 break;
             case 2:
-                mesh.material.SetColor("_Color", Color.red);
+                mesh.material.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f));
                 break;
             case 3:
-                mesh.material.SetColor("_Color", Color.yellow);
+                mesh.material.SetColor("_Color", new Color(0.75f, 0.75f, 0.75f));
                 break;
             case 4:
-                mesh.material.SetColor("_Color", Color.blue);
-                break;
-            case 5:
-                mesh.material.SetColor("_Color", Color.green);
+                mesh.material.SetColor("_Color", new Color(1f, 1f, 1f));
                 break;
         }
     }
