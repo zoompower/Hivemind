@@ -23,6 +23,13 @@ public class ResourceNode
         return resourceNodeTransform.position;
     }
 
+    public IEnumerator respawnResource()
+    {
+        yield return new WaitForSeconds(10);
+        resourceAmount++;
+        ColorResource(resourceAmount);
+    }
+
     public void GrabResource()
     {
         resourceAmount--;

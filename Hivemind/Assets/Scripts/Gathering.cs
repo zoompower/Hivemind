@@ -62,6 +62,7 @@ public class Gathering : MonoBehaviour
                 break;
             case State.Gathering:
                 target.GrabResource();
+                StartCoroutine(target.respawnResource());
                 inventoryAmount++;
                 agent.speed *= 0.9f;
                 if (inventoryAmount >= CarryAmount)
@@ -76,7 +77,7 @@ public class Gathering : MonoBehaviour
             case State.MovingTostorage:
                 transform.LookAt(storage);
                 agent.SetDestination(storage.position);
-                if (Vector3.Distance(transform.position, storage.position) < 5f)
+                if (Vector3.Distance(transform.position, storage.position) < 8f)
                 {
                     GameResources.AddResourceAmount(inventoryAmount);
                     inventoryAmount = 0;
