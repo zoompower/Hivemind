@@ -5,20 +5,23 @@ using UnityEngine;
 
 public static class GameWorld
 {
-    private static List<Transform> resources = new List<Transform>();
+    private static List<ResourceNode> resources = new List<ResourceNode>();
     private static Transform storage = CreateStorage();
 
-    public static Transform FindNearestResource(Vector3 antPosition)
+    public static ResourceNode FindNearestResource(Vector3 antPosition)
     {
-        Transform closest = null;
+        ResourceNode closest = null;
         float minDistance = 100000000000000f;
-        foreach (Transform resource in resources)
+        foreach (ResourceNode resource in resources)
         {
-            float dist = Vector3.Distance(antPosition, resource.position);
-            if (dist < minDistance)
+            if (resource.HasResources())
             {
-                closest = resource;
-                minDistance = dist;
+                float dist = Vector3.Distance(antPosition, resource.GetPosition());
+                if (dist < minDistance)
+                {
+                    closest = resource;
+                    minDistance = dist;
+                }
             }
         }
         return closest;
@@ -36,7 +39,7 @@ public static class GameWorld
         return storage;
     }
 
-    public static void RemoveResource(Transform resource)
+    public static void RemoveResource(ResourceNode resource)
     {
         resources.Remove(resource);
     }
@@ -47,7 +50,7 @@ public static class GameWorld
         {
             GameObject newResource = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             newResource.transform.position = new Vector3(UnityEngine.Random.Range(-50f, 50f), 0.5f, UnityEngine.Random.Range(-50f, 50f));
-            resources.Add(newResource.transform);
+            resources.Add(new ResourceNode(newResource.transform, newResource, UnityEngine.Random.Range(1, 5)));
         }
     }
 }

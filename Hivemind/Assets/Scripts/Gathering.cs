@@ -14,13 +14,18 @@ public class Gathering : MonoBehaviour
         MovingTostorage,
     }
 
+    public float Speed = 0.05f;
+    public int CarryAmount = 3;
+
     private State state;
     private int inventoryAmount;
-    private Transform target;
+    private ResourceNode target;
     private Transform storage;
+    private float speed;
 
     private void Awake()
     {
+        speed = Speed;
         GameWorld.CreateNewResource(10);
         storage = GameWorld.GetStorage();
         state = State.Idle;
@@ -38,7 +43,7 @@ public class Gathering : MonoBehaviour
                 }
                 break;
             case State.MovingToResource:
-                if(target == null)
+                if(!target.HasResources())
                 {
                     target = GameWorld.FindNearestResource(transform.position);
                     if (target == null)
@@ -47,26 +52,38 @@ public class Gathering : MonoBehaviour
                     }
                     break;
                 }
-                transform.LookAt(target);
-                transform.position = Vector3.MoveTowards(transform.position, target.position, 0.1f);
-                if (Vector3.Distance(transform.position, target.position) < 0.1f)
+                transform.LookAt(target.GetPosition());
+                transform.position = Vector3.MoveTowards(transform.position, target.GetPosition(), speed);
+                if (Vector3.Distance(transform.position, target.GetPosition()) < 0.1f)
                 {
                     state = State.Gathering;
                 }
                 break;
             case State.Gathering:
-                GameWorld.RemoveResource(target);
+                target.GrabResource();
                 inventoryAmount++;
-                state = State.MovingTostorage;
-                Destroy(target.gameObject);
+                speed = speed * 0.8f;
+                if (speed < 0.02f)
+                {
+                    speed = 0.02f;
+                }
+                if (inventoryAmount >= CarryAmount)
+                {
+                    state = State.MovingTostorage;
+                }
+                else
+                {
+                    state = State.MovingToResource;
+                }
                 break;
             case State.MovingTostorage:
                 transform.LookAt(storage);
-                transform.position = Vector3.MoveTowards(transform.position, storage.position, 0.1f);
+                transform.position = Vector3.MoveTowards(transform.position, storage.position, speed);
                 if (Vector3.Distance(transform.position, storage.position) < 1f)
                 {
                     GameResources.AddResourceAmount(inventoryAmount);
                     inventoryAmount = 0;
+                    speed = Speed;
                     state = State.Idle;
                 }
                 break;
