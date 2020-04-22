@@ -53,7 +53,6 @@ public class Gathering : MonoBehaviour
                     }
                     break;
                 }
-                transform.LookAt(target.GetPosition());
                 agent.SetDestination(target.GetPosition());
                 if (Vector3.Distance(transform.position, target.GetPosition()) < 2f)
                 {
@@ -75,7 +74,6 @@ public class Gathering : MonoBehaviour
                 }
                 break;
             case State.MovingTostorage:
-                transform.LookAt(storage);
                 agent.SetDestination(storage.position);
                 if (Vector3.Distance(transform.position, storage.position) < 8f)
                 {
