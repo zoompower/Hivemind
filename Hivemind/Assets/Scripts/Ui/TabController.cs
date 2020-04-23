@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TabController : MonoBehaviour
 {
@@ -18,5 +19,17 @@ public class TabController : MonoBehaviour
     {
         UnitsTab.SetActive(false);
         BuildingTab.SetActive(true);
+        UnitsTab.GetComponent<UnitController>().CloseMindBuilder();
+    }
+    
+    public void TestButton()
+    {
+        var currentEventSystem = EventSystem.current;
+        if (currentEventSystem == null) { return; }
+
+        var currentSelectedGameObject = currentEventSystem.currentSelectedGameObject;
+        if (currentSelectedGameObject == null) { return; }
+
+        Debug.Log(currentSelectedGameObject.name);
     }
 }
