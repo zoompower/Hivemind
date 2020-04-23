@@ -2,8 +2,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.AI;
+using static ResourceNode;
 
 public class Gathering : MonoBehaviour
 {
@@ -17,17 +19,17 @@ public class Gathering : MonoBehaviour
     public int CarryAmount = 3;
 
     private State state;
-    private int inventoryAmount;
+    private List<ResourceType> resources;
     private ResourceNode target;
-    private Transform storage;
+    private Storage storage;
     private NavMeshAgent agent;
     private float baseSpeed;
 
     private void Awake()
     {
+        resources = new List<ResourceType>();
         agent = gameObject.GetComponent<NavMeshAgent>();
         baseSpeed = agent.speed;
-        GameWorld.CreateNewResource(10);
         storage = GameWorld.GetStorage();
         state = State.Idle;
     }
@@ -54,17 +56,16 @@ public class Gathering : MonoBehaviour
                     break;
                 }
                 agent.SetDestination(target.GetPosition());
-                if (Vector3.Distance(transform.position, target.GetPosition()) < 2f)
+                if (Vector3.Distance(transform.position, target.GetPosition()) < 1f)
                 {
                     state = State.Gathering;
                 }
                 break;
             case State.Gathering:
+                resources.Add(target.resourceType);
                 target.GrabResource();
-                StartCoroutine(target.respawnResource());
-                inventoryAmount++;
                 agent.speed *= 0.9f;
-                if (inventoryAmount >= CarryAmount)
+                if (resources.Count >= CarryAmount)
                 {
                     state = State.MovingTostorage;
                 }
@@ -74,13 +75,20 @@ public class Gathering : MonoBehaviour
                 }
                 break;
             case State.MovingTostorage:
-                agent.SetDestination(storage.position);
-                if (Vector3.Distance(transform.position, storage.position) < 8f)
+                if (storage != null)
                 {
-                    GameResources.AddResourceAmount(inventoryAmount);
-                    inventoryAmount = 0;
-                    agent.speed = baseSpeed;
-                    state = State.Idle;
+                    agent.SetDestination(storage.GetPosition());
+                    if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
+                    {
+                        GameResources.AddResources(resources);
+                        resources.Clear();
+                        agent.speed = baseSpeed;
+                        state = State.Idle;
+                    }
+                }
+                else
+                {
+                    storage = GameWorld.GetStorage();
                 }
                 break;
         }

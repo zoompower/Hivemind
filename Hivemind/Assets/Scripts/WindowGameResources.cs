@@ -17,6 +17,6 @@ public class WindowGameResources : MonoBehaviour
     }
     private void UpdateResourceTextObject()
     {
-        transform.Find("resourceAmount").GetComponent<Text>().text = "Resources: " + GameResources.GetResourceAmount();
+        transform.Find("resourceAmount").GetComponent<Text>().text = "Rocks: " + GameResources.GetRockAmount() + "\n Crystals: " + GameResources.GetCrystalAmount();
     }
 }
