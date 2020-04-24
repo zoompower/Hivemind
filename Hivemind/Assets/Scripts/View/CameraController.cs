@@ -33,6 +33,8 @@ public class CameraController : MonoBehaviour
         {
             movement.z += MovementSpeed * Time.deltaTime;
         }
+        if(Time.timeScale == 0)
+            movement *= Time.timeScale;
 
         transform.position += movement;
     }
