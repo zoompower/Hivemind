@@ -23,6 +23,7 @@ public class Gathering : MonoBehaviour
     private State state;
     private Dictionary<ResourceType, int> inventory;
     private int inventoryAmount;
+    private int nextHarvest;
     private ResourceNode target;
     private Storage storage;
     private NavMeshAgent agent;
@@ -42,7 +43,7 @@ public class Gathering : MonoBehaviour
     private ResourceNode findResource()
     {
         ResourceNode resourceNode = GameWorld.FindNearestResource(transform.position, PreferredResource);
-        if (target == null && PreferredResource != ResourceType.Unknown)
+        if (PreferredResource != ResourceType.Unknown && resourceNode == null)
         {
             resourceNode = GameWorld.FindNearestResource(transform.position, ResourceType.Unknown);
         }
@@ -66,29 +67,14 @@ public class Gathering : MonoBehaviour
                 target = findResource();
                 if (target != null)
                 {
-                    target.DecreaseFutureResources();
+                    nextHarvest = target.DecreaseFutureResources(CarryAmount - inventoryAmount);
                     agent.SetDestination(target.GetPosition());
                     state = State.MovingToResource;
                 }
                 break;
             case State.Scouting:
-
                 break;
             case State.MovingToResource:
-                if (target == null)
-                {
-                    target = findResource();
-                    if (target != null)
-                    {
-                        target.DecreaseFutureResources();
-                        agent.SetDestination(target.GetPosition());
-                    }
-                    else
-                    {
-                        state = State.MovingToStorage;
-                        break;
-                    }
-                }
                 if (Vector3.Distance(transform.position, target.GetPosition()) < 1f)
                 {
                     state = State.Gathering;
@@ -113,7 +99,23 @@ public class Gathering : MonoBehaviour
                 }
                 else
                 {
-                    state = State.MovingToResource;
+                    if (nextHarvest > 0)
+                    {
+                        nextHarvest--;
+                        break;
+                    }
+                    target = findResource();
+                    if (target != null)
+                    {
+                        target.DecreaseFutureResources(CarryAmount - inventoryAmount);
+                        agent.SetDestination(target.GetPosition());
+                        state = State.MovingToResource;
+                    }
+                    else
+                    {
+                        state = State.MovingToStorage;
+                        break;
+                    }
                 }
                 break;
             case State.MovingToStorage:

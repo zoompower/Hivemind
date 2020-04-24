@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public enum ResourceType
@@ -31,6 +32,13 @@ public class ResourceNode : MonoBehaviour
         futureResourceAmount = resourceAmount;
         myResourceNode = gameObject;
         resourceNodeTransform = gameObject.transform;
+        //needed for resources on back, otherwise everything breaks
+        StartCoroutine(AddMe());
+    }
+
+    IEnumerator AddMe()
+    {
+        yield return new WaitForSeconds(5);
         GameWorld.AddNewResource(this);
     }
 
@@ -62,9 +70,19 @@ public class ResourceNode : MonoBehaviour
         respawningResources = false;
     }
 
-    public void DecreaseFutureResources()
+    public int DecreaseFutureResources(int amount)
     {
-        futureResourceAmount--;
+        futureResourceAmount -= amount;
+        if(futureResourceAmount > -1)
+        {
+            return amount;
+        }
+        else
+        {
+            int newAmount = amount + futureResourceAmount;
+            futureResourceAmount = 0;
+            return newAmount;
+        }
     }
 
     public void GrabResource()
@@ -72,7 +90,6 @@ public class ResourceNode : MonoBehaviour
         resourceAmount--;
         if (resourceAmount == 0 && resourceType == ResourceType.Crystal)
         {
-            GameWorld.RemoveResource(this);
             Destroy(gameObject);
         }
         if (resourceType == ResourceType.Rock)
