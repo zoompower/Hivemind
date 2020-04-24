@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,14 @@ public class WindowGameResources : MonoBehaviour
     }
     private void UpdateResourceTextObject()
     {
-        transform.Find("resourceAmount").GetComponent<Text>().text = "Rocks: " + GameResources.GetRockAmount() + "\n Crystals: " + GameResources.GetCrystalAmount();
+        StringBuilder sb = new StringBuilder();
+        foreach(ResourceType resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
+        {
+            if(resourceType != ResourceType.Unknown)
+            {
+                sb.Append($"{resourceType}: {GameResources.GetResourceAmount(resourceType)} \n");
+            }
+        }
+        transform.Find("resourceAmount").GetComponent<Text>().text = sb.ToString();
     }
 }

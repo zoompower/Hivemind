@@ -9,19 +9,22 @@ public static class GameWorld
     public static List<ResourceNode> resources = new List<ResourceNode>();
     private static Storage storage = null;
 
-    public static ResourceNode FindNearestResource(Vector3 antPosition)
+    public static ResourceNode FindNearestResource(Vector3 antPosition, ResourceType prefType)
     {
         ResourceNode closest = null;
         float minDistance = 100000000000000f;
         foreach (ResourceNode resource in resources)
         {
-            if (resource.HasResources())
+            if (prefType == ResourceType.Unknown || resource.resourceType == prefType)
             {
-                float dist = Vector3.Distance(antPosition, resource.GetPosition());
-                if (dist < minDistance)
+                if (resource.GetResourcesFuture() > 0)
                 {
-                    closest = resource;
-                    minDistance = dist;
+                    float dist = Vector3.Distance(antPosition, resource.GetPosition());
+                    if (dist < minDistance)
+                    {
+                        closest = resource;
+                        minDistance = dist;
+                    }
                 }
             }
         }

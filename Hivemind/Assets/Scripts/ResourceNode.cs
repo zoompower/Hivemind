@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ResourceType
+{
+    Rock,
+    Crystal,
+    Unknown,
+}
+
 public class ResourceNode : MonoBehaviour
 {
-    public enum ResourceType
-    {
-        Rock,
-        Crystal,
-        Unknown,
-    }
-
     private Transform resourceNodeTransform;
 
     private GameObject myResourceNode;
@@ -23,9 +23,12 @@ public class ResourceNode : MonoBehaviour
 
     private int resourceAmount;
 
+    private int futureResourceAmount;
+
     private void Awake()
     {
         resourceAmount = BaseResourceAmount;
+        futureResourceAmount = resourceAmount;
         myResourceNode = gameObject;
         resourceNodeTransform = gameObject.transform;
         GameWorld.AddNewResource(this);
@@ -44,13 +47,24 @@ public class ResourceNode : MonoBehaviour
         return resourceNodeTransform.position;
     }
 
+    public void OnDestroy()
+    {
+        GameWorld.RemoveResource(this);
+    }
+
     private IEnumerator respawnResource()
     {
         respawningResources = true;
         yield return new WaitForSeconds(30);
         resourceAmount++;
+        futureResourceAmount++;
         ColorResource(resourceAmount);
         respawningResources = false;
+    }
+
+    public void DecreaseFutureResources()
+    {
+        futureResourceAmount--;
     }
 
     public void GrabResource()
@@ -77,5 +91,10 @@ public class ResourceNode : MonoBehaviour
     public bool HasResources()
     {
         return resourceAmount > 0;
+    }
+
+    public int GetResourcesFuture()
+    {
+        return futureResourceAmount;
     }
 }

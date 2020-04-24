@@ -12,76 +12,128 @@ public class Gathering : MonoBehaviour
     private enum State
     {
         Idle,
+        Scouting,
         MovingToResource,
         Gathering,
-        MovingTostorage,
+        MovingToStorage,
     }
     public int CarryAmount = 3;
+    public ResourceType PreferredResource = ResourceType.Unknown;
 
     private State state;
-    private List<ResourceType> resources;
+    private Dictionary<ResourceType, int> inventory;
+    private int inventoryAmount;
     private ResourceNode target;
     private Storage storage;
     private NavMeshAgent agent;
     private float baseSpeed;
+    private List<GameObject> carryingObjects;
 
     private void Awake()
     {
-        resources = new List<ResourceType>();
+        inventory = new Dictionary<ResourceType, int>();
+        carryingObjects = new List<GameObject>();
         agent = gameObject.GetComponent<NavMeshAgent>();
         baseSpeed = agent.speed;
         storage = GameWorld.GetStorage();
         state = State.Idle;
     }
 
-    void Update()
+    private ResourceNode findResource()
+    {
+        ResourceNode resourceNode = GameWorld.FindNearestResource(transform.position, PreferredResource);
+        if (target == null && PreferredResource != ResourceType.Unknown)
+        {
+            resourceNode = GameWorld.FindNearestResource(transform.position, ResourceType.Unknown);
+        }
+        return resourceNode;
+    }
+
+    private void carryResource(ResourceNode resource)
+    {
+        GameObject carryingObject = Instantiate(resource.gameObject, transform.position, Quaternion.identity, transform);
+        carryingObject.GetComponent<ResourceNode>().ColorResource(30);
+        Destroy(carryingObject.GetComponent<ResourceNode>());
+        carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
+        carryingObjects.Add(carryingObject);
+    }
+
+    private void Update()
     {
         switch (state)
         {
             case State.Idle:
-                target = GameWorld.FindNearestResource(transform.position);
+                target = findResource();
                 if (target != null)
                 {
+                    target.DecreaseFutureResources();
+                    agent.SetDestination(target.GetPosition());
                     state = State.MovingToResource;
                 }
                 break;
+            case State.Scouting:
+
+                break;
             case State.MovingToResource:
-                if(!target.HasResources())
+                if (target == null)
                 {
-                    target = GameWorld.FindNearestResource(transform.position);
-                    if (target == null)
+                    target = findResource();
+                    if (target != null)
                     {
-                        state = State.MovingTostorage;
+                        target.DecreaseFutureResources();
+                        agent.SetDestination(target.GetPosition());
                     }
-                    break;
+                    else
+                    {
+                        state = State.MovingToStorage;
+                        break;
+                    }
                 }
-                agent.SetDestination(target.GetPosition());
                 if (Vector3.Distance(transform.position, target.GetPosition()) < 1f)
                 {
                     state = State.Gathering;
                 }
                 break;
             case State.Gathering:
-                resources.Add(target.resourceType);
+                if (!inventory.ContainsKey(target.resourceType))
+                {
+                    inventory.Add(target.resourceType, 1);
+                }
+                else
+                {
+                    inventory[target.resourceType]++;
+                }
+                inventoryAmount++;
+                carryResource(target);
                 target.GrabResource();
                 agent.speed *= 0.9f;
-                if (resources.Count >= CarryAmount)
+                if (inventoryAmount >= CarryAmount)
                 {
-                    state = State.MovingTostorage;
+                    state = State.MovingToStorage;
                 }
                 else
                 {
                     state = State.MovingToResource;
                 }
                 break;
-            case State.MovingTostorage:
+            case State.MovingToStorage:
                 if (storage != null)
                 {
                     agent.SetDestination(storage.GetPosition());
+                    for(int i = 0; i < carryingObjects.Count; i++)
+                    {
+                        carryingObjects[i].transform.position = new Vector3(transform.position.x, transform.position.y + 0.08f * (i + 1), transform.position.z);
+                    }
                     if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
                     {
-                        GameResources.AddResources(resources);
-                        resources.Clear();
+                        GameResources.AddResources(inventory);
+                        inventory.Clear();
+                        inventoryAmount = 0;
+                        foreach(GameObject gameObject in carryingObjects)
+                        {
+                            Destroy(gameObject);
+                        }
+                        carryingObjects.Clear();
                         agent.speed = baseSpeed;
                         state = State.Idle;
                     }
