@@ -17,6 +17,9 @@ public class SettingsScript : MonoBehaviour
     [SerializeField]
     private Slider volumeSlider;
 
+    [SerializeField]
+    private Toggle fullscreenToggle;
+
     public Dropdown dropdownMenu;
 
     public static float currentVolume = 1;
@@ -25,9 +28,10 @@ public class SettingsScript : MonoBehaviour
 
     public static int globalHeight = 1080;
 
-    
+    public static bool Fullscreen = true;
 
     Resolution[] resolutions;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +55,10 @@ public class SettingsScript : MonoBehaviour
         audioSrc.volume = currentVolume;
         audioSrc.Stop();
 
+        if (PlayerPrefs.HasKey("Fullscreen"))
+        {
+            Fullscreen =  ( PlayerPrefs.GetInt("Fullscreen") == 1);
+        }
         if (PlayerPrefs.HasKey("Width"))
         {
             globalWidth = PlayerPrefs.GetInt("Width");
@@ -60,12 +68,7 @@ public class SettingsScript : MonoBehaviour
         {
             globalHeight = PlayerPrefs.GetInt("Height");
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        ChangeResolution(globalWidth, globalHeight, Fullscreen);
     }
 
     public void ChangeVolume(float volume)
@@ -77,7 +80,7 @@ public class SettingsScript : MonoBehaviour
     public void ChangeResolutionDropDown(System.Int32 index)
     {
         
-        ChangeResolution(resolutions[index].width, resolutions[index].height, false);
+        ChangeResolution(resolutions[index].width, resolutions[index].height, Fullscreen);
     }
     public void ChangeResolution(int width, int height, bool fullscreen = true)
     {
@@ -86,13 +89,19 @@ public class SettingsScript : MonoBehaviour
         Screen.SetResolution(width, height, fullscreen);
     }
 
+    public void ChangeFullscreen()
+    {
+        Fullscreen = !Fullscreen;
+        fullscreenToggle.isOn = Fullscreen;
+    }
+
     private string ResToString(Resolution resolution)
     {
         return resolution.width + " X " + resolution.height;
     }
     public void Save()
     {
-
+        PlayerPrefs.SetInt("Fullscreen", Fullscreen ? 1: 0);
         PlayerPrefs.SetInt("Width", globalWidth);
         PlayerPrefs.SetInt("Height", globalHeight);
         PlayerPrefs.SetFloat("Volume", audioSrc.volume);

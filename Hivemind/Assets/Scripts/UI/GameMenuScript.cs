@@ -29,9 +29,15 @@ public class GameMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown("escape"))
         {
-            GameMenu.SetActive(true);
-            Time.timeScale = 0;
-
+            if (!GameMenu.activeSelf)
+            {
+                GameMenu.SetActive(true);
+                Time.timeScale = 0;
+            }
+            else 
+            {
+                ResumeGame();
+            }
         }
     }
     public void ResumeGame()

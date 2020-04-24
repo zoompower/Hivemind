@@ -10,21 +10,8 @@ public class ButtonScript : MonoBehaviour
     [SerializeField]
     private GameObject mainMenu;
 
-    
-
     [SerializeField]
     private GameObject settingsMenu;
-
-    
-
-    public void Start()
-    {
-       
-
-      
-    }
-
-    
 
     public void PlayGame()
     {
@@ -36,21 +23,7 @@ public class ButtonScript : MonoBehaviour
     }
     public void SettingsMenu()
     {
-        if (mainMenu.activeSelf == true)
-        {
             mainMenu.SetActive(false);
             settingsMenu.SetActive(true);
-        }
-        else
-        {
-            mainMenu.SetActive(true);
-            settingsMenu.SetActive(false);
-        }
-    }
-
-   
-    public void OnDestroy()
-    {
-        PlayerPrefs.Save();
     }
 }
