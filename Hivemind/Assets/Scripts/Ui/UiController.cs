@@ -1,35 +1,38 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class UiController : MonoBehaviour
+namespace UI
 {
-    public TextMeshProUGUI resourceTextBox;
-
-    int tmp = 0;
-    int tmp2 = 0;
-
-    void Start()
+    public class UiController : MonoBehaviour
     {
-        
-    }
+        public TextMeshProUGUI resourceTextBox;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        int tmp = 0;
+        int tmp2 = 0;
+
+        void Start()
         {
-            tmp++;
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            tmp2++;
+
         }
 
-        resourceTextBox.text = FormatResource("1", tmp) + FormatResource("2", tmp2);
-    }
+        // Update is called once per frame
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                tmp++;
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                tmp2++;
+            }
 
-    private string FormatResource(string name, int val)
-    {
-        return $" <sprite={name}> ({val}/999)";
+            resourceTextBox.text = FormatResource("1", tmp) + FormatResource("2", tmp2);
+        }
+
+        private string FormatResource(string name, int val)
+        {
+            return $" <sprite={name}> ({val}/999)";
+        }
     }
 }

@@ -1,35 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TabController : MonoBehaviour
+namespace UI
 {
-    [SerializeField]
-    private GameObject UnitsTab;
-
-    [SerializeField]
-    private GameObject BuildingTab;
-
-    public void ShowUnitTab()
+    public class TabController : MonoBehaviour
     {
-        UnitsTab.SetActive(true);
-        BuildingTab.SetActive(false);
-    }
+        [SerializeField]
+        private GameObject UnitsTab;
 
-    public void ShowBuildingTab()
-    {
-        UnitsTab.SetActive(false);
-        BuildingTab.SetActive(true);
-        UnitsTab.GetComponent<UnitController>().CloseMindBuilder();
-    }
-    
-    public void TestButton()
-    {
-        var currentEventSystem = EventSystem.current;
-        if (currentEventSystem == null) { return; }
+        [SerializeField]
+        private GameObject BuildingTab;
 
-        var currentSelectedGameObject = currentEventSystem.currentSelectedGameObject;
-        if (currentSelectedGameObject == null) { return; }
+        public void ShowUnitTab()
+        {
+            UnitsTab.SetActive(true);
+            BuildingTab.SetActive(false);
+        }
 
-        Debug.Log(currentSelectedGameObject.name);
+        public void ShowBuildingTab()
+        {
+            UnitsTab.SetActive(false);
+            BuildingTab.SetActive(true);
+            UnitsTab.GetComponent<UnitController>().CloseMindBuilder();
+        }
+
+        public void TestButton()
+        {
+            var currentEventSystem = EventSystem.current;
+            if (currentEventSystem == null) { return; }
+
+            var currentSelectedGameObject = currentEventSystem.currentSelectedGameObject;
+            if (currentSelectedGameObject == null) { return; }
+
+            Debug.Log(currentSelectedGameObject.name);
+        }
     }
 }
