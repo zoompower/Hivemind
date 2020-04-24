@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class ButtonScript : MonoBehaviour
+public class MainMenuScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject mainMenu;
@@ -23,7 +19,7 @@ public class ButtonScript : MonoBehaviour
     }
     public void SettingsMenu()
     {
-            mainMenu.SetActive(false);
-            settingsMenu.SetActive(true);
+        mainMenu.SetActive(false);
+        settingsMenu.SetActive(true);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,15 +39,15 @@ public class SettingsScript : MonoBehaviour
         List<Dropdown.OptionData> dropdownElements = new List<Dropdown.OptionData>();
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string resolutionString = ResToString(resolutions[i]);          
-                dropdownElements.Add( new Dropdown.OptionData(resolutionString));
+            string resolutionString = ResToString(resolutions[i]);
+            dropdownElements.Add(new Dropdown.OptionData(resolutionString));
         }
         dropdownMenu.AddOptions(dropdownElements);
 
         if (PlayerPrefs.HasKey("Volume"))
         {
             currentVolume = PlayerPrefs.GetFloat("Volume");
-            
+
         }
 
         volumeSlider.value = currentVolume;
@@ -57,7 +56,7 @@ public class SettingsScript : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Fullscreen"))
         {
-            Fullscreen =  ( PlayerPrefs.GetInt("Fullscreen") == 1);
+            Fullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1);
         }
         if (PlayerPrefs.HasKey("Width"))
         {
@@ -79,7 +78,7 @@ public class SettingsScript : MonoBehaviour
 
     public void ChangeResolutionDropDown(System.Int32 index)
     {
-        
+
         ChangeResolution(resolutions[index].width, resolutions[index].height, Fullscreen);
     }
     public void ChangeResolution(int width, int height, bool fullscreen = true)
@@ -101,7 +100,7 @@ public class SettingsScript : MonoBehaviour
     }
     public void Save()
     {
-        PlayerPrefs.SetInt("Fullscreen", Fullscreen ? 1: 0);
+        PlayerPrefs.SetInt("Fullscreen", Fullscreen ? 1 : 0);
         PlayerPrefs.SetInt("Width", globalWidth);
         PlayerPrefs.SetInt("Height", globalHeight);
         PlayerPrefs.SetFloat("Volume", audioSrc.volume);
@@ -111,7 +110,7 @@ public class SettingsScript : MonoBehaviour
     {
         volumeSlider.value = currentVolume;
         settingsMenu.SetActive(false);
-        if(prevPanal != null)
+        if (prevPanal != null)
         {
             prevPanal.SetActive(true);
         }

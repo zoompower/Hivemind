@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMenuScript : MonoBehaviour
@@ -34,7 +32,7 @@ public class GameMenuScript : MonoBehaviour
                 GameMenu.SetActive(true);
                 Time.timeScale = 0;
             }
-            else 
+            else
             {
                 ResumeGame();
             }
