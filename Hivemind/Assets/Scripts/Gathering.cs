@@ -53,6 +53,7 @@ public class Gathering : MonoBehaviour
     private void carryResource(ResourceNode resource)
     {
         GameObject carryingObject = Instantiate(resource.gameObject, transform.position, Quaternion.identity, transform);
+        carryingObject.SetActive(false);
         carryingObject.GetComponent<ResourceNode>().ColorResource(30);
         Destroy(carryingObject.GetComponent<ResourceNode>());
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
@@ -64,9 +65,11 @@ public class Gathering : MonoBehaviour
         switch (state)
         {
             case State.Idle:
+                agent.isStopped = true;
                 target = findResource();
                 if (target != null)
                 {
+                    agent.isStopped = false;
                     nextHarvest = target.DecreaseFutureResources(CarryAmount - inventoryAmount);
                     agent.SetDestination(target.GetPosition());
                     state = State.MovingToResource;
