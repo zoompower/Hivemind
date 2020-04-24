@@ -23,11 +23,17 @@ public class SettingsScript : MonoBehaviour
 
     public static float currentVolume = 1;
 
+    private int width = 1920;
+
     public static int globalWidth = 1920;
+
+    private int height = 1080;
 
     public static int globalHeight = 1080;
 
-    public static bool Fullscreen = true;
+    private  bool Fullscreen = true;
+
+    public static bool globalFullscreen = true;
 
     Resolution[] resolutions;
 
@@ -39,9 +45,15 @@ public class SettingsScript : MonoBehaviour
         List<Dropdown.OptionData> dropdownElements = new List<Dropdown.OptionData>();
         for (int i = 0; i < resolutions.Length; i++)
         {
+            if(i != 0)
+                if (CompareRes(resolutions[i], resolutions[i - 1]))
+                {
+                    continue;
+                }
             string resolutionString = ResToString(resolutions[i]);
             dropdownElements.Add(new Dropdown.OptionData(resolutionString));
         }
+
         dropdownMenu.AddOptions(dropdownElements);
 
         if (PlayerPrefs.HasKey("Volume"))
@@ -56,8 +68,9 @@ public class SettingsScript : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Fullscreen"))
         {
-            Fullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1);
+            globalFullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1);
         }
+        fullscreenToggle.isOn = globalFullscreen;
         if (PlayerPrefs.HasKey("Width"))
         {
             globalWidth = PlayerPrefs.GetInt("Width");
@@ -67,7 +80,7 @@ public class SettingsScript : MonoBehaviour
         {
             globalHeight = PlayerPrefs.GetInt("Height");
         }
-        ChangeResolution(globalWidth, globalHeight, Fullscreen);
+        ChangeResolution(globalWidth, globalHeight, globalFullscreen);
     }
 
     public void ChangeVolume(float volume)
@@ -78,8 +91,8 @@ public class SettingsScript : MonoBehaviour
 
     public void ChangeResolutionDropDown(System.Int32 index)
     {
-
-        ChangeResolution(resolutions[index].width, resolutions[index].height, Fullscreen);
+        width = resolutions[index].width;
+        height = resolutions[index].height;
     }
     public void ChangeResolution(int width, int height, bool fullscreen = true)
     {
@@ -96,19 +109,33 @@ public class SettingsScript : MonoBehaviour
 
     private string ResToString(Resolution resolution)
     {
-        return resolution.width + " X " + resolution.height;
+        return resolution.width + " x " + resolution.height;
+    }
+
+    private bool CompareRes(Resolution resolution1, Resolution resolution2)
+    {
+        return 
+            (resolution1.width == resolution2.width 
+            && resolution1.height == resolution2.height) ;
     }
     public void Save()
     {
+        globalWidth = width;
+        globalHeight = height;
+        globalFullscreen = Fullscreen;
+        ChangeResolution(globalWidth, globalHeight, globalFullscreen);
         PlayerPrefs.SetInt("Fullscreen", Fullscreen ? 1 : 0);
         PlayerPrefs.SetInt("Width", globalWidth);
         PlayerPrefs.SetInt("Height", globalHeight);
         PlayerPrefs.SetFloat("Volume", audioSrc.volume);
+        currentVolume = audioSrc.volume;
+       
         PlayerPrefs.Save();
     }
     public void Back()
     {
         volumeSlider.value = currentVolume;
+        fullscreenToggle.isOn = globalFullscreen;
         settingsMenu.SetActive(false);
         if (prevPanal != null)
         {
