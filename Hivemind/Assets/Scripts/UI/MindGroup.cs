@@ -1,86 +1,88 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+/**
+ * Authors:
+ * René Duivenvoorden
+ */
+public class MindGroup
 {
-    public class MindGroup
+    public int Count { get; private set; }
+
+    private protected GameObject UIUnitGroup;
+
+    private List<UnitGroup> unitList;
+
+    public MindGroup(GameObject UiObject)
     {
-        private protected GameObject UIUnitGroup;
+        unitList = new List<UnitGroup>();
 
-        private List<UnitGroup> unitList;
+        UIUnitGroup = UiObject;
+    }
 
-        internal int Count { get; private set; }
+    public bool Equals(MindGroup other)
+    {
+        return UIUnitGroup.Equals(other.UIUnitGroup);
+    }
 
-        internal MindGroup(GameObject UiObject)
+    public bool Equals(GameObject groupObject)
+    {
+        return UIUnitGroup.Equals(groupObject);
+    }
+
+    internal Guid AddUnit(UnitGroup unit)
+    {
+        if (!unitList.Contains(unit))
         {
-            unitList = new List<UnitGroup>();
+            unitList.Add(unit);
+            Count++;
 
-            UIUnitGroup = UiObject;
+            unit.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);
+
+            UpdateLayout();
+
+            return unit.UnitGroupId;
         }
 
-        internal bool Equals(MindGroup other)
+        return Guid.Empty;
+    }
+
+    internal bool RemoveUnit(UnitGroup unit)
+    {
+        if (unitList.Contains(unit))
         {
-            return UIUnitGroup.Equals(other.UIUnitGroup);
+            unitList.Remove(unit);
+            Count--;
+
+            unit.Ui_IconObj.transform.SetParent(null, false);
+
+            UpdateLayout();
+
+            return true;
         }
 
-        internal bool Equals(GameObject groupObject)
-        {
-            return UIUnitGroup.Equals(groupObject);
-        }
+        return false;
+    }
 
-        internal System.Guid AddUnit(UnitGroup unit)
-        {
-            if (!unitList.Contains(unit))
-            {
-                unitList.Add(unit);
-                Count++;
+    internal UnitGroup FindUnit(GameObject gameObject)
+    {
+        return unitList.Find(unitGroup => unitGroup.Ui_IconObj.Equals(gameObject));
+    }
 
-                unit.gameObject.transform.SetParent(UIUnitGroup.transform, false);
+    internal UnitGroup FindUnit(Guid unitId)
+    {
+        return unitList.Find(unitGroup => unitGroup.UnitGroupId.Equals(unitId));
+    }
 
-                UpdateLayout();
+    internal bool UnitExists(UnitGroup unit)
+    {
+        return unitList.Contains(unit);
+    }
 
-                return unit.ID;
-            }
-
-            return new System.Guid();
-        }
-
-        internal bool RemoveUnit(UnitGroup unit)
-        {
-            if (unitList.Contains(unit))
-            {
-                unitList.Remove(unit);
-                Count--;
-
-                unit.gameObject.transform.SetParent(null, false);
-
-                UpdateLayout();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        internal UnitGroup FindUnit(GameObject gameObject)
-        {
-            return unitList.Find(u => u.gameObject.Equals(gameObject));
-        }
-
-        internal UnitGroup FindUnit(System.Guid unitId)
-        {
-            return unitList.Find(u => u.ID.Equals(unitId));
-        }
-
-        internal bool UnitExists(UnitGroup unit)
-        {
-            return unitList.Contains(unit);
-        }
-
-        internal void UpdateLayout()
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(UIUnitGroup.GetComponent<RectTransform>());
-        }
+    internal void UpdateLayout()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(UIUnitGroup.GetComponent<RectTransform>());
     }
 }

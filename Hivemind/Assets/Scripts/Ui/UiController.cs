@@ -1,38 +1,121 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-namespace UI
+/**
+ * Authors:
+ * René Duivenvoorden
+ */
+public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler
 {
-    public class UiController : MonoBehaviour
+    public GameObject unitIconBase;
+
+    public GameObject[] UnitGroupObjects; // The unit group UI GameObjects
+
+    [SerializeField]
+    private TextMeshProUGUI resourceTextBox;
+
+    [SerializeField]
+    private UnitController unitController;
+    [SerializeField]
+    private GameObject mindBuilderPanel;
+
+    private Vector2 lastMousePosition; // Used in calculating screen drag of icons
+    private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
+
+    public void UI_OpenMindBuilder(int i)
     {
-        public TextMeshProUGUI resourceTextBox;
+        mindBuilderPanel.SetActive(true);
+        // Hook the mindbuilder onto here
+    }
 
-        int tmp = 0;
-        int tmp2 = 0;
+    public void UI_CloseMindBuilder()
+    {
+        mindBuilderPanel.SetActive(false);
+    }
 
-        void Start()
+    public void OnInitializePotentialDrag(PointerEventData eventData)
+    {
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        var result = results.Find(rayRes => rayRes.gameObject.CompareTag("UI-Unit"));
+
+        if (result.isValid)
         {
-
+            var group = unitController.UnitGroupList.GetUnitGroupFromUIObject(result.gameObject);
+            if (group != null) unitGroupObj = group;
         }
 
-        // Update is called once per frame
-        void Update()
+        lastMousePosition = eventData.position;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (unitGroupObj == null) return;
+
+        Vector2 currentMousePosition = eventData.position;
+        Vector2 diff = currentMousePosition - lastMousePosition;
+        RectTransform rect = unitGroupObj.Ui_IconObj.GetComponent<RectTransform>();
+
+        Vector3 newPosition = rect.position + new Vector3(diff.x, diff.y, 0);
+        Vector3 oldPos = rect.position;
+        rect.position = newPosition;
+        if (!IsRectTransformInsideSreen(rect))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            rect.position = oldPos;
+        }
+        lastMousePosition = currentMousePosition;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (unitGroupObj == null) return;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        var groupResult = results.Find(result => result.gameObject.CompareTag("UI-UnitGroup"));
+
+        if (groupResult.isValid)
+        {
+            unitController.UnitGroupList.MoveUnit(unitGroupObj, groupResult.gameObject);
+        }
+        else
+        {
+            unitController.UnitGroupList.UpdateLayout(unitGroupObj);
+        }
+
+        unitGroupObj = null;
+    }
+
+    private bool IsRectTransformInsideSreen(RectTransform rectTransform)
+    {
+        bool isInside = false;
+        Vector3[] corners = new Vector3[4];
+        rectTransform.GetWorldCorners(corners);
+        int visibleCorners = 0;
+        Rect rect = new Rect(0, 0, Screen.width, Screen.height);
+
+        foreach (Vector3 corner in corners)
+        {
+            if (rect.Contains(corner))
             {
-                tmp++;
+                visibleCorners++;
             }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                tmp2++;
-            }
-
-            resourceTextBox.text = FormatResource("1", tmp) + FormatResource("2", tmp2);
         }
 
-        private string FormatResource(string name, int val)
+        if (visibleCorners == 4)
         {
-            return $" <sprite={name}> ({val}/999)";
+            isInside = true;
         }
+
+        return isInside;
+    }
+
+    private string FormatResource(string spriteName, int val)
+    {
+        return $" <sprite={spriteName}> ({val}/999)";
     }
 }

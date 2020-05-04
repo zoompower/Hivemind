@@ -1,97 +1,109 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace UI
+/**
+ * Authors:
+ * René Duivenvoorden
+ */
+public class UnitGroupList
 {
-    public class UnitGroupList
+    private List<MindGroup> unitGroupList;
+
+    private int MaxGroupCount = 6;
+
+    public UnitGroupList(GameObject[] unitGroupObjects)
     {
-        private List<MindGroup> unitGroupList;
+        unitGroupList = new List<MindGroup>();
 
-        public UnitGroupList(GameObject[] unitGroupObjects)
+        foreach (var obj in unitGroupObjects)
         {
-            unitGroupList = new List<MindGroup>();
+            unitGroupList.Add(new MindGroup(obj));
+        }
+    }
 
-            foreach (var obj in unitGroupObjects)
+    public MindGroup GetMindGroupFromUnitId(Guid unitId)
+    {
+        foreach (var group in unitGroupList)
+        {
+            var unit = group.FindUnit(unitId);
+            if (unit != null) return group;
+        }
+
+        return null;
+    }
+
+    public UnitGroup GetUnitGroupFromUnitId(Guid unitId)
+    {
+        foreach (var group in unitGroupList)
+        {
+            var unit = group.FindUnit(unitId);
+            if (unit != null) return unit;
+        }
+
+        return null;
+    }
+
+    internal Guid CreateUnitGroup(GameObject unitIconBase)
+    {
+        for (int i = 0; i < unitGroupList.Count; i++)
+        {
+            if (unitGroupList[i].Count < MaxGroupCount)
             {
-                unitGroupList.Add(new MindGroup(obj));
+                return unitGroupList[i].AddUnit(new UnitGroup(unitIconBase));
             }
         }
 
-        public System.Guid CreateUnitGroup(GameObject unitIconBase)
+        return Guid.Empty;
+    }
+
+    internal UnitGroup GetUnitGroupFromUIObject(GameObject gameObject)
+    {
+        foreach (MindGroup group in unitGroupList)
         {
-            return unitGroupList[0].AddUnit(new UnitGroup(unitIconBase));
+            var u = group.FindUnit(gameObject);
+            if (u != null)
+            {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    internal void MoveUnit(UnitGroup unit, GameObject groupGameObject)
+    {
+        MindGroup oldGroup = null;
+        MindGroup newGroup = null;
+        foreach (var group in unitGroupList)
+        {
+            if (group.UnitExists(unit))
+            {
+                oldGroup = group;
+            }
+            if (group.Equals(groupGameObject))
+            {
+                newGroup = group;
+            }
         }
 
-        public MindGroup GetMindGroupFromUnitId(System.Guid unitId)
+        if (oldGroup.Equals(newGroup) || newGroup.Count >= MaxGroupCount)
         {
-            foreach (var group in unitGroupList)
-            {
-                var unit = group.FindUnit(unitId);
-                if (unit != null) return group;
-            }
-
-            return null;
+            oldGroup.UpdateLayout();
+            return;
         }
 
-        public UnitGroup GetUnitGroupFromUnitId(System.Guid unitId)
+        oldGroup.RemoveUnit(unit);
+        newGroup.AddUnit(unit);
+    }
+
+    internal void UpdateLayout(UnitGroup unit)
+    {
+        foreach (var group in unitGroupList)
         {
-            foreach (var group in unitGroupList)
+            if (group.UnitExists(unit))
             {
-                var unit = group.FindUnit(unitId);
-                if (unit != null) return unit;
-            }
-
-            return null;
-        }
-
-        internal UnitGroup GetUIUnit(GameObject gameObject)
-        {
-            foreach (MindGroup group in unitGroupList)
-            {
-                var u = group.FindUnit(gameObject);
-                if (u != null)
-                {
-                    return u;
-                }
-            }
-            return null;
-        }
-
-        internal void MoveUnit(UnitGroup unit, GameObject groupGameObject)
-        {
-            MindGroup oldGroup = null;
-            MindGroup newGroup = null;
-            foreach (var group in unitGroupList)
-            {
-                if (group.UnitExists(unit))
-                {
-                    oldGroup = group;
-                }
-                if (group.Equals(groupGameObject))
-                {
-                    newGroup = group;
-                }
-            }
-
-            if (oldGroup.Equals(newGroup) || newGroup.Count >= 6)
-            {
-                oldGroup.UpdateLayout();
+                group.UpdateLayout();
                 return;
-            }
-
-            oldGroup.RemoveUnit(unit);
-            newGroup.AddUnit(unit);
-        }
-
-        internal void UpdateLayout(UnitGroup unit)
-        {
-            foreach (var group in unitGroupList)
-            {
-                if (group.UnitExists(unit))
-                {
-                    group.UpdateLayout();
-                    return;
-                }
             }
         }
     }

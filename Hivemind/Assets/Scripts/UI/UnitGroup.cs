@@ -1,56 +1,49 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+/**
+ * Authors:
+ * René Duivenvoorden
+ */
+public class UnitGroup
 {
-    public class UnitGroup
+    public int MaxUnits { get; private set; }
+    public int CurrentUnits { get; private set; }
+
+    internal GameObject Ui_IconObj { get; private set; }
+
+    internal Guid UnitGroupId { get; private set; }
+
+    private Text textBox;
+
+    internal UnitGroup(GameObject unitIconBase)
     {
-        public int MaxUnits { get; private set; }
-        public int CurrentUnits { get; private set; }
+        Ui_IconObj = UnityEngine.Object.Instantiate(unitIconBase);
 
-        internal GameObject gameObject { get; private set; }
-        private Text textBox;
+        UnitGroupId = Guid.NewGuid();
 
-        internal System.Guid ID { get; private set; }
+        textBox = Ui_IconObj.GetComponentInChildren<Text>();
 
-        internal UnitGroup(GameObject unitIconBase)
-        {
-            gameObject = Object.Instantiate(unitIconBase);
+        UpdateText();
+    }
 
-            ID = System.Guid.NewGuid();
+    public void SetMaxUnits(int amount)
+    {
+        MaxUnits = amount;
+        UpdateText();
+    }
 
-            textBox = gameObject.GetComponentInChildren<Text>();
+    public void SetCurrentUnits(int amount)
+    {
+        if (amount > MaxUnits || amount < 0) return;
 
-            UpdateText();
-        }
+        CurrentUnits = amount;
+        UpdateText();
+    }
 
-        public void SetMaxUnits(int amount)
-        {
-            MaxUnits = amount;
-            UpdateText();
-        }
-
-        public void SetCurrentUnits(int amount)
-        {
-            if (amount > MaxUnits || amount < 0) return;
-
-            CurrentUnits = amount;
-            UpdateText();
-        }
-
-        public void AddUnit()
-        {
-            SetCurrentUnits(CurrentUnits + 1);
-        }
-
-        public void RemoveUnit()
-        {
-            SetCurrentUnits(CurrentUnits - 1);
-        }
-
-        private void UpdateText()
-        {
-            textBox.text = $"{CurrentUnits}/{MaxUnits}";
-        }
+    private void UpdateText()
+    {
+        textBox.text = $"{CurrentUnits}/{MaxUnits}";
     }
 }
