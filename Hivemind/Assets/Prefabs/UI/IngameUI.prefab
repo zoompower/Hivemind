@@ -1756,7 +1756,6 @@ GameObject:
   - component: {fileID: 6382555478019291368}
   - component: {fileID: 7789437987390837243}
   - component: {fileID: 9111605753705785468}
-  - component: {fileID: 1639422687845741134}
   m_Layer: 5
   m_Name: MiniMap - Overworld
   m_TagString: Untagged
@@ -1816,18 +1815,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &1639422687845741134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4249586938544201442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad740d5232e44f944b43a7db19577e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4909370830675607487
 GameObject:
   m_ObjectHideFlags: 0
