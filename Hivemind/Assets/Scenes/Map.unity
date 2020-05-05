@@ -192,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &8851340
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -266,8 +267,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
+  IsScout: 1
 --- !u!4 &28812581 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4740995888189682, guid: b22d7eab3871ee64f93e4d7d4e0947c9,
@@ -948,6 +950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &82286078
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1121,6 +1124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &89168448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1294,6 +1298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &92286455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1467,6 +1472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &107617057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1685,6 +1691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &117142617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2163,6 +2170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &125425253
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2233,6 +2241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &129434668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2516,6 +2525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &143063062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2688,6 +2698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &157590414
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2758,6 +2769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &166966039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2875,6 +2887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!4 &172953900 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035,
@@ -3212,6 +3225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &202126337
 GameObject:
   m_ObjectHideFlags: 0
@@ -3353,6 +3367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &212637002
 GameObject:
   m_ObjectHideFlags: 0
@@ -3561,6 +3576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &218669681
 GameObject:
   m_ObjectHideFlags: 0
@@ -3719,6 +3735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &224106824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4001,6 +4018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &226326625
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4273,6 +4291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &229776424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4933,6 +4952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &252314660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5105,7 +5125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarryAmount: 1
-  PreferredResource: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1001 &252388488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5447,6 +5468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &262866602
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5538,6 +5560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &273623657 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -5586,6 +5609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &276736394 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -5634,6 +5658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &277501054 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -5682,6 +5707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &279842381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6203,6 +6229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &318937237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: 44176ea44e4d7224ebbf39b2b1769305,
@@ -6272,6 +6299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &338460057 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -6320,6 +6348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &339687401 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -6368,6 +6397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &341060153
 GameObject:
   m_ObjectHideFlags: 0
@@ -6699,6 +6729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &355128495 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -6747,6 +6778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &362034683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6920,6 +6952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &382510671
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7138,6 +7171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &386626112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7531,6 +7565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &399055553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7680,8 +7715,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
-  PreferredResource: 0
+  CarryAmount: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!195 &415144075
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7855,6 +7891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &419095665
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7925,6 +7962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &426832959 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -7973,6 +8011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &428675182
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,6 +8374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &448760714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8633,6 +8673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &456579109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8974,6 +9015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &466056254
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9111,6 +9153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &497842273 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -9137,6 +9180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &497842276
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9838,6 +9882,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &525827064 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -9884,8 +9929,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
-  PreferredResource: 0
+  CarryAmount: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1 &526862449
 GameObject:
   m_ObjectHideFlags: 0
@@ -10169,6 +10215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &534520528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10782,6 +10829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &574255110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10991,6 +11039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &582918033 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -11017,6 +11066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &582918036
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11087,6 +11137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &588352038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11260,6 +11311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &591901148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11946,6 +11998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &638694983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12980,6 +13033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &674532558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13278,6 +13332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!4 &683044651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8,
@@ -13600,6 +13655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &702679044
 GameObject:
   m_ObjectHideFlags: 0
@@ -13779,6 +13835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &706080733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14040,6 +14097,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &709844263
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -14213,6 +14271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &711149117
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -14772,6 +14831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &742262889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15631,6 +15691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &779497267
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15679,6 +15740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &781122276
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15749,6 +15811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &787464038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16294,6 +16357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &814870831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16467,6 +16531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &824601211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16592,6 +16657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &826707839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16830,6 +16896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &837892982 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1000012006197310, guid: 465c505844950da499dcf096a6da4409,
@@ -17155,6 +17222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &846465103 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: a87b87121e0b90b46a8bf2eff6029dd8,
@@ -17202,6 +17270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &848260174
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -17500,6 +17569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &857311806
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -17570,6 +17640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &859298450 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: a87b87121e0b90b46a8bf2eff6029dd8,
@@ -17763,7 +17834,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarryAmount: 1
-  PreferredResource: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1 &867346878 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -17810,8 +17882,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
-  PreferredResource: 0
+  CarryAmount: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1001 &867439590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18360,6 +18433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &874628379 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -18408,6 +18482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &887663205 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -18434,6 +18509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &887663208
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -18482,6 +18558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &889140127
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -18917,6 +18994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &897270324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19090,6 +19168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &899828640
 GameObject:
   m_ObjectHideFlags: 0
@@ -19248,6 +19327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &906542265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19373,6 +19453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &908392115
 GameObject:
   m_ObjectHideFlags: 0
@@ -19841,6 +19922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &938651181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20389,6 +20471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &956470503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21226,6 +21309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &982380340
 GameObject:
   m_ObjectHideFlags: 0
@@ -21509,6 +21593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &997873454 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -21555,8 +21640,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
-  PreferredResource: 0
+  CarryAmount: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1 &999635336 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -21583,6 +21669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &999635339
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -21903,6 +21990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1016716255 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -21951,6 +22039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1019793281
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22234,6 +22323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1029539147 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -22260,6 +22350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1029539150
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -22461,6 +22552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1058996656 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -22487,6 +22579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1058996659
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -23291,6 +23384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1103478531 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -23339,6 +23433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1107013532 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -23364,7 +23459,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarryAmount: 1
-  PreferredResource: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!195 &1107013535
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -23762,6 +23858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &1134213756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24066,6 +24163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1155776795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -24114,6 +24212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1156302409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24793,6 +24892,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1183994014
 GameObject:
   m_ObjectHideFlags: 0
@@ -25011,6 +25111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1189932258
 GameObject:
   m_ObjectHideFlags: 0
@@ -25270,8 +25371,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
-  PreferredResource: 0
+  CarryAmount: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!195 &1191991855
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -25342,6 +25444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1204580076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25493,6 +25596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1205528631
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -25767,6 +25871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1220293438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25880,6 +25985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1223046444
 GameObject:
   m_ObjectHideFlags: 0
@@ -26016,6 +26122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1237601957
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -26719,6 +26826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1273135422
 GameObject:
   m_ObjectHideFlags: 0
@@ -27063,6 +27171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1289143358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27188,6 +27297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1294047887
 GameObject:
   m_ObjectHideFlags: 0
@@ -27377,6 +27487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1303450400
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -27447,6 +27558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1313093525 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -27472,7 +27584,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarryAmount: 1
-  PreferredResource: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!195 &1313093528
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -27653,6 +27766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1320158174 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1000012006197310, guid: 465c505844950da499dcf096a6da4409,
@@ -27884,8 +27998,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
+  IsScout: 1
 --- !u!195 &1331232816
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -27940,6 +28055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1332651520
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -28260,6 +28376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1342277192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28959,6 +29076,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1374060446
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -29435,6 +29553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!4 &1401129809 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4945080262149806, guid: 952f9c1c15edf1a45ab7acbf625d58e1,
@@ -29904,6 +30023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!4 &1430769241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4740995888189682, guid: b22d7eab3871ee64f93e4d7d4e0947c9,
@@ -30279,6 +30399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1473688745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30502,6 +30623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1502266051 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -30550,6 +30672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1502993332 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1000012006197310, guid: 465c505844950da499dcf096a6da4409,
@@ -30619,6 +30742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &1514580683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30738,6 +30862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1517438262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -30786,6 +30911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1517860361 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -30834,6 +30960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1522524082
 GameObject:
   m_ObjectHideFlags: 0
@@ -30914,6 +31041,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1524947920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31210,8 +31338,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
-  PreferredResource: 0
+  CarryAmount: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1 &1538539281 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -31260,6 +31389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &1539476525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31619,6 +31749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1596027362
 GameObject:
   m_ObjectHideFlags: 0
@@ -31868,8 +31999,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
+  IsScout: 1
 --- !u!1001 &1624005517
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32159,6 +32291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1638875582 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -32207,6 +32340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1651442427 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -32255,6 +32389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1658324869 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -32303,6 +32438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1662359018 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -32351,6 +32487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1664587248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32710,6 +32847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1673053638 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -32736,6 +32874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1673053641
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -32931,6 +33070,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!4 &1685632188 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8,
@@ -33131,6 +33271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1690775372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33450,6 +33591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1699828202 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -33498,6 +33640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1702795938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33677,6 +33820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1707815184
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -33768,6 +33912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!4 &1739762352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305,
@@ -33822,6 +33967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1751931439 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -33870,6 +34016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1755577895 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -33918,6 +34065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &1756570762
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34091,6 +34239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1757847484 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -34117,6 +34266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1757847487
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -34437,6 +34587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &1769869413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34610,6 +34761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1787629869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35033,6 +35185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1796747815 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -35080,7 +35233,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarryAmount: 1
-  PreferredResource: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!1 &1799793289
 GameObject:
   m_ObjectHideFlags: 0
@@ -35239,6 +35393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1803389739 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -35265,6 +35420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1803389742
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -35430,6 +35586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1811976671
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -35795,6 +35952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1841899625
 GameObject:
   m_ObjectHideFlags: 0
@@ -35977,6 +36135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1847892591
 GameObject:
   m_ObjectHideFlags: 0
@@ -36260,6 +36419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &1861831245 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1817355384373440, guid: 952f9c1c15edf1a45ab7acbf625d58e1,
@@ -36313,7 +36473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarryAmount: 1
-  PreferredResource: 1
+  PreferredResource: 2
+  IsScout: 1
 --- !u!195 &1870492243
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -36362,6 +36523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1870688580
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -36807,6 +36969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &1885580844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -36855,6 +37018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &1885791485
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37049,6 +37213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1001 &1888264035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37940,6 +38105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &1926434593
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -38360,6 +38526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &1981273542
 GameObject:
   m_ObjectHideFlags: 0
@@ -39182,6 +39349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &2011136387 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -39230,6 +39398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &2015872407 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: a87b87121e0b90b46a8bf2eff6029dd8,
@@ -39445,6 +39614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &2030615752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -39493,6 +39663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &2038214334
 GameObject:
   m_ObjectHideFlags: 0
@@ -39573,6 +39744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1001 &2051366526
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39746,6 +39918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!1 &2060825016 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -39794,6 +39967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &2061551903
 GameObject:
   m_ObjectHideFlags: 0
@@ -40052,6 +40226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &2070666363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -40100,6 +40275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &2071470788
 GameObject:
   m_ObjectHideFlags: 0
@@ -40205,6 +40381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
+  IsScout: 0
 --- !u!195 &2080275320
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -40400,6 +40577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 3
   PreferredResource: 0
+  IsScout: 0
 --- !u!1 &2086804893 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -40448,6 +40626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1 &2091042031
 GameObject:
   m_ObjectHideFlags: 0
@@ -40749,6 +40928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 2
   PreferredResource: 2
+  IsScout: 0
 --- !u!1001 &2102113338
 PrefabInstance:
   m_ObjectHideFlags: 0

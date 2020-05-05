@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 
 public enum ResourceType
@@ -32,7 +33,18 @@ public class ResourceNode : MonoBehaviour
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
         myResourceNode = gameObject;
-        resourceNodeTransform = gameObject.transform; GameWorld.AddNewResource(this);
+        resourceNodeTransform = gameObject.transform;
+        myResourceNode.GetComponent<MeshRenderer>().enabled = false;
+        GameWorld.AddNewResource(this);
+    }
+
+    public void AddToKnownResourceList()
+    {
+        if (!GameWorld.KnownResources.Contains(this) && myResourceNode != null)
+        {
+            myResourceNode.GetComponent<MeshRenderer>().enabled = true;
+            GameWorld.AddNewKnownResource(this);
+        }
     }
 
     private void Update()

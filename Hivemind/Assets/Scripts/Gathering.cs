@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using static ResourceNode;
+using Random = UnityEngine.Random;
 
 public class Gathering : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class Gathering : MonoBehaviour
     }
     public int CarryAmount = 3;
     public ResourceType PreferredResource = ResourceType.Unknown;
+    public bool IsScout = false;
 
     private State state;
     private Dictionary<ResourceType, int> inventory;
@@ -29,6 +32,7 @@ public class Gathering : MonoBehaviour
     private NavMeshAgent agent;
     private float baseSpeed;
     private List<GameObject> carryingObjects;
+    private bool scouting = false;
 
     private void Awake()
     {
@@ -42,10 +46,10 @@ public class Gathering : MonoBehaviour
 
     private ResourceNode findResource()
     {
-        ResourceNode resourceNode = GameWorld.FindNearestResource(transform.position, PreferredResource);
+        ResourceNode resourceNode = GameWorld.FindNearestKnownResource(transform.position, PreferredResource);
         if (PreferredResource != ResourceType.Unknown && resourceNode == null)
         {
-            resourceNode = GameWorld.FindNearestResource(transform.position, ResourceType.Unknown);
+            resourceNode = GameWorld.FindNearestKnownResource(transform.position, ResourceType.Unknown);
         }
         return resourceNode;
     }
@@ -71,8 +75,23 @@ public class Gathering : MonoBehaviour
                     agent.SetDestination(target.GetPosition());
                     state = State.MovingToResource;
                 }
+                else if (IsScout)
+                {
+                    agent.isStopped = false;
+                    state = State.Scouting;
+                }
                 break;
             case State.Scouting:
+                if (!scouting)
+                {
+                    scouting = true;
+                    StartCoroutine(Scout());
+                }
+                if (Vector3.Distance(transform.position, GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown).GetPosition()) < 2f)
+                {
+                    target = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
+                    state = State.MovingToStorage;
+                }
                 break;
             case State.MovingToResource:
                 if (Vector3.Distance(transform.position, target.GetPosition()) < 1f)
@@ -128,6 +147,10 @@ public class Gathering : MonoBehaviour
                     }
                     if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
                     {
+                        if (IsScout)
+                        {
+                            target.AddToKnownResourceList();
+                        }
                         GameResources.AddResources(inventory);
                         inventory.Clear();
                         inventoryAmount = 0;
@@ -146,5 +169,12 @@ public class Gathering : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private IEnumerator Scout()
+    {
+        agent.SetDestination(new Vector3(transform.position.x + Random.Range(-4f, 4f), transform.position.y, transform.position.z + Random.Range(-4f, 4f)));
+        yield return new WaitForSeconds(1);
+        scouting = false;
     }
 }
