@@ -93,10 +93,13 @@ public class Gathering : MonoBehaviour
                     scouting = true;
                     StartCoroutine(Scout());
                 }
-                if (Vector3.Distance(transform.position, GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown).GetPosition()) < 2f)
+                if (GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown) != null)
                 {
-                    target = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
-                    state = State.MovingToStorage;
+                    if (Vector3.Distance(transform.position, GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown).GetPosition()) < 2f)
+                    {
+                        target = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
+                        state = State.MovingToStorage;
+                    }
                 }
                 break;
             case State.MovingToResource:
@@ -118,6 +121,7 @@ public class Gathering : MonoBehaviour
                 carryResource(target);
                 target.GrabResource();
                 agent.speed *= 0.9f;
+                nextHarvest--;
                 if (inventoryAmount >= CarryAmount)
                 {
                     state = State.MovingToStorage;
@@ -126,7 +130,6 @@ public class Gathering : MonoBehaviour
                 {
                     if (nextHarvest > 0)
                     {
-                        nextHarvest--;
                         break;
                     }
                     target = findResource();
