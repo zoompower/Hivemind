@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -23,6 +26,15 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private Vector2 lastMousePosition; // Used in calculating screen drag of icons
     private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
+
+    private void Awake()
+    {
+        GameResources.OnResourceAmountChanged += delegate (object sender, EventArgs e)
+        {
+            UpdateResourceTextObject();
+        };
+        UpdateResourceTextObject();
+    }
 
     public void UI_OpenMindBuilder(int i)
     {
@@ -112,6 +124,21 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         }
 
         return isInside;
+    }
+
+    private void UpdateResourceTextObject()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        foreach (ResourceType resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
+        {
+            if (resourceType != ResourceType.Unknown)
+            {
+                sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
+            }
+        }
+
+        resourceTextBox.text = sb.ToString();
     }
 
     private string FormatResource(string spriteName, int val)

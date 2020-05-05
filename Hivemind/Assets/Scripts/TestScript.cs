@@ -7,7 +7,13 @@ using UnityEngine;
  */
 public class TestScript : MonoBehaviour
 {
-    UnitController controller;
+    [SerializeField]
+    private GameObject WorkerPrefab;
+
+    [SerializeField]
+    private Transform SpawnPosition;
+
+    private UnitController controller;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +33,7 @@ public class TestScript : MonoBehaviour
 
     public void CreateUnit()
     {
-        if (guid == Guid.Empty)
-            guid = controller.CreateUnitGroup();
+        guid = controller.CreateUnitGroup();
     }
 
     public void AddCurrentUnits()
@@ -49,5 +54,15 @@ public class TestScript : MonoBehaviour
     public void RemoveMaxUnits()
     {
         controller.SetMaxUnits(guid, controller.UnitGroupList.GetUnitGroupFromUnitId(guid).MaxUnits - 1);
+    }
+
+    public void SpawnUnitForLastGroup()
+    {
+        if (!guid.Equals(Guid.Empty))
+        {
+            Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity, GameObject.Find("Ants").transform);
+            AddMaxUnits();
+            AddCurrentUnits();
+        }
     }
 }
