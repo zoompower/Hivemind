@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class UnitGroup
 {
     public int MaxUnits { get; private set; }
+
     public int CurrentUnits { get; private set; }
 
     internal GameObject Ui_IconObj { get; private set; }
