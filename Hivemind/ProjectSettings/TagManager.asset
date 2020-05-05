@@ -6,6 +6,7 @@ TagManager:
   tags:
   - UI-Unit
   - UI-UnitGroup
+  - Resource
   layers:
   - Default
   - TransparentFX
