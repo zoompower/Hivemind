@@ -948,7 +948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &82286078
@@ -1122,7 +1122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &89168448
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &92286455
@@ -1470,7 +1470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &107617057
@@ -2239,9 +2239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
-  IsScout: 0
+  IsScout: 1
 --- !u!1001 &129434668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2523,7 +2523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &143063062
@@ -2885,7 +2885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!4 &172953900 stripped
@@ -3068,7 +3068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3223,7 +3223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &202126337
@@ -3365,7 +3365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &212637002
@@ -3733,7 +3733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &224106824
@@ -4018,7 +4018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
-  IsScout: 0
+  IsScout: 1
 --- !u!195 &226326625
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4289,7 +4289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &229776424
@@ -5426,7 +5426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5558,7 +5558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &273623657 stripped
@@ -5658,7 +5658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
-  IsScout: 0
+  IsScout: 1
 --- !u!1 &277501054 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -5705,7 +5705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &279842381
@@ -6297,7 +6297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &338460057 stripped
@@ -6346,7 +6346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &339687401 stripped
@@ -6395,7 +6395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &341060153
@@ -6776,7 +6776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &362034683
@@ -7169,7 +7169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &386626112
@@ -7960,7 +7960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &426832959 stripped
@@ -8009,7 +8009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &428675182
@@ -8372,7 +8372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &448760714
@@ -8671,7 +8671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &456579109
@@ -8973,7 +8973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9083,7 +9083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 26
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9151,7 +9151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &497842273 stripped
@@ -10213,7 +10213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &534520528
@@ -10515,7 +10515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10827,7 +10827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &574255110
@@ -10875,7 +10875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 24
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11037,7 +11037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &582918033 stripped
@@ -11309,7 +11309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &591901148
@@ -11486,7 +11486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11678,7 +11678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 34
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11996,7 +11996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &638694983
@@ -12792,6 +12792,7 @@ Transform:
   - {fileID: 1990755059}
   - {fileID: 2062062950}
   - {fileID: 624430115}
+  - {fileID: 1576681070}
   m_Father: {fileID: 1294047888}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12969,7 +12970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13031,7 +13032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &674532558
@@ -13653,7 +13654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &702679044
@@ -14657,7 +14658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_RootOrder
-      value: 21
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14831,7 +14832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
-  IsScout: 0
+  IsScout: 1
 --- !u!1001 &742262889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15809,7 +15810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &787464038
@@ -16355,9 +16356,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
-  IsScout: 0
+  IsScout: 1
 --- !u!1001 &814870831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16655,7 +16656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &826707839
@@ -16707,7 +16708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -16894,7 +16895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &837892982 stripped
@@ -17220,7 +17221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &846465103 stripped
@@ -17638,7 +17639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &859298450 stripped
@@ -18431,7 +18432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &874628379 stripped
@@ -18480,7 +18481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &887663205 stripped
@@ -18630,7 +18631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -18930,7 +18931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -18992,7 +18993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &897270324
@@ -19166,7 +19167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &899828640
@@ -19325,7 +19326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &906542265
@@ -19451,9 +19452,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
-  IsScout: 0
+  IsScout: 1
 --- !u!1 &908392115
 GameObject:
   m_ObjectHideFlags: 0
@@ -19920,7 +19921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &938651181
@@ -20469,7 +20470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &956470503
@@ -20517,7 +20518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_RootOrder
-      value: 22
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -21307,7 +21308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &982380340
@@ -21591,7 +21592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &997873454 stripped
@@ -21893,7 +21894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -21988,7 +21989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1016716255 stripped
@@ -22037,7 +22038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1019793281
@@ -22550,7 +22551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1058996656 stripped
@@ -22897,7 +22898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 32
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23382,7 +23383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1103478531 stripped
@@ -23431,7 +23432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1107013532 stripped
@@ -24210,7 +24211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1156302409
@@ -24890,7 +24891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1183994014
@@ -25109,7 +25110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1189932258
@@ -25442,9 +25443,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
-  IsScout: 0
+  IsScout: 1
 --- !u!1001 &1204580076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25869,7 +25870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1220293438
@@ -25921,7 +25922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -25983,7 +25984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1223046444
@@ -26750,7 +26751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 27
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -27107,7 +27108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 25
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -27169,7 +27170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1289143358
@@ -27556,7 +27557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1313093525 stripped
@@ -27833,7 +27834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -28055,7 +28056,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
-  IsScout: 0
+  IsScout: 1
 --- !u!195 &1332651520
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -28374,7 +28375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1342277192
@@ -29076,7 +29077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
-  IsScout: 0
+  IsScout: 1
 --- !u!195 &1374060446
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -29551,7 +29552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!4 &1401129809 stripped
@@ -29834,7 +29835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 30
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -30021,7 +30022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!4 &1430769241 stripped
@@ -30085,7 +30086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -30397,9 +30398,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
-  IsScout: 0
+  IsScout: 1
 --- !u!1001 &1473688745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30449,7 +30450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -30621,7 +30622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1502266051 stripped
@@ -30740,7 +30741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &1514580683
@@ -30792,7 +30793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 44176ea44e4d7224ebbf39b2b1769305, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -30860,7 +30861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1517438262 stripped
@@ -30958,7 +30959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1522524082
@@ -31039,7 +31040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1524947920
@@ -31560,7 +31561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 33
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -31747,9 +31748,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
+--- !u!1 &1576681069 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776935172}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1576681070 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776935172}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1576681071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576681069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8a7d0c84b8822e4481fcb56ecdb1356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseObject: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+  BaseResourceAmount: 10
+  resourceType: 1
 --- !u!1 &1596027362
 GameObject:
   m_ObjectHideFlags: 0
@@ -32289,7 +32317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1638875582 stripped
@@ -32338,7 +32366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1651442427 stripped
@@ -32485,7 +32513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1664587248
@@ -32533,7 +32561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 29
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -32847,7 +32875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CarryAmount: 1
   PreferredResource: 1
-  IsScout: 0
+  IsScout: 1
 --- !u!1 &1673053638 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -33068,9 +33096,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
-  IsScout: 0
+  IsScout: 1
 --- !u!4 &1685632188 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8,
@@ -33269,7 +33297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1690775372
@@ -33589,9 +33617,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
-  IsScout: 0
+  IsScout: 1
 --- !u!1 &1699828202 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -33638,7 +33666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1702795938
@@ -33686,7 +33714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 28
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -33751,7 +33779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -33910,7 +33938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!4 &1739762352 stripped
@@ -33965,7 +33993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1751931439 stripped
@@ -34014,7 +34042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1755577895 stripped
@@ -34063,7 +34091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &1756570762
@@ -34237,9 +34265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
-  IsScout: 0
+  IsScout: 1
 --- !u!1 &1757847484 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -34713,6 +34741,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 727786505785d3f48a37a944affab098, type: 3}
+--- !u!1001 &1776935172
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 660675701}
+    m_Modifications:
+    - target: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_Name
+      value: crystal_17_2 (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.662162
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.8995204
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_RootOrder
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
 --- !u!1 &1782035817 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -34759,7 +34848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1787629869
@@ -35391,7 +35480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1803389739 stripped
@@ -35950,7 +36039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1841899625
@@ -36133,7 +36222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1847892591
@@ -36417,7 +36506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &1861831245 stripped
@@ -36967,7 +37056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &1885580844 stripped
@@ -37016,7 +37105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &1885791485
@@ -37623,7 +37712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -37938,7 +38027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: a87b87121e0b90b46a8bf2eff6029dd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -39347,7 +39436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &2011136387 stripped
@@ -39396,7 +39485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &2015872407 stripped
@@ -39612,7 +39701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &2030615752 stripped
@@ -39661,7 +39750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &2038214334
@@ -39742,7 +39831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1001 &2051366526
@@ -39965,7 +40054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &2061551903
@@ -40224,7 +40313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &2070666363 stripped
@@ -40273,7 +40362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
   IsScout: 0
 --- !u!1 &2071470788
@@ -40575,9 +40664,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 3
+  CarryAmount: 1
   PreferredResource: 0
-  IsScout: 0
+  IsScout: 1
 --- !u!1 &2086804893 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 727786505785d3f48a37a944affab098,
@@ -40624,7 +40713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1 &2091042031
@@ -40926,7 +41015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edb897df4e3ea2438fdc10037e77fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarryAmount: 2
+  CarryAmount: 1
   PreferredResource: 2
   IsScout: 0
 --- !u!1001 &2102113338
@@ -41513,7 +41602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_RootOrder
-      value: 31
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 4000011695518034, guid: 465c505844950da499dcf096a6da4409, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

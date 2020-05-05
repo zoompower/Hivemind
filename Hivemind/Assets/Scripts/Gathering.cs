@@ -33,6 +33,7 @@ public class Gathering : MonoBehaviour
     private float baseSpeed;
     private List<GameObject> carryingObjects;
     private bool scouting = false;
+    private bool preparingReturn = false;
 
     private void Awake()
     {
@@ -82,6 +83,11 @@ public class Gathering : MonoBehaviour
                 }
                 break;
             case State.Scouting:
+                if (!preparingReturn)
+                {
+                    preparingReturn = true;
+                    StartCoroutine(ReturnToBase());
+                }
                 if (!scouting)
                 {
                     scouting = true;
@@ -147,7 +153,7 @@ public class Gathering : MonoBehaviour
                     }
                     if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
                     {
-                        if (IsScout)
+                        if (IsScout && target != null)
                         {
                             target.AddToKnownResourceList();
                         }
@@ -173,8 +179,15 @@ public class Gathering : MonoBehaviour
 
     private IEnumerator Scout()
     {
-        agent.SetDestination(new Vector3(transform.position.x + Random.Range(-4f, 4f), transform.position.y, transform.position.z + Random.Range(-4f, 4f)));
+        agent.SetDestination(new Vector3(transform.position.x + Random.Range(-10f, 10f), transform.position.y, transform.position.z + Random.Range(-10f, 10f)));
         yield return new WaitForSeconds(1);
         scouting = false;
+    }
+
+    private IEnumerator ReturnToBase()
+    {
+        yield return new WaitForSeconds(Random.Range(10, 60));
+        state = State.MovingToStorage;
+        preparingReturn = false;
     }
 }
