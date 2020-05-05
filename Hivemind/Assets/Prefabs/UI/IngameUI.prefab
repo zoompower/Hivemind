@@ -833,7 +833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6481915470925485
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1661,8 +1661,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: CloseMindBuilder
+      - m_Target: {fileID: 77179646253625896}
+        m_MethodName: UI_CloseMindBuilder
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
