@@ -107,7 +107,7 @@ public class Gathering : MonoBehaviour
                     target = findResource();
                     if (target != null)
                     {
-                        target.DecreaseFutureResources(CarryAmount - inventoryAmount);
+                        nextHarvest = target.DecreaseFutureResources(CarryAmount - inventoryAmount);
                         agent.SetDestination(target.GetPosition());
                         state = State.MovingToResource;
                     }
