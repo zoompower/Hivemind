@@ -1,21 +1,53 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-public class ResourceNode
+public enum ResourceType
+{
+    Rock,
+    Crystal,
+    Unknown,
+}
+
+public class ResourceNode : MonoBehaviour
 {
     private Transform resourceNodeTransform;
 
     private GameObject myResourceNode;
 
+    bool respawningResources = false;
+
+    public int BaseResourceAmount = 4;
+    public ResourceType resourceType = ResourceType.Unknown;
+
     private int resourceAmount;
-    public ResourceNode(Transform resourceNodeTransform, GameObject myResourceNode, int resourceAmount = 4)
+
+    private int futureResourceAmount;
+
+    private void Awake()
     {
-        this.resourceNodeTransform = resourceNodeTransform;
-        this.myResourceNode = myResourceNode;
-        this.resourceAmount = resourceAmount;
-        ColorResource(resourceAmount);
+        resourceAmount = BaseResourceAmount;
+        futureResourceAmount = resourceAmount;
+        myResourceNode = gameObject;
+        resourceNodeTransform = gameObject.transform;
+        //needed for resources on back, otherwise everything breaks
+        StartCoroutine(AddMe());
+    }
+
+    IEnumerator AddMe()
+    {
+        yield return new WaitForSeconds(5);
+        GameWorld.AddNewResource(this);
+    }
+
+    private void Update()
+    {
+        if (resourceAmount < BaseResourceAmount && !respawningResources)
+        {
+            StartCoroutine(respawnResource());
+        }
     }
 
     public Vector3 GetPosition()
@@ -23,44 +55,63 @@ public class ResourceNode
         return resourceNodeTransform.position;
     }
 
-    public IEnumerator respawnResource()
+    public void OnDestroy()
     {
-        yield return new WaitForSeconds(10);
+        GameWorld.RemoveResource(this);
+    }
+
+    private IEnumerator respawnResource()
+    {
+        respawningResources = true;
+        yield return new WaitForSeconds(30);
         resourceAmount++;
+        futureResourceAmount++;
         ColorResource(resourceAmount);
+        respawningResources = false;
+    }
+
+    public int DecreaseFutureResources(int amount)
+    {
+        futureResourceAmount -= amount;
+        if(futureResourceAmount > -1)
+        {
+            return amount;
+        }
+        else
+        {
+            int newAmount = amount + futureResourceAmount;
+            futureResourceAmount = 0;
+            return newAmount;
+        }
     }
 
     public void GrabResource()
     {
         resourceAmount--;
-        ColorResource(resourceAmount);
+        if (resourceAmount == 0 && resourceType == ResourceType.Crystal)
+        {
+            Destroy(gameObject);
+        }
+        if (resourceType == ResourceType.Rock)
+        {
+            ColorResource(resourceAmount);
+        }
     }
 
     public void ColorResource(int amount)
     {
         MeshRenderer mesh = myResourceNode.GetComponent<MeshRenderer>();
-        switch (amount)
-        {
-            case 0:
-                mesh.material.SetColor("_Color", new Color(0f, 0f, 0f));
-                break;
-            case 1:
-                mesh.material.SetColor("_Color", new Color(0.25f, 0.25f, 0.25f));
-                break;
-            case 2:
-                mesh.material.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f));
-                break;
-            case 3:
-                mesh.material.SetColor("_Color", new Color(0.75f, 0.75f, 0.75f));
-                break;
-            case 4:
-                mesh.material.SetColor("_Color", new Color(1f, 1f, 1f));
-                break;
-        }
+        float amountLeft = (float)amount / (float)BaseResourceAmount;
+        mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
     }
 
     public bool HasResources()
     {
         return resourceAmount > 0;
+    }
+
+    public int GetResourcesFuture()
+    {
+        return futureResourceAmount;
     }
 }
