@@ -52,9 +52,7 @@ public class Gathering : MonoBehaviour
 
     private void carryResource(ResourceNode resource)
     {
-        GameObject carryingObject = Instantiate(resource.gameObject, transform.position, Quaternion.identity, transform);
-        carryingObject.GetComponent<ResourceNode>().ColorResource(30);
-        Destroy(carryingObject.GetComponent<ResourceNode>());
+        GameObject carryingObject = Instantiate(resource.baseObject.gameObject, transform.position, Quaternion.identity, transform);
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
         carryingObjects.Add(carryingObject);
     }
