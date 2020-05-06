@@ -19,6 +19,7 @@ public class ResourceNode : MonoBehaviour
 
     bool respawningResources = false;
 
+    public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
 
@@ -31,15 +32,7 @@ public class ResourceNode : MonoBehaviour
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
         myResourceNode = gameObject;
-        resourceNodeTransform = gameObject.transform;
-        //needed for resources on back, otherwise everything breaks
-        StartCoroutine(AddMe());
-    }
-
-    IEnumerator AddMe()
-    {
-        yield return new WaitForSeconds(5);
-        GameWorld.AddNewResource(this);
+        resourceNodeTransform = gameObject.transform; GameWorld.AddNewResource(this);
     }
 
     private void Update()

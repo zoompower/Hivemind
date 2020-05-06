@@ -46,9 +46,7 @@ public class Gathering :  IAntBehaviour
 
     private void carryResource(ResourceNode resource)
     {
-        GameObject carryingObject = GameObject.Instantiate(resource.gameObject, ant.transform.position, Quaternion.identity, ant.transform);
-        carryingObject.GetComponent<ResourceNode>().ColorResource(30);
-        GameObject.Destroy(carryingObject.GetComponent<ResourceNode>());
+        GameObject carryingObject = GameObject.Instantiate(resource.baseObject.gameObject, ant.transform.position, Quaternion.identity, ant.transform);
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
         carryingObjects.Add(carryingObject);
     }
@@ -105,8 +103,8 @@ public class Gathering :  IAntBehaviour
                     target = findResource(ant.GetResourceMind().GetPrefferedType());
                     if (target != null)
                     {
-                        target.DecreaseFutureResources(ant.GetResourceMind().GetCarryWeight() - inventoryAmount);
-                        ant.GetAgent().SetDestination(target.GetPosition());
+                        nextHarvest = target.DecreaseFutureResources(ant.GetResourceMind().GetCarryWeight()  - inventoryAmount);
+                        ageant.GetAgent().SetDestination(target.GetPosition());
                         state = State.MovingToResource;
                     }
                     else
