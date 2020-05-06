@@ -1,11 +1,7 @@
 ﻿using Assets.Scripts;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.AI;
-using static ResourceNode;
 
 public class Gathering : MonoBehaviour
 {
