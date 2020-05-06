@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpatialPartitioning : MonoBehaviour
 {
     public List<GameObject> Entities;
-    private List<Collider> Neighbors;
+    private List<SpatialPartitioning> Neighbors;
 
     public int height;
     public int width;
@@ -15,13 +15,18 @@ public class SpatialPartitioning : MonoBehaviour
     void Start()
     {
         Entities = new List<GameObject>();
-        Neighbors = new List<Collider>();
+        Neighbors = new List<SpatialPartitioning>();
         SetNeighbors();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Entities.Count != 0)
+        {
+            Debug.ClearDeveloperConsole();
+            Debug.Log(this.name+" Count: "+Entities.Count);
+        }
     }
 
     private void OnTriggerEnter(Collider entity)
@@ -34,26 +39,38 @@ public class SpatialPartitioning : MonoBehaviour
         Entities.Remove(entity.gameObject);
     }
 
+    public List<GameObject> GetAllEntities()
+    {
+        return Entities;
+    }
+
+    public List<GameObject> GetAllEntitiesWithNeigbors()
+    {
+        List<GameObject> EntitiesWithNeighbors = GetAllEntities();
+
+        //Add entities of Neigboring SpatialPartitioning
+        foreach (SpatialPartitioning neig in Neighbors)
+        {
+            foreach(GameObject ent in neig.Entities)
+            {
+                EntitiesWithNeighbors.Add(ent);
+            }
+        }
+        return EntitiesWithNeighbors;
+    }
+
     private void SetNeighbors()
     {
-        /*var left = width+1;
-        var right = width-1;
-        var top = height+1;
-        var bottom = height-1;
+        int[,] cords = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } };
 
-        var topLeft = width+1 + height+1;
-        var topRight = width-1 + height+1;
-        var bottomLeft = width+1 + height-1;
-        var bottomRight = width-1 + height-1; */
-
-        var left =          GameObject.Find("CollisionBox(" + (height + 0) + "," + (width + 1) + ")");
-        var right =         GameObject.Find("CollisionBox(" + (height + 0) + "," + (width - 1) + ")");
-        var top =           GameObject.Find("CollisionBox(" + (height + 1) + "," + (width + 0) + ")");
-        var bottom =        GameObject.Find("CollisionBox(" + (height - 1) + "," + (width + 0) + ")");
-
-        var topLeft =       GameObject.Find("CollisionBox(" + (height + 1) + "," + (width + 1) + ")");
-        var topRight =      GameObject.Find("CollisionBox(" + (height + 1) + "," + (width - 1) + ")");
-        var bottomLeft =    GameObject.Find("CollisionBox(" + (height - 1) + "," + (width + 1) + ")");
-        var bottomRight =   GameObject.Find("CollisionBox(" + (height - 1) + "," + (width - 1) + ")");
+        for (int i = 0; i < cords.GetLength(0); i++)
+        {
+            GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + cords[i,0]) + "," + (width + cords[i, 1]) + ")");
+            if(NeigGameObject != null)
+            {
+                SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();
+                Neighbors.Add(NeighCollider);
+            }
+        }
     }
 }
