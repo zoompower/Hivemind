@@ -49,7 +49,7 @@ public class ResourceNode : MonoBehaviour
 
     private void Update()
     {
-        if (resourceAmount < BaseResourceAmount && !respawningResources)
+        if (resourceAmount < BaseResourceAmount && !respawningResources && resourceType != ResourceType.Crystal)
         {
             StartCoroutine(respawnResource());
         }
