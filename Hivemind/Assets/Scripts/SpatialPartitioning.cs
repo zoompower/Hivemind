@@ -22,6 +22,7 @@ public class SpatialPartitioning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //TO DO, delete this when done DEBUGGING
         if(Entities.Count != 0)
         {
             Debug.ClearDeveloperConsole();
@@ -39,24 +40,33 @@ public class SpatialPartitioning : MonoBehaviour
         Entities.Remove(entity.gameObject);
     }
 
-    public List<GameObject> GetAllEntities()
+    public List<GameObject> GetEntities()
     {
         return Entities;
     }
 
-    public List<GameObject> GetAllEntitiesWithNeigbors()
+    public List<GameObject> GetEntitiesWithNeigbors()
     {
-        List<GameObject> EntitiesWithNeighbors = GetAllEntities();
+        List<GameObject> EntitiesWithNeighbors = GetEntities();
 
         //Add entities of Neigboring SpatialPartitioning
         foreach (SpatialPartitioning neig in Neighbors)
         {
-            foreach(GameObject ent in neig.Entities)
+            foreach(GameObject ant in neig.Entities)
             {
-                EntitiesWithNeighbors.Add(ent);
+                EntitiesWithNeighbors.Add(ant);
             }
         }
         return EntitiesWithNeighbors;
+    }
+
+    public List<GameObject> GetEntitiesWithExtraNeighbors()
+    {
+        List<GameObject> EntitiesWithExtraNeighbors = GetEntities();
+
+
+
+        return EntitiesWithExtraNeighbors;
     }
 
     private void SetNeighbors()
