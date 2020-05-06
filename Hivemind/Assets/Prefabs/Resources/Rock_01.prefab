@@ -95,3 +95,5 @@ MonoBehaviour:
   baseObject: {fileID: 100002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
   BaseResourceAmount: 30
   resourceType: 0
+  CanRespawn: 1
+  DestroyWhenEmpty: 0
