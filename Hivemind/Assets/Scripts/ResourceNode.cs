@@ -16,6 +16,8 @@ public class ResourceNode : MonoBehaviour
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
     public bool CanRespawn = false;
+    [SerializeField]
+    private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
 
     private int resourceAmount;
@@ -60,7 +62,7 @@ public class ResourceNode : MonoBehaviour
     private IEnumerator respawnResource()
     {
         respawningResources = true;
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(TimeToRespawn);
         resourceAmount++;
         futureResourceAmount++;
         ColorResource(resourceAmount);
