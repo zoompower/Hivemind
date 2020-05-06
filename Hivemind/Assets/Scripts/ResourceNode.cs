@@ -98,7 +98,7 @@ public class ResourceNode : MonoBehaviour
     public void ColorResource(int amount)
     {
         MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
-        float amountLeft = amount / BaseResourceAmount;
+        float amountLeft = (float)amount / (float)BaseResourceAmount;
         mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
     }
 
