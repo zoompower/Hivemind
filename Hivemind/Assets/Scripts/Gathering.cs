@@ -1,12 +1,8 @@
 ﻿using Assets.Scripts;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
-using static ResourceNode;
 using Random = UnityEngine.Random;
 
 public class Gathering : MonoBehaviour
@@ -19,6 +15,7 @@ public class Gathering : MonoBehaviour
         Gathering,
         MovingToStorage,
     }
+
     public enum Direction
     {
         None,
@@ -110,6 +107,7 @@ public class Gathering : MonoBehaviour
                 agent.isStopped = true;
                 TargetResource();
                 break;
+
             case State.Scouting:
                 if (!preparingReturn)
                 {
@@ -133,6 +131,7 @@ public class Gathering : MonoBehaviour
                     }
                 }
                 break;
+
             case State.MovingToResource:
                 if (target != null)
                 {
@@ -146,6 +145,7 @@ public class Gathering : MonoBehaviour
                     TargetResource();
                 }
                 break;
+
             case State.Gathering:
                 if (!inventory.ContainsKey(target.resourceType))
                 {
@@ -173,6 +173,7 @@ public class Gathering : MonoBehaviour
                     TargetResource();
                 }
                 break;
+
             case State.MovingToStorage:
                 if (storage != null)
                 {
@@ -217,30 +218,38 @@ public class Gathering : MonoBehaviour
         {
             case Direction.None:
                 break;
+
             case Direction.North:
                 destination.z += 2;
                 break;
+
             case Direction.West:
                 destination.x -= 2;
                 break;
+
             case Direction.South:
                 destination.z -= 2;
                 break;
+
             case Direction.East:
                 destination.x += 2;
                 break;
+
             case Direction.NorthWest:
                 destination.z += 2;
                 destination.x -= 2;
                 break;
+
             case Direction.NorthEast:
                 destination.z += 2;
                 destination.x += 2;
                 break;
+
             case Direction.SouthEast:
                 destination.z -= 2;
                 destination.x += 2;
                 break;
+
             case Direction.SouthWest:
                 destination.z -= 2;
                 destination.x -= 2;

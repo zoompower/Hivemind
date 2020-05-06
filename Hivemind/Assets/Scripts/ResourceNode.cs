@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using TMPro;
+﻿using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
@@ -18,7 +14,7 @@ public class ResourceNode : MonoBehaviour
 
     private GameObject myResourceNode;
 
-    bool respawningResources = false;
+    private bool respawningResources = false;
 
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
@@ -78,7 +74,7 @@ public class ResourceNode : MonoBehaviour
     public int DecreaseFutureResources(int amount)
     {
         futureResourceAmount -= amount;
-        if(futureResourceAmount > -1)
+        if (futureResourceAmount > -1)
         {
             return amount;
         }
