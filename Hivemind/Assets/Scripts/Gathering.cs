@@ -96,7 +96,6 @@ public class Gathering : MonoBehaviour
         GameObject carryingObject = Instantiate(resource.baseObject.gameObject, transform.position, Quaternion.identity, transform);
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
         carryingObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.08f * (carryingObjects.Count + 1), transform.position.z);
-        carryingObject.transform.SetParent(gameObject.transform);
         carryingObjects.Add(carryingObject);
     }
 
