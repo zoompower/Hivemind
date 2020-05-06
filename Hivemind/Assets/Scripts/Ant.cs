@@ -46,7 +46,7 @@ namespace Assets.Scripts
         void Start()
         {
             storage = GameWorld.GetStorage();
-            resMind = new ResourceMind(ResourceType.Unknown ,3);
+            resMind = new ResourceMind(ResourceType.Unknown, 3);
         }
 
         // Update is called once per frame
@@ -65,10 +65,9 @@ namespace Assets.Scripts
                 //resmind = GetUnitGroup(unitgroupID).GetResMind();
             }
 
-            behaviour.Execute();
-            agent.speed = currentSpeed;
+            behaviour.Execute(); 
         }
-
+    
       public  bool AtBase()
         {
             if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)

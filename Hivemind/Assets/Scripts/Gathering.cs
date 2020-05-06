@@ -1,11 +1,7 @@
 ﻿using Assets.Scripts;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
-using UnityEngine.AI;
-using static ResourceNode;
 
 public class Gathering :  IAntBehaviour
 {
@@ -87,7 +83,8 @@ public class Gathering :  IAntBehaviour
                 inventoryAmount++;
                 carryResource(target);
                 target.GrabResource();
-                ant.currentSpeed =  (float) Math.Sqrt(ant.currentSpeed) * 1.2f;
+                float speedPower =  (float) Math.Pow( 0.75,  inventoryAmount);
+                ant.currentSpeed = ant.baseSpeed * speedPower;
                 ant.UpdateSpeed();
                 if (inventoryAmount >= ant.GetResourceMind().GetCarryWeight()) 
                 {
@@ -104,7 +101,7 @@ public class Gathering :  IAntBehaviour
                     if (target != null)
                     {
                         nextHarvest = target.DecreaseFutureResources(ant.GetResourceMind().GetCarryWeight()  - inventoryAmount);
-                        ageant.GetAgent().SetDestination(target.GetPosition());
+                        ant.GetAgent().SetDestination(target.GetPosition());
                         state = State.MovingToResource;
                     }
                     else
