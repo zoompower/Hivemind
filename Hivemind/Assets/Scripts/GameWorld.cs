@@ -11,7 +11,7 @@ public static class GameWorld
     public static ResourceNode FindNearestUnknownResource(Vector3 antPosition, ResourceType prefType)
     {
         ResourceNode closest = null;
-        float minDistance = 100000000000000f;
+        float minDistance = float.MaxValue;
         foreach (ResourceNode resource in UnknownResources)
         {
             float dist = Vector3.Distance(antPosition, resource.GetPosition());
@@ -27,7 +27,7 @@ public static class GameWorld
     public static ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType)
     {
         ResourceNode closest = null;
-        float minDistance = 100000000000000f;
+        float minDistance = float.MaxValue;
         foreach (ResourceNode resource in KnownResources)
         {
             if (prefType == ResourceType.Unknown || resource.resourceType == prefType)

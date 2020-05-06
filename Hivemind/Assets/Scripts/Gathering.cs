@@ -36,7 +36,6 @@ public class Gathering : MonoBehaviour
 
     private State state;
     private Dictionary<ResourceType, int> inventory;
-    private int inventoryAmount;
     private int nextHarvest;
     private ResourceNode target;
     private Storage storage;
@@ -77,7 +76,7 @@ public class Gathering : MonoBehaviour
             }
             StopAllCoroutines();
             scouting = false;
-            nextHarvest = target.DecreaseFutureResources(CarryAmount - inventoryAmount);
+            nextHarvest = target.DecreaseFutureResources(CarryAmount - carryingObjects.Count);
             agent.SetDestination(target.GetPosition());
             state = State.MovingToResource;
         }
@@ -96,6 +95,8 @@ public class Gathering : MonoBehaviour
     {
         GameObject carryingObject = Instantiate(resource.baseObject.gameObject, transform.position, Quaternion.identity, transform);
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
+        carryingObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.08f * (carryingObjects.Count + 1), transform.position.z);
+        carryingObject.transform.SetParent(gameObject.transform);
         carryingObjects.Add(carryingObject);
     }
 
@@ -116,11 +117,12 @@ public class Gathering : MonoBehaviour
                 }
                 if (!scouting)
                 {
-                    if (GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown) != null)
+                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
+                    if (tempTarget != null)
                     {
-                        if (Vector3.Distance(transform.position, GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown).GetPosition()) < 2f)
+                        if (Vector3.Distance(transform.position, tempTarget.GetPosition()) < 2f)
                         {
-                            target = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
+                            target = tempTarget;
                             state = State.MovingToStorage;
                         }
                         else
@@ -155,12 +157,11 @@ public class Gathering : MonoBehaviour
                 {
                     inventory[target.resourceType]++;
                 }
-                inventoryAmount++;
                 carryResource(target);
                 target.GrabResource();
                 agent.speed *= 0.9f;
                 nextHarvest--;
-                if (inventoryAmount >= CarryAmount)
+                if (carryingObjects.Count >= CarryAmount)
                 {
                     state = State.MovingToStorage;
                 }
@@ -178,10 +179,6 @@ public class Gathering : MonoBehaviour
                 if (storage != null)
                 {
                     agent.SetDestination(storage.GetPosition());
-                    for (int i = 0; i < carryingObjects.Count; i++)
-                    {
-                        carryingObjects[i].transform.position = new Vector3(transform.position.x, transform.position.y + 0.08f * (i + 1), transform.position.z);
-                    }
                     if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
                     {
                         if (IsScout && target != null)
@@ -192,7 +189,6 @@ public class Gathering : MonoBehaviour
                         {
                             GameResources.AddResources(inventory);
                             inventory.Clear();
-                            inventoryAmount = 0;
                             foreach (GameObject gameObject in carryingObjects)
                             {
                                 Destroy(gameObject);
@@ -255,8 +251,8 @@ public class Gathering : MonoBehaviour
                 destination.x -= 2;
                 break;
         }
-        yield return new WaitForSeconds(Random.Range(1, 3));
         agent.SetDestination(destination);
+        yield return new WaitForSeconds(Random.Range(1, 3));
         scouting = false;
     }
 

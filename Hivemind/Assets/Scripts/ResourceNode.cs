@@ -10,15 +10,13 @@ public enum ResourceType
 
 public class ResourceNode : MonoBehaviour
 {
-    private Transform resourceNodeTransform;
-
-    private GameObject myResourceNode;
-
     private bool respawningResources = false;
 
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
+    public bool CanRespawn = false;
+    public bool DestroyWhenEmpty = false;
 
     private int resourceAmount;
 
@@ -28,24 +26,22 @@ public class ResourceNode : MonoBehaviour
     {
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
-        myResourceNode = gameObject;
-        resourceNodeTransform = gameObject.transform;
-        myResourceNode.GetComponent<MeshRenderer>().enabled = false;
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
         GameWorld.AddNewResource(this);
     }
 
     public void AddToKnownResourceList()
     {
-        if (!GameWorld.KnownResources.Contains(this) && myResourceNode != null)
+        if (!GameWorld.KnownResources.Contains(this) && gameObject != null)
         {
-            myResourceNode.GetComponent<MeshRenderer>().enabled = true;
+            gameObject.GetComponent<MeshRenderer>().enabled = true;
             GameWorld.AddNewKnownResource(this);
         }
     }
 
     private void Update()
     {
-        if (resourceAmount < BaseResourceAmount && !respawningResources && resourceType != ResourceType.Crystal)
+        if (CanRespawn && resourceAmount < BaseResourceAmount && !respawningResources)
         {
             StartCoroutine(respawnResource());
         }
@@ -53,7 +49,7 @@ public class ResourceNode : MonoBehaviour
 
     public Vector3 GetPosition()
     {
-        return resourceNodeTransform.position;
+        return transform.position;
     }
 
     public void OnDestroy()
@@ -89,7 +85,7 @@ public class ResourceNode : MonoBehaviour
     public void GrabResource()
     {
         resourceAmount--;
-        if (resourceAmount == 0 && resourceType == ResourceType.Crystal)
+        if (resourceAmount == 0 && DestroyWhenEmpty)
         {
             Destroy(gameObject);
         }
@@ -101,8 +97,8 @@ public class ResourceNode : MonoBehaviour
 
     public void ColorResource(int amount)
     {
-        MeshRenderer mesh = myResourceNode.GetComponent<MeshRenderer>();
-        float amountLeft = (float)amount / (float)BaseResourceAmount;
+        MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
+        float amountLeft = amount / BaseResourceAmount;
         mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
     }
 

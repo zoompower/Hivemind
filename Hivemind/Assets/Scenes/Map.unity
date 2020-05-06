@@ -2030,6 +2030,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2107618766}
     m_Modifications:
+    - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
+        type: 3}
+      propertyPath: IsScout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
       propertyPath: m_Name
@@ -4084,6 +4089,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2107618766}
     m_Modifications:
+    - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
+        type: 3}
+      propertyPath: IsScout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
       propertyPath: m_Name
@@ -4699,6 +4709,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2107618766}
     m_Modifications:
+    - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
+        type: 3}
+      propertyPath: IsScout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
       propertyPath: m_Name
@@ -5174,10 +5189,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 834680980}
+  - {fileID: 141377108}
   - {fileID: 586368352}
   - {fileID: 1522349836}
-  - {fileID: 141377108}
+  - {fileID: 834680980}
   - {fileID: 1013486662}
   - {fileID: 125362269}
   - {fileID: 1884191062}
@@ -7971,6 +7986,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2107618766}
     m_Modifications:
+    - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
+        type: 3}
+      propertyPath: IsScout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
       propertyPath: m_Name
@@ -8950,6 +8970,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2107618766}
     m_Modifications:
+    - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
+        type: 3}
+      propertyPath: IsScout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
       propertyPath: m_Name
