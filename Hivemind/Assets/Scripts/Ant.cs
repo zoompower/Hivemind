@@ -21,7 +21,7 @@ namespace Assets.Scripts
         private int unitgroupID;
         public float baseSpeed;
         public float currentSpeed;
-
+        public int carryWeight = 3;
 
         private IAntBehaviour behaviour;
         private ICombatAntBehaviour combatBehaviour;
@@ -46,29 +46,29 @@ namespace Assets.Scripts
         void Start()
         {
             storage = GameWorld.GetStorage();
-            resMind = new ResourceMind(ResourceType.Unknown, 3);
+            resMind = new ResourceMind(ResourceType.Unknown, carryWeight);
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (this.InCombat())
+            if (InCombat())
             {
                 combatBehaviour = DecideCombatBehavior();
                 combatBehaviour.CombatMode(this, closestEnemy);
                 return;
             }
 
-            if (this.AtBase())
+            if (AtBase())
             {
                 //combatMind = GetUnitGroup(unitgroupID).GetCombatMind();
                 //resmind = GetUnitGroup(unitgroupID).GetResMind();
             }
 
-            behaviour.Execute(); 
+            behaviour.Execute();
         }
-    
-      public  bool AtBase()
+
+        public bool AtBase()
         {
             if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
             {
@@ -77,11 +77,11 @@ namespace Assets.Scripts
             return false;
         }
 
-     public   bool InCombat()
+        public bool InCombat()
         {
             return false;
         }
-        
+
         ICombatAntBehaviour DecideCombatBehavior()
         {
             if (combatMind == null)
@@ -89,8 +89,8 @@ namespace Assets.Scripts
                 return new CombatFight();
             }
 
-            float healthPercantageDifference = ((float) health / (float) closestEnemy.health);
-            float damagePercantageDifference = ((float) damage / (float) closestEnemy.damage);
+            float healthPercantageDifference = ((float)health / (float)closestEnemy.health);
+            float damagePercantageDifference = ((float)damage / (float)closestEnemy.damage);
             float strengthDifference = (healthPercantageDifference * 1 + damagePercantageDifference * 2) / 3;
             if (strengthDifference >= combatMind.GetMinEstimetedDifference())
             {
