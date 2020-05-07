@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Minds
 {
-    interface IMind
+   public  interface IMind
     {
+
     }
 }

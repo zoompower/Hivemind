@@ -89,7 +89,7 @@ public class ResourceNode : MonoBehaviour
         resourceAmount--;
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
-            myResourceNode.GetComponent<MeshRenderer>().enabled = false;
+            Destroy(gameObject);
         }
         if (resourceType == ResourceType.Rock)
         {

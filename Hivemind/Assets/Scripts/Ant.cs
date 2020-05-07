@@ -21,6 +21,7 @@ namespace Assets.Scripts
         public float baseSpeed;
         public float currentSpeed;
         public int carryWeight = 1;
+        public bool IsScout = true;
 
         private IAntBehaviour behaviour;
         private ICombatAntBehaviour combatBehaviour;
@@ -61,8 +62,8 @@ namespace Assets.Scripts
 
             if (AtBase())
             {
-                combatMind = unitGroup.GetCombatMind();
-                resMind = unitGroup.GetResourceMind();
+                //combatMind = unitGroup.GetCombatMind();
+               // resMind = unitGroup.GetResourceMind();
             }
 
             behaviour.Execute();

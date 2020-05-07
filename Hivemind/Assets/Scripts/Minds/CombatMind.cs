@@ -8,14 +8,14 @@ namespace Assets.Scripts
 {
     public class CombatMind
     {
-         private float minEstimetedDifference;
+        private float minEstimetedDifference;
         private int prefferedHealth;
         
 
         public CombatMind(float minEstimeted, int prefHealth)
         {
-            this.minEstimetedDifference = minEstimeted;
-            this.prefferedHealth = prefHealth;
+            minEstimetedDifference = minEstimeted;
+            prefferedHealth = prefHealth;
         }
         public float GetMinEstimetedDifference()
         {

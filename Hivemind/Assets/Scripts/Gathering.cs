@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,9 +30,6 @@ public class Gathering :  IAntBehaviour
         NorthWest,
     }
 
-    public int CarryAmount = 3;
-    public ResourceType PreferredResource = ResourceType.Unknown;
-    public bool IsScout = false;
     public Direction PrefferedDirection;
 
     private State state;
@@ -57,32 +55,32 @@ public class Gathering :  IAntBehaviour
         ResourceNode resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, PrefferedResource);
         if (PrefferedResource != ResourceType.Unknown && resourceNode == null)
         {
-            resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, ResourceType.Unknown);
+            resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, PrefferedResource);
         }
         return resourceNode;
     }
 
     private void TargetResource()
     {
-        target = findResource();
+        target = findResource(ant.GetResourceMind().GetPrefferedType());
         if (target != null)
         {
             if (state == State.Idle)
             {
-                agent.isStopped = false;
+                ant.GetAgent().isStopped = false;
             }
-            StopAllCoroutines();
+            ant.StopAllCoroutines();
             scouting = false;
-            nextHarvest = target.DecreaseFutureResources(CarryAmount - carryingObjects.Count);
-            agent.SetDestination(target.GetPosition());
+            nextHarvest = target.DecreaseFutureResources(ant.GetResourceMind().GetCarryWeight() - carryingObjects.Count);
+            ant.GetAgent().SetDestination(target.GetPosition());
             state = State.MovingToResource;
         }
-        else if (state == State.Idle && IsScout)
+        else if (state == State.Idle && ant.IsScout)
         {
-            agent.isStopped = false;
+            ant.GetAgent().isStopped = false;
             state = State.Scouting;
         }
-        else if (Vector3.Distance(transform.position, storage.GetPosition()) > 2f)
+        else if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) > 2f)
         {
             state = State.MovingToStorage;
         }
@@ -92,13 +90,12 @@ public class Gathering :  IAntBehaviour
     {
         GameObject carryingObject = GameObject.Instantiate(resource.baseObject.gameObject, ant.transform.position, Quaternion.identity, ant.transform);
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3, carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
-        carryingObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.08f * (carryingObjects.Count + 1), transform.position.z);
+        carryingObject.transform.position = new Vector3(ant.transform.position.x, ant.transform.position.y + 0.08f * (carryingObjects.Count + 1), ant.transform.position.z);
         carryingObjects.Add(carryingObject);
     }
 
     public void Execute()
     {
-       
         switch (state)
         {
             case State.Idle:
@@ -110,14 +107,14 @@ public class Gathering :  IAntBehaviour
                 if (!preparingReturn)
                 {
                     preparingReturn = true;
-                    StartCoroutine(ReturnToBase());
+                    ant.StartCoroutine(ReturnToBase());
                 }
                 if (!scouting)
                 {
-                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
+                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position, ant.GetResourceMind().GetPrefferedType());
                     if (tempTarget != null)
                     {
-                        if (Vector3.Distance(transform.position, tempTarget.GetPosition()) < 2f)
+                        if (Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                         {
                             target = tempTarget;
                             state = State.MovingToStorage;
@@ -125,7 +122,7 @@ public class Gathering :  IAntBehaviour
                         else
                         {
                             scouting = true;
-                            StartCoroutine(Scout());
+                            ant.StartCoroutine(Scout());
                         }
                     }
                 }
@@ -156,8 +153,11 @@ public class Gathering :  IAntBehaviour
                 }
                 carryResource(target);
                 target.GrabResource();
-                float speedPower =  (float) Math.Pow( 0.75,  inventoryAmount);
+
+                //calculate new speed
+                float speedPower =  (float) Math.Pow( 0.75, carryingObjects.Count);
                 ant.currentSpeed = ant.baseSpeed * speedPower;
+
                 ant.UpdateSpeed();
                 
                 nextHarvest--;
@@ -178,10 +178,10 @@ public class Gathering :  IAntBehaviour
             case State.MovingToStorage:
                 if (ant.GetStorage() != null)
                 {
-                    agent.SetDestination(ant.GetStorage().GetPosition());
-                    if (Vector3.Distance(ant.transform.position, storage.GetPosition()) < 2f)
+                    ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+                    if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) < 2f)
                     {
-                        if (IsScout && target != null)
+                        if (ant.IsScout && target != null)
                         {
                             target.AddToKnownResourceList();
                         }
@@ -191,7 +191,7 @@ public class Gathering :  IAntBehaviour
                             inventory.Clear();
                             foreach (GameObject gameObject in carryingObjects)
                             {
-                                Destroy(gameObject);
+                                GameObject.Destroy(gameObject);
                             }
                             carryingObjects.Clear();
                             ant.currentSpeed = ant.baseSpeed;
@@ -210,7 +210,7 @@ public class Gathering :  IAntBehaviour
 
     private IEnumerator Scout()
     {
-        Vector3 destination = new Vector3(transform.position.x + Random.Range(-5, 5), transform.position.y, transform.position.z + Random.Range(-5, 5));
+        Vector3 destination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y, ant.transform.position.z + Random.Range(-5, 5));
         switch (PrefferedDirection)
         {
             case Direction.None:
@@ -252,7 +252,7 @@ public class Gathering :  IAntBehaviour
                 destination.x -= 2;
                 break;
         }
-        agent.SetDestination(destination);
+        ant.GetAgent().SetDestination(destination);
         yield return new WaitForSeconds(Random.Range(1, 3));
         scouting = false;
     }
