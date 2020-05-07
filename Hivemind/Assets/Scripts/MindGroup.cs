@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,10 @@ public class MindGroup
     private protected GameObject UIUnitGroup;
 
     private List<UnitGroup> unitList;
+
+    public ResourceMind resMind { get; private set; }
+
+    public CombatMind combatMind { get; private set; }
 
     public MindGroup(GameObject UiObject)
     {
@@ -37,6 +42,8 @@ public class MindGroup
         if (!unitList.Contains(unit))
         {
             unitList.Add(unit);
+
+            unit.SetMindGroup(this);
             Count++;
 
             unit.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);

@@ -18,10 +18,9 @@ namespace Assets.Scripts
 
         private int health;
         private int damage;
-        private int unitgroupID;
         public float baseSpeed;
         public float currentSpeed;
-        public int carryWeight = 3;
+        public int carryWeight = 1;
 
         private IAntBehaviour behaviour;
         private ICombatAntBehaviour combatBehaviour;
@@ -29,6 +28,7 @@ namespace Assets.Scripts
         private NavMeshAgent agent;
         private Ant closestEnemy;
         private Storage storage;
+        private UnitGroup unitGroup;
 
         private CombatMind combatMind;
         private ResourceMind resMind;
@@ -61,8 +61,8 @@ namespace Assets.Scripts
 
             if (AtBase())
             {
-                //combatMind = GetUnitGroup(unitgroupID).GetCombatMind();
-                //resmind = GetUnitGroup(unitgroupID).GetResMind();
+                combatMind = unitGroup.GetCombatMind();
+                resMind = unitGroup.GetResourceMind();
             }
 
             behaviour.Execute();
@@ -101,12 +101,12 @@ namespace Assets.Scripts
 
         public NavMeshAgent GetAgent()
         {
-            return this.agent;
+            return agent;
         }
 
         public Storage GetStorage()
         {
-            return this.storage;
+            return storage;
         }
 
         public ResourceMind GetResourceMind()
@@ -117,6 +117,11 @@ namespace Assets.Scripts
         public CombatMind GetCombatMind()
         {
             return combatMind;
+        }
+        
+        public void SetUnitGroup(UnitGroup ug)
+        {
+            unitGroup = ug;
         }
 
         internal void UpdateSpeed()
