@@ -15,6 +15,8 @@ MonoBehaviour:
   baseObject: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
   BaseResourceAmount: 10
   resourceType: 1
+  CanRespawn: 0
+  DestroyWhenEmpty: 1
 --- !u!1001 &3417407799308130966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24,7 +26,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_Name
-      value: crystal_17_2 Variant
+      value: crystal
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
       propertyPath: m_StaticEditorFlags

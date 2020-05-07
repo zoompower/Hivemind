@@ -2042,8 +2042,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
-      propertyPath: carryWeight
-      value: 4
+      propertyPath: IsScout
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
@@ -4271,8 +4271,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
-      propertyPath: carryWeight
-      value: 4
+      propertyPath: IsScout
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
@@ -4891,8 +4891,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
-      propertyPath: carryWeight
-      value: 4
+      propertyPath: IsScout
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
@@ -8168,8 +8168,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
-      propertyPath: carryWeight
-      value: 4
+      propertyPath: IsScout
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
@@ -9152,8 +9152,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2841690771533220343, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
-      propertyPath: carryWeight
-      value: 4
+      propertyPath: IsScout
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6074893712662538142, guid: 05ef9912dce3c1d42b2a173aa78a75c7,
         type: 3}
