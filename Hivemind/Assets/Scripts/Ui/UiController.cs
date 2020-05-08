@@ -74,7 +74,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         Vector3 newPosition = rect.position + new Vector3(diff.x, diff.y, 0);
         Vector3 oldPos = rect.position;
         rect.position = newPosition;
-        if (!IsRectTransformInsideSreen(rect))
+        if (!IsRectTransformInsideScreen(rect))
         {
             rect.position = oldPos;
         }
@@ -102,7 +102,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         unitGroupObj = null;
     }
 
-    private bool IsRectTransformInsideSreen(RectTransform rectTransform)
+    private bool IsRectTransformInsideScreen(RectTransform rectTransform)
     {
         bool isInside = false;
         Vector3[] corners = new Vector3[4];
