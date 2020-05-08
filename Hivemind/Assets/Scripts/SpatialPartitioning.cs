@@ -64,13 +64,11 @@ public class SpatialPartitioning : MonoBehaviour
     {
         List<GameObject> EntitiesWithExtraNeighbors = GetEntities();
 
-        int[,] cords = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } };
+        for (int i = -steps; i<steps;i++) {
 
-        for (int j = 0;j<steps;j++) {
-
-            for (int i = 0; i < cords.GetLength(0); i++)
+            for (int j = -steps; j < steps; j++)
             {
-                GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + cords[i * j, 0]) + "," + (width + cords[i * j, 1]) + ")");
+                GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + i) + "," + (width + j) + ")");
                 if (NeigGameObject != null)
                 {
                     SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();
@@ -78,7 +76,6 @@ public class SpatialPartitioning : MonoBehaviour
                 }
             }
         }
-
 
         return EntitiesWithExtraNeighbors;
     }
