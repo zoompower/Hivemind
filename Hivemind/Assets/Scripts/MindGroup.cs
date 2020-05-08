@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,18 +15,22 @@ public class MindGroup
 
     private List<UnitGroup> unitList;
 
-    public IMind mind { get; private set; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
+    public IMind Mind { get; private set; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
+
+    public List<IMind> minds { get; private set; }
 
     public CombatMind combatMind { get; private set; }
 
     public MindGroup(GameObject UiObject, IMind mind = null)
     {
         unitList = new List<UnitGroup>();
-        if(mind != null)
+        minds = new List<IMind>();
+        if (mind != null)
         {
-            this.mind = mind;
+            Mind = mind;
         }
-        this.mind.Initiate();
+        minds.Add(Mind);
+        Mind.Initiate();
 
         UIUnitGroup = UiObject;
     }

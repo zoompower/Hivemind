@@ -30,7 +30,7 @@ public class Gathering : IMind
         NorthWest,
     }
 
-  
+
 
     private State state;
     private Dictionary<ResourceType, int> inventory;
@@ -47,7 +47,7 @@ public class Gathering : IMind
 
     private Ant ant;
     private ResourceNode target;
-     public void Initiate()
+    public void Initiate()
     {
         inventory = new Dictionary<ResourceType, int>();
         state = State.Idle;
@@ -59,8 +59,6 @@ public class Gathering : IMind
         prefferedType = resType;
         carryWeight = carryweight;
         prefferedDirection = exploreDirection;
-        Debug.Log(carryweight);
-        Debug.Log(resType);
     }
 
     private ResourceNode findResource(ResourceType PrefferedResource)
@@ -114,7 +112,7 @@ public class Gathering : IMind
         {
             case State.Idle:
                 ant.GetAgent().isStopped = true;
-               TargetResource();
+                TargetResource();
                 break;
 
             case State.Scouting:
@@ -169,11 +167,11 @@ public class Gathering : IMind
                 target.GrabResource();
 
                 //calculate new speed
-                float speedPower =  (float) Math.Pow( 0.75, carryingObjects.Count);
+                float speedPower = (float)Math.Pow(0.75, carryingObjects.Count);
                 ant.currentSpeed = ant.baseSpeed * speedPower;
 
                 ant.UpdateSpeed();
-                
+
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
@@ -209,14 +207,14 @@ public class Gathering : IMind
                             }
                             carryingObjects.Clear();
                             ant.currentSpeed = ant.baseSpeed;
-                        ant.UpdateSpeed();
+                            ant.UpdateSpeed();
                         }
                         state = State.Idle;
                     }
                 }
                 else
                 {
-                    
+
                 }
                 break;
         }

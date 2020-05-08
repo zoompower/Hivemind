@@ -11,7 +11,7 @@ public class MindBuilderScript : MonoBehaviour, IInitializePotentialDragHandler,
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     public void OnInitializePotentialDrag(PointerEventData eventData)

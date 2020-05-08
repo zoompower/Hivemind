@@ -19,10 +19,10 @@ public class UnitGroupList
         foreach (var obj in unitGroupObjects)
         {
             i++;
-            if(i == 3)
-                unitGroupList.Add(new MindGroup(obj, new Gathering(ResourceType.Unknown,  10, Gathering.Direction.West)));
+            if (i == 3)
+                unitGroupList.Add(new MindGroup(obj, new Gathering(ResourceType.Unknown, 10, Gathering.Direction.West)));
             else
-            unitGroupList.Add(new MindGroup(obj));
+                unitGroupList.Add(new MindGroup(obj));
         }
     }
 

@@ -1,6 +1,4 @@
-﻿using Assets.Scripts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,5 +52,5 @@ public class UnitGroup
     {
         textBox.text = $"{CurrentUnits}/{MaxUnits}";
     }
-    
+
 }
