@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - UI-Unit
+  - UI-UnitGroup
   - Resource
   layers:
   - Default
@@ -14,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Minimap
+  - Environment
   - 
   - 
   - 

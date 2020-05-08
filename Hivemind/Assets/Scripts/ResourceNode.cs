@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
@@ -13,14 +10,15 @@ public enum ResourceType
 
 public class ResourceNode : MonoBehaviour
 {
-    private Transform resourceNodeTransform;
+    private bool respawningResources = false;
 
-    private GameObject myResourceNode;
-
-    bool respawningResources = false;
-
+    public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
+    public bool CanRespawn = false;
+    [SerializeField]
+    private int TimeToRespawn = 30;
+    public bool DestroyWhenEmpty = false;
 
     private int resourceAmount;
 
@@ -30,21 +28,22 @@ public class ResourceNode : MonoBehaviour
     {
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
-        myResourceNode = gameObject;
-        resourceNodeTransform = gameObject.transform;
-        //needed for resources on back, otherwise everything breaks
-        StartCoroutine(AddMe());
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        GameWorld.AddNewResource(this);
     }
 
-    IEnumerator AddMe()
+    public void AddToKnownResourceList()
     {
-        yield return new WaitForSeconds(5);
-        GameWorld.AddNewResource(this);
+        if (!GameWorld.KnownResources.Contains(this) && gameObject != null)
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = true;
+            GameWorld.AddNewKnownResource(this);
+        }
     }
 
     private void Update()
     {
-        if (resourceAmount < BaseResourceAmount && !respawningResources)
+        if (CanRespawn && resourceAmount < BaseResourceAmount && !respawningResources)
         {
             StartCoroutine(respawnResource());
         }
@@ -52,7 +51,7 @@ public class ResourceNode : MonoBehaviour
 
     public Vector3 GetPosition()
     {
-        return resourceNodeTransform.position;
+        return transform.position;
     }
 
     public void OnDestroy()
@@ -63,7 +62,7 @@ public class ResourceNode : MonoBehaviour
     private IEnumerator respawnResource()
     {
         respawningResources = true;
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(TimeToRespawn);
         resourceAmount++;
         futureResourceAmount++;
         ColorResource(resourceAmount);
@@ -73,7 +72,7 @@ public class ResourceNode : MonoBehaviour
     public int DecreaseFutureResources(int amount)
     {
         futureResourceAmount -= amount;
-        if(futureResourceAmount > -1)
+        if (futureResourceAmount > -1)
         {
             return amount;
         }
@@ -88,7 +87,7 @@ public class ResourceNode : MonoBehaviour
     public void GrabResource()
     {
         resourceAmount--;
-        if (resourceAmount == 0 && resourceType == ResourceType.Crystal)
+        if (resourceAmount == 0 && DestroyWhenEmpty)
         {
             Destroy(gameObject);
         }
@@ -100,7 +99,7 @@ public class ResourceNode : MonoBehaviour
 
     public void ColorResource(int amount)
     {
-        MeshRenderer mesh = myResourceNode.GetComponent<MeshRenderer>();
+        MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
         float amountLeft = (float)amount / (float)BaseResourceAmount;
         mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
     }
