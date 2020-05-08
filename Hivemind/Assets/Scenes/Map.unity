@@ -2706,10 +2706,20 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 3277651428163788643, guid: c3431d71efe7dc042865f3445386c602,
+        type: 3}
+      propertyPath: width
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3277651428163788647, guid: c3431d71efe7dc042865f3445386c602,
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277651428163788647, guid: c3431d71efe7dc042865f3445386c602,
+        type: 3}
+      propertyPath: m_Name
+      value: CollisionBox(0,3)
       objectReference: {fileID: 0}
     - target: {fileID: 3277651428164723625, guid: c3431d71efe7dc042865f3445386c602,
         type: 3}
@@ -3125,6 +3135,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277651429055705641, guid: c3431d71efe7dc042865f3445386c602,
+        type: 3}
+      propertyPath: m_Name
+      value: CollisionBox(0,2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3277651429055706069, guid: c3431d71efe7dc042865f3445386c602,
+        type: 3}
+      propertyPath: width
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3277651429057936691, guid: c3431d71efe7dc042865f3445386c602,
         type: 3}
