@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SpatialPartitioning : MonoBehaviour
@@ -23,11 +21,12 @@ public class SpatialPartitioning : MonoBehaviour
     void Update()
     {
         //TO DO, delete this when done DEBUGGING
+        /*
         if(Entities.Count != 0)
         {
             Debug.ClearDeveloperConsole();
             Debug.Log(this.name+" Count: "+Entities.Count);
-        }
+        }*/
     }
 
     private void OnTriggerEnter(Collider entity)
@@ -40,14 +39,9 @@ public class SpatialPartitioning : MonoBehaviour
         Entities.Remove(entity.gameObject);
     }
 
-    public List<GameObject> GetEntities()
-    {
-        return Entities;
-    }
-
     public List<GameObject> GetEntitiesWithNeigbors()
     {
-        List<GameObject> EntitiesWithNeighbors = GetEntities();
+        List<GameObject> EntitiesWithNeighbors = Entities;
 
         //Add entities of Neigboring SpatialPartitioning
         foreach (SpatialPartitioning neig in Neighbors)
@@ -62,10 +56,10 @@ public class SpatialPartitioning : MonoBehaviour
 
     public List<GameObject> GetEntitiesWithExtraNeighbors(int steps)
     {
-        List<GameObject> EntitiesWithExtraNeighbors = GetEntities();
+        List<GameObject> EntitiesWithExtraNeighbors = Entities;
 
-        for (int i = -steps; i<steps;i++) {
-
+        for (int i = -steps; i<steps;i++) 
+        {
             for (int j = -steps; j < steps; j++)
             {
                 GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + i) + "," + (width + j) + ")");
