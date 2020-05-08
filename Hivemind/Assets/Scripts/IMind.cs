@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Minds
-{
-   public  interface IMind
-    {
 
+     public interface IMind
+    {
+         void Execute(Ant ant);
+         void Initiate();
     }
-}

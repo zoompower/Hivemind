@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.CombatBehaviour
+    class CombatFight : IMind
 {
-    class CombatFight : ICombatAntBehaviour
-    {
-        public void CombatMode(Ant ant, Ant enemy)
+        public void Execute(Ant ant)
         {
-            ant.GetAgent().SetDestination(enemy.transform.position);
+            ant.GetAgent().SetDestination(ant.closestEnemy.transform.position);
         }
+
+    public void Initiate()
+    {
+        throw new NotImplementedException();
     }
 }

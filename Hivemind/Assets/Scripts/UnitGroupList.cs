@@ -14,10 +14,14 @@ public class UnitGroupList
 
     public UnitGroupList(GameObject[] unitGroupObjects)
     {
+        int i = 0;
         unitGroupList = new List<MindGroup>();
-
         foreach (var obj in unitGroupObjects)
         {
+            i++;
+            if(i == 3)
+                unitGroupList.Add(new MindGroup(obj, new Gathering(ResourceType.Unknown,  10, Gathering.Direction.West)));
+            else
             unitGroupList.Add(new MindGroup(obj));
         }
     }

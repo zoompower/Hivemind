@@ -16,13 +16,18 @@ public class MindGroup
 
     private List<UnitGroup> unitList;
 
-    public ResourceMind resMind { get; private set; }
+    public IMind mind { get; private set; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
 
     public CombatMind combatMind { get; private set; }
 
-    public MindGroup(GameObject UiObject)
+    public MindGroup(GameObject UiObject, IMind mind = null)
     {
         unitList = new List<UnitGroup>();
+        if(mind != null)
+        {
+            this.mind = mind;
+        }
+        this.mind.Initiate();
 
         UIUnitGroup = UiObject;
     }
@@ -43,7 +48,6 @@ public class MindGroup
         {
             unitList.Add(unit);
 
-            unit.SetMindGroup(this);
             Count++;
 
             unit.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);

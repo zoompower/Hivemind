@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
-{
+
     public class Storage : MonoBehaviour
     {
         private void Awake()
@@ -14,4 +13,3 @@ namespace Assets.Scripts
             return gameObject.transform.position;
         }
     }
-}

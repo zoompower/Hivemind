@@ -20,8 +20,6 @@ public class UnitGroup
 
     private Text textBox;
 
-    private MindGroup mindGroup;
-
     internal UnitGroup(GameObject unitIconBase)
     {
         Ui_IconObj = UnityEngine.Object.Instantiate(unitIconBase);
@@ -49,22 +47,7 @@ public class UnitGroup
 
     public void AddUnits(Ant ant)
     {
-        ant.SetUnitGroup(this);
-    }
-
-    public ResourceMind GetResourceMind()
-    {
-        return mindGroup.resMind;
-    }
-
-    public CombatMind GetCombatMind()
-    {
-        return mindGroup.combatMind;
-    }
-
-    public void SetMindGroup(MindGroup mg)
-    {
-        mindGroup = mg;   
+        ant.SetUnitGroup(UnitGroupId);
     }
 
     private void UpdateText()

@@ -60,7 +60,10 @@ public class TestScript : MonoBehaviour
     {
         if (!guid.Equals(Guid.Empty))
         {
-            Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity, GameObject.Find("Ants").transform);
+            GameObject go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity, GameObject.Find("Ants").transform);
+            Ant a = go.GetComponent<Ant>();
+
+            controller.UnitGroupList.GetUnitGroupFromUnitId(guid).AddUnits(a);
             AddMaxUnits();
             AddCurrentUnits();
         }

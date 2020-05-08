@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public class Gathering :  IAntBehaviour
+public class Gathering : IMind
 {
     private enum State
     {
@@ -30,26 +30,39 @@ public class Gathering :  IAntBehaviour
         NorthWest,
     }
 
-    public Direction PrefferedDirection;
+  
 
     private State state;
     private Dictionary<ResourceType, int> inventory;
     private int nextHarvest;
-    private Ant ant;
 
     public List<GameObject> carryingObjects;
-    
+
+    private ResourceType prefferedType;
+    private int carryWeight;
+    public Direction prefferedDirection;
+
     private bool scouting = false;
     private bool preparingReturn = false;
 
+    private Ant ant;
     private ResourceNode target;
-     public void Initiate(Ant ant)
+     public void Initiate()
     {
         inventory = new Dictionary<ResourceType, int>();
         state = State.Idle;
-        this.ant = ant;
         carryingObjects = new List<GameObject>();
     }
+
+    public Gathering(ResourceType resType, int carryweight, Direction exploreDirection)
+    {
+        prefferedType = resType;
+        carryWeight = carryweight;
+        prefferedDirection = exploreDirection;
+        Debug.Log(carryweight);
+        Debug.Log(resType);
+    }
+
     private ResourceNode findResource(ResourceType PrefferedResource)
     {
         ResourceNode resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, PrefferedResource);
@@ -62,7 +75,7 @@ public class Gathering :  IAntBehaviour
 
     private void TargetResource()
     {
-        target = findResource(ant.GetResourceMind().GetPrefferedType());
+        target = findResource(prefferedType);
         if (target != null)
         {
             if (state == State.Idle)
@@ -71,7 +84,7 @@ public class Gathering :  IAntBehaviour
             }
             ant.StopAllCoroutines();
             scouting = false;
-            nextHarvest = target.DecreaseFutureResources(ant.GetResourceMind().GetCarryWeight() - carryingObjects.Count);
+            nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
             state = State.MovingToResource;
         }
@@ -94,8 +107,9 @@ public class Gathering :  IAntBehaviour
         carryingObjects.Add(carryingObject);
     }
 
-    public void Execute()
+    public void Execute(Ant ant)
     {
+        this.ant = ant;
         switch (state)
         {
             case State.Idle:
@@ -111,7 +125,7 @@ public class Gathering :  IAntBehaviour
                 }
                 if (!scouting)
                 {
-                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position, ant.GetResourceMind().GetPrefferedType());
+                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position, prefferedType);
                     if (tempTarget != null)
                     {
                         if (Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
@@ -161,7 +175,7 @@ public class Gathering :  IAntBehaviour
                 ant.UpdateSpeed();
                 
                 nextHarvest--;
-                if (carryingObjects.Count >= ant.GetResourceMind().GetCarryWeight())
+                if (carryingObjects.Count >= carryWeight)
                 {
                     state = State.MovingToStorage;
                 }
@@ -211,7 +225,7 @@ public class Gathering :  IAntBehaviour
     private IEnumerator Scout()
     {
         Vector3 destination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y, ant.transform.position.z + Random.Range(-5, 5));
-        switch (PrefferedDirection)
+        switch (prefferedDirection)
         {
             case Direction.None:
                 break;

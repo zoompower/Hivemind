@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.CombatBehaviour;
 using UnityEngine.AI;
-using Assets.Scripts.Minds;
 using System;
 
-namespace Assets.Scripts
-{
+
     public class Ant : MonoBehaviour, IHasMind
     {
         enum AntType
@@ -20,19 +17,18 @@ namespace Assets.Scripts
         private int damage;
         public float baseSpeed;
         public float currentSpeed;
-        public int carryWeight = 1;
         public bool IsScout = true;
 
-        private IAntBehaviour behaviour;
-        private ICombatAntBehaviour combatBehaviour;
+    private List<IMind> minds;
+        private IMind behaviour;
 
         private NavMeshAgent agent;
-        private Ant closestEnemy;
+        public Ant closestEnemy { get; private set; }
         private Storage storage;
-        private UnitGroup unitGroup;
-
+        private Guid unitGroupID;
+        
+        
         private CombatMind combatMind;
-        private ResourceMind resMind;
 
 
         void Awake()
@@ -40,14 +36,13 @@ namespace Assets.Scripts
             agent = gameObject.GetComponent<NavMeshAgent>();
             baseSpeed = agent.speed;
             currentSpeed = baseSpeed;
-            behaviour = new Gathering();
-            behaviour.Initiate(this);
+            behaviour = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
         }
+
         // Start is called before the first frame update
         void Start()
         {
             storage = GameWorld.GetStorage();
-            resMind = new ResourceMind(ResourceType.Unknown, carryWeight);
         }
 
         // Update is called once per frame
@@ -55,18 +50,19 @@ namespace Assets.Scripts
         {
             if (InCombat())
             {
-                combatBehaviour = DecideCombatBehavior();
-                combatBehaviour.CombatMode(this, closestEnemy);
+                //combatBehaviour = DecideCombatBehavior();
+                //combatBehaviour.CombatMode(this, closestEnemy);
                 return;
             }
 
             if (AtBase())
             {
-                //combatMind = unitGroup.GetCombatMind();
-               // resMind = unitGroup.GetResourceMind();
+                //combatMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).combatMind;
+
+                behaviour =  FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).mind;
             }
 
-            behaviour.Execute();
+            behaviour.Execute(this);
         }
 
         public bool AtBase()
@@ -83,7 +79,7 @@ namespace Assets.Scripts
             return false;
         }
 
-        ICombatAntBehaviour DecideCombatBehavior()
+       IMind DecideCombatBehavior()
         {
             if (combatMind == null)
             {
@@ -109,20 +105,10 @@ namespace Assets.Scripts
         {
             return storage;
         }
-
-        public ResourceMind GetResourceMind()
-        {
-            return resMind;
-        }
-
-        public CombatMind GetCombatMind()
-        {
-            return combatMind;
-        }
         
-        public void SetUnitGroup(UnitGroup ug)
+        public void SetUnitGroup(Guid ug)
         {
-            unitGroup = ug;
+            unitGroupID = ug;
         }
 
         internal void UpdateSpeed()
@@ -130,4 +116,4 @@ namespace Assets.Scripts
             agent.speed = currentSpeed;
         }
     }
-}
+
