@@ -1,30 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assets.Scripts
+﻿
+public class CombatMind : IMind
 {
-    public class CombatMind
+    private float minEstimetedDifference;
+    private int prefferedHealth;
+
+
+    public CombatMind(float minEstimeted, int prefHealth)
     {
-        private float minEstimetedDifference;
-        private int prefferedHealth;
-        
+        minEstimetedDifference = minEstimeted;
+        prefferedHealth = prefHealth;
+    }
 
-        public CombatMind(float minEstimeted, int prefHealth)
-        {
-            minEstimetedDifference = minEstimeted;
-            prefferedHealth = prefHealth;
-        }
-        public float GetMinEstimetedDifference()
-        {
-            return minEstimetedDifference;
-        }
+    public IMind Clone()
+    {
+        return new CombatMind(minEstimetedDifference, prefferedHealth);
+    }
 
-        public int GetPrefferedHealth()
+    public bool Equals(IMind mind)
+    {
+        CombatMind combatmind = mind as CombatMind;
+        if (combatmind != null)
         {
-            return prefferedHealth;
+            if(combatmind.minEstimetedDifference == minEstimetedDifference && combatmind.prefferedHealth == prefferedHealth)
+            {
+                return true;
+            }
         }
+        return false;
+    }
+
+    public void Execute(Ant ant)
+    {
+            if (this == null)
+            {
+                 new CombatFight().Execute(ant);
+            }
+
+            float healthPercantageDifference = ((float)ant.health / (float)ant.closestEnemy.health);
+            float damagePercantageDifference = ((float)ant.damage / (float)ant.closestEnemy.damage);
+            float strengthDifference = (healthPercantageDifference * 1 + damagePercantageDifference * 2) / 3;
+
+            if (strengthDifference >= minEstimetedDifference)
+            {
+                 new CombatFight().Execute(ant);
+            }
+             new CombatFlee().Execute(ant);
+    }
+
+    public float GetMinEstimetedDifference()
+    {
+        return minEstimetedDifference;
+    }
+
+    public int GetPrefferedHealth()
+    {
+        return prefferedHealth;
+    }
+
+    public void Initiate()
+    {
+       
+    }
+
+    public double Likelihood(Ant ant)
+    {
+        if (ant.InCombat())
+        {
+            return 100;
+        }
+        else return 0;
+
+    }
+
+    public void Update(IMind mind)
+    {
+        throw new System.NotImplementedException();
     }
 }

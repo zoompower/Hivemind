@@ -1,133 +1,122 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.CombatBehaviour;
 using UnityEngine.AI;
-using Assets.Scripts.Minds;
-using System;
 
-namespace Assets.Scripts
+
+public class Ant : MonoBehaviour
 {
-    public class Ant : MonoBehaviour, IHasMind
+    enum AntType
     {
-        enum AntType
+        Worker,
+        Soldier,
+    }
+
+    public int health;
+    public int damage;
+    public float baseSpeed;
+    public float currentSpeed;
+    public bool IsScout = true;
+    public Gathering.State state;
+
+    private List<IMind> minds;
+    private NavMeshAgent agent;
+    public Ant closestEnemy { get; private set; }
+    private Storage storage;
+    private Guid unitGroupID;
+
+
+    void Awake()
+    {
+        agent = gameObject.GetComponent<NavMeshAgent>();
+        baseSpeed = agent.speed;
+        currentSpeed = baseSpeed;
+        minds = new List<IMind>();
+        state = Gathering.State.Idle;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        storage = GameWorld.GetStorage();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (AtBase())
         {
-            Worker,
-            Soldier,
-        }
-
-        private int health;
-        private int damage;
-        public float baseSpeed;
-        public float currentSpeed;
-        public int carryWeight = 1;
-        public bool IsScout = true;
-
-        private IAntBehaviour behaviour;
-        private ICombatAntBehaviour combatBehaviour;
-
-        private NavMeshAgent agent;
-        private Ant closestEnemy;
-        private Storage storage;
-        private UnitGroup unitGroup;
-
-        private CombatMind combatMind;
-        private ResourceMind resMind;
-
-
-        void Awake()
-        {
-            agent = gameObject.GetComponent<NavMeshAgent>();
-            baseSpeed = agent.speed;
-            currentSpeed = baseSpeed;
-            behaviour = new Gathering();
-            behaviour.Initiate(this);
-        }
-        // Start is called before the first frame update
-        void Start()
-        {
-            storage = GameWorld.GetStorage();
-            resMind = new ResourceMind(ResourceType.Unknown, carryWeight);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (InCombat())
+            List<IMind> mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).minds;
+          
+            if(minds.Count < mindGroupMind.Count)
             {
-                combatBehaviour = DecideCombatBehavior();
-                combatBehaviour.CombatMode(this, closestEnemy);
-                return;
+                for(int i = minds.Count; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                }
             }
-
-            if (AtBase())
+            for(int i = 0; i < minds.Count; i++)
             {
-                //combatMind = unitGroup.GetCombatMind();
-               // resMind = unitGroup.GetResourceMind();
+                if (!minds[i].Equals(mindGroupMind[i]))
+                {
+                    minds[i].Update(mindGroupMind[i]);
+                    if (!minds[i].Equals(mindGroupMind[i]))
+                    {
+                        minds[i] = mindGroupMind[i].Clone();
+                    }
+                }
             }
-
-            behaviour.Execute();
         }
 
-        public bool AtBase()
+        double likeliest= 0;
+        int mindIndex = 0;
+        int currentIndex = 0;
+        foreach(IMind mind in minds)
         {
-            if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
+           double current =  mind.Likelihood(this);
+            if(current > likeliest)
             {
-                return true;
+                mindIndex = currentIndex;
+                likeliest = current;
             }
-            return false;
+            currentIndex++;
         }
 
-        public bool InCombat()
-        {
-            return false;
-        }
+        minds[mindIndex].Execute(this);
+    }
 
-        ICombatAntBehaviour DecideCombatBehavior()
+    public bool AtBase()
+    {
+        if (Vector3.Distance(transform.position, storage.GetPosition()) < 1f)
         {
-            if (combatMind == null)
-            {
-                return new CombatFight();
-            }
+            return true;
+        }
+        return false;
+    }
 
-            float healthPercantageDifference = ((float)health / (float)closestEnemy.health);
-            float damagePercantageDifference = ((float)damage / (float)closestEnemy.damage);
-            float strengthDifference = (healthPercantageDifference * 1 + damagePercantageDifference * 2) / 3;
-            if (strengthDifference >= combatMind.GetMinEstimetedDifference())
-            {
-                return new CombatFight();
-            }
-            return new CombatFlee();
-        }
+    public bool InCombat()
+    {
+        return false;
+    }
 
-        public NavMeshAgent GetAgent()
-        {
-            return agent;
-        }
+    public NavMeshAgent GetAgent()
+    {
+        return agent;
+    }
 
-        public Storage GetStorage()
-        {
-            return storage;
-        }
+    public Storage GetStorage()
+    {
+        return storage;
+    }
 
-        public ResourceMind GetResourceMind()
-        {
-            return resMind;
-        }
+    public void SetUnitGroup(Guid ug)
+    {
+        unitGroupID = ug;
+    }
 
-        public CombatMind GetCombatMind()
-        {
-            return combatMind;
-        }
-        
-        public void SetUnitGroup(UnitGroup ug)
-        {
-            unitGroup = ug;
-        }
-
-        internal void UpdateSpeed()
-        {
-            agent.speed = currentSpeed;
-        }
+    internal void UpdateSpeed()
+    {
+        agent.speed = currentSpeed;
     }
 }
+

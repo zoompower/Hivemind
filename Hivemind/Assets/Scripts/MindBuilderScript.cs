@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Minds;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,7 +11,7 @@ public class MindBuilderScript : MonoBehaviour, IInitializePotentialDragHandler,
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     public void OnInitializePotentialDrag(PointerEventData eventData)

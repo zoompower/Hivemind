@@ -1,6 +1,4 @@
-﻿using Assets.Scripts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,8 +17,6 @@ public class UnitGroup
     internal Guid UnitGroupId { get; private set; }
 
     private Text textBox;
-
-    private MindGroup mindGroup;
 
     internal UnitGroup(GameObject unitIconBase)
     {
@@ -49,27 +45,12 @@ public class UnitGroup
 
     public void AddUnits(Ant ant)
     {
-        ant.SetUnitGroup(this);
-    }
-
-    public ResourceMind GetResourceMind()
-    {
-        return mindGroup.resMind;
-    }
-
-    public CombatMind GetCombatMind()
-    {
-        return mindGroup.combatMind;
-    }
-
-    public void SetMindGroup(MindGroup mg)
-    {
-        mindGroup = mg;   
+        ant.SetUnitGroup(UnitGroupId);
     }
 
     private void UpdateText()
     {
         textBox.text = $"{CurrentUnits}/{MaxUnits}";
     }
-    
+
 }

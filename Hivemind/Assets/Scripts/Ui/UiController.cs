@@ -129,7 +129,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     private void UpdateResourceTextObject()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         foreach (ResourceType resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
         {
             if (resourceType != ResourceType.Unknown)
