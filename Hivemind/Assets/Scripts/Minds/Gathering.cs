@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class Gathering : IMind
 {
-    private enum State
+    public enum State
     {
         Idle,
         Scouting,
@@ -32,7 +32,7 @@ public class Gathering : IMind
 
 
 
-    private State state;
+
     private Dictionary<ResourceType, int> inventory;
     private int nextHarvest;
 
@@ -50,7 +50,6 @@ public class Gathering : IMind
     public void Initiate()
     {
         inventory = new Dictionary<ResourceType, int>();
-        state = State.Idle;
         carryingObjects = new List<GameObject>();
     }
 
@@ -66,17 +65,21 @@ public class Gathering : IMind
         ResourceNode resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, PrefferedResource);
         if (PrefferedResource != ResourceType.Unknown && resourceNode == null)
         {
-            resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, PrefferedResource);
+            resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, ResourceType.Unknown);
         }
         return resourceNode;
     }
 
     private void TargetResource()
     {
+        if (target != null)
+        {
+            target.IncreaseResourceAmount(nextHarvest);
+        }
         target = findResource(prefferedType);
         if (target != null)
         {
-            if (state == State.Idle)
+            if (ant.state == State.Idle)
             {
                 ant.GetAgent().isStopped = false;
             }
@@ -84,16 +87,16 @@ public class Gathering : IMind
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
-            state = State.MovingToResource;
+            ant.state = State.MovingToResource;
         }
-        else if (state == State.Idle && ant.IsScout)
+        else if (ant.state == State.Idle && ant.IsScout)
         {
             ant.GetAgent().isStopped = false;
-            state = State.Scouting;
+            ant.state = State.Scouting;
         }
         else if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) > 2f)
         {
-            state = State.MovingToStorage;
+            ant.state = State.MovingToStorage;
         }
     }
 
@@ -108,7 +111,7 @@ public class Gathering : IMind
     public void Execute(Ant ant)
     {
         this.ant = ant;
-        switch (state)
+        switch (ant.state)
         {
             case State.Idle:
                 ant.GetAgent().isStopped = true;
@@ -123,13 +126,13 @@ public class Gathering : IMind
                 }
                 if (!scouting)
                 {
-                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position, prefferedType);
+                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position);
                     if (tempTarget != null)
                     {
                         if (Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                         {
                             target = tempTarget;
-                            state = State.MovingToStorage;
+                            ant.state = State.MovingToStorage;
                         }
                         else
                         {
@@ -145,7 +148,7 @@ public class Gathering : IMind
                 {
                     if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
                     {
-                        state = State.Gathering;
+                        ant.state = State.Gathering;
                     }
                 }
                 else
@@ -175,7 +178,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    state = State.MovingToStorage;
+                    ant.state = State.MovingToStorage;
                 }
                 else
                 {
@@ -183,6 +186,7 @@ public class Gathering : IMind
                     {
                         break;
                     }
+                    target = null;
                     TargetResource();
                 }
                 break;
@@ -191,7 +195,7 @@ public class Gathering : IMind
                 if (ant.GetStorage() != null)
                 {
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-                    if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) < 2f)
+                    if (ant.AtBase())
                     {
                         if (ant.IsScout && target != null)
                         {
@@ -209,7 +213,7 @@ public class Gathering : IMind
                             ant.currentSpeed = ant.baseSpeed;
                             ant.UpdateSpeed();
                         }
-                        state = State.Idle;
+                        ant.state = State.Idle;
                     }
                 }
                 else
@@ -273,7 +277,44 @@ public class Gathering : IMind
     {
         yield return new WaitForSeconds(Random.Range(30, 60));
         target = null;
-        state = State.MovingToStorage;
+        ant.state = State.MovingToStorage;
         preparingReturn = false;
+    }
+
+    public double Likelihood(Ant ant)
+    {
+        return 50;
+    }
+
+    public IMind Clone()
+    {
+        Gathering clone = new Gathering(prefferedType, carryWeight, prefferedDirection);
+        clone.Initiate();
+        return clone;
+    }
+
+    public void Update(IMind mind)
+    {
+        Gathering gathering = mind as Gathering;
+        if (gathering != null)
+        {
+            prefferedType = gathering.prefferedType;
+            carryWeight = gathering.carryWeight;
+            prefferedDirection = gathering.prefferedDirection;
+        }
+    }
+    public bool Equals(IMind mind)
+    {
+        Gathering gathering = mind as Gathering;
+        if (gathering != null)
+        {
+            if (gathering.prefferedType == prefferedType
+                && gathering.carryWeight == carryWeight
+                && gathering.prefferedDirection == prefferedDirection)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

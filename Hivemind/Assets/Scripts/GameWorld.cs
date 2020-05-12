@@ -8,7 +8,7 @@ public static class GameWorld
     public static List<ResourceNode> KnownResources = new List<ResourceNode>();
     private static Storage storage = null;
 
-    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition, ResourceType prefType)
+    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;

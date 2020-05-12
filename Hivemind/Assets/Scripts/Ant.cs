@@ -12,22 +12,18 @@ public class Ant : MonoBehaviour
         Soldier,
     }
 
-    private int health;
-    private int damage;
+    public int health;
+    public int damage;
     public float baseSpeed;
     public float currentSpeed;
     public bool IsScout = true;
+    public Gathering.State state;
 
     private List<IMind> minds;
-    private IMind behaviour;
-
     private NavMeshAgent agent;
     public Ant closestEnemy { get; private set; }
     private Storage storage;
     private Guid unitGroupID;
-
-
-    private CombatMind combatMind;
 
 
     void Awake()
@@ -35,6 +31,8 @@ public class Ant : MonoBehaviour
         agent = gameObject.GetComponent<NavMeshAgent>();
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
+        minds = new List<IMind>();
+        state = Gathering.State.Idle;
     }
 
     // Start is called before the first frame update
@@ -46,26 +44,50 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InCombat())
-        {
-            //combatBehaviour = DecideCombatBehavior();
-            //combatBehaviour.CombatMode(this, closestEnemy);
-            return;
-        }
-
         if (AtBase())
         {
-            //combatMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).combatMind;
-
-           minds = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).minds;
+            List<IMind> mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).minds;
+          
+            if(minds.Count < mindGroupMind.Count)
+            {
+                for(int i = minds.Count; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                }
+            }
+            for(int i = 0; i < minds.Count; i++)
+            {
+                if (!minds[i].Equals(mindGroupMind[i]))
+                {
+                    minds[i].Update(mindGroupMind[i]);
+                    if (!minds[i].Equals(mindGroupMind[i]))
+                    {
+                        minds[i] = mindGroupMind[i].Clone();
+                    }
+                }
+            }
         }
 
-        minds[0].Execute(this);
+        double likeliest= 0;
+        int mindIndex = 0;
+        int currentIndex = 0;
+        foreach(IMind mind in minds)
+        {
+           double current =  mind.Likelihood(this);
+            if(current > likeliest)
+            {
+                mindIndex = currentIndex;
+                likeliest = current;
+            }
+            currentIndex++;
+        }
+
+        minds[mindIndex].Execute(this);
     }
 
     public bool AtBase()
     {
-        if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f)
+        if (Vector3.Distance(transform.position, storage.GetPosition()) < 1f)
         {
             return true;
         }
@@ -75,23 +97,6 @@ public class Ant : MonoBehaviour
     public bool InCombat()
     {
         return false;
-    }
-
-    IMind DecideCombatBehavior()
-    {
-        if (combatMind == null)
-        {
-            return new CombatFight();
-        }
-
-        float healthPercantageDifference = ((float)health / (float)closestEnemy.health);
-        float damagePercantageDifference = ((float)damage / (float)closestEnemy.damage);
-        float strengthDifference = (healthPercantageDifference * 1 + damagePercantageDifference * 2) / 3;
-        if (strengthDifference >= combatMind.GetMinEstimetedDifference())
-        {
-            return new CombatFight();
-        }
-        return new CombatFlee();
     }
 
     public NavMeshAgent GetAgent()

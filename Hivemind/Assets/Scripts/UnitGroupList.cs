@@ -20,7 +20,7 @@ public class UnitGroupList
         {
             i++;
             if (i == 3)
-                unitGroupList.Add(new MindGroup(obj, new Gathering(ResourceType.Unknown, 10, Gathering.Direction.West)));
+                unitGroupList.Add(new MindGroup(obj, new Gathering(ResourceType.Crystal, 5, Gathering.Direction.West)));
             else
                 unitGroupList.Add(new MindGroup(obj));
         }
