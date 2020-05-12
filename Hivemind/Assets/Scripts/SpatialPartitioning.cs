@@ -4,7 +4,8 @@ using UnityEngine;
 public class SpatialPartitioning : MonoBehaviour
 {
     public List<GameObject> Entities;
-    private List<SpatialPartitioning> Neighbors;
+    public List<SpatialPartitioning> Neighbors;
+    public List<SpatialPartitioning> ExtraNeighbors;
 
     public int height;
     public int width;
@@ -43,10 +44,21 @@ public class SpatialPartitioning : MonoBehaviour
     {
         List<GameObject> EntitiesWithNeighbors = Entities;
 
-        //Add entities of Neigboring SpatialPartitioning
-        foreach (SpatialPartitioning neig in Neighbors)
+        List<SpatialPartitioning> Test = new List<SpatialPartitioning>();
+
+        if (ExtraNeighbors.Count > 0)
         {
-            foreach(GameObject ant in neig.Entities)
+            Test = ExtraNeighbors;
+        }
+        else
+        {
+            Test = Neighbors;
+        }
+
+        //Add entities of Neigboring SpatialPartitioning
+        foreach (SpatialPartitioning neig in Test)
+        {
+            foreach (GameObject ant in neig.Entities)
             {
                 EntitiesWithNeighbors.Add(ant);
             }
@@ -56,20 +68,24 @@ public class SpatialPartitioning : MonoBehaviour
 
     public List<GameObject> GetEntitiesWithExtraNeighbors(int steps)
     {
-        List<GameObject> EntitiesWithExtraNeighbors = Entities;
+        List<GameObject> EntitiesWithExtraNeighbors = new List<GameObject>();
 
-        for (int i = -steps; i<steps;i++) 
+        for (int i = -steps; i <= steps; i++)
         {
-            for (int j = -steps; j < steps; j++)
+            for (int j = -steps; j <= steps; j++)
             {
-                GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + i) + "," + (width + j) + ")");
-                if (NeigGameObject != null)
+                var Testing = transform.parent.Find("CollisionBox(" + (height + i) + "," + (width + j) + ")");
+
+                if (Testing != null && Testing.name != this.name)
                 {
-                    SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();
-                    Neighbors.Add(NeighCollider);
+                    SpatialPartitioning NeigGameObject = Testing.GetComponent<SpatialPartitioning>();
+                    ExtraNeighbors.Add(NeigGameObject);
                 }
+
             }
         }
+        EntitiesWithExtraNeighbors = GetEntitiesWithNeigbors();
+        ExtraNeighbors.Clear();
 
         return EntitiesWithExtraNeighbors;
     }
