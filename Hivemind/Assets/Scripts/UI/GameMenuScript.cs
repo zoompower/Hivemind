@@ -39,6 +39,7 @@ public class GameMenuScript : MonoBehaviour
 
     public void ReturnToMenu()
     {
+        ResumeGame();
         SceneManager.LoadScene("MainMenu");
     }
 
