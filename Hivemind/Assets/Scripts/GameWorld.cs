@@ -1,6 +1,11 @@
 ﻿using Assets.Scripts;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class GameWorld
 {
@@ -73,6 +78,32 @@ public static class GameWorld
         {
             KnownResources.Add(resource);
             UnknownResources.Remove(resource);
+        }
+    }
+
+    public static void Save()
+    {
+        SaveObject saveObject = new SaveObject
+        {
+            ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
+            ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
+            UnknownResources = UnknownResources,
+            KnownResources = KnownResources
+        };
+        string json = saveObject.ToJson();
+        Debug.Log(json);
+        File.WriteAllText(Application.dataPath + "/save.txt", json);
+    }
+
+    public static void Load()
+    {
+        if(File.Exists(Application.dataPath + "/save.txt"))
+        {
+            string saveString = File.ReadAllText(Application.dataPath + "/save.txt");
+            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+            GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
+            UnknownResources = saveObject.UnknownResources;
+            KnownResources = saveObject.KnownResources;
         }
     }
 

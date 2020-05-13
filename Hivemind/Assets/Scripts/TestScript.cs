@@ -27,6 +27,14 @@ public class TestScript : MonoBehaviour
         {
             controller.CreateUnitGroup();
         }
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            GameWorld.Save();
+        }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            GameWorld.Load();
+        }
     }
 
     private Guid guid;
