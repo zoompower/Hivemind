@@ -1,6 +1,7 @@
 ﻿public enum BaseBuildingTool
 {
     Default = 0,
-    Wall = 1,
-    AntRoom = 2
+    Destroy = 1,
+    Wall = 2,
+    AntRoom = 3
 }

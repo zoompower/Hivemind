@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-class Wall : MonoBehaviour, IBaseRoom
+class Wall : BaseRoom
 {
-    public bool IsRoom()
+    public override bool IsRoom()
     {
         return false;
     }

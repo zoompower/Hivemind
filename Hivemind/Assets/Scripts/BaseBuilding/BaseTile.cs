@@ -1,41 +1,64 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class BaseTile : MonoBehaviour
 {
     [SerializeField]
     private GameObject StartObject = null;
-    private GameObject CurrTile;
+    internal GameObject CurrTile;
+    internal BaseRoom RoomScript;
 
     [SerializeField]
-    private bool isIndestructable = false;
+    internal bool isIndestructable = false;
+
+    private List<GameObject> neighbors = new List<GameObject>();
+
+    [SerializeField]
+    private float CollisionSize = 0.50f;
 
     private void Start()
     {
         if (StartObject)
         {
-            CurrTile = Instantiate(StartObject);
-            CurrTile.transform.SetParent(gameObject.transform, false);
+            InitializeObject(StartObject);
         }
+
+        FindAndAttachNeighbors();
     }
 
-    public void OnLeftClick(BaseBuildingTool tool)
+    internal void InitializeObject(GameObject gObj)
     {
-        if (CurrTile == null) return;
+        CurrTile = Instantiate(gObj);
+        CurrTile.transform.SetParent(gameObject.transform, false);
+        RoomScript = CurrTile.GetComponent<BaseRoom>();
+    }
 
-        if (!isIndestructable && true /* is wall */)
+    internal void DestroyRoom()
+    {
+        if (!isIndestructable)
         {
             Destroy(CurrTile);
+            RoomScript = null;
         }
     }
 
-    public void OnRightClick(BaseBuildingTool tool)
+    private void FindAndAttachNeighbors()
     {
-        if (CurrTile != null) return;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, CollisionSize);
+        colliders = colliders.Where(c => c.gameObject.layer == gameObject.layer && c.gameObject != gameObject).ToArray();
 
-        if (!isIndestructable && tool == BaseBuildingTool.Wall)
+        foreach (Collider hit in colliders)
         {
-            CurrTile = Instantiate(StartObject);
-            CurrTile.transform.SetParent(gameObject.transform, false);
+            neighbors.Add(hit.gameObject);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, CollisionSize);
     }
 }
