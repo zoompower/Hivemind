@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,12 +10,16 @@ public class BaseTile : MonoBehaviour
     internal BaseRoom RoomScript;
 
     [SerializeField]
-    internal bool isIndestructable = false;
+    internal bool IsIndestructable = false;
+    [SerializeField]
+    private int DefaultRotation = -1;
 
-    private List<GameObject> neighbors = new List<GameObject>();
+    internal List<GameObject> Neighbors = new List<GameObject>();
 
     [SerializeField]
     private float CollisionSize = 0.50f;
+    [SerializeField]
+    private bool ShowDebugInfo = false;
 
     private void Start()
     {
@@ -30,14 +33,23 @@ public class BaseTile : MonoBehaviour
 
     internal void InitializeObject(GameObject gObj)
     {
+        if (CurrTile != null || IsIndestructable) return;
+
         CurrTile = Instantiate(gObj);
         CurrTile.transform.SetParent(gameObject.transform, false);
+        CurrTile.transform.localRotation = Quaternion.Euler(0, (DefaultRotation < 0) ? Random.Range(0, 5) * 60 : DefaultRotation, 0);
+
         RoomScript = CurrTile.GetComponent<BaseRoom>();
     }
 
     internal void DestroyRoom()
     {
-        if (!isIndestructable)
+        DestroyRoom(false);
+    }
+
+    internal void DestroyRoom(bool forced)
+    {
+        if ((!IsIndestructable && RoomScript.IsDestructable()) || forced)
         {
             Destroy(CurrTile);
             RoomScript = null;
@@ -51,13 +63,20 @@ public class BaseTile : MonoBehaviour
 
         foreach (Collider hit in colliders)
         {
-            neighbors.Add(hit.gameObject);
+            Neighbors.Add(hit.gameObject);
         }
     }
 
     private void OnDrawGizmos()
     {
-        return;
+        if (StartObject != null && StartObject.GetComponent<MeshFilter>() != null && true)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
+        }
+
+        if (!ShowDebugInfo) return;
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, CollisionSize);
     }

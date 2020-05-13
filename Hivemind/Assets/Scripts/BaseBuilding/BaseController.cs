@@ -43,7 +43,6 @@ public class BaseController : MonoBehaviour
                 {
                     plate = hit.transform.parent.gameObject;
                 }
-                
                 OnLeftClick(plate.GetComponent<BaseTile>());
             }
         }
@@ -62,12 +61,10 @@ public class BaseController : MonoBehaviour
                 tile.DestroyRoom();
                 break;
             case BaseBuildingTool.Wall:
-                if (tile.CurrTile == null)
-                    tile.InitializeObject(WallPrefab);
+                tile.InitializeObject(WallPrefab);
                 break;
             case BaseBuildingTool.AntRoom:
-                if (tile.CurrTile == null)
-                    tile.InitializeObject(WorkerRoomPrefab);
+                tile.InitializeObject(WorkerRoomPrefab);
                 break;
 
             case BaseBuildingTool.Default:

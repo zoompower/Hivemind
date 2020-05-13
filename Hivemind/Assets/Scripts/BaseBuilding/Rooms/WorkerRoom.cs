@@ -1,8 +1,8 @@
-﻿class Wall : BaseRoom
+﻿class WorkerRoom : BaseRoom
 {
     public override bool IsRoom()
     {
-        return false;
+        return true;
     }
 
     public override bool IsDestructable()
