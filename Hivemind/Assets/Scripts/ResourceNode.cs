@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
@@ -11,7 +12,6 @@ public enum ResourceType
 public class ResourceNode : MonoBehaviour
 {
     private bool respawningResources = false;
-
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
@@ -19,6 +19,8 @@ public class ResourceNode : MonoBehaviour
     [SerializeField]
     private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
+    public bool IsKnown;
+    public string Prefab;
 
     private int resourceAmount;
 
@@ -29,16 +31,8 @@ public class ResourceNode : MonoBehaviour
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
+        IsKnown = false;
         GameWorld.AddNewResource(this);
-    }
-
-    public void AddToKnownResourceList()
-    {
-        if (!GameWorld.KnownResources.Contains(this) && gameObject != null)
-        {
-            gameObject.GetComponent<MeshRenderer>().enabled = true;
-            GameWorld.AddNewKnownResource(this);
-        }
     }
 
     private void Update()
@@ -49,13 +43,21 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
+    public void Discover()
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        IsKnown = true;
+    }
+
     public Vector3 GetPosition()
     {
         return transform.position;
     }
 
-    public void OnDestroy()
+    public void Destroy()
     {
+        Destroy(gameObject);
+        Destroy(this);
         GameWorld.RemoveResource(this);
     }
 
@@ -89,7 +91,7 @@ public class ResourceNode : MonoBehaviour
         resourceAmount--;
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
-            Destroy(gameObject);
+            Destroy();
         }
         if (resourceType == ResourceType.Rock)
         {
@@ -112,5 +114,29 @@ public class ResourceNode : MonoBehaviour
     public int GetResourcesFuture()
     {
         return futureResourceAmount;
+    }
+
+    public ResourceNodeData GetData()
+    {
+        ResourceNodeData data = new ResourceNodeData(IsKnown, respawningResources, BaseResourceAmount, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, gameObject.transform.parent);
+        return data;
+    }
+
+    public void SetData(ResourceNodeData data)
+    {
+        gameObject.SetActive(false);
+        gameObject.transform.parent = data.Parent;
+        respawningResources = data.RespawningResources;
+        BaseResourceAmount = data.BaseResourceAmount;
+        CanRespawn = data.CanRespawn;
+        TimeToRespawn = data.TimeToRespawn;
+        DestroyWhenEmpty = data.DestroyWhenEmpty;
+        resourceAmount = data.ResourceAmount;
+        futureResourceAmount = data.ResourceAmount;
+        ColorResource(resourceAmount);
+        IsKnown = data.IsKnown;
+        gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
+        gameObject.SetActive(true);
+        gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
     }
 }

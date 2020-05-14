@@ -80,7 +80,7 @@ public class Gathering : MonoBehaviour
             agent.SetDestination(target.GetPosition());
             state = State.MovingToResource;
         }
-        else if (state == State.Idle && IsScout)
+        else if (IsScout)
         {
             agent.isStopped = false;
             state = State.Scouting;
@@ -116,25 +116,22 @@ public class Gathering : MonoBehaviour
                 }
                 if (!scouting)
                 {
-                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(transform.position, ResourceType.Unknown);
-                    if (tempTarget != null)
+                    ResourceNode tempTarget = GameWorld.FindNearestUnknownResource(transform.position);
+                    if (tempTarget != null && Vector3.Distance(transform.position, tempTarget.GetPosition()) < 2f)
                     {
-                        if (Vector3.Distance(transform.position, tempTarget.GetPosition()) < 2f)
-                        {
-                            target = tempTarget;
-                            state = State.MovingToStorage;
-                        }
-                        else
-                        {
-                            scouting = true;
-                            StartCoroutine(Scout());
-                        }
+                        target = tempTarget;
+                        state = State.MovingToStorage;
+                    }
+                    else
+                    {
+                        scouting = true;
+                        StartCoroutine(Scout());
                     }
                 }
                 break;
 
             case State.MovingToResource:
-                if (target != null)
+                if (target != null && target.IsKnown)
                 {
                     if (Vector3.Distance(transform.position, target.GetPosition()) < 1f)
                     {
@@ -182,7 +179,7 @@ public class Gathering : MonoBehaviour
                     {
                         if (IsScout && target != null)
                         {
-                            target.AddToKnownResourceList();
+                            target.Discover();
                         }
                         if (inventory != null)
                         {

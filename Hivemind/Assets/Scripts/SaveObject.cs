@@ -14,12 +14,15 @@ namespace Assets.Scripts
         public List<ResourceType> ResourceAmountsKeys;
         public List<int> ResourceAmountsValues;
 
-        public List<ResourceNode> UnknownResources;
-
-        public List<ResourceNode> KnownResources;
+        public List<ResourceNode> Resources;
+        public List<ResourceNodeData> ResourceData = new List<ResourceNodeData>();
 
         public string ToJson()
         {
+            foreach (ResourceNode node in Resources)
+            {
+                ResourceData.Add(node.GetData());
+            }
             return JsonUtility.ToJson(this, true);
         }
     }

@@ -9,21 +9,23 @@ using UnityEngine.UIElements;
 
 public static class GameWorld
 {
-    public static List<ResourceNode> UnknownResources = new List<ResourceNode>();
-    public static List<ResourceNode> KnownResources = new List<ResourceNode>();
+    public static List<ResourceNode> ResourceList = new List<ResourceNode>();
     private static Storage storage = null;
 
-    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition, ResourceType prefType)
+    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;
-        foreach (ResourceNode resource in UnknownResources)
+        foreach (ResourceNode resource in ResourceList)
         {
-            float dist = Vector3.Distance(antPosition, resource.GetPosition());
-            if (dist < minDistance)
+            if (!resource.IsKnown)
             {
-                closest = resource;
-                minDistance = dist;
+                float dist = Vector3.Distance(antPosition, resource.GetPosition());
+                if (dist < minDistance)
+                {
+                    closest = resource;
+                    minDistance = dist;
+                }
             }
         }
         return closest;
@@ -33,9 +35,9 @@ public static class GameWorld
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;
-        foreach (ResourceNode resource in KnownResources)
+        foreach (ResourceNode resource in ResourceList)
         {
-            if (prefType == ResourceType.Unknown || resource.resourceType == prefType)
+            if (resource.IsKnown && prefType == ResourceType.Unknown || resource.resourceType == prefType)
             {
                 if (resource.GetResourcesFuture() > 0)
                 {
@@ -58,8 +60,7 @@ public static class GameWorld
 
     public static void RemoveResource(ResourceNode resource)
     {
-        KnownResources.Remove(resource);
-        UnknownResources.Remove(resource);
+        ResourceList.Remove(resource);
     }
 
     public static void SetStorage(Storage Storage)
@@ -69,16 +70,7 @@ public static class GameWorld
 
     public static void AddNewResource(ResourceNode resource)
     {
-        UnknownResources.Add(resource);
-    }
-
-    public static void AddNewKnownResource(ResourceNode resource)
-    {
-        if (!KnownResources.Contains(resource))
-        {
-            KnownResources.Add(resource);
-            UnknownResources.Remove(resource);
-        }
+        ResourceList.Add(resource);
     }
 
     public static void Save()
@@ -87,8 +79,7 @@ public static class GameWorld
         {
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
-            UnknownResources = UnknownResources,
-            KnownResources = KnownResources
+            Resources = ResourceList
         };
         string json = saveObject.ToJson();
         Debug.Log(json);
@@ -97,23 +88,25 @@ public static class GameWorld
 
     public static void Load()
     {
-        if(File.Exists(Application.dataPath + "/save.txt"))
+        if (File.Exists(Application.dataPath + "/save.txt"))
         {
             string saveString = File.ReadAllText(Application.dataPath + "/save.txt");
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
             GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
-            UnknownResources = saveObject.UnknownResources;
-            KnownResources = saveObject.KnownResources;
+            for (int i = 0; i < ResourceList.Count;)
+            {
+                ResourceList[i].Destroy();
+            }
+            for (int i = 0; i < saveObject.Resources.Count; i++)
+            {
+                ResourceNodeData data = saveObject.ResourceData[i];
+                GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
+                newNode.GetComponent<ResourceNode>().SetData(data);
+            }
+        }
+        else
+        {
+            Debug.LogError($"Save file could not be found at {Application.dataPath}/save.txt");
         }
     }
-
-    //public static void CreateNewResource(int amount = 1)
-    //{
-    //    for (int i = 0; i < amount; i++)
-    //    {
-    //        GameObject newResource = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-    //        newResource.transform.position = new Vector3(Random.Range(-50f, 50f), 0.5f, UnityEngine.Random.Range(-50f, 50f));
-    //        resources.Add(new ResourceNode(newResource.transform, newResource, UnityEngine.Random.Range(1, 5)));
-    //    }
-    //}
 }
