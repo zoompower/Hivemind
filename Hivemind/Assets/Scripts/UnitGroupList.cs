@@ -8,23 +8,23 @@ using UnityEngine;
  */
 public class UnitGroupList
 {
-    private List<MindGroup> unitGroupList;
+    private List<MindGroup> MindGroupList;
 
     private int MaxGroupCount = 6;
 
     public UnitGroupList(GameObject[] unitGroupObjects)
     {
-        unitGroupList = new List<MindGroup>();
+        MindGroupList = new List<MindGroup>();
 
         foreach (var obj in unitGroupObjects)
         {
-            unitGroupList.Add(new MindGroup(obj));
+            MindGroupList.Add(new MindGroup(obj));
         }
     }
 
     public MindGroup GetMindGroupFromUnitId(Guid unitId)
     {
-        foreach (var group in unitGroupList)
+        foreach (var group in MindGroupList)
         {
             var unit = group.FindUnit(unitId);
             if (unit != null) return group;
@@ -35,7 +35,7 @@ public class UnitGroupList
 
     public UnitGroup GetUnitGroupFromUnitId(Guid unitId)
     {
-        foreach (var group in unitGroupList)
+        foreach (var group in MindGroupList)
         {
             var unit = group.FindUnit(unitId);
             if (unit != null) return unit;
@@ -46,20 +46,32 @@ public class UnitGroupList
 
     internal Guid CreateUnitGroup(GameObject unitIconBase)
     {
-        for (int i = 0; i < unitGroupList.Count; i++)
+        for (int i = 0; i < MindGroupList.Count; i++)
         {
-            if (unitGroupList[i].Count < MaxGroupCount)
+            if (MindGroupList[i].Count < MaxGroupCount)
             {
-                return unitGroupList[i].AddUnit(new UnitGroup(unitIconBase));
+                return MindGroupList[i].AddUnit(new UnitGroup(unitIconBase));
             }
         }
 
         return Guid.Empty;
     }
 
+    internal GroupIdChangedEventArgs MergeGroupIntoGroup(Guid group, Guid intoGroup)
+    {
+        var oldUnitGroup = GetUnitGroupFromUnitId(group);
+        var newUnitGroup = GetUnitGroupFromUnitId(intoGroup);
+
+        newUnitGroup.MergeGroupIntoThis(oldUnitGroup);
+
+        DeleteUnitGroup(oldUnitGroup);
+
+        return new GroupIdChangedEventArgs(group, newUnitGroup.UnitGroupId);
+    }
+
     internal UnitGroup GetUnitGroupFromUIObject(GameObject gameObject)
     {
-        foreach (MindGroup group in unitGroupList)
+        foreach (MindGroup group in MindGroupList)
         {
             var u = group.FindUnit(gameObject);
             if (u != null)
@@ -70,11 +82,11 @@ public class UnitGroupList
         return null;
     }
 
-    internal void MoveUnit(UnitGroup unit, GameObject groupGameObject)
+    internal void MoveUnitIntoGroup(UnitGroup unit, GameObject groupGameObject)
     {
         MindGroup oldGroup = null;
         MindGroup newGroup = null;
-        foreach (var group in unitGroupList)
+        foreach (var group in MindGroupList)
         {
             if (group.UnitExists(unit))
             {
@@ -98,7 +110,7 @@ public class UnitGroupList
 
     internal void UpdateLayout(UnitGroup unit)
     {
-        foreach (var group in unitGroupList)
+        foreach (var group in MindGroupList)
         {
             if (group.UnitExists(unit))
             {
@@ -106,5 +118,12 @@ public class UnitGroupList
                 return;
             }
         }
+    }
+
+    public void DeleteUnitGroup(UnitGroup unitGroup)
+    {
+        GetMindGroupFromUnitId(unitGroup.UnitGroupId)?.RemoveUnit(unitGroup);
+
+        UnityEngine.Object.Destroy(unitGroup.Ui_IconObj);
     }
 }

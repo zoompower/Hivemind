@@ -9,17 +9,26 @@ public class BaseTile : MonoBehaviour
     internal GameObject CurrTile;
     internal BaseRoom RoomScript;
 
+    internal List<GameObject> Neighbors = new List<GameObject>();
+
     [SerializeField]
     internal bool IsIndestructable = false;
     [SerializeField]
     private int DefaultRotation = -1;
 
-    internal List<GameObject> Neighbors = new List<GameObject>();
-
     [SerializeField]
     private float CollisionSize = 0.50f;
     [SerializeField]
     private bool ShowDebugInfo = false;
+    [SerializeField]
+    private bool ShowMeshPreview = false;
+    [SerializeField]
+    private Color MeshColor = new Color(53.0f / 255.0f, 124.0f / 255.0f, 44.0f / 255.0f);
+
+    private void Awake()
+    {
+        FindAndAttachNeighbors();
+    }
 
     private void Start()
     {
@@ -27,8 +36,6 @@ public class BaseTile : MonoBehaviour
         {
             InitializeObject(StartObject);
         }
-
-        FindAndAttachNeighbors();
     }
 
     internal void InitializeObject(GameObject gObj)
@@ -69,15 +76,16 @@ public class BaseTile : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (StartObject != null && StartObject.GetComponent<MeshFilter>() != null && true)
+        if (StartObject != null && StartObject.GetComponent<MeshFilter>() != null && ShowMeshPreview)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
+            Gizmos.color = MeshColor;
+            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position + StartObject.transform.position, transform.rotation, transform.localScale);
         }
 
-        if (!ShowDebugInfo) return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, CollisionSize);
+        if (ShowDebugInfo)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, CollisionSize);
+        }
     }
 }

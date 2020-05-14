@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,22 +30,41 @@ public class UnitGroup
         UpdateText();
     }
 
-    public void SetMaxUnits(int amount)
+    public bool AddMax()
+    {
+        return SetMaxUnits(MaxUnits + 1);
+    }
+
+    public bool SetMaxUnits(int amount)
     {
         MaxUnits = amount;
         UpdateText();
+
+        return true;
     }
 
-    public void SetCurrentUnits(int amount)
+    public bool AddUnit()
     {
-        if (amount > MaxUnits || amount < 0) return;
+        return SetCurrentUnits(CurrentUnits + 1);
+    }
+
+    public bool SetCurrentUnits(int amount)
+    {
+        if (amount > MaxUnits || amount < 0) return false;
 
         CurrentUnits = amount;
         UpdateText();
+        return true;
     }
 
     private void UpdateText()
     {
         textBox.text = $"{CurrentUnits}/{MaxUnits}";
+    }
+
+    internal void MergeGroupIntoThis(UnitGroup other)
+    {
+        this.MaxUnits += other.MaxUnits;
+        this.CurrentUnits += other.CurrentUnits;
     }
 }

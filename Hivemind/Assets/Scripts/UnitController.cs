@@ -12,6 +12,8 @@ public class UnitController : MonoBehaviour
     [SerializeField]
     private UiController uiController;
 
+    public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
+
     private void Awake()
     {
         UnitGroupList = new UnitGroupList(uiController.UnitGroupObjects);
@@ -40,5 +42,12 @@ public class UnitController : MonoBehaviour
         {
             group.SetMaxUnits(amount);
         }
+    }
+
+    public void MergeGroupIntoGroup(Guid group, Guid otherGroup)
+    {
+        GroupIdChangedEventArgs args = UnitGroupList.MergeGroupIntoGroup(group, otherGroup);
+
+        OnGroupIdChange.Invoke(null, args);
     }
 }

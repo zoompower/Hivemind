@@ -92,7 +92,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         if (groupResult.isValid)
         {
-            unitController.UnitGroupList.MoveUnit(unitGroupObj, groupResult.gameObject);
+            unitController.UnitGroupList.MoveUnitIntoGroup(unitGroupObj, groupResult.gameObject);
         }
         else
         {

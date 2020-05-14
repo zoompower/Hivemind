@@ -108,5 +108,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartObject: {fileID: 0}
-  isIndestructable: 0
+  IsIndestructable: 0
+  DefaultRotation: -1
   CollisionSize: 0.5
+  ShowDebugInfo: 0
+  ShowMeshPreview: 1
+  MeshColor: {r: 0.20784314, g: 0.4862745, b: 0.17254902, a: 1}

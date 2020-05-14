@@ -1,12 +1,7 @@
-﻿class WorkerRoom : BaseRoom
-{
-    public override bool IsRoom()
-    {
-        return true;
-    }
+﻿using System;
+using UnityEngine;
 
-    public override bool IsDestructable()
-    {
-        return true;
-    }
+class WorkerRoom : UnitRoom
+{
+    
 }
