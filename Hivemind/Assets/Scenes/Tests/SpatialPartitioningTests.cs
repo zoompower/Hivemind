@@ -24,7 +24,7 @@ namespace Tests
         }
 
         [Test]
-        public void SpatialPartitioningCheckIfCanSelectMoreNeigbors()
+        public void SpatialPartitioningCheckIfCanSelect2EntitiesSelfAndNeigbors()
         {
             GameObject Floor = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/Floor (With Collision boxes)"));
 
@@ -47,7 +47,7 @@ namespace Tests
         }
 
         [Test]
-        public void SpatialPartitioningCheckIfCanSelectMoreNeigbors2()
+        public void SpatialPartitioningCheckIfCanSelect3EntitiesSelfAndNeigbors()
         {
             GameObject Floor = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/Floor (With Collision boxes)"));
 
@@ -68,6 +68,32 @@ namespace Tests
 
             Entities = GoFromSelected.GetEntitiesWithExtraNeighbors(2);
             Assert.True(Entities.Count == 3);
+        }
+
+        [Test]
+        public void SpatialPartitioningCheckIfOutOfRangeDoesNotGetSelected()
+        {
+            GameObject Floor = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/Floor (With Collision boxes)"));
+
+            var GoFrom = Floor.transform.Find("CollisionBox(3,3)");
+            var GoTo = Floor.transform.Find("CollisionBox(3,5)");
+            var DontGoTo = Floor.transform.Find("CollisionBox(3,7)");
+
+            SpatialPartitioning GoFromSelected = GoFrom.GetComponent<SpatialPartitioning>();
+            SpatialPartitioning GoToSelected = GoTo.GetComponent<SpatialPartitioning>();
+            SpatialPartitioning DontGoToSelected = DontGoTo.GetComponent<SpatialPartitioning>();
+
+            GoFromSelected.Entities.Add(new GameObject());
+            GoToSelected.Entities.Add(new GameObject());
+            DontGoToSelected.Entities.Add(new GameObject());
+
+            List<GameObject> Entities = new List<GameObject>();
+
+            Entities = GoFromSelected.GetEntitiesWithExtraNeighbors(1);
+            Assert.True(Entities.Count == 1);
+
+            Entities = GoFromSelected.GetEntitiesWithExtraNeighbors(2);
+            Assert.True(Entities.Count == 2);
         }
     }
 }
