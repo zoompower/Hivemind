@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
@@ -82,6 +83,11 @@ public class ResourceNode : MonoBehaviour
             futureResourceAmount = 0;
             return newAmount;
         }
+    }
+
+    internal void IncreaseResourceAmount(int nextHarvest)
+    {
+        futureResourceAmount += nextHarvest;
     }
 
     public void GrabResource()

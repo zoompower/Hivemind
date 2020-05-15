@@ -43,8 +43,14 @@ public class UnitGroup
         UpdateText();
     }
 
+    public void AddUnits(Ant ant)
+    {
+        ant.SetUnitGroup(UnitGroupId);
+    }
+
     private void UpdateText()
     {
         textBox.text = $"{CurrentUnits}/{MaxUnits}";
     }
+
 }

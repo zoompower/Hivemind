@@ -4,52 +4,47 @@ using UnityEngine.SceneManagement;
 public class GameMenuScript : MonoBehaviour
 {
     [SerializeField]
-    private GameObject GameMenu;
+    private GameObject PauseMenuPanel;
 
     [SerializeField]
-    private GameObject GameSettingsMenu;
-
-    [SerializeField]
-    private AudioSource audioSrc;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (PlayerPrefs.HasKey("Volume"))
-        {
-            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
-        }
-    }
+    private GameObject SettingsMenuPanel;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown("escape"))
         {
-            if (!GameMenu.activeSelf)
+            if (PauseMenuPanel.activeSelf || SettingsMenuPanel.activeSelf)
             {
-                GameMenu.SetActive(true);
-                Time.timeScale = 0;
+                ResumeGame();
             }
             else
             {
-                ResumeGame();
+                PauseGame();
             }
         }
     }
     public void ResumeGame()
     {
-        GameMenu.SetActive(false);
+        SettingsMenuPanel.SetActive(false);
+        PauseMenuPanel.SetActive(false);
         Time.timeScale = 1;
     }
+
+    public void PauseGame()
+    {
+        PauseMenuPanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
     public void ReturnToMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
+
     public void SettingsMenu()
     {
-        GameMenu.SetActive(false);
-        GameSettingsMenu.SetActive(true);
+        PauseMenuPanel.SetActive(false);
+        SettingsMenuPanel.SetActive(true);
     }
 }
