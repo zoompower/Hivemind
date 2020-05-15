@@ -45,16 +45,16 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            List<IMind> mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).minds;
-          
-            if(minds.Count < mindGroupMind.Count)
+            List<IMind> mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
+
+            if (minds.Count < mindGroupMind.Count)
             {
-                for(int i = minds.Count; i < mindGroupMind.Count; i++)
+                for (int i = minds.Count; i < mindGroupMind.Count; i++)
                 {
                     minds.Add(mindGroupMind[i].Clone());
                 }
             }
-            for(int i = 0; i < minds.Count; i++)
+            for (int i = 0; i < minds.Count; i++)
             {
                 if (!minds[i].Equals(mindGroupMind[i]))
                 {
@@ -67,13 +67,13 @@ public class Ant : MonoBehaviour
             }
         }
 
-        double likeliest= 0;
+        double likeliest = 0;
         int mindIndex = 0;
         int currentIndex = 0;
-        foreach(IMind mind in minds)
+        foreach (IMind mind in minds)
         {
-           double current =  mind.Likelihood(this);
-            if(current > likeliest)
+            double current = mind.Likelihood(this);
+            if (current > likeliest)
             {
                 mindIndex = currentIndex;
                 likeliest = current;
@@ -116,6 +116,11 @@ public class Ant : MonoBehaviour
     internal void UpdateSpeed()
     {
         agent.speed = currentSpeed;
+    }
+
+    internal void SetStorage(Storage storage)
+    {
+        this.storage = storage;
     }
 }
 

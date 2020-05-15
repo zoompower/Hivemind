@@ -18,8 +18,7 @@ public class UnitGroupList
         unitGroupList = new List<MindGroup>();
         foreach (var obj in unitGroupObjects)
         {
-
-                unitGroupList.Add(new MindGroup(obj));
+            unitGroupList.Add(new MindGroup(obj));
         }
     }
 

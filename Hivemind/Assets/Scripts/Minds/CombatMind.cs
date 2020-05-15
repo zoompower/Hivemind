@@ -1,19 +1,19 @@
 ﻿
 public class CombatMind : IMind
 {
-    private float minEstimetedDifference;
+    private float minEstimatedDifference;
     private int prefferedHealth;
 
 
     public CombatMind(float minEstimeted, int prefHealth)
     {
-        minEstimetedDifference = minEstimeted;
+        minEstimatedDifference = minEstimeted;
         prefferedHealth = prefHealth;
     }
 
     public IMind Clone()
     {
-        return new CombatMind(minEstimetedDifference, prefferedHealth);
+        return new CombatMind(minEstimatedDifference, prefferedHealth);
     }
 
     public bool Equals(IMind mind)
@@ -21,7 +21,7 @@ public class CombatMind : IMind
         CombatMind combatmind = mind as CombatMind;
         if (combatmind != null)
         {
-            if(combatmind.minEstimetedDifference == minEstimetedDifference && combatmind.prefferedHealth == prefferedHealth)
+            if (combatmind.minEstimatedDifference == minEstimatedDifference && combatmind.prefferedHealth == prefferedHealth)
             {
                 return true;
             }
@@ -31,20 +31,23 @@ public class CombatMind : IMind
 
     public void Execute(Ant ant)
     {
-            if (this == null)
-            {
-                 new CombatFight().Execute(ant);
-            }
+        if (this == null)
+        {
+            new CombatFight().Execute(ant);
+        }
 
-            float healthPercantageDifference = ((float)ant.health / (float)ant.closestEnemy.health);
-            float damagePercantageDifference = ((float)ant.damage / (float)ant.closestEnemy.damage);
-            float strengthDifference = (healthPercantageDifference * 1 + damagePercantageDifference * 2) / 3;
+        float healthDifference = ((float)ant.health / (float)ant.closestEnemy.health);
+        float damageDifference = ((float)ant.damage / (float)ant.closestEnemy.damage);
+        float strengthDifference = (healthDifference * 1 + damageDifference * 2) / 3;
 
-            if (strengthDifference >= minEstimetedDifference)
-            {
-                 new CombatFight().Execute(ant);
-            }
-             new CombatFlee().Execute(ant);
+        if (strengthDifference >= minEstimatedDifference)
+        {
+            new CombatFight().Execute(ant);
+        }
+        else
+        {
+            new CombatFlee().Execute(ant);
+        }
     }
 
     public void GenerateUI()
@@ -54,12 +57,12 @@ public class CombatMind : IMind
 
     public float GetMinEstimetedDifference()
     {
-        return minEstimetedDifference;
+        return minEstimatedDifference;
     }
 
     public void SetMinEstimetedDifference(float estDiff)
     {
-        minEstimetedDifference = estDiff;
+        minEstimatedDifference = estDiff;
     }
 
     public int GetPrefferedHealth()
@@ -74,7 +77,7 @@ public class CombatMind : IMind
 
     public void Initiate()
     {
-       
+
     }
 
     public double Likelihood(Ant ant)
@@ -89,6 +92,6 @@ public class CombatMind : IMind
 
     public void Update(IMind mind)
     {
-        
+
     }
 }

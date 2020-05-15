@@ -17,23 +17,21 @@ public class MindGroup
 
     public IMind Mind { get; private set; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
 
-    public List<IMind> minds { get; private set; }
+    public List<IMind> Minds { get; private set; }
 
-    public CombatMind combatMind { get; private set; }
-    
-    public int mindPoints { get; set; }
+    public int MindPoints { get; set; }
 
-    public MindGroup(GameObject UiObject, IMind mind = null)
+    public MindGroup(GameObject UiObject)
     {
         unitList = new List<UnitGroup>();
-        minds = new List<IMind>();
+        Minds = new List<IMind>();
         Mind = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
         Mind.Initiate();
         var Mind2 = new CombatMind(0, 0);
         Mind2.Initiate();
-        minds.Add(Mind);
-        minds.Add(Mind2);
-        
+        Minds.Add(Mind);
+        Minds.Add(Mind2);
+
 
         UIUnitGroup = UiObject;
     }
@@ -105,6 +103,6 @@ public class MindGroup
 
     public void AddMind(IMind mind, int Position)
     {
-        minds[Position] = mind;
+        Minds[Position] = mind;
     }
 }

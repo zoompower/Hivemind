@@ -1,7 +1,4 @@
-﻿using System;
-
-
-class CombatFlee
+﻿class CombatFlee
 {
     public void Execute(Ant ant)
     {

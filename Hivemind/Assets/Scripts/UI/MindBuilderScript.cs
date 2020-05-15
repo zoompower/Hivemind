@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,12 +10,6 @@ public class MindBuilderScript : MonoBehaviour, IInitializePotentialDragHandler,
     private IMindUI mindTypeObj;
 
     public MindGroup mindGroup;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     public void OnInitializePotentialDrag(PointerEventData eventData)
     {
@@ -69,7 +61,7 @@ public class MindBuilderScript : MonoBehaviour, IInitializePotentialDragHandler,
         mindTypeObj = null;
     }
 
-    
+
 
     private bool IsRectTransformInsideScreen(RectTransform rectTransform)
     {
@@ -97,16 +89,16 @@ public class MindBuilderScript : MonoBehaviour, IInitializePotentialDragHandler,
 
     internal void ClearMind()
     {
-        
+
     }
 
 
 
     internal void GenerateMind()
     {
-        for(int i = 0; i < mindGroup.Count; i++)
+        for (int i = 0; i < mindGroup.Count; i++)
         {
-            mindGroup.minds[i].GenerateUI();
+            mindGroup.Minds[i].GenerateUI();
         }
     }
 }

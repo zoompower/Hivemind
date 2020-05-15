@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class Gathering : IMind
@@ -36,7 +35,7 @@ public class Gathering : IMind
     private Dictionary<ResourceType, int> inventory;
     private int nextHarvest;
 
-    public List<GameObject> carryingObjects;
+    private List<GameObject> carryingObjects;
 
     public ResourceType prefferedType { get; set; }
     public int carryWeight { get; set; }
@@ -62,10 +61,10 @@ public class Gathering : IMind
         IsScout = isScout;
     }
 
-    private ResourceNode findResource(ResourceType PrefferedResource)
+    private ResourceNode findResource()
     {
-        ResourceNode resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, PrefferedResource);
-        if (PrefferedResource != ResourceType.Unknown && resourceNode == null)
+        ResourceNode resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, prefferedType);
+        if (prefferedType != ResourceType.Unknown && resourceNode == null)
         {
             resourceNode = GameWorld.FindNearestKnownResource(ant.transform.position, ResourceType.Unknown);
         }
@@ -78,7 +77,7 @@ public class Gathering : IMind
         {
             target.IncreaseResourceAmount(nextHarvest);
         }
-        target = findResource(prefferedType);
+        target = findResource();
         if (target != null)
         {
             if (ant.state == State.Idle)
@@ -220,7 +219,7 @@ public class Gathering : IMind
                 }
                 else
                 {
-
+                    ant.SetStorage(GameWorld.GetStorage());
                 }
                 break;
         }

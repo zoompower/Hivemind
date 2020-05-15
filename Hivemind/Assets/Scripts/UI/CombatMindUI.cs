@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CombatMindUI : MonoBehaviour, IMindUI
 {
-    public GameObject Ui_IconObj { get; set ; }
+    public GameObject Ui_IconObj { get; set; }
 
     public GameObject UI_IconField;
     public GameObject UIMindBuilder;

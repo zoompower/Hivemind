@@ -1,6 +1,4 @@
-﻿using System;
-
-class CombatFight 
+﻿class CombatFight 
 {
     public void Execute(Ant ant)
     {

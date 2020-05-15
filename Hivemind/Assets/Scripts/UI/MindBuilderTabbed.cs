@@ -19,7 +19,7 @@ public class MindBuilderTabbed : MonoBehaviour
 
     //get panel UI elements
 
-      //get resourcemind UI elements
+    //get resourcemind UI elements
     private InputField CarryWeight;
     private Toggle Scouting;
     private Dropdown PrefferedType;
@@ -38,7 +38,7 @@ public class MindBuilderTabbed : MonoBehaviour
         HighlightedColorBlock.normalColor = new Color(140f / 255f, 209f / 255f, 255f / 255f);
         HighlightedColorBlock.highlightedColor = new Color(140f / 255f, 209f / 255f, 255f / 255f);
         HighlightedColorBlock.pressedColor = new Color(140f / 255f, 209f / 255f, 255f / 255f);
-        HighlightedColorBlock.selectedColor= new Color(130f / 255f, 199f / 255f, 245f / 255f);
+        HighlightedColorBlock.selectedColor = new Color(130f / 255f, 199f / 255f, 245f / 255f);
         HighlightedColorBlock.colorMultiplier = 1;
 
         //initialize all UI elements
@@ -73,9 +73,9 @@ public class MindBuilderTabbed : MonoBehaviour
         PrefferedDirection.AddOptions(dropdownElements);
 
     }
-     void Update()
+    void Update()
     {
-        
+
     }
     public void OpenResourceMind(Button resButton)
     {
@@ -86,7 +86,7 @@ public class MindBuilderTabbed : MonoBehaviour
             var otherButtons = this.GetComponentsInChildren<Button>();
             for (int i = 0; i < otherButtons.Length; i++)
             {
-                    otherButtons[i].colors = ColorBlock.defaultColorBlock;
+                otherButtons[i].colors = ColorBlock.defaultColorBlock;
             }
             resButton.colors = HighlightedColorBlock;
         }
@@ -101,7 +101,7 @@ public class MindBuilderTabbed : MonoBehaviour
             var otherButtons = this.GetComponentsInChildren<Button>();
             for (int i = 0; i < otherButtons.Length; i++)
             {
-                    otherButtons[i].colors = ColorBlock.defaultColorBlock;
+                otherButtons[i].colors = ColorBlock.defaultColorBlock;
             }
             comButton.colors = HighlightedColorBlock;
         }
@@ -109,14 +109,14 @@ public class MindBuilderTabbed : MonoBehaviour
 
     internal void GenerateMind()
     {
-        gather = (Gathering)mindGroup.minds.Find(mind => mind.GetType() == typeof(Gathering));
-        combat = (CombatMind)mindGroup.minds.Find(mind => mind.GetType() == typeof(CombatMind));
+        gather = (Gathering)mindGroup.Minds.Find(mind => mind.GetType() == typeof(Gathering));
+        combat = (CombatMind)mindGroup.Minds.Find(mind => mind.GetType() == typeof(CombatMind));
         CarryWeight.placeholder.GetComponent<Text>().text = gather.carryWeight.ToString();
         CarryWeight.text = gather.carryWeight.ToString();
         Scouting.isOn = gather.IsScout;
-        PrefferedType.value = (int) gather.prefferedType;
+        PrefferedType.value = (int)gather.prefferedType;
         PrefferedDirection.value = (int)gather.prefferedDirection;
-       // SmartResources.isOn = gather.smartResources;
+        // SmartResources.isOn = gather.smartResources;
 
         PrefferedHealth.text = combat.GetPrefferedHealth().ToString();
         EstimatedDifference.text = combat.GetMinEstimetedDifference().ToString();
@@ -135,8 +135,8 @@ public class MindBuilderTabbed : MonoBehaviour
             gather.carryWeight = carryweight;
 
         gather.IsScout = Scouting.isOn;
-        gather.prefferedType = (ResourceType) PrefferedType.value;
-        gather.prefferedDirection = (Gathering.Direction) PrefferedDirection.value;
+        gather.prefferedType = (ResourceType)PrefferedType.value;
+        gather.prefferedDirection = (Gathering.Direction)PrefferedDirection.value;
     }
 
     private void UpdateCombatMind()
@@ -146,7 +146,7 @@ public class MindBuilderTabbed : MonoBehaviour
 
         if (int.TryParse(PrefferedHealth.text, out int prefferedHealth))
             combat.SetPrefferedHealth(prefferedHealth);
-       // combat.formation = (Formation)Formation.value;
+        // combat.formation = (Formation)Formation.value;
 
     }
 }
