@@ -115,7 +115,7 @@ public class MindBuilderTabbed : MonoBehaviour
         //Formation.value = (int) combat.formation;
     }
 
-    internal void UpdateMind()
+    public void UpdateMind()
     {
         UpdateCombatMind();
         UpdateResourceMind();

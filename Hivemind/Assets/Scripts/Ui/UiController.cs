@@ -105,7 +105,6 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         if (MBScript == null)
         {
             var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            MBtabbed.UpdateMind();
             mindBuilderPanel.SetActive(false);
             return;
         }
