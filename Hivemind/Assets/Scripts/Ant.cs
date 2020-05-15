@@ -16,14 +16,13 @@ public class Ant : MonoBehaviour
     public int damage;
     public float baseSpeed;
     public float currentSpeed;
-    public bool IsScout = true;
     public Gathering.State state;
 
     private List<IMind> minds;
     private NavMeshAgent agent;
     public Ant closestEnemy { get; private set; }
     private Storage storage;
-    private Guid unitGroupID;
+    internal Guid unitGroupID;
 
 
     void Awake()

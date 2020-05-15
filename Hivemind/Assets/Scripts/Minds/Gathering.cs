@@ -38,9 +38,10 @@ public class Gathering : IMind
 
     public List<GameObject> carryingObjects;
 
-    private ResourceType prefferedType;
-    private int carryWeight;
-    public Direction prefferedDirection;
+    public ResourceType prefferedType { get; set; }
+    public int carryWeight { get; set; }
+    public Direction prefferedDirection { get; set; }
+    public bool IsScout;
 
     private bool scouting = false;
     private bool preparingReturn = false;
@@ -53,11 +54,12 @@ public class Gathering : IMind
         carryingObjects = new List<GameObject>();
     }
 
-    public Gathering(ResourceType resType, int carryweight, Direction exploreDirection)
+    public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = true)
     {
         prefferedType = resType;
         carryWeight = carryweight;
         prefferedDirection = exploreDirection;
+        IsScout = isScout;
     }
 
     private ResourceNode findResource(ResourceType PrefferedResource)
@@ -89,7 +91,7 @@ public class Gathering : IMind
             ant.GetAgent().SetDestination(target.GetPosition());
             ant.state = State.MovingToResource;
         }
-        else if (ant.state == State.Idle && ant.IsScout)
+        else if (ant.state == State.Idle && IsScout)
         {
             ant.GetAgent().isStopped = false;
             ant.state = State.Scouting;
@@ -197,7 +199,7 @@ public class Gathering : IMind
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                     if (ant.AtBase())
                     {
-                        if (ant.IsScout && target != null)
+                        if (IsScout && target != null)
                         {
                             target.AddToKnownResourceList();
                         }
@@ -301,6 +303,7 @@ public class Gathering : IMind
             prefferedType = gathering.prefferedType;
             carryWeight = gathering.carryWeight;
             prefferedDirection = gathering.prefferedDirection;
+            IsScout = gathering.IsScout;
         }
     }
     public bool Equals(IMind mind)
@@ -310,11 +313,17 @@ public class Gathering : IMind
         {
             if (gathering.prefferedType == prefferedType
                 && gathering.carryWeight == carryWeight
-                && gathering.prefferedDirection == prefferedDirection)
+                && gathering.prefferedDirection == prefferedDirection
+                && gathering.IsScout == IsScout)
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public void GenerateUI()
+    {
+        throw new NotImplementedException();
     }
 }

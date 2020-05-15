@@ -24,6 +24,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     [SerializeField]
     private GameObject mindBuilderPanel;
 
+    private MindGroup CurrentOpenMindGroup;
+
     private Vector2 lastMousePosition; // Used in calculating screen drag of icons
     private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
 
@@ -39,11 +41,32 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public void UI_OpenMindBuilder(int i)
     {
         mindBuilderPanel.SetActive(true);
+        CurrentOpenMindGroup =  unitController.GetMindGroup(i);
+        MindBuilderScript MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
+        if(MBScript == null)
+        {
+            MindBuilderTabbed MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
+            MBtabbed.mindGroup = CurrentOpenMindGroup;
+            MBtabbed.GenerateMind();
+            return;
+        }
+        MBScript.mindGroup = CurrentOpenMindGroup;
+        MBScript.GenerateMind();
         // Hook the mindbuilder onto here
     }
 
     public void UI_CloseMindBuilder()
     {
+        MindBuilderScript MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
+        if (MBScript == null)
+        {
+            MindBuilderTabbed MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
+            MBtabbed.UpdateMind();
+            mindBuilderPanel.SetActive(false);
+            return;
+        }
+        MBScript.ClearMind();
+        CurrentOpenMindGroup = null;
         mindBuilderPanel.SetActive(false);
     }
 

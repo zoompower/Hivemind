@@ -47,14 +47,29 @@ public class CombatMind : IMind
              new CombatFlee().Execute(ant);
     }
 
+    public void GenerateUI()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public float GetMinEstimetedDifference()
     {
         return minEstimetedDifference;
     }
 
+    public void SetMinEstimetedDifference(float estDiff)
+    {
+        minEstimetedDifference = estDiff;
+    }
+
     public int GetPrefferedHealth()
     {
         return prefferedHealth;
+    }
+
+    public void SetPrefferedHealth(int prefHealth)
+    {
+        prefferedHealth = prefHealth;
     }
 
     public void Initiate()
@@ -74,6 +89,6 @@ public class CombatMind : IMind
 
     public void Update(IMind mind)
     {
-        throw new System.NotImplementedException();
+        
     }
 }

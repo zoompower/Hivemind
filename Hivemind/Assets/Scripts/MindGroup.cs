@@ -20,17 +20,20 @@ public class MindGroup
     public List<IMind> minds { get; private set; }
 
     public CombatMind combatMind { get; private set; }
+    
+    public int mindPoints { get; set; }
 
     public MindGroup(GameObject UiObject, IMind mind = null)
     {
         unitList = new List<UnitGroup>();
         minds = new List<IMind>();
-        if (mind != null)
-        {
-            Mind = mind;
-        }
-        minds.Add(Mind);
+        Mind = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
         Mind.Initiate();
+        var Mind2 = new CombatMind(0, 0);
+        Mind2.Initiate();
+        minds.Add(Mind);
+        minds.Add(Mind2);
+        
 
         UIUnitGroup = UiObject;
     }
@@ -98,5 +101,10 @@ public class MindGroup
     internal void UpdateLayout()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(UIUnitGroup.GetComponent<RectTransform>());
+    }
+
+    public void AddMind(IMind mind, int Position)
+    {
+        minds[Position] = mind;
     }
 }

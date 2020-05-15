@@ -18,10 +18,7 @@ public class UnitGroupList
         unitGroupList = new List<MindGroup>();
         foreach (var obj in unitGroupObjects)
         {
-            i++;
-            if (i == 3)
-                unitGroupList.Add(new MindGroup(obj, new Gathering(ResourceType.Crystal, 5, Gathering.Direction.West)));
-            else
+
                 unitGroupList.Add(new MindGroup(obj));
         }
     }
@@ -110,5 +107,10 @@ public class UnitGroupList
                 return;
             }
         }
+    }
+
+    public MindGroup GetMindGroupFromIndex(int Index)
+    {
+        return unitGroupList[Index];
     }
 }

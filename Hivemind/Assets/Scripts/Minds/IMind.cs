@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 public interface IMind
 {
+
     void Execute(Ant ant);
     void Initiate();
 
@@ -17,4 +17,6 @@ public interface IMind
     bool Equals(IMind mind);
 
     void Update(IMind mind);
+
+    void GenerateUI();
 }
