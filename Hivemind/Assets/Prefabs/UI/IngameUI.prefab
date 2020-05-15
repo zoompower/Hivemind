@@ -2175,7 +2175,7 @@ MonoBehaviour:
   - {fileID: 7562476277970993642}
   resourceTextBox: {fileID: 60507895977195941}
   unitController: {fileID: 2933098746009246154}
-  mindBuilderPanel: {fileID: 7732768496189947854}
+  mindBuilderPanel: {fileID: 8859383655088795853}
 --- !u!114 &2933098746009246154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2695,7 +2695,7 @@ RectTransform:
   - {fileID: 10632350302474286}
   - {fileID: 6009662233001711944}
   - {fileID: 5505047525111538757}
-  - {fileID: 1786314871454640126}
+  - {fileID: 678027510542149885}
   m_Father: {fileID: 1150036802781033403}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3899,7 +3899,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1001 &2691131846981855268
+--- !u!1001 &3817442442183681831
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -3974,32 +3974,32 @@ PrefabInstance:
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -300
+      value: 1066
       objectReference: {fileID: 0}
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -270
+      value: 366
       objectReference: {fileID: 0}
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
@@ -4019,17 +4019,17 @@ PrefabInstance:
     - target: {fileID: 5622917660689012714, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8727987474090936076, guid: eeb36947102dcc94fb97735ec6bc5b14,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 8727987474090936076, guid: eeb36947102dcc94fb97735ec6bc5b14,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061264681937038082, guid: eeb36947102dcc94fb97735ec6bc5b14,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 77179646253625896}
+    - target: {fileID: 8061264681937038082, guid: eeb36947102dcc94fb97735ec6bc5b14,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UI_CloseMindBuilder
       objectReference: {fileID: 0}
     - target: {fileID: 8727987474090936076, guid: eeb36947102dcc94fb97735ec6bc5b14,
         type: 3}
@@ -4038,15 +4038,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeb36947102dcc94fb97735ec6bc5b14, type: 3}
---- !u!1 &7732768496189947854 stripped
+--- !u!1 &8859383655088795853 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5622917660689012714, guid: eeb36947102dcc94fb97735ec6bc5b14,
     type: 3}
-  m_PrefabInstance: {fileID: 2691131846981855268}
+  m_PrefabInstance: {fileID: 3817442442183681831}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &1786314871454640126 stripped
+--- !u!224 &678027510542149885 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
     type: 3}
-  m_PrefabInstance: {fileID: 2691131846981855268}
+  m_PrefabInstance: {fileID: 3817442442183681831}
   m_PrefabAsset: {fileID: 0}
