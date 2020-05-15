@@ -46,8 +46,6 @@ public class UnitController : MonoBehaviour
 
     public void MergeGroupIntoGroup(Guid group, Guid otherGroup)
     {
-        GroupIdChangedEventArgs args = UnitGroupList.MergeGroupIntoGroup(group, otherGroup);
-
-        OnGroupIdChange.Invoke(null, args);
+        OnGroupIdChange.Invoke(null, UnitGroupList.MergeGroupIntoGroup(group, otherGroup));
     }
 }

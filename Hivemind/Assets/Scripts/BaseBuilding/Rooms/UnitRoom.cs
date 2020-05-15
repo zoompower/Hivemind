@@ -1,13 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class UnitRoom : BaseRoom
 {
     internal UnitGroup unitGroup;
-    
+
     internal Guid GroupId = Guid.Empty;
 
     internal bool Destructable = true;
+
+    internal string UnitResource;
 
     public override bool IsDestructable()
     {
@@ -23,7 +26,7 @@ public abstract class UnitRoom : BaseRoom
     {
         unitController.OnGroupIdChange += ChangeGroupID;
     }
-    
+
     private void RemoveEventListeners()
     {
         unitController.OnGroupIdChange -= ChangeGroupID;
@@ -33,7 +36,6 @@ public abstract class UnitRoom : BaseRoom
     {
         if (GroupId == e.oldGuid)
         {
-            Debug.Log($"{transform.parent.name}, {e.oldGuid}, {e.newGuid}");
             GroupId = e.newGuid;
             unitGroup = unitController.UnitGroupList.GetUnitGroupFromUnitId(GroupId);
         }
@@ -93,7 +95,19 @@ public abstract class UnitRoom : BaseRoom
     {
         if (unitGroup.AddUnit())
         {
-            Debug.Log($"{transform.parent.name} is spawning a unit"); // TODO: actually spawn unit in room. // warning: The "Ants" container was not found please add a container to save the Hierarchy of clutter.
+            GameObject ant = Instantiate(Resources.Load("TestAnt") as GameObject);
+
+            GameObject container = GameObject.Find("Ants");
+            if (container == null)
+            {
+                Debug.LogWarning("The \"Ants\" container was not found. Please add a container to save the Hiearchy from clutter!");
+            }
+            else
+            {
+                ant.transform.SetParent(container.transform);
+            }
+
+            ant.GetComponent<NavMeshAgent>().Warp(transform.position);
         }
     }
 

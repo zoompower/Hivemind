@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BaseController : MonoBehaviour
@@ -17,7 +16,6 @@ public class BaseController : MonoBehaviour
     [SerializeField]
     private GameObject WorkerRoomPrefab;
 
-    // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i < CollisionLayers.Length; i++)
@@ -26,7 +24,6 @@ public class BaseController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -35,7 +32,7 @@ public class BaseController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, LayerMask))
             {
                 GameObject plate;
-                if (hit.transform.childCount > 0 || hit.transform.parent.childCount > 1)
+                if (hit.transform.gameObject.layer == UnityEngine.LayerMask.NameToLayer("BaseFloor"))
                 {
                     plate = hit.transform.gameObject;
                 }
@@ -43,6 +40,7 @@ public class BaseController : MonoBehaviour
                 {
                     plate = hit.transform.parent.gameObject;
                 }
+                Debug.Log(plate.name);
                 OnLeftClick(plate.GetComponent<BaseTile>());
             }
         }
