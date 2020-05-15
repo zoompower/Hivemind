@@ -1,4 +1,4 @@
-﻿class CombatFlee
+﻿internal class CombatFlee
 {
     public void Execute(Ant ant)
     {

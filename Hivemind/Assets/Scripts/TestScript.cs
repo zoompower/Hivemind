@@ -7,29 +7,24 @@ using UnityEngine;
  */
 public class TestScript : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject WorkerPrefab;
-
-    [SerializeField]
-    private Transform SpawnPosition;
-
     private UnitController controller;
 
+    private Guid guid;
+
+    [SerializeField] private Transform SpawnPosition;
+
+    [SerializeField] private GameObject WorkerPrefab;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         controller = FindObjectOfType<UnitController>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            controller.CreateUnitGroup();
-        }
+        if (Input.GetKeyDown(KeyCode.Space)) controller.CreateUnitGroup();
     }
-
-    private Guid guid;
 
     public void CreateUnit()
     {
@@ -60,8 +55,9 @@ public class TestScript : MonoBehaviour
     {
         if (!guid.Equals(Guid.Empty))
         {
-            GameObject go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity, GameObject.Find("Ants").transform);
-            Ant a = go.GetComponent<Ant>();
+            var go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity,
+                GameObject.Find("Ants").transform);
+            var a = go.GetComponent<Ant>();
 
             controller.UnitGroupList.GetUnitGroupFromUnitId(guid).AddUnits(a);
             AddMaxUnits();

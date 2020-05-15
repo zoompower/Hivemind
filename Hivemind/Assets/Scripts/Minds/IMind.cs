@@ -1,6 +1,5 @@
 ﻿public interface IMind
 {
-
     void Execute(Ant ant);
     void Initiate();
 

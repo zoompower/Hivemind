@@ -9,17 +9,9 @@ using UnityEngine.UI;
  */
 public class MindGroup
 {
-    public int Count { get; private set; }
-
     private protected GameObject UIUnitGroup;
 
-    private List<UnitGroup> unitList;
-
-    public IMind Mind { get; private set; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
-
-    public List<IMind> Minds { get; private set; }
-
-    public int MindPoints { get; set; }
+    private readonly List<UnitGroup> unitList;
 
     public MindGroup(GameObject UiObject)
     {
@@ -35,6 +27,14 @@ public class MindGroup
 
         UIUnitGroup = UiObject;
     }
+
+    public int Count { get; private set; }
+
+    public IMind Mind { get; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
+
+    public List<IMind> Minds { get; }
+
+    public int MindPoints { get; set; }
 
     public bool Equals(MindGroup other)
     {

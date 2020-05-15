@@ -3,29 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class Ant : MonoBehaviour
 {
-    enum AntType
-    {
-        Worker,
-        Soldier,
-    }
-
-    public int health;
-    public int damage;
+    private NavMeshAgent agent;
     public float baseSpeed;
     public float currentSpeed;
-    public Gathering.State state;
+    public int damage;
+
+    public int health;
 
     private List<IMind> minds;
-    private NavMeshAgent agent;
-    public Ant closestEnemy { get; private set; }
+    public Gathering.State state;
     private Storage storage;
     internal Guid unitGroupID;
+    public Ant closestEnemy { get; private set; }
 
 
-    void Awake()
+    private void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         baseSpeed = agent.speed;
@@ -35,49 +29,42 @@ public class Ant : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         storage = GameWorld.GetStorage();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (AtBase())
         {
-            List<IMind> mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
+            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
+                .Minds;
 
             if (minds.Count < mindGroupMind.Count)
-            {
-                for (int i = minds.Count; i < mindGroupMind.Count; i++)
-                {
+                for (var i = minds.Count; i < mindGroupMind.Count; i++)
                     minds.Add(mindGroupMind[i].Clone());
-                }
-            }
-            for (int i = 0; i < minds.Count; i++)
-            {
+            for (var i = 0; i < minds.Count; i++)
                 if (!minds[i].Equals(mindGroupMind[i]))
                 {
                     minds[i].Update(mindGroupMind[i]);
-                    if (!minds[i].Equals(mindGroupMind[i]))
-                    {
-                        minds[i] = mindGroupMind[i].Clone();
-                    }
+                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
                 }
-            }
         }
 
         double likeliest = 0;
-        int mindIndex = 0;
-        int currentIndex = 0;
-        foreach (IMind mind in minds)
+        var mindIndex = 0;
+        var currentIndex = 0;
+        foreach (var mind in minds)
         {
-            double current = mind.Likelihood(this);
+            var current = mind.Likelihood(this);
             if (current > likeliest)
             {
                 mindIndex = currentIndex;
                 likeliest = current;
             }
+
             currentIndex++;
         }
 
@@ -86,10 +73,7 @@ public class Ant : MonoBehaviour
 
     public bool AtBase()
     {
-        if (Vector3.Distance(transform.position, storage.GetPosition()) < 1f)
-        {
-            return true;
-        }
+        if (Vector3.Distance(transform.position, storage.GetPosition()) < 1f) return true;
         return false;
     }
 
@@ -122,5 +106,10 @@ public class Ant : MonoBehaviour
     {
         this.storage = storage;
     }
-}
 
+    private enum AntType
+    {
+        Worker,
+        Soldier
+    }
+}
