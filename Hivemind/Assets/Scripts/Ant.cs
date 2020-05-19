@@ -19,7 +19,6 @@ public class Ant : MonoBehaviour
     internal Guid unitGroupID;
     public Ant closestEnemy { get; private set; }
 
-
     private void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
@@ -39,40 +38,45 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //if (AtBase())
-        //{
-        //    var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
-        //        .Minds;
+        if (AtBase())
+        {
+            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
 
-        //    if (minds.Count < mindGroupMind.Count)
-        //        for (var i = minds.Count; i < mindGroupMind.Count; i++)
-        //            minds.Add(mindGroupMind[i].Clone());
-        //    for (var i = 0; i < minds.Count; i++)
-        //        if (!minds[i].Equals(mindGroupMind[i]))
-        //        {
-        //            minds[i].Update(mindGroupMind[i]);
-        //            if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
-        //        }
-        //}
+            if (minds.Count < mindGroupMind.Count)
+            {
+                for (var i = minds.Count; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                }
+            }
+            for (var i = 0; i < minds.Count; i++)
+            {
+                if (!minds[i].Equals(mindGroupMind[i]))
+                {
+                    minds[i].Update(mindGroupMind[i]);
+                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
+                }
+            }
+        }
 
-        //if (minds.Count > 0)
-        //{
-        //    double likeliest = 0;
-        //    var mindIndex = 0;
-        //    var currentIndex = 0;
-        //    foreach (var mind in minds)
-        //    {
-        //        var current = mind.Likelihood(this);
-        //        if (current > likeliest)
-        //        {
-        //            mindIndex = currentIndex;
-        //            likeliest = current;
-        //        }
+        if (minds.Count > 0)
+        {
+            double likeliest = 0;
+            var mindIndex = 0;
+            var currentIndex = 0;
+            foreach (var mind in minds)
+            {
+                var current = mind.Likelihood(this);
+                if (current > likeliest)
+                {
+                    mindIndex = currentIndex;
+                    likeliest = current;
+                }
 
-        //        currentIndex++;
-        //    }
-        //    minds[mindIndex].Execute(this);
-        //}
+                currentIndex++;
+            }
+            minds[mindIndex].Execute(this);
+        }
     }
 
     public bool AtBase()
@@ -139,7 +143,6 @@ public class Ant : MonoBehaviour
         health = data.Health;
         Prefab = data.Prefab;
         //minds = data.Minds;
-        minds = new List<IMind>();
         state = data.State;
         storage = data.Storage;
         unitGroupID = Guid.Parse(data.UnitGroupID);
