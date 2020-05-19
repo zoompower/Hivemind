@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -84,6 +85,11 @@ public class ResourceNode : MonoBehaviour
             futureResourceAmount = 0;
             return newAmount;
         }
+    }
+
+    internal void IncreaseResourceAmount(int nextHarvest)
+    {
+        futureResourceAmount += nextHarvest;
     }
 
     public void GrabResource()

@@ -41,4 +41,9 @@ public class UnitController : MonoBehaviour
             group.SetMaxUnits(amount);
         }
     }
+
+    public MindGroup GetMindGroup(int Index)
+    {
+        return UnitGroupList.GetMindGroupFromIndex(Index);
+    }
 }

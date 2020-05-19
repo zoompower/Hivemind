@@ -7,16 +7,16 @@ using UnityEngine;
  */
 public class TestScript : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject WorkerPrefab;
-
-    [SerializeField]
-    private Transform SpawnPosition;
-
     private UnitController controller;
 
+    private Guid guid;
+
+    [SerializeField] private Transform SpawnPosition;
+
+    [SerializeField] private GameObject WorkerPrefab;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         controller = FindObjectOfType<UnitController>();
     }
@@ -35,9 +35,8 @@ public class TestScript : MonoBehaviour
         {
             GameWorld.Load();
         }
+        if (Input.GetKeyDown(KeyCode.Space)) controller.CreateUnitGroup();
     }
-
-    private Guid guid;
 
     public void CreateUnit()
     {
@@ -68,7 +67,11 @@ public class TestScript : MonoBehaviour
     {
         if (!guid.Equals(Guid.Empty))
         {
-            Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity, GameObject.Find("Ants").transform);
+            var go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity,
+                GameObject.Find("Ants").transform);
+            var a = go.GetComponent<Ant>();
+
+            controller.UnitGroupList.GetUnitGroupFromUnitId(guid).AddUnits(a);
             AddMaxUnits();
             AddCurrentUnits();
         }
