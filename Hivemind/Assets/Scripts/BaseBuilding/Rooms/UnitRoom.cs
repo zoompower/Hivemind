@@ -95,7 +95,7 @@ public abstract class UnitRoom : BaseRoom
     {
         if (unitGroup.AddUnit())
         {
-            GameObject ant = Instantiate(Resources.Load("TestAnt") as GameObject);
+            GameObject ant = Instantiate(Resources.Load("TestAnt") as GameObject); // TODO: instead of "testAnt" use unitresource property
 
             GameObject container = GameObject.Find("Ants");
             if (container == null)
