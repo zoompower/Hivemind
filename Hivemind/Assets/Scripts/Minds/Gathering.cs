@@ -39,7 +39,7 @@ public class Gathering : IMind
     public bool IsScout;
     private int nextHarvest;
     private bool preparingReturn;
-
+    private GameObject excla;
     private bool scouting;
     private ResourceNode target;
 
@@ -85,6 +85,7 @@ public class Gathering : IMind
                     {
                         target = tempTarget;
                         ant.state = State.MovingToStorage;
+                        FoundResource();
                     }
                     else
                     {
@@ -142,7 +143,13 @@ public class Gathering : IMind
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                     if (ant.AtBase())
                     {
-                        if (IsScout && target != null) target.AddToKnownResourceList();
+                        if (IsScout && target != null)
+                        {
+                            if (!target.knownResource())
+                            {
+                                target.AddToKnownResourceList();
+                            }
+                        }
                         if (inventory != null)
                         {
                             GameResources.AddResources(inventory);
@@ -165,11 +172,24 @@ public class Gathering : IMind
         }
     }
 
+    private void FoundResource()
+    {
+        ant.PlaySoundDiscovery();
+        ant.StartCoroutine(Discover());
+    }
+
     public double Likelihood(Ant ant)
     {
         return 50;
     }
 
+    private IEnumerator Discover()
+    {
+         excla = (GameObject)GameObject.Instantiate(Resources.Load("ExclamationMark"), ant.transform, false);
+         excla.transform.localScale *= 3;
+        yield return new WaitForSeconds(0.8f);
+        UnityEngine.GameObject.Destroy(excla.gameObject);
+    }
     public IMind Clone()
     {
         var clone = new Gathering(prefferedType, carryWeight, prefferedDirection);
@@ -224,7 +244,8 @@ public class Gathering : IMind
         if (target != null)
         {
             if (ant.state == State.Idle) ant.GetAgent().isStopped = false;
-            ant.StopAllCoroutines();
+            ant.StopCoroutine(Scout());
+            ant.StopCoroutine(ReturnToBase());
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());

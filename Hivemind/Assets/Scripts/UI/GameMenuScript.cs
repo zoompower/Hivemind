@@ -9,6 +9,9 @@ public class GameMenuScript : MonoBehaviour
     [SerializeField]
     private GameObject SettingsMenuPanel;
 
+    [SerializeField]
+    private UiController UIgameobject;
+
     // Update is called once per frame
     void Update()
     {

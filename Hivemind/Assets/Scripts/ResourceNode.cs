@@ -21,6 +21,9 @@ public class ResourceNode : MonoBehaviour
     private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
 
+    [SerializeField]
+    private AudioSource audioSrc;
+
     private int resourceAmount;
 
     private int futureResourceAmount;
@@ -31,6 +34,17 @@ public class ResourceNode : MonoBehaviour
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         GameWorld.AddNewResource(this);
+        audioSrc = GetComponent<AudioSource>();
+        float audioVolume = 1;
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioVolume = PlayerPrefs.GetFloat("Volume");
+        }
+        audioSrc.volume = (audioVolume);
+        if (this.resourceType == ResourceType.Crystal)
+        {
+            audioSrc.volume *= 2.5f;
+        }
     }
 
     public void AddToKnownResourceList()
@@ -101,6 +115,9 @@ public class ResourceNode : MonoBehaviour
         {
             ColorResource(resourceAmount);
         }
+        if (audioSrc != null)
+            audioSrc.Play();
+        audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
     }
 
     public void ColorResource(int amount)
@@ -118,5 +135,11 @@ public class ResourceNode : MonoBehaviour
     public int GetResourcesFuture()
     {
         return futureResourceAmount;
+    }
+
+    public bool knownResource()
+    {
+        var returnValue = GameWorld.KnownResources.Contains(this);
+        return returnValue;
     }
 }
