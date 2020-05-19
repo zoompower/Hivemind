@@ -142,7 +142,7 @@ public class Gathering : IMind
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                     if (ant.AtBase())
                     {
-                        if (IsScout && target != null) target.AddToKnownResourceList();
+                        if (IsScout && target != null) target.Discover();
                         if (inventory != null)
                         {
                             GameResources.AddResources(inventory);

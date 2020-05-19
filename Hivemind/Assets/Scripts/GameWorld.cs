@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 public static class GameWorld
 {
     public static List<ResourceNode> ResourceList = new List<ResourceNode>();
+    public static List<Ant> AntList = new List<Ant>();
     private static Storage storage = null;
 
     public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
@@ -73,13 +74,24 @@ public static class GameWorld
         ResourceList.Add(resource);
     }
 
+    public static void AddNewAnt(Ant ant)
+    {
+        AntList.Add(ant);
+    }
+
+    public static void RemoveAnt(Ant ant)
+    {
+        AntList.Remove(ant);
+    }
+
     public static void Save()
     {
         SaveObject saveObject = new SaveObject
         {
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
-            Resources = ResourceList
+            Resources = ResourceList,
+            Ants = AntList
         };
         string json = saveObject.ToJson();
         Debug.Log(json);
@@ -102,6 +114,16 @@ public static class GameWorld
                 ResourceNodeData data = saveObject.ResourceData[i];
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
+            }
+            for (int i = 0; i < AntList.Count;)
+            {
+                AntList[i].Destroy();
+            }
+            for (int i = 0; i < saveObject.Ants.Count; i++)
+            {
+                AntData data = saveObject.AntData[i];
+                GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load(data.Prefab), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
+                newAnt.GetComponent<Ant>().SetData(data);
             }
         }
         else

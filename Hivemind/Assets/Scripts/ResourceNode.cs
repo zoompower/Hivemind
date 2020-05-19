@@ -124,7 +124,7 @@ public class ResourceNode : MonoBehaviour
 
     public ResourceNodeData GetData()
     {
-        ResourceNodeData data = new ResourceNodeData(IsKnown, respawningResources, BaseResourceAmount, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, gameObject.transform.parent);
+        ResourceNodeData data = new ResourceNodeData(IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, gameObject.transform.parent);
         return data;
     }
 
@@ -134,6 +134,7 @@ public class ResourceNode : MonoBehaviour
         gameObject.transform.parent = data.Parent;
         respawningResources = data.RespawningResources;
         BaseResourceAmount = data.BaseResourceAmount;
+        resourceType = data.ResourceType;
         CanRespawn = data.CanRespawn;
         TimeToRespawn = data.TimeToRespawn;
         DestroyWhenEmpty = data.DestroyWhenEmpty;

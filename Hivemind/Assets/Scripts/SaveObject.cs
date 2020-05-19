@@ -16,12 +16,18 @@ namespace Assets.Scripts
 
         public List<ResourceNode> Resources;
         public List<ResourceNodeData> ResourceData = new List<ResourceNodeData>();
+        public List<Ant> Ants;
+        public List<AntData> AntData = new List<AntData>();
 
         public string ToJson()
         {
             foreach (ResourceNode node in Resources)
             {
                 ResourceData.Add(node.GetData());
+            }
+            foreach (Ant ant in Ants)
+            {
+                AntData.Add(ant.GetData());
             }
             return JsonUtility.ToJson(this, true);
         }

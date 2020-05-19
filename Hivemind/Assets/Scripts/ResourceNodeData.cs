@@ -13,6 +13,7 @@ namespace Assets.Scripts
         public bool IsKnown;
         public bool RespawningResources;
         public int BaseResourceAmount;
+        public ResourceType ResourceType;
         public bool CanRespawn;
         public int TimeToRespawn;
         public bool DestroyWhenEmpty;
@@ -27,11 +28,12 @@ namespace Assets.Scripts
         public string Prefab;
         public Transform Parent;
 
-        public ResourceNodeData(bool isKnown, bool respawningResources, int baseResourceAmount, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, Transform parent)
+        public ResourceNodeData(bool isKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, Transform parent)
         {
             IsKnown = isKnown;
             RespawningResources = respawningResources;
             BaseResourceAmount = baseResourceAmount;
+            ResourceType = resourceType;
             CanRespawn = canRespawn;
             TimeToRespawn = timeToRespawn;
             DestroyWhenEmpty = destroyWhenEmpty;
