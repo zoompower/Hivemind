@@ -9,6 +9,20 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField]
     private GameObject settingsMenu;
 
+    [SerializeField]
+    private AudioSource mainMusic;
+
+    void Start()
+    {
+        if (mainMusic != null)
+        {
+            if (PlayerPrefs.HasKey("Volume"))
+            {
+                mainMusic.volume = PlayerPrefs.GetFloat("Volume");
+            }
+        }
+    }
+
     public void PlayGame()
     {
         SceneManager.LoadScene("Map");

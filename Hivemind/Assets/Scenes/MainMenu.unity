@@ -767,6 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 773669109}
   settingsMenu: {fileID: 1456256035}
+  mainMusic: {fileID: 793747061}
 --- !u!82 &1072105080
 AudioSource:
   m_ObjectHideFlags: 0
