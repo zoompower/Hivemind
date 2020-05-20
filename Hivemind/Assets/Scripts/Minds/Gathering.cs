@@ -39,7 +39,6 @@ public class Gathering : IMind
     public bool IsScout;
     private int nextHarvest;
     private bool preparingReturn;
-    private GameObject excla;
     private bool scouting;
     private ResourceNode target;
 
@@ -85,7 +84,7 @@ public class Gathering : IMind
                     {
                         target = tempTarget;
                         ant.state = State.MovingToStorage;
-                        FoundResource();
+                        ant.StartCoroutine(Discover());
                     }
                     else
                     {
@@ -172,12 +171,6 @@ public class Gathering : IMind
         }
     }
 
-    private void FoundResource()
-    {
-        ant.PlaySoundDiscovery();
-        ant.StartCoroutine(Discover());
-    }
-
     public double Likelihood(Ant ant)
     {
         return 50;
@@ -185,7 +178,8 @@ public class Gathering : IMind
 
     private IEnumerator Discover()
     {
-         excla = (GameObject)GameObject.Instantiate(Resources.Load("ExclamationMark"), ant.transform, false);
+        ant.PlaySoundDiscovery();
+        var excla = (GameObject)GameObject.Instantiate(Resources.Load("ExclamationMark"), ant.transform, false);
          excla.transform.localScale *= 3;
         yield return new WaitForSeconds(0.8f);
         UnityEngine.GameObject.Destroy(excla.gameObject);

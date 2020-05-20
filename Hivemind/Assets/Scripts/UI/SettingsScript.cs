@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +36,7 @@ public class SettingsScript : MonoBehaviour
     public static bool globalFullscreen = true;
 
     Resolution[] resolutions;
+    public static event EventHandler OnVolumeChanged;
 
 
 
@@ -139,6 +141,7 @@ public class SettingsScript : MonoBehaviour
         currentVolume = audioSrc.volume;
         mainAudioSource.volume = audioSrc.volume;
         PlayerPrefs.Save();
+        OnVolumeChanged.Invoke(null, EventArgs.Empty);
     }
     public void Back()
     {

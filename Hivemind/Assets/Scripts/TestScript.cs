@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 /**
@@ -56,16 +55,13 @@ public class TestScript : MonoBehaviour
     {
         if (!guid.Equals(Guid.Empty))
         {
-            for (int x = 0; x < 20; x++)
-            {
-                var go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity,
-                    GameObject.Find("Ants").transform);
-                var a = go.GetComponent<Ant>();
+            var go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity,
+                GameObject.Find("Ants").transform);
+            var a = go.GetComponent<Ant>();
 
-                controller.UnitGroupList.GetUnitGroupFromUnitId(guid).AddUnits(a);
-                AddMaxUnits();
-                AddCurrentUnits();
-            }
+            controller.UnitGroupList.GetUnitGroupFromUnitId(guid).AddUnits(a);
+            AddMaxUnits();
+            AddCurrentUnits();
         }
     }
 }

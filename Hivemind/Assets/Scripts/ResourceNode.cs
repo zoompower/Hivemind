@@ -24,6 +24,7 @@ public class ResourceNode : MonoBehaviour
     [SerializeField]
     private AudioSource audioSrc;
 
+    private float audioVolume = 1;
     private int resourceAmount;
 
     private int futureResourceAmount;
@@ -35,7 +36,6 @@ public class ResourceNode : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         GameWorld.AddNewResource(this);
         audioSrc = GetComponent<AudioSource>();
-        float audioVolume = 1;
         if (PlayerPrefs.HasKey("Volume"))
         {
             audioVolume = PlayerPrefs.GetFloat("Volume");
@@ -45,6 +45,8 @@ public class ResourceNode : MonoBehaviour
         {
             audioSrc.volume *= 2.5f;
         }
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     public void AddToKnownResourceList()
@@ -141,5 +143,22 @@ public class ResourceNode : MonoBehaviour
     {
         var returnValue = GameWorld.KnownResources.Contains(this);
         return returnValue;
+    }
+
+    public void UpdateVolume()
+    {
+        if (audioSrc != null)
+        {
+            if (PlayerPrefs.HasKey("Volume"))
+            {
+                audioVolume = PlayerPrefs.GetFloat("Volume");
+            }
+
+            audioSrc.volume = audioVolume;
+            if (this.resourceType == ResourceType.Crystal)
+            {
+                audioSrc.volume = audioVolume * 2.5f;
+            }
+        }
     }
 }

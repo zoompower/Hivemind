@@ -35,6 +35,7 @@ public class Ant : MonoBehaviour
             audioVolume = PlayerPrefs.GetFloat("Volume");
         }
         audioSrc.volume = (audioVolume * 0.05f);
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     // Start is called before the first frame update
@@ -46,11 +47,6 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (PlayerPrefs.HasKey("Volume"))
-        {
-            audioVolume = PlayerPrefs.GetFloat("Volume");
-        }
-        audioSrc.volume = audioVolume * 0.05f;
         if (AtBase())
         {
             var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
@@ -119,6 +115,15 @@ public class Ant : MonoBehaviour
     internal void SetStorage(Storage storage)
     {
         this.storage = storage;
+    }
+
+    public void UpdateVolume()
+    {
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioVolume = PlayerPrefs.GetFloat("Volume");
+        }
+        audioSrc.volume = audioVolume * 0.05f;
     }
 
     private enum AntType
