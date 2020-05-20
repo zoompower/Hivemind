@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -12,6 +9,7 @@ namespace Assets.Scripts
     {
         //super ugly way to serialize a dictionary because of Unity's stupid serialization
         public List<ResourceType> ResourceAmountsKeys;
+
         public List<int> ResourceAmountsValues;
 
         public List<ResourceNode> Resources;

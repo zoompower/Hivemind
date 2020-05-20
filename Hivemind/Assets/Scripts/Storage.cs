@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 public class Storage : MonoBehaviour
 {
     private void Awake()

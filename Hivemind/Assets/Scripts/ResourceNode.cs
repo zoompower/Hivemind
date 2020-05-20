@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -17,8 +16,10 @@ public class ResourceNode : MonoBehaviour
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
     public bool CanRespawn = false;
+
     [SerializeField]
     private int TimeToRespawn = 30;
+
     public bool DestroyWhenEmpty = false;
     public bool IsKnown;
     public string Prefab;

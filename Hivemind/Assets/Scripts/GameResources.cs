@@ -34,7 +34,7 @@ namespace Assets.Scripts
 
         public static void SetResourceAmounts(List<ResourceType> keyList, List<int> valueList)
         {
-            for(int i = 0; i < keyList.Count; i++)
+            for (int i = 0; i < keyList.Count; i++)
             {
                 resourceAmounts[keyList[i]] = valueList[i];
             }
