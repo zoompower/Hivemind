@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,9 @@ public abstract class BaseUnitRoom : BaseRoom
     internal bool Destructable = true;
 
     internal string UnitResource;
+
+    internal bool AstarVisited = false;
+    private bool applicationExit = false;
 
     public override bool IsDestructable()
     {
@@ -50,6 +54,7 @@ public abstract class BaseUnitRoom : BaseRoom
         }
 
         AddEventListeners();
+        Astar.RegisterResetableRoom(this);
 
         bool createNew = true;
 
@@ -118,9 +123,62 @@ public abstract class BaseUnitRoom : BaseRoom
         }
     }
 
+    private void SplitRoom()
+    {
+        List<BaseUnitRoom> sameNeighborList = new List<BaseUnitRoom>();
+
+        foreach (var neighbor in transform.GetComponentInParent<BaseTile>()?.Neighbors)
+        {
+            BaseTile neighborTile = neighbor.GetComponent<BaseTile>();
+            if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == this.GetType())
+            {
+                sameNeighborList.Add(neighborTile.RoomScript as BaseUnitRoom);
+            }
+        }
+
+        if (sameNeighborList.Count > 1 && sameNeighborList.Count < 5)
+        {
+            List<BaseUnitRoom> checkList = new List<BaseUnitRoom>(sameNeighborList);
+            List<BaseUnitRoom> roomList = new List<BaseUnitRoom>();
+
+            while (checkList.Count > 1)
+            {
+                roomList.Add(checkList[0]);
+
+                List<BaseUnitRoom> swapList = new List<BaseUnitRoom>();
+                for (int i = 1; i < checkList.Count; i++)
+                {
+                    if (!Astar.CanFind(checkList[0], checkList[i], new List<BaseUnitRoom>() { this }))
+                    {
+                        swapList.Add(checkList[i]);
+                    }
+                }
+                checkList = swapList;
+            }
+
+            roomList.AddRange(checkList);
+
+            if (roomList.Count > 1)
+            {
+                for (int i = 1; i < roomList.Count; i++)
+                {
+                    Debug.Log($"Create new room {roomList[i].transform.parent.name}"); // TODO: continue here
+                }
+            }
+        }
+    }
+
     private void OnDestroy()
     {
         RemoveEventListeners();
-        unitGroup.RemoveMax();
+        unitGroup?.RemoveMax();
+        if (!applicationExit)
+            SplitRoom();
+        Astar.RemoveResetableRoom(this);
+    }
+
+    private void OnApplicationQuit()
+    {
+        applicationExit = true;
     }
 }

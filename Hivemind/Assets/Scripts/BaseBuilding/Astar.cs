@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 static class Astar
 {
-    private static List<BaseTile> resetList = new List<BaseTile>();
+    private static List<BaseUnitRoom> resetList = new List<BaseUnitRoom>();
 
-    public static void RegisterResetTile(BaseTile tile)
+    public static void RegisterResetableRoom(BaseUnitRoom tile)
     {
         resetList.Add(tile);
     }
 
-    public static void RemoveResetTile(BaseTile tile)
+    public static void RemoveResetableRoom(BaseUnitRoom tile)
     {
         resetList.Remove(tile);
     }
@@ -23,7 +22,7 @@ static class Astar
         }
     }
 
-    public static bool CanFind(BaseTile start, BaseTile end, List<BaseTile> ignoreList)
+    public static bool CanFind(BaseUnitRoom start, BaseUnitRoom end, List<BaseUnitRoom> ignoreList)
     {
         ResetList();
 
@@ -32,11 +31,11 @@ static class Astar
             tile.AstarVisited = true;
         }
 
-        TileQueue queue = new TileQueue();
+        UnitRoomPriorityQueue queue = new UnitRoomPriorityQueue();
 
         queue.push(start);
 
-        BaseTile currTile;
+        BaseUnitRoom currTile;
         while ((currTile = queue.pop(end.transform.position)) != null)
         {
             if (currTile == end)
@@ -46,12 +45,12 @@ static class Astar
 
             currTile.AstarVisited = true;
 
-            foreach (var neighbor in currTile.Neighbors)
+            foreach (var neighbor in currTile.GetComponentInParent<BaseTile>()?.Neighbors)
             {
                 BaseTile neighborTile = neighbor.GetComponent<BaseTile>();
-                if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == currTile.RoomScript.GetType())
+                if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == currTile.GetType())
                 {
-                    queue.push(neighborTile);
+                    queue.push(neighborTile.RoomScript as BaseUnitRoom);
                 }
             }
         }
