@@ -12,12 +12,14 @@ public class GameMenuScript : MonoBehaviour
     [SerializeField]
     private UiController UIgameobject;
 
+    private bool paused = false;
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown("escape"))
         {
-            if (PauseMenuPanel.activeSelf || SettingsMenuPanel.activeSelf)
+            paused = !paused;
+            if (paused)
             {
                 ResumeGame();
             }
