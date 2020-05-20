@@ -27,6 +27,9 @@ public class SpatialPartition : MonoBehaviour
                     ) + transform.position;
                 go.transform.localScale = new Vector3((go.transform.localScale.x / width), 1, (go.transform.localScale.z / depth));
                 go.name = "CollisionBox(" + i + "," + j + ")";
+                go.transform.Find("SpatialPartitioning");
+                go.GetComponent<SpatialPartitioning>().width = j;
+                go.GetComponent<SpatialPartitioning>().height = i;
             }
         }
     }
