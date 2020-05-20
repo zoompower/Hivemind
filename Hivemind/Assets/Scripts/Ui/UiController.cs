@@ -27,6 +27,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public GameObject[] UnitGroupObjects; // The unit group UI GameObjects
     public GameObject unitIconBase;
 
+    public AudioSource audioSrc;
+
     public void OnDrag(PointerEventData eventData)
     {
         if (unitGroupObj == null) return;
@@ -79,6 +81,10 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
         UpdateResourceTextObject();
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+        }
     }
 
     public void UI_OpenMindBuilder(int i)
@@ -145,5 +151,13 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     private string FormatResource(string spriteName, int val)
     {
         return $" <sprite={spriteName}> ({val}/999)";
+    }
+
+    public void UpdateVolume()
+    {
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+        }
     }
 }

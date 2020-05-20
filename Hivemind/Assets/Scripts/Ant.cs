@@ -16,6 +16,7 @@ public class Ant : MonoBehaviour
     public Gathering.State state;
     private Storage storage;
     internal Guid unitGroupID;
+    private AudioSource audioSrc;
     public Ant closestEnemy { get; private set; }
 
 
@@ -26,6 +27,14 @@ public class Ant : MonoBehaviour
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
         state = Gathering.State.Idle;
+        audioSrc = GetComponent<AudioSource>();
+        //get volume
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+        }
+        audioSrc.volume *=  0.05f;
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     // Start is called before the first frame update
@@ -73,7 +82,7 @@ public class Ant : MonoBehaviour
 
     public bool AtBase()
     {
-        if (Vector3.Distance(transform.position, storage.GetPosition()) < 1f) return true;
+        if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f) return true;
         return false;
     }
 
@@ -107,9 +116,23 @@ public class Ant : MonoBehaviour
         this.storage = storage;
     }
 
+    public void UpdateVolume()
+    {
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+            audioSrc.volume *= 0.05f;
+        }
+    }
+
     private enum AntType
     {
         Worker,
         Soldier
+    }
+
+    public void PlaySoundDiscovery()
+    {
+        audioSrc.Play();
     }
 }

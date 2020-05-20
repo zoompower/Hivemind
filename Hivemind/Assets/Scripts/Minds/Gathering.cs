@@ -39,7 +39,6 @@ public class Gathering : IMind
     public bool IsScout;
     private int nextHarvest;
     private bool preparingReturn;
-
     private bool scouting;
     private ResourceNode target;
 
@@ -85,6 +84,7 @@ public class Gathering : IMind
                     {
                         target = tempTarget;
                         ant.state = State.MovingToStorage;
+                        ant.StartCoroutine(Discover());
                     }
                     else
                     {
@@ -117,7 +117,7 @@ public class Gathering : IMind
                 target.GrabResource();
 
                 //calculate new speed
-                var speedPower = (float) Math.Pow(0.75, carryingObjects.Count);
+                var speedPower = (float)Math.Pow(0.75, carryingObjects.Count);
                 ant.currentSpeed = ant.baseSpeed * speedPower;
 
                 ant.UpdateSpeed();
@@ -142,7 +142,10 @@ public class Gathering : IMind
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                     if (ant.AtBase())
                     {
-                        if (IsScout && target != null) target.AddToKnownResourceList();
+                        if (IsScout && target != null && !target.knownResource())
+                        {
+                            target.AddToKnownResourceList();
+                        }
                         if (inventory != null)
                         {
                             GameResources.AddResources(inventory);
@@ -170,6 +173,16 @@ public class Gathering : IMind
         return 50;
     }
 
+    private IEnumerator Discover()
+    {
+        ant.PlaySoundDiscovery();
+
+        var excla = (GameObject)GameObject.Instantiate(Resources.Load("ExclamationMark"), ant.transform, false);
+        excla.transform.localScale *= 3;
+
+        yield return new WaitForSeconds(0.8f);
+        UnityEngine.GameObject.Destroy(excla.gameObject);
+    }
     public IMind Clone()
     {
         var clone = new Gathering(prefferedType, carryWeight, prefferedDirection);
@@ -224,7 +237,8 @@ public class Gathering : IMind
         if (target != null)
         {
             if (ant.state == State.Idle) ant.GetAgent().isStopped = false;
-            ant.StopAllCoroutines();
+            ant.StopCoroutine(Scout());
+            ant.StopCoroutine(ReturnToBase());
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
