@@ -43,6 +43,11 @@ public class Ant : MonoBehaviour
         storage = GameWorld.GetStorage();
     }
 
+    public void OnDestroy()
+    {
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+    }
+
     // Update is called once per frame
     private void Update()
     {

@@ -141,7 +141,10 @@ public class SettingsScript : MonoBehaviour
         currentVolume = audioSrc.volume;
         mainAudioSource.volume = audioSrc.volume;
         PlayerPrefs.Save();
-        OnVolumeChanged.Invoke(null, EventArgs.Empty);
+        if(OnVolumeChanged != null)
+        {
+            OnVolumeChanged.Invoke(null, EventArgs.Empty);
+        }
     }
     public void Back()
     {
