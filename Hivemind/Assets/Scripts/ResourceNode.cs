@@ -154,7 +154,7 @@ public class ResourceNode : MonoBehaviour
             }
             if (resourceType == ResourceType.Crystal)
             {
-                audioSrc.volume *= 2.5f;
+                audioSrc.volume *= 1.5f;
             }
         }
     }
