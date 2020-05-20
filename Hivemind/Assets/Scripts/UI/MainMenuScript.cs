@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class MainMenuScript : MonoBehaviour
 
     void Start()
     {
+        settingsMenu.SetActive(true);
+        settingsMenu.SetActive(false);
         if (mainMusic != null)
         {
             if (PlayerPrefs.HasKey("Volume"))
@@ -22,7 +25,6 @@ public class MainMenuScript : MonoBehaviour
             }
         }
     }
-
     public void PlayGame()
     {
         SceneManager.LoadScene("Map");
