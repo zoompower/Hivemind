@@ -17,7 +17,6 @@ public class Ant : MonoBehaviour
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
-    private float audioVolume = 1f;
     public Ant closestEnemy { get; private set; }
 
 
