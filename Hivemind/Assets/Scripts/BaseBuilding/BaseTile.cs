@@ -25,9 +25,12 @@ public class BaseTile : MonoBehaviour
     [SerializeField]
     private Color MeshColor = new Color(53.0f / 255.0f, 124.0f / 255.0f, 44.0f / 255.0f);
 
+    internal bool AstarVisited = false;
+
     private void Awake()
     {
         FindAndAttachNeighbors();
+        Astar.RegisterResetTile(this);
     }
 
     private void Start()
@@ -56,10 +59,58 @@ public class BaseTile : MonoBehaviour
 
     internal void DestroyRoom(bool forced)
     {
+        if (CurrTile == null) return;
+
         if ((!IsIndestructable && RoomScript.IsDestructable()) || forced)
         {
             Destroy(CurrTile);
+            SplitRoom();
             RoomScript = null;
+        }
+    }
+
+    private void SplitRoom()
+    {
+        List<BaseTile> sameNeighborList = new List<BaseTile>();
+
+        foreach (var neighbor in Neighbors)
+        {
+            BaseTile neighborTile = neighbor.GetComponent<BaseTile>();
+            if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == RoomScript.GetType())
+            {
+                sameNeighborList.Add(neighborTile);
+            }
+        }
+
+        if (sameNeighborList.Count > 1 && sameNeighborList.Count < 5)
+        {
+            List<BaseTile> checkList = new List<BaseTile>(sameNeighborList);
+            List<BaseTile> roomList = new List<BaseTile>();
+
+            while (checkList.Count > 1)
+            {
+                roomList.Add(checkList[0]);
+
+                List<BaseTile> swapList = new List<BaseTile>();
+                for (int i = 1; i < checkList.Count; i++)
+                {
+                    if (!Astar.CanFind(checkList[0], checkList[i], new List<BaseTile>() { this }))
+                    {
+                        swapList.Add(checkList[i]);
+                    }
+                }
+                checkList = swapList;
+            }
+
+            roomList.AddRange(checkList);
+
+            if (roomList.Count > 1)
+            {
+                for (int i = 1; i < roomList.Count; i++)
+                {
+                    Debug.Log($"Create new room {roomList[i]}");
+                }
+            }
         }
     }
 
@@ -87,5 +138,10 @@ public class BaseTile : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, CollisionSize);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Astar.RemoveResetTile(this);
     }
 }

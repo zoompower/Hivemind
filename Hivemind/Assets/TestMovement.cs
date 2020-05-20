@@ -24,7 +24,7 @@ public class TestMovement : MonoBehaviour
 
     private void OnDestroy()
     {
-        FindObjectOfType<UnitController>().OnUnitDestroy(unitGroup);
+        FindObjectOfType<UnitController>()?.OnUnitDestroy(unitGroup);
         Destroy(target);
     }
 }

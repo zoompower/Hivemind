@@ -40,7 +40,7 @@ public class BaseController : MonoBehaviour
                 {
                     plate = hit.transform.parent.gameObject;
                 }
-                Debug.Log(plate.name);
+
                 OnLeftClick(plate.GetComponent<BaseTile>());
             }
         }

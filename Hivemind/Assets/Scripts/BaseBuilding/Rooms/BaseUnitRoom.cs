@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class UnitRoom : BaseRoom
+public abstract class BaseUnitRoom : BaseRoom
 {
     internal UnitGroup unitGroup;
 
@@ -43,8 +43,6 @@ public abstract class UnitRoom : BaseRoom
 
     private void Start()
     {
-        Destructable = true;
-
         unitController = FindObjectOfType<UnitController>();
         if (unitController == null)
         {
@@ -57,9 +55,9 @@ public abstract class UnitRoom : BaseRoom
 
         foreach (var neighbor in transform.GetComponentInParent<BaseTile>().Neighbors)
         {
-            if (neighbor.GetComponent<BaseTile>().RoomScript is UnitRoom)
+            if (neighbor.GetComponent<BaseTile>().RoomScript is BaseUnitRoom)
             {
-                var other = neighbor.GetComponent<BaseTile>().RoomScript as UnitRoom;
+                var other = neighbor.GetComponent<BaseTile>().RoomScript as BaseUnitRoom;
                 if (other.GroupId == Guid.Empty)
                 {
                     continue;
@@ -95,21 +93,28 @@ public abstract class UnitRoom : BaseRoom
     {
         if (unitGroup.AddUnit())
         {
-            GameObject ant = Instantiate(Resources.Load("TestAnt") as GameObject); // TODO: instead of "testAnt" use unitresource property
-
-            GameObject container = GameObject.Find("Ants");
-            if (container == null)
+            if (UnitResource != null)
             {
-                Debug.LogWarning("The \"Ants\" container was not found. Please add a container to save the Hiearchy from clutter!");
+                GameObject ant = Instantiate(Resources.Load("TestAnt") as GameObject); // TODO: instead of "testAnt" use unitresource property
+
+                GameObject container = GameObject.Find("Ants");
+                if (container == null)
+                {
+                    throw new Exception("The \"Ants\" container was not found. Please add a container to save the Hiearchy from clutter!");
+                }
+                else
+                {
+                    ant.transform.SetParent(container.transform);
+                }
+
+                ant.GetComponent<TestMovement>().unitGroup = this.GroupId;
+
+                ant.GetComponent<NavMeshAgent>().Warp(transform.position);
             }
             else
             {
-                ant.transform.SetParent(container.transform);
+                throw new Exception("This object has no UnitResource set!");
             }
-
-            ant.GetComponent<TestMovement>().unitGroup = this.GroupId;
-
-            ant.GetComponent<NavMeshAgent>().Warp(transform.position);
         }
     }
 

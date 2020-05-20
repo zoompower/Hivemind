@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-class WorkerRoom : UnitRoom
+class WorkerRoom : BaseUnitRoom
 {
     private void Awake()
     {

@@ -57,16 +57,16 @@ public class UnitGroupList
         return Guid.Empty;
     }
 
-    internal GroupIdChangedEventArgs MergeGroupIntoGroup(Guid group, Guid intoGroup)
+    internal GroupIdChangedEventArgs MergeGroupIntoGroup(Guid mergeGroup, Guid intoGroup)
     {
-        var oldUnitGroup = GetUnitGroupFromUnitId(group);
+        var oldUnitGroup = GetUnitGroupFromUnitId(mergeGroup);
         var newUnitGroup = GetUnitGroupFromUnitId(intoGroup);
 
         newUnitGroup.MergeGroupIntoThis(oldUnitGroup);
 
         DeleteUnitGroup(oldUnitGroup);
 
-        return new GroupIdChangedEventArgs(group, newUnitGroup.UnitGroupId);
+        return new GroupIdChangedEventArgs(mergeGroup, newUnitGroup.UnitGroupId);
     }
 
     internal UnitGroup GetUnitGroupFromUIObject(GameObject gameObject)

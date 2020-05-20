@@ -70,7 +70,8 @@ public class UnitGroup
 
     private void UpdateText()
     {
-        textBox.text = $"{CurrentUnits}/{MaxUnits}";
+        if (textBox != null)
+            textBox.text = $"{CurrentUnits}/{MaxUnits}";
     }
 
     internal void MergeGroupIntoThis(UnitGroup other)
