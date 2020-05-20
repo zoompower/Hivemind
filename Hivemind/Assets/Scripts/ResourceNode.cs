@@ -24,6 +24,9 @@ public class ResourceNode : MonoBehaviour
     public bool IsKnown;
     public string Prefab;
 
+    [SerializeField]
+    private AudioSource audioSrc;
+
     private int resourceAmount;
 
     private int futureResourceAmount;
@@ -35,6 +38,17 @@ public class ResourceNode : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         IsKnown = false;
         GameWorld.AddNewResource(this);
+        audioSrc = GetComponent<AudioSource>();
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+        }
+        if (resourceType == ResourceType.Crystal)
+        {
+            audioSrc.volume *= 2.5f;
+        }
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     private void Update()
@@ -104,6 +118,9 @@ public class ResourceNode : MonoBehaviour
         {
             ColorResource(resourceAmount);
         }
+        if (audioSrc != null)
+            audioSrc.Play();
+        audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
     }
 
     public void ColorResource(int amount)
@@ -146,5 +163,20 @@ public class ResourceNode : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
+    }
+
+    public void UpdateVolume()
+    {
+        if (audioSrc != null)
+        {
+            if (PlayerPrefs.HasKey("Volume"))
+            {
+                audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+            }
+            if (resourceType == ResourceType.Crystal)
+            {
+                audioSrc.volume *= 2.5f;
+            }
+        }
     }
 }

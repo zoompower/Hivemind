@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,11 +14,14 @@ public class SettingsScript : MonoBehaviour
     private Slider volumeSlider;
 
     [SerializeField]
+    private AudioSource mainAudioSource;
+
+    [SerializeField]
     private Toggle fullscreenToggle;
 
     public Dropdown dropdownMenu;
 
-    public static float currentVolume = 1;
+    public static float currentVolume = 1f;
 
     private int width = 1920;
 
@@ -32,6 +36,9 @@ public class SettingsScript : MonoBehaviour
     public static bool globalFullscreen = true;
 
     Resolution[] resolutions;
+    public static event EventHandler OnVolumeChanged;
+
+
 
     private void Awake()
     {
@@ -132,8 +139,9 @@ public class SettingsScript : MonoBehaviour
         PlayerPrefs.SetInt("Height", globalHeight);
         PlayerPrefs.SetFloat("Volume", audioSrc.volume);
         currentVolume = audioSrc.volume;
-       
+        mainAudioSource.volume = audioSrc.volume;
         PlayerPrefs.Save();
+        OnVolumeChanged.Invoke(null, EventArgs.Empty);
     }
     public void Back()
     {
