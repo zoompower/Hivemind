@@ -48,4 +48,19 @@ public class UnitController : MonoBehaviour
     {
         OnGroupIdChange.Invoke(null, UnitGroupList.MergeGroupIntoGroup(group, otherGroup));
     }
+
+    public void OnUnitDestroy(Guid unitGroupId)
+    {
+        var group = UnitGroupList.GetUnitGroupFromUnitId(unitGroupId);
+
+        if (group != null)
+        {
+            group.RemoveUnit();
+            
+            if (group.MaxUnits <= 0 && group.CurrentUnits <= 0)
+            {
+                UnitGroupList.DeleteUnitGroup(group);
+            }
+        }
+    }
 }

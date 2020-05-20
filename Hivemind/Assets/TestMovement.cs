@@ -5,6 +5,8 @@ public class TestMovement : MonoBehaviour
 {
     GameObject target;
 
+    public System.Guid unitGroup;
+
     private NavMeshAgent nav;
     // Start is called before the first frame update
     void Start()
@@ -18,5 +20,11 @@ public class TestMovement : MonoBehaviour
     void Update()
     {
         nav.SetDestination(target.transform.position);
+    }
+
+    private void OnDestroy()
+    {
+        FindObjectOfType<UnitController>().OnUnitDestroy(unitGroup);
+        Destroy(target);
     }
 }

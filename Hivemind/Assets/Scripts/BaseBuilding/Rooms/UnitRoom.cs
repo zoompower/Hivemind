@@ -107,6 +107,8 @@ public abstract class UnitRoom : BaseRoom
                 ant.transform.SetParent(container.transform);
             }
 
+            ant.GetComponent<TestMovement>().unitGroup = this.GroupId;
+
             ant.GetComponent<NavMeshAgent>().Warp(transform.position);
         }
     }
@@ -114,5 +116,6 @@ public abstract class UnitRoom : BaseRoom
     private void OnDestroy()
     {
         RemoveEventListeners();
+        unitGroup.RemoveMax();
     }
 }

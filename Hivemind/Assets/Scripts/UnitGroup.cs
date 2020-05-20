@@ -30,6 +30,11 @@ public class UnitGroup
         UpdateText();
     }
 
+    public bool RemoveMax()
+    {
+        return SetMaxUnits(MaxUnits - 1);
+    }
+
     public bool AddMax()
     {
         return SetMaxUnits(MaxUnits + 1);
@@ -46,6 +51,12 @@ public class UnitGroup
     public bool AddUnit()
     {
         return SetCurrentUnits(CurrentUnits + 1);
+    }
+
+    public void RemoveUnit()
+    {
+        CurrentUnits--;
+        UpdateText();
     }
 
     public bool SetCurrentUnits(int amount)
