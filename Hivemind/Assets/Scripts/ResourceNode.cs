@@ -72,6 +72,7 @@ public class ResourceNode : MonoBehaviour
     public void OnDestroy()
     {
         GameWorld.RemoveResource(this);
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 
     private IEnumerator respawnResource()
@@ -153,7 +154,7 @@ public class ResourceNode : MonoBehaviour
             }
             if (resourceType == ResourceType.Crystal)
             {
-                audioSrc.volume *= 2.5f;
+                audioSrc.volume *= 1.5f;
             }
         }
     }
