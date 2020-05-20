@@ -32,9 +32,9 @@ public class Ant : MonoBehaviour
         //get volume
         if (PlayerPrefs.HasKey("Volume"))
         {
-            audioVolume = PlayerPrefs.GetFloat("Volume");
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume = (audioVolume * 0.05f);
+        audioSrc.volume *=  0.05f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
@@ -121,9 +121,9 @@ public class Ant : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Volume"))
         {
-            audioVolume = PlayerPrefs.GetFloat("Volume");
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume = audioVolume * 0.05f;
+        audioSrc.volume *=  0.05f;
     }
 
     private enum AntType

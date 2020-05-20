@@ -28,7 +28,6 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public GameObject unitIconBase;
 
     public AudioSource audioSrc;
-    private float audioVolume = 1f;
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -84,9 +83,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         UpdateResourceTextObject();
         if (PlayerPrefs.HasKey("Volume"))
         {
-            audioVolume = PlayerPrefs.GetFloat("Volume");
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume = audioVolume;
     }
 
     public void UI_OpenMindBuilder(int i)
@@ -159,8 +157,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         if (PlayerPrefs.HasKey("Volume"))
         {
-            audioVolume = PlayerPrefs.GetFloat("Volume");
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume = audioVolume;
     }
 }

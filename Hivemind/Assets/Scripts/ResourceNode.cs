@@ -24,7 +24,6 @@ public class ResourceNode : MonoBehaviour
     [SerializeField]
     private AudioSource audioSrc;
 
-    private float audioVolume = 1;
     private int resourceAmount;
 
     private int futureResourceAmount;
@@ -38,10 +37,9 @@ public class ResourceNode : MonoBehaviour
         audioSrc = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey("Volume"))
         {
-            audioVolume = PlayerPrefs.GetFloat("Volume");
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume = (audioVolume);
-        if (this.resourceType == ResourceType.Crystal)
+        if (resourceType == ResourceType.Crystal)
         {
             audioSrc.volume *= 2.5f;
         }
@@ -151,13 +149,11 @@ public class ResourceNode : MonoBehaviour
         {
             if (PlayerPrefs.HasKey("Volume"))
             {
-                audioVolume = PlayerPrefs.GetFloat("Volume");
+                audioSrc.volume = PlayerPrefs.GetFloat("Volume");
             }
-
-            audioSrc.volume = audioVolume;
-            if (this.resourceType == ResourceType.Crystal)
+            if (resourceType == ResourceType.Crystal)
             {
-                audioSrc.volume = audioVolume * 2.5f;
+                audioSrc.volume *= 2.5f;
             }
         }
     }

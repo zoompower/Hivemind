@@ -117,7 +117,7 @@ public class Gathering : IMind
                 target.GrabResource();
 
                 //calculate new speed
-                var speedPower = (float) Math.Pow(0.75, carryingObjects.Count);
+                var speedPower = (float)Math.Pow(0.75, carryingObjects.Count);
                 ant.currentSpeed = ant.baseSpeed * speedPower;
 
                 ant.UpdateSpeed();
@@ -142,12 +142,9 @@ public class Gathering : IMind
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                     if (ant.AtBase())
                     {
-                        if (IsScout && target != null)
+                        if (IsScout && target != null && !target.knownResource())
                         {
-                            if (!target.knownResource())
-                            {
-                                target.AddToKnownResourceList();
-                            }
+                            target.AddToKnownResourceList();
                         }
                         if (inventory != null)
                         {
@@ -179,8 +176,10 @@ public class Gathering : IMind
     private IEnumerator Discover()
     {
         ant.PlaySoundDiscovery();
+
         var excla = (GameObject)GameObject.Instantiate(Resources.Load("ExclamationMark"), ant.transform, false);
-         excla.transform.localScale *= 3;
+        excla.transform.localScale *= 3;
+
         yield return new WaitForSeconds(0.8f);
         UnityEngine.GameObject.Destroy(excla.gameObject);
     }
