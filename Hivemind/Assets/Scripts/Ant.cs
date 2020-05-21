@@ -19,7 +19,6 @@ public class Ant : MonoBehaviour
     private AudioSource audioSrc;
     public Ant closestEnemy { get; private set; }
 
-
     private void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
@@ -34,18 +33,18 @@ public class Ant : MonoBehaviour
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
         audioSrc.volume *=  0.15f;
-        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     // Start is called before the first frame update
     private void Start()
     {
         storage = GameWorld.GetStorage();
+        AddEventListeners();
     }
 
     public void OnDestroy()
     {
-        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+        RemoveEventListeners();
     }
 
     // Update is called once per frame
@@ -106,11 +105,6 @@ public class Ant : MonoBehaviour
         return storage;
     }
 
-    public void SetUnitGroup(Guid ug)
-    {
-        unitGroupID = ug;
-    }
-
     internal void UpdateSpeed()
     {
         agent.speed = currentSpeed;
@@ -139,5 +133,30 @@ public class Ant : MonoBehaviour
     public void PlaySoundDiscovery()
     {
         audioSrc.Play();
+    }
+
+    private void AddEventListeners()
+    {
+        FindObjectOfType<UnitController>().OnGroupIdChange += ChangeGroupID;
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+    }
+
+    private void RemoveEventListeners()
+    {
+        if (FindObjectOfType<UnitController>() != null)
+        {
+            FindObjectOfType<UnitController>().OnGroupIdChange -= ChangeGroupID;
+        }
+
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+    }
+
+    private void ChangeGroupID(object sender, GroupIdChangedEventArgs e)
+    {
+        if (unitGroupID == e.oldGuid)
+        {
+            unitGroupID = e.newGuid;
+        }
     }
 }

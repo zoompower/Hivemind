@@ -81,7 +81,7 @@ public class BaseTile : MonoBehaviour
         if (StartObject != null && StartObject.GetComponent<MeshFilter>() != null && ShowMeshPreview)
         {
             Gizmos.color = MeshColor;
-            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position + StartObject.transform.position, transform.rotation, transform.localScale);
+            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
         }
 
         if (ShowDebugInfo)

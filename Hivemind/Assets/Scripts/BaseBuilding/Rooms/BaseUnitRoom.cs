@@ -87,11 +87,16 @@ public abstract class BaseUnitRoom : BaseRoom
             GroupId = unitController.CreateUnitGroup();
         }
 
-        unitGroup = unitController.UnitGroupList.GetUnitGroupFromUnitId(GroupId);
+        AttachUnitGroup();
 
         unitGroup.AddMax();
 
         InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
+    }
+
+    internal void AttachUnitGroup()
+    {
+        unitGroup = unitController.UnitGroupList.GetUnitGroupFromUnitId(GroupId);
     }
 
     private void CheckSpawnable()
@@ -100,7 +105,7 @@ public abstract class BaseUnitRoom : BaseRoom
         {
             if (UnitResource != null)
             {
-                GameObject ant = Instantiate(Resources.Load("TestAnt") as GameObject); // TODO: instead of "testAnt" use unitresource property
+                GameObject ant = Instantiate(Resources.Load(UnitResource) as GameObject);
 
                 GameObject container = GameObject.Find("Ants");
                 if (container == null)
@@ -112,13 +117,13 @@ public abstract class BaseUnitRoom : BaseRoom
                     ant.transform.SetParent(container.transform);
                 }
 
-                ant.GetComponent<TestMovement>().unitGroup = this.GroupId;
+                ant.GetComponent<Ant>().unitGroupID = GroupId;
 
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
             }
             else
             {
-                throw new Exception("This object has no UnitResource set!");
+                throw new Exception($"The {GetType()} has no UnitResource set!");
             }
         }
     }
@@ -130,7 +135,7 @@ public abstract class BaseUnitRoom : BaseRoom
         foreach (var neighbor in transform.GetComponentInParent<BaseTile>()?.Neighbors)
         {
             BaseTile neighborTile = neighbor.GetComponent<BaseTile>();
-            if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == this.GetType())
+            if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == GetType())
             {
                 sameNeighborList.Add(neighborTile.RoomScript as BaseUnitRoom);
             }
@@ -160,10 +165,8 @@ public abstract class BaseUnitRoom : BaseRoom
 
             if (roomList.Count > 1)
             {
-                for (int i = 1; i < roomList.Count; i++)
-                {
-                    Debug.Log($"Create new room {roomList[i].transform.parent.name}"); // TODO: continue here
-                }
+                roomList.RemoveAt(0);
+                FindObjectOfType<UnitController>().SplitUnitGroups(this, roomList);
             }
         }
     }

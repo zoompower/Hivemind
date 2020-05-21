@@ -1,10 +1,7 @@
-﻿using System;
-using UnityEngine;
-
-class WorkerRoom : BaseUnitRoom
+﻿class WorkerRoom : BaseUnitRoom
 {
     private void Awake()
     {
-        UnitResource = "WorkerAnt";
+        UnitResource = "WorkerAnt"; 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -61,16 +60,16 @@ public class UnitGroup
 
     public bool SetCurrentUnits(int amount)
     {
-        if (amount > MaxUnits || amount < 0) return false;
+        return SetCurrentUnits(amount, false);
+    }
+
+    public bool SetCurrentUnits(int amount, bool force)
+    {
+        if (!force && (amount > MaxUnits || amount < 0)) return false;
 
         CurrentUnits = amount;
         UpdateText();
         return true;
-    }
-
-    public void AddUnits(Ant ant)
-    {
-        ant.SetUnitGroup(UnitGroupId);
     }
 
     private void UpdateText()

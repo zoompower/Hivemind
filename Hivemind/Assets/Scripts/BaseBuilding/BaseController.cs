@@ -16,17 +16,17 @@ public class BaseController : MonoBehaviour
     [SerializeField]
     private GameObject WorkerRoomPrefab;
 
-    void Start()
+    void Awake()
     {
         for (int i = 0; i < CollisionLayers.Length; i++)
         {
-            LayerMask += (1 << CollisionLayers[i]);
+            LayerMask += 1 << CollisionLayers[i];
         }
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, LayerMask))
@@ -45,7 +45,7 @@ public class BaseController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetButtonDown("Fire2") && !EventSystem.current.IsPointerOverGameObject())
         {
             SetTool(0);
         }
@@ -64,8 +64,6 @@ public class BaseController : MonoBehaviour
             case BaseBuildingTool.AntRoom:
                 tile.InitializeObject(WorkerRoomPrefab);
                 break;
-
-            case BaseBuildingTool.Default:
             default:
                 if (tile.RoomScript != null && !tile.RoomScript.IsRoom())
                     tile.DestroyRoom();
