@@ -4,7 +4,8 @@ using UnityEngine;
 public class SpatialPartitioning : MonoBehaviour
 {
     public List<GameObject> Entities;
-    private List<SpatialPartitioning> Neighbors;
+    public List<SpatialPartitioning> Neighbors;
+    public List<SpatialPartitioning> ExtraNeighbors;
 
     public int height;
     public int width;
@@ -20,7 +21,7 @@ public class SpatialPartitioning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TO DO, delete this when done DEBUGGING
+        //TO DO: delete this when done DEBUGGING
         /*
         if(Entities.Count != 0)
         {
@@ -41,12 +42,24 @@ public class SpatialPartitioning : MonoBehaviour
 
     public List<GameObject> GetEntitiesWithNeigbors()
     {
+        //TO DO: Check the code while in practice, optimize for actual use
         List<GameObject> EntitiesWithNeighbors = Entities;
 
-        //Add entities of Neigboring SpatialPartitioning
-        foreach (SpatialPartitioning neig in Neighbors)
+        List<SpatialPartitioning> Test;
+
+        if (ExtraNeighbors.Count > 0)
         {
-            foreach(GameObject ant in neig.Entities)
+            Test = ExtraNeighbors;
+        }
+        else
+        {
+            Test = Neighbors;
+        }
+
+        //Add entities of Neigboring SpatialPartitioning
+        foreach (SpatialPartitioning neig in Test)
+        {
+            foreach (GameObject ant in neig.Entities)
             {
                 EntitiesWithNeighbors.Add(ant);
             }
@@ -56,20 +69,23 @@ public class SpatialPartitioning : MonoBehaviour
 
     public List<GameObject> GetEntitiesWithExtraNeighbors(int steps)
     {
-        List<GameObject> EntitiesWithExtraNeighbors = Entities;
+        List<GameObject> EntitiesWithExtraNeighbors;
 
-        for (int i = -steps; i<steps;i++) 
+        for (int i = -steps; i <= steps; i++)
         {
-            for (int j = -steps; j < steps; j++)
+            for (int j = -steps; j <= steps; j++)
             {
-                GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + i) + "," + (width + j) + ")");
-                if (NeigGameObject != null)
+                var Testing = transform.parent.Find($"CollisionBox({ height + i},{ width + j})");
+
+                if (Testing != null && Testing.name != this.name)
                 {
-                    SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();
-                    Neighbors.Add(NeighCollider);
+                    SpatialPartitioning NeigGameObject = Testing.GetComponent<SpatialPartitioning>();
+                    ExtraNeighbors.Add(NeigGameObject);
                 }
             }
         }
+        EntitiesWithExtraNeighbors = GetEntitiesWithNeigbors();
+        ExtraNeighbors.Clear();
 
         return EntitiesWithExtraNeighbors;
     }
@@ -80,7 +96,7 @@ public class SpatialPartitioning : MonoBehaviour
 
         for (int i = 0; i < cords.GetLength(0); i++)
         {
-            GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + cords[i,0]) + "," + (width + cords[i, 1]) + ")");
+            GameObject NeigGameObject = GameObject.Find($"CollisionBox({height + cords[i,0]},{width + cords[i, 1]})");
             if(NeigGameObject != null)
             {
                 SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();

@@ -2,6 +2,6 @@
 {
     private void Awake()
     {
-        UnitResource = "WorkerAnt"; 
+        UnitResource = "Prefabs/WorkerAnt"; 
     }
 }
