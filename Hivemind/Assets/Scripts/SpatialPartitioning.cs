@@ -44,7 +44,7 @@ public class SpatialPartitioning : MonoBehaviour
     {
         List<GameObject> EntitiesWithNeighbors = Entities;
 
-        List<SpatialPartitioning> Test = new List<SpatialPartitioning>();
+        List<SpatialPartitioning> Test;
 
         if (ExtraNeighbors.Count > 0)
         {
@@ -68,20 +68,19 @@ public class SpatialPartitioning : MonoBehaviour
 
     public List<GameObject> GetEntitiesWithExtraNeighbors(int steps)
     {
-        List<GameObject> EntitiesWithExtraNeighbors = new List<GameObject>();
+        List<GameObject> EntitiesWithExtraNeighbors;
 
         for (int i = -steps; i <= steps; i++)
         {
             for (int j = -steps; j <= steps; j++)
             {
-                var Testing = transform.parent.Find("CollisionBox(" + (height + i) + "," + (width + j) + ")");
+                var Testing = transform.parent.Find($"CollisionBox({ height + i},{ width + j})");
 
                 if (Testing != null && Testing.name != this.name)
                 {
                     SpatialPartitioning NeigGameObject = Testing.GetComponent<SpatialPartitioning>();
                     ExtraNeighbors.Add(NeigGameObject);
                 }
-
             }
         }
         EntitiesWithExtraNeighbors = GetEntitiesWithNeigbors();
@@ -96,7 +95,7 @@ public class SpatialPartitioning : MonoBehaviour
 
         for (int i = 0; i < cords.GetLength(0); i++)
         {
-            GameObject NeigGameObject = GameObject.Find("CollisionBox(" + (height + cords[i,0]) + "," + (width + cords[i, 1]) + ")");
+            GameObject NeigGameObject = GameObject.Find($"CollisionBox({height + cords[i,0]},{width + cords[i, 1]})");
             if(NeigGameObject != null)
             {
                 SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();

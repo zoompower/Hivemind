@@ -37,7 +37,7 @@ namespace Tests
             GoFromSelected.Entities.Add(new GameObject());
             GoToSelected.Entities.Add(new GameObject());
 
-            List<GameObject> Entities = new List<GameObject>();
+            List<GameObject> Entities;
 
             Entities = GoFromSelected.GetEntitiesWithExtraNeighbors(1);
             Assert.True(Entities.Count == 1);
@@ -61,7 +61,7 @@ namespace Tests
             GoToSelected.Entities.Add(new GameObject());
             GoToSelected.Entities.Add(new GameObject());
 
-            List<GameObject> Entities = new List<GameObject>();
+            List<GameObject> Entities;
 
             Entities = GoFromSelected.GetEntitiesWithExtraNeighbors(1);
             Assert.True(Entities.Count == 1);
@@ -87,7 +87,7 @@ namespace Tests
             GoToSelected.Entities.Add(new GameObject());
             DontGoToSelected.Entities.Add(new GameObject());
 
-            List<GameObject> Entities = new List<GameObject>();
+            List<GameObject> Entities;
 
             Entities = GoFromSelected.GetEntitiesWithExtraNeighbors(1);
             Assert.True(Entities.Count == 1);
