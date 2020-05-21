@@ -175,6 +175,7 @@ public abstract class BaseUnitRoom : BaseRoom
         if (!applicationExit)
             SplitRoom();
         Astar.RemoveResetableRoom(this);
+        CancelInvoke("CheckSpawnable");
     }
 
     private void OnApplicationQuit()

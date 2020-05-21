@@ -3,24 +3,22 @@ using UnityEngine.AI;
 
 public class OffMeshLinkUpdater : MonoBehaviour
 {
-    [SerializeField]
-    private int iterations = 200;
+    private OffMeshLink link;
+
     void Start()
     {
-        OffMeshLink link = GetComponent<OffMeshLink>();
+        link = GetComponent<OffMeshLink>();
+        link.UpdatePositions();
+        InvokeRepeating("UpdateLinkPositions", 1.0f, 1.0f);
+    }
+
+    private void UpdateLinkPositions()
+    {
         link.UpdatePositions();
     }
 
-    void Update()
+    private void OnDestroy()
     {
-        OffMeshLink link = GetComponent<OffMeshLink>();
-        link.UpdatePositions();
-        if (iterations <= 0)
-        {
-            Destroy(this);
-        }else
-        {
-            iterations--;
-        }
+        CancelInvoke("UpdateLinkPositions");
     }
 }

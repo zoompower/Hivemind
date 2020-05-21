@@ -653,6 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseMenuPanel: {fileID: 6184045256084326441}
   SettingsMenuPanel: {fileID: 4976436950424106282}
+  UIgameobject: {fileID: 0}
 --- !u!1 &6641626875792100155
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,6 +919,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6953886608753842709}
     m_Modifications:
+    - target: {fileID: 748816917370284349, guid: 5d21df54f050a8847a457934ea28993a,
+        type: 3}
+      propertyPath: prevPanel
+      value: 
+      objectReference: {fileID: 6184045256084326441}
     - target: {fileID: 4608048651702607822, guid: 5d21df54f050a8847a457934ea28993a,
         type: 3}
       propertyPath: m_AnchorMax.y

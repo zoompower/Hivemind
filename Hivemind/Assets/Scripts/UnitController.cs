@@ -9,13 +9,13 @@ public class UnitController : MonoBehaviour
 {
     public UnitGroupList UnitGroupList { get; private set; }
 
-    [SerializeField]
     private UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
 
     private void Awake()
     {
+        uiController = FindObjectOfType<UiController>();
         UnitGroupList = new UnitGroupList(uiController.UnitGroupObjects);
     }
 
@@ -56,14 +56,15 @@ public class UnitController : MonoBehaviour
         if (group != null)
         {
             group.RemoveUnit();
-            
+
             if (group.MaxUnits <= 0 && group.CurrentUnits <= 0)
             {
                 UnitGroupList.DeleteUnitGroup(group);
             }
         }
     }
-public MindGroup GetMindGroup(int Index)
+
+    public MindGroup GetMindGroup(int Index)
     {
         return UnitGroupList.GetMindGroupFromIndex(Index);
     }
