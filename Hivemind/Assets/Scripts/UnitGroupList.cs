@@ -8,23 +8,23 @@ using UnityEngine;
  */
 public class UnitGroupList
 {
-    private List<MindGroup> MindGroupList;
+    private List<MindGroup> unitGroupList;
 
     private int MaxGroupCount = 6;
 
     public UnitGroupList(GameObject[] unitGroupObjects)
     {
-        MindGroupList = new List<MindGroup>();
+        unitGroupList = new List<MindGroup>();
 
         foreach (var obj in unitGroupObjects)
         {
-            MindGroupList.Add(new MindGroup(obj));
+            unitGroupList.Add(new MindGroup(obj));
         }
     }
 
     public MindGroup GetMindGroupFromUnitId(Guid unitId)
     {
-        foreach (var group in MindGroupList)
+        foreach (var group in unitGroupList)
         {
             var unit = group.FindUnit(unitId);
             if (unit != null) return group;
@@ -35,7 +35,7 @@ public class UnitGroupList
 
     public UnitGroup GetUnitGroupFromUnitId(Guid unitId)
     {
-        foreach (var group in MindGroupList)
+        foreach (var group in unitGroupList)
         {
             var unit = group.FindUnit(unitId);
             if (unit != null) return unit;
@@ -46,13 +46,9 @@ public class UnitGroupList
 
     internal Guid CreateUnitGroup(GameObject unitIconBase)
     {
-        for (int i = 0; i < MindGroupList.Count; i++)
-        {
-            if (MindGroupList[i].Count < MaxGroupCount)
-            {
-                return MindGroupList[i].AddUnit(new UnitGroup(unitIconBase));
-            }
-        }
+        for (var i = 0; i < unitGroupList.Count; i++)
+            if (unitGroupList[i].Count < MaxGroupCount)
+                return unitGroupList[i].AddUnit(new UnitGroup(unitIconBase));
 
         return Guid.Empty;
     }
@@ -71,13 +67,10 @@ public class UnitGroupList
 
     internal UnitGroup GetUnitGroupFromUIObject(GameObject gameObject)
     {
-        foreach (MindGroup group in MindGroupList)
+        foreach (MindGroup group in unitGroupList)
         {
             var u = group.FindUnit(gameObject);
-            if (u != null)
-            {
-                return u;
-            }
+            if (u != null) return u;
         }
         return null;
     }
@@ -86,7 +79,7 @@ public class UnitGroupList
     {
         MindGroup oldGroup = null;
         MindGroup newGroup = null;
-        foreach (var group in MindGroupList)
+        foreach (var group in unitGroupList)
         {
             if (group.UnitExists(unit))
             {
@@ -110,7 +103,7 @@ public class UnitGroupList
 
     internal void UpdateLayout(UnitGroup unit)
     {
-        foreach (var group in MindGroupList)
+        foreach (var group in unitGroupList)
         {
             if (group.UnitExists(unit))
             {
@@ -125,5 +118,9 @@ public class UnitGroupList
         GetMindGroupFromUnitId(unitGroup.UnitGroupId)?.RemoveUnit(unitGroup);
 
         UnityEngine.Object.Destroy(unitGroup.Ui_IconObj);
+    }
+ public MindGroup GetMindGroupFromIndex(int Index)
+    {
+        return unitGroupList[Index];
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
@@ -20,6 +21,9 @@ public class ResourceNode : MonoBehaviour
     private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
 
+    [SerializeField]
+    private AudioSource audioSrc;
+
     private int resourceAmount;
 
     private int futureResourceAmount;
@@ -30,6 +34,17 @@ public class ResourceNode : MonoBehaviour
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         GameWorld.AddNewResource(this);
+        audioSrc = GetComponent<AudioSource>();
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+        }
+        if (resourceType == ResourceType.Crystal)
+        {
+            audioSrc.volume *= 2.5f;
+        }
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     public void AddToKnownResourceList()
@@ -57,6 +72,7 @@ public class ResourceNode : MonoBehaviour
     public void OnDestroy()
     {
         GameWorld.RemoveResource(this);
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 
     private IEnumerator respawnResource()
@@ -84,6 +100,11 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
+    internal void IncreaseResourceAmount(int nextHarvest)
+    {
+        futureResourceAmount += nextHarvest;
+    }
+
     public void GrabResource()
     {
         resourceAmount--;
@@ -95,6 +116,9 @@ public class ResourceNode : MonoBehaviour
         {
             ColorResource(resourceAmount);
         }
+        if (audioSrc != null)
+            audioSrc.Play();
+        audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
     }
 
     public void ColorResource(int amount)
@@ -112,5 +136,26 @@ public class ResourceNode : MonoBehaviour
     public int GetResourcesFuture()
     {
         return futureResourceAmount;
+    }
+
+    public bool knownResource()
+    {
+        var returnValue = GameWorld.KnownResources.Contains(this);
+        return returnValue;
+    }
+
+    public void UpdateVolume()
+    {
+        if (audioSrc != null)
+        {
+            if (PlayerPrefs.HasKey("Volume"))
+            {
+                audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+            }
+            if (resourceType == ResourceType.Crystal)
+            {
+                audioSrc.volume *= 1.5f;
+            }
+        }
     }
 }

@@ -63,4 +63,8 @@ public class UnitController : MonoBehaviour
             }
         }
     }
+public MindGroup GetMindGroup(int Index)
+    {
+        return UnitGroupList.GetMindGroupFromIndex(Index);
+    }
 }

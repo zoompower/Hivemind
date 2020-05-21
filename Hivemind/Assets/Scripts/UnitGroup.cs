@@ -68,6 +68,11 @@ public class UnitGroup
         return true;
     }
 
+    public void AddUnits(Ant ant)
+    {
+        ant.SetUnitGroup(UnitGroupId);
+    }
+
     private void UpdateText()
     {
         if (textBox != null)
@@ -79,4 +84,5 @@ public class UnitGroup
         this.MaxUnits += other.MaxUnits;
         this.CurrentUnits += other.CurrentUnits;
     }
+
 }
