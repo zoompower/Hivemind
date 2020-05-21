@@ -8,18 +8,14 @@ using UnityEngine;
  */
 public class UnitGroupList
 {
-    private List<MindGroup> unitGroupList;
-
-    private int MaxGroupCount = 6;
+    private readonly int MaxGroupCount = 6;
+    private readonly List<MindGroup> unitGroupList;
 
     public UnitGroupList(GameObject[] unitGroupObjects)
     {
+        var i = 0;
         unitGroupList = new List<MindGroup>();
-
-        foreach (var obj in unitGroupObjects)
-        {
-            unitGroupList.Add(new MindGroup(obj));
-        }
+        foreach (var obj in unitGroupObjects) unitGroupList.Add(new MindGroup(obj));
     }
 
     public MindGroup GetMindGroupFromUnitId(Guid unitId)
@@ -46,27 +42,21 @@ public class UnitGroupList
 
     internal Guid CreateUnitGroup(GameObject unitIconBase)
     {
-        for (int i = 0; i < unitGroupList.Count; i++)
-        {
+        for (var i = 0; i < unitGroupList.Count; i++)
             if (unitGroupList[i].Count < MaxGroupCount)
-            {
                 return unitGroupList[i].AddUnit(new UnitGroup(unitIconBase));
-            }
-        }
 
         return Guid.Empty;
     }
 
     internal UnitGroup GetUnitGroupFromUIObject(GameObject gameObject)
     {
-        foreach (MindGroup group in unitGroupList)
+        foreach (var group in unitGroupList)
         {
             var u = group.FindUnit(gameObject);
-            if (u != null)
-            {
-                return u;
-            }
+            if (u != null) return u;
         }
+
         return null;
     }
 
@@ -76,14 +66,8 @@ public class UnitGroupList
         MindGroup newGroup = null;
         foreach (var group in unitGroupList)
         {
-            if (group.UnitExists(unit))
-            {
-                oldGroup = group;
-            }
-            if (group.Equals(groupGameObject))
-            {
-                newGroup = group;
-            }
+            if (group.UnitExists(unit)) oldGroup = @group;
+            if (group.Equals(groupGameObject)) newGroup = @group;
         }
 
         if (oldGroup.Equals(newGroup) || newGroup.Count >= MaxGroupCount)
@@ -99,12 +83,15 @@ public class UnitGroupList
     internal void UpdateLayout(UnitGroup unit)
     {
         foreach (var group in unitGroupList)
-        {
-            if (group.UnitExists(unit))
+            if (@group.UnitExists(unit))
             {
-                group.UpdateLayout();
+                @group.UpdateLayout();
                 return;
             }
-        }
+    }
+
+    public MindGroup GetMindGroupFromIndex(int Index)
+    {
+        return unitGroupList[Index];
     }
 }

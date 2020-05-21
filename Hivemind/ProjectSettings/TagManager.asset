@@ -7,6 +7,8 @@ TagManager:
   - UI-Unit
   - UI-UnitGroup
   - Resource
+  - Ui-Mind
+  - UI-MindType
   layers:
   - Default
   - TransparentFX

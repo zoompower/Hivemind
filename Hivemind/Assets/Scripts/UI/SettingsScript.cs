@@ -1,27 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsScript : MonoBehaviour
 {
     [SerializeField]
-    private GameObject prevPanal;
+    private GameObject prevPanel;
 
-    [SerializeField]
-    private GameObject settingsMenu;
-
-    [SerializeField]
     private AudioSource audioSrc;
 
     [SerializeField]
     private Slider volumeSlider;
 
     [SerializeField]
+    private AudioSource mainAudioSource;
+
+    [SerializeField]
     private Toggle fullscreenToggle;
 
     public Dropdown dropdownMenu;
 
-    public static float currentVolume = 1;
+    public static float currentVolume = 1f;
 
     private int width = 1920;
 
@@ -31,11 +31,19 @@ public class SettingsScript : MonoBehaviour
 
     public static int globalHeight = 1080;
 
-    private  bool Fullscreen = true;
+    private bool Fullscreen = true;
 
     public static bool globalFullscreen = true;
 
     Resolution[] resolutions;
+    public static event EventHandler OnVolumeChanged;
+
+
+
+    private void Awake()
+    {
+        audioSrc = gameObject.GetComponent<AudioSource>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +67,6 @@ public class SettingsScript : MonoBehaviour
         if (PlayerPrefs.HasKey("Volume"))
         {
             currentVolume = PlayerPrefs.GetFloat("Volume");
-
         }
 
         volumeSlider.value = currentVolume;
@@ -68,7 +75,9 @@ public class SettingsScript : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Fullscreen"))
         {
-            globalFullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1);
+            globalFullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1); 
+            fullscreenToggle.isOn = globalFullscreen;
+            Fullscreen = globalFullscreen;
         }
         fullscreenToggle.isOn = globalFullscreen;
         if (PlayerPrefs.HasKey("Width"))
@@ -85,11 +94,13 @@ public class SettingsScript : MonoBehaviour
 
     public void ChangeVolume(float volume)
     {
+        if (!audioSrc) return;
+
         audioSrc.volume = volume;
         audioSrc.Play();
     }
 
-    public void ChangeResolutionDropDown(System.Int32 index)
+    public void ChangeResolutionDropDown(int index)
     {
         width = resolutions[index].width;
         height = resolutions[index].height;
@@ -103,8 +114,7 @@ public class SettingsScript : MonoBehaviour
 
     public void ChangeFullscreen()
     {
-        Fullscreen = !Fullscreen;
-        fullscreenToggle.isOn = Fullscreen;
+        Fullscreen = fullscreenToggle.isOn;
     }
 
     private string ResToString(Resolution resolution)
@@ -129,17 +139,22 @@ public class SettingsScript : MonoBehaviour
         PlayerPrefs.SetInt("Height", globalHeight);
         PlayerPrefs.SetFloat("Volume", audioSrc.volume);
         currentVolume = audioSrc.volume;
-       
+        mainAudioSource.volume = audioSrc.volume;
         PlayerPrefs.Save();
+
+        if(OnVolumeChanged != null)
+        {
+            OnVolumeChanged.Invoke(null, EventArgs.Empty);
+        }
     }
     public void Back()
     {
         volumeSlider.value = currentVolume;
         fullscreenToggle.isOn = globalFullscreen;
-        settingsMenu.SetActive(false);
-        if (prevPanal != null)
+        gameObject.SetActive(false);
+        if (prevPanel != null)
         {
-            prevPanal.SetActive(true);
+            prevPanel.SetActive(true);
         }
     }
 }

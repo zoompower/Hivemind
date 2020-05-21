@@ -9,18 +9,32 @@ using UnityEngine.UI;
  */
 public class MindGroup
 {
-    public int Count { get; private set; }
-
     private protected GameObject UIUnitGroup;
 
-    private List<UnitGroup> unitList;
+    private readonly List<UnitGroup> unitList;
 
     public MindGroup(GameObject UiObject)
     {
         unitList = new List<UnitGroup>();
+        Minds = new List<IMind>();
+        Mind = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
+        Mind.Initiate();
+        var Mind2 = new CombatMind(0, 0);
+        Mind2.Initiate();
+        Minds.Add(Mind);
+        Minds.Add(Mind2);
+
 
         UIUnitGroup = UiObject;
     }
+
+    public int Count { get; private set; }
+
+    public IMind Mind { get; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
+
+    public List<IMind> Minds { get; }
+
+    public int MindPoints { get; set; }
 
     public bool Equals(MindGroup other)
     {
@@ -37,6 +51,7 @@ public class MindGroup
         if (!unitList.Contains(unit))
         {
             unitList.Add(unit);
+
             Count++;
 
             unit.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);
@@ -84,5 +99,10 @@ public class MindGroup
     internal void UpdateLayout()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(UIUnitGroup.GetComponent<RectTransform>());
+    }
+
+    public void AddMind(IMind mind, int Position)
+    {
+        Minds[Position] = mind;
     }
 }
