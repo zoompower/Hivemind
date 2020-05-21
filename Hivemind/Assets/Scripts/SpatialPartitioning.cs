@@ -21,7 +21,7 @@ public class SpatialPartitioning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TO DO, delete this when done DEBUGGING
+        //TO DO: delete this when done DEBUGGING
         /*
         if(Entities.Count != 0)
         {
@@ -42,6 +42,7 @@ public class SpatialPartitioning : MonoBehaviour
 
     public List<GameObject> GetEntitiesWithNeigbors()
     {
+        //TO DO: Check the code while in practice, optimize for actual use
         List<GameObject> EntitiesWithNeighbors = Entities;
 
         List<SpatialPartitioning> Test;
