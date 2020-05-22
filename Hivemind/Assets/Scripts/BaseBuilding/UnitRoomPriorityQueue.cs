@@ -4,7 +4,7 @@ using UnityEngine;
 
 class UnitRoomPriorityQueue
 {
-    List<BaseUnitRoom> queue = new List<BaseUnitRoom>();
+    private List<BaseUnitRoom> queue = new List<BaseUnitRoom>();
 
     public void push(BaseUnitRoom tile)
     {

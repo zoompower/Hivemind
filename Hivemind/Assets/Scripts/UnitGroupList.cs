@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
 public class UnitGroupList
 {
     private List<MindGroup> unitGroupList;
@@ -119,7 +115,8 @@ public class UnitGroupList
 
         UnityEngine.Object.Destroy(unitGroup.Ui_IconObj);
     }
- public MindGroup GetMindGroupFromIndex(int Index)
+
+    public MindGroup GetMindGroupFromIndex(int Index)
     {
         return unitGroupList[Index];
     }

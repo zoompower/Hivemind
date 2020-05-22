@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
 public class MindGroup
 {
     private protected GameObject UIUnitGroup;

@@ -2,10 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
 public class UnitGroup
 {
     public int MaxUnits { get; private set; }
@@ -29,22 +25,20 @@ public class UnitGroup
         UpdateText();
     }
 
-    public bool RemoveMax()
+    public void RemoveMax()
     {
-        return SetMaxUnits(MaxUnits - 1);
+        SetMaxUnits(MaxUnits - 1);
     }
 
-    public bool AddMax()
+    public void AddMax()
     {
-        return SetMaxUnits(MaxUnits + 1);
+        SetMaxUnits(MaxUnits + 1);
     }
 
-    public bool SetMaxUnits(int amount)
+    public void SetMaxUnits(int amount)
     {
         MaxUnits = amount;
         UpdateText();
-
-        return true;
     }
 
     public bool AddUnit()
@@ -80,8 +74,8 @@ public class UnitGroup
 
     internal void MergeGroupIntoThis(UnitGroup other)
     {
-        this.MaxUnits += other.MaxUnits;
-        this.CurrentUnits += other.CurrentUnits;
+        MaxUnits += other.MaxUnits;
+        CurrentUnits += other.CurrentUnits;
     }
 
 }

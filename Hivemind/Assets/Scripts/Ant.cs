@@ -19,6 +19,8 @@ public class Ant : MonoBehaviour
     private AudioSource audioSrc;
     public Ant closestEnemy { get; private set; }
 
+    public bool isAtBase = true;
+
     private void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
@@ -81,13 +83,13 @@ public class Ant : MonoBehaviour
             currentIndex++;
         }
 
-        minds[mindIndex].Execute(this);
+        if (minds.Count > 0)
+            minds[mindIndex].Execute(this);
     }
 
     public bool AtBase()
     {
-        if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f) return true;
-        return false;
+        return isAtBase;
     }
 
     public bool InCombat()

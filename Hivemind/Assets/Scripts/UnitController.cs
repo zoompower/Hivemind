@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
 public class UnitController : MonoBehaviour
 {
     public UnitGroupList UnitGroupList { get; private set; }
@@ -70,14 +66,14 @@ public class UnitController : MonoBehaviour
         {
             if (child.GetComponent<Ant>() != null)
             {
-                ants.Add(child.GetComponent<Ant>());
+                if (child.GetComponent<Ant>().unitGroupID == oldId)
+                    ants.Add(child.GetComponent<Ant>());
             }
             else
             {
                 throw new Exception("The ant doesnt have the required script!");
             }
         }
-
 
         IdAndRoomSize.Add(oldId, 0);
         int totalCount = 0;

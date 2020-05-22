@@ -89,7 +89,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5603214173817709501}
   - component: {fileID: 628297590348045899}
-  - component: {fileID: 4186308593849125897}
   m_Layer: 0
   m_Name: QueenAnt
   m_TagString: Untagged
@@ -123,18 +122,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 603c23c7c4e670049a3283a313379f96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4186308593849125897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8906365527748792750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef4b434842c1ebf44bf2e7f7f5a7d5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &628297590140264664

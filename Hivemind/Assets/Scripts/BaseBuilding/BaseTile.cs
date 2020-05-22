@@ -14,6 +14,8 @@ public class BaseTile : MonoBehaviour
     [SerializeField]
     internal bool IsIndestructable = false;
     [SerializeField]
+    internal bool IsUnbuildable = false;
+    [SerializeField]
     private int DefaultRotation = -1;
 
     [SerializeField]
@@ -40,7 +42,7 @@ public class BaseTile : MonoBehaviour
 
     internal void InitializeObject(GameObject gObj)
     {
-        if (CurrTile != null || IsIndestructable) return;
+        if (CurrTile != null || IsUnbuildable) return;
 
         CurrTile = Instantiate(gObj);
         CurrTile.transform.SetParent(gameObject.transform, false);
@@ -49,12 +51,7 @@ public class BaseTile : MonoBehaviour
         RoomScript = CurrTile.GetComponent<BaseRoom>();
     }
 
-    internal void DestroyRoom()
-    {
-        DestroyRoom(false);
-    }
-
-    internal void DestroyRoom(bool forced)
+    internal void DestroyRoom(bool forced = false)
     {
         if (CurrTile == null) return;
 
@@ -81,7 +78,7 @@ public class BaseTile : MonoBehaviour
         if (StartObject != null && StartObject.GetComponent<MeshFilter>() != null && ShowMeshPreview)
         {
             Gizmos.color = MeshColor;
-            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, transform.rotation, transform.localScale);
+            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, Quaternion.Euler(0, (DefaultRotation < 0) ? 0 : DefaultRotation, 0), transform.localScale);
         }
 
         if (ShowDebugInfo)

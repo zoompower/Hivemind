@@ -110,7 +110,7 @@ public abstract class BaseUnitRoom : BaseRoom
                 GameObject container = GameObject.Find("Ants");
                 if (container == null)
                 {
-                    throw new Exception("The \"Ants\" container was not found. Please add a container to save the Hiearchy from clutter!");
+                    throw new Exception("The \"Ants\" container was not found. Please add a container to save the Hierarchy from clutter!");
                 }
                 else
                 {

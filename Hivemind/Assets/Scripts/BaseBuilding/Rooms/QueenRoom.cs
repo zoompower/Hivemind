@@ -1,4 +1,6 @@
-﻿class QueenRoom : BaseRoom
+﻿using UnityEngine.Tilemaps;
+
+class QueenRoom : BaseRoom
 {
     public override bool IsRoom()
     {
@@ -17,6 +19,7 @@
             BaseTile tileScript = TileObject.GetComponent<BaseTile>();
 
             tileScript.IsIndestructable = true;
+            tileScript.IsUnbuildable = true;
             tileScript.DestroyRoom(true);
         }
     }

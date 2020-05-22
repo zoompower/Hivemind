@@ -6,10 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
 public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler
 {
     private MindGroup currentOpenMindGroup;
