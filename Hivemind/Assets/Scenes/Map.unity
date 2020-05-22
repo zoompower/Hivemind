@@ -10508,7 +10508,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: QueenAnt
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4186308593849125897, guid: a2f82988355f1e149bb04f6f6f804a2d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a2f82988355f1e149bb04f6f6f804a2d, type: 3}
 --- !u!1001 &3417407799672125534
 PrefabInstance:
