@@ -62,6 +62,9 @@ public class MindBuilderTabbed : MonoBehaviour
         for (var i = 0; i < resourceTypes.Length; i++)
             dropdownElements.Add(new Dropdown.OptionData(resourceTypes.GetValue(i).ToString()));
 
+        var buttons = GetComponentsInChildren<Button>();
+        var resButton = buttons.FirstOrDefault(x => x.name == "ResourceMindTab");
+        resButton.colors = HighlightedColorBlock;
         PrefferedType.AddOptions(dropdownElements);
         dropdownElements.Clear();
         PrefferedDirection.ClearOptions();
