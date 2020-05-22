@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -51,22 +52,7 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (AtBase())
-        {
-            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
-                .Minds;
-
-            if (minds.Count < mindGroupMind.Count)
-                for (var i = minds.Count; i < mindGroupMind.Count; i++)
-                    minds.Add(mindGroupMind[i].Clone());
-            for (var i = 0; i < minds.Count; i++)
-                if (!minds[i].Equals(mindGroupMind[i]))
-                {
-                    minds[i].Update(mindGroupMind[i]);
-                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
-                }
-        }
-
+        StartCoroutine(UpdateMind());
         double likeliest = 0;
         var mindIndex = 0;
         var currentIndex = 0;
@@ -99,6 +85,28 @@ public class Ant : MonoBehaviour
     public NavMeshAgent GetAgent()
     {
         return agent;
+    }
+
+    private IEnumerator UpdateMind()
+    {
+        if (AtBase())
+        {
+            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
+                .Minds;
+
+            if (minds.Count < mindGroupMind.Count)
+                for (var i = minds.Count; i < mindGroupMind.Count; i++)
+                    minds.Add(mindGroupMind[i].Clone());
+            for (var i = 0; i < minds.Count; i++)
+                if (!minds[i].Equals(mindGroupMind[i]))
+                {
+                    minds[i].Update(mindGroupMind[i]);
+                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
+                }
+        }
+
+        
+        yield return new WaitForSeconds(3);
     }
 
     public Storage GetStorage()

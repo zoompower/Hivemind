@@ -85,6 +85,7 @@ public class Gathering : IMind
                         target = tempTarget;
                         ant.state = State.MovingToStorage;
                         ant.StartCoroutine(Discover());
+                        preparingReturn = false;
                     }
                     else
                     {
@@ -320,8 +321,11 @@ public class Gathering : IMind
     private IEnumerator ReturnToBase()
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
-        target = null;
-        ant.state = State.MovingToStorage;
-        preparingReturn = false;
+        if (ant.state == State.Scouting)
+        {
+            target = null;
+            ant.state = State.MovingToStorage;
+            preparingReturn = false;
+        }
     }
 }
