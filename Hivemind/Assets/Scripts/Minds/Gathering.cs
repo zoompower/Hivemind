@@ -99,7 +99,7 @@ public class Gathering : IMind
             case State.MovingToResource:
                 if (target != null)
                 {
-                    if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
+                    if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 2f)
                         ant.state = State.Gathering;
                 }
                 else
@@ -156,7 +156,7 @@ public class Gathering : IMind
                             ant.currentSpeed = ant.baseSpeed;
                             ant.UpdateSpeed();
                         }
-
+                        ant.finishedTask = true;
                         ant.state = State.Idle;
                     }
                 }
@@ -244,11 +244,15 @@ public class Gathering : IMind
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
             ant.state = State.MovingToResource;
+
+            ant.finishedTask = false;
         }
         else if (ant.state == State.Idle && IsScout)
         {
             ant.GetAgent().isStopped = false;
             ant.state = State.Scouting;
+
+            ant.finishedTask = false;
         }
         else if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) > 2f)
         {
@@ -314,7 +318,7 @@ public class Gathering : IMind
         }
 
         ant.GetAgent().SetDestination(destination);
-        yield return new WaitForSeconds(Random.Range(1, 3));
+        yield return new WaitForSeconds(Random.Range(1,3));
         scouting = false;
     }
 

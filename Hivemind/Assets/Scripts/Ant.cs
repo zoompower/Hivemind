@@ -18,6 +18,8 @@ public class Ant : MonoBehaviour
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
+    public bool finishedTask;
+
     public Ant closestEnemy { get; private set; }
 
 
@@ -36,6 +38,7 @@ public class Ant : MonoBehaviour
         }
         audioSrc.volume *=  0.15f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+        finishedTask = true;
     }
 
     // Start is called before the first frame update
@@ -52,7 +55,12 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        StartCoroutine(UpdateMind());
+        if (finishedTask)
+        {
+            StartCoroutine(UpdateMind());
+        }
+
+        if (minds.Count < 1) return;
         double likeliest = 0;
         var mindIndex = 0;
         var currentIndex = 0;
@@ -104,9 +112,7 @@ public class Ant : MonoBehaviour
                     if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
                 }
         }
-
-        
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
     }
 
     public Storage GetStorage()

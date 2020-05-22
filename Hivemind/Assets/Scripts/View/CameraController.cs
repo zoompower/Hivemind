@@ -7,6 +7,19 @@ public class CameraController : MonoBehaviour
     public float MovementSpeed;
     public int EdgeSize;
 
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource != null && PlayerPrefs.HasKey("Volume"))
+        {
+            audioSource.volume = PlayerPrefs.GetFloat("Volume");
+            SettingsScript.OnVolumeChanged += UpdateVolume;
+        }
+    }
+
     void Update()
     {
         if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height) return;
@@ -37,5 +50,19 @@ public class CameraController : MonoBehaviour
             movement *= Time.timeScale;
 
         transform.position += movement;
+    }
+
+    private void OnDestroy()
+    {
+        SettingsScript.OnVolumeChanged -= UpdateVolume;
+    }
+
+    private void UpdateVolume(object sender, System.EventArgs e)
+    {
+        if(audioSource != null)
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            audioSource.volume = PlayerPrefs.GetFloat("Volume");
+        }
     }
 }
