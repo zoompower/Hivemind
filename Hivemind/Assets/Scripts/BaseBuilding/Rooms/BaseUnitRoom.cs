@@ -89,7 +89,7 @@ public abstract class BaseUnitRoom : BaseRoom
 
         AttachUnitGroup();
 
-        unitGroup.AddMax();
+            unitGroup.AddMax();
 
         InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
     }
