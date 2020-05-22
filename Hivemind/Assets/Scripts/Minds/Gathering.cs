@@ -44,7 +44,10 @@ public class Gathering : IMind
 
     private bool leavingBase = false;
 
-    public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = true)
+    [SerializeField]
+    private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
+
+    public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
     {
         prefferedType = resType;
         carryWeight = carryweight;
@@ -55,9 +58,6 @@ public class Gathering : IMind
     public ResourceType prefferedType { get; set; }
     public int carryWeight { get; set; }
     public Direction prefferedDirection { get; set; }
-
-    [SerializeField]
-    private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
 
     public void Initiate()
     {
