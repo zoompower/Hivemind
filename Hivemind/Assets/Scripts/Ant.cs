@@ -19,6 +19,7 @@ public class Ant : MonoBehaviour
     private AudioSource audioSrc;
     public Ant closestEnemy { get; private set; }
 
+    public bool isAtBase = true;
 
     private void Awake()
     {
@@ -34,18 +35,18 @@ public class Ant : MonoBehaviour
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
         audioSrc.volume *=  0.15f;
-        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     // Start is called before the first frame update
     private void Start()
     {
         storage = GameWorld.GetStorage();
+        AddEventListeners();
     }
 
     public void OnDestroy()
     {
-        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+        RemoveEventListeners();
     }
 
     // Update is called once per frame
@@ -82,13 +83,13 @@ public class Ant : MonoBehaviour
             currentIndex++;
         }
 
-        minds[mindIndex].Execute(this);
+        if (minds.Count > 0)
+            minds[mindIndex].Execute(this);
     }
 
     public bool AtBase()
     {
-        if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f) return true;
-        return false;
+        return isAtBase;
     }
 
     public bool InCombat()
@@ -104,11 +105,6 @@ public class Ant : MonoBehaviour
     public Storage GetStorage()
     {
         return storage;
-    }
-
-    public void SetUnitGroup(Guid ug)
-    {
-        unitGroupID = ug;
     }
 
     internal void UpdateSpeed()
@@ -139,5 +135,30 @@ public class Ant : MonoBehaviour
     public void PlaySoundDiscovery()
     {
         audioSrc.Play();
+    }
+
+    private void AddEventListeners()
+    {
+        FindObjectOfType<UnitController>().OnGroupIdChange += ChangeGroupID;
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+    }
+
+    private void RemoveEventListeners()
+    {
+        if (FindObjectOfType<UnitController>() != null)
+        {
+            FindObjectOfType<UnitController>().OnGroupIdChange -= ChangeGroupID;
+        }
+
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+    }
+
+    private void ChangeGroupID(object sender, GroupIdChangedEventArgs e)
+    {
+        if (unitGroupID == e.oldGuid)
+        {
+            unitGroupID = e.newGuid;
+        }
     }
 }
