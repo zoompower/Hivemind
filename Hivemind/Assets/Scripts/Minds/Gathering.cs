@@ -71,7 +71,7 @@ public class Gathering : IMind
     {
         if (leavingBase) return;
 
-        switch (ant.state)
+        switch (state)
         {
             case State.Idle:
                 ant.GetAgent().isStopped = true;
@@ -91,7 +91,7 @@ public class Gathering : IMind
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
-                        ant.state = State.MovingToStorage;
+                        state = State.MovingToStorage;
                         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                         ant.StartCoroutine(Discover());
                         preparingReturn = false;
@@ -108,8 +108,8 @@ public class Gathering : IMind
             case State.MovingToResource:
                 if (target != null)
                 {
-                    if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 2f)
-                        ant.state = State.Gathering;
+                    if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
+                        state = State.Gathering;
                 }
                 else
                 {
@@ -135,7 +135,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    ant.state = State.MovingToStorage;
+                    state = State.MovingToStorage;
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                 }
                 else
@@ -165,8 +165,8 @@ public class Gathering : IMind
                             ant.currentSpeed = ant.baseSpeed;
                             ant.UpdateSpeed();
                         }
-                        ant.finishedTask = true;
-                        ant.state = State.Idle;
+
+                        state = State.Idle;
                         busy = false;
                     }
                 }
@@ -203,7 +203,7 @@ public class Gathering : IMind
 
     public void Update(IMind mind)
     {
-        var gathering = mind as Gathering;
+        Gathering gathering = mind as Gathering;
         if (gathering != null)
         {
             prefferedType = gathering.prefferedType;
@@ -215,7 +215,7 @@ public class Gathering : IMind
 
     public bool Equals(IMind mind)
     {
-        var gathering = mind as Gathering;
+        Gathering gathering = mind as Gathering;
         if (gathering != null)
             if (gathering.prefferedType == prefferedType
                 && gathering.carryWeight == carryWeight
@@ -249,16 +249,16 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (ant.state == State.Idle) ant.GetAgent().isStopped = false;
+            if (state == State.Idle) ant.GetAgent().isStopped = false;
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
-            ant.state = State.MovingToResource;
+            state = State.MovingToResource;
             busy = true;
         }
-        else if (ant.state == State.Idle && IsScout)
+        else if (state == State.Idle && IsScout)
         {
             ant.GetAgent().isStopped = false;
 
@@ -268,7 +268,7 @@ public class Gathering : IMind
         }
         else if (!ant.AtBase())
         {
-            ant.state = State.MovingToStorage;
+            state = State.MovingToStorage;
             ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         }
     }
@@ -278,7 +278,7 @@ public class Gathering : IMind
         leavingBase = true;
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
-        ant.state = nextState;
+        state = nextState;
         leavingBase = false;
     }
 
@@ -347,12 +347,12 @@ public class Gathering : IMind
     private IEnumerator ReturnToBase()
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
-        if (ant.state != State.MovingToStorage)
+        if(state != state.MovingToStorage)
         {
-            target = null;
-            ant.state = State.MovingToStorage;
-            ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-            preparingReturn = false;
+        target = null;
+        state = State.MovingToStorage;
+        ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+        preparingReturn = false;
         }
     }
 

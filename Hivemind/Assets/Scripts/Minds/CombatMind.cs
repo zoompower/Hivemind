@@ -7,12 +7,11 @@ public class CombatMind : IMind
     private Ant ant;
     private bool busy;
 
-
     public CombatMind() : this(0, 0) { }
 
-    public CombatMind(float minEstimeted, int prefHealth)
+    public CombatMind(float minEstimated, int prefHealth)
     {
-        minEstimatedDifference = minEstimeted;
+        minEstimatedDifference = minEstimated;
         prefferedHealth = prefHealth;
     }
 
@@ -23,7 +22,7 @@ public class CombatMind : IMind
 
     public bool Equals(IMind mind)
     {
-        var combatmind = mind as CombatMind;
+        CombatMind combatmind = mind as CombatMind;
         if (combatmind != null)
             if (combatmind.minEstimatedDifference == minEstimatedDifference &&
                 combatmind.prefferedHealth == prefferedHealth)
@@ -68,14 +67,20 @@ public class CombatMind : IMind
 
     public void Update(IMind mind)
     {
+        CombatMind combatMind = mind as CombatMind;
+        if (combatMind != null)
+        {
+            minEstimatedDifference = combatMind.minEstimatedDifference;
+            prefferedHealth = combatMind.prefferedHealth;
+        }
     }
 
-    public float GetMinEstimetedDifference()
+    public float GetMinEstimatedDifference()
     {
         return minEstimatedDifference;
     }
 
-    public void SetMinEstimetedDifference(float estDiff)
+    public void SetMinEstimatedDifference(float estDiff)
     {
         minEstimatedDifference = estDiff;
     }

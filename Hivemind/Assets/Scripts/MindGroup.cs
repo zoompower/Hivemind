@@ -7,11 +7,11 @@ public class MindGroup
 {
     private protected GameObject UIUnitGroup;
 
-    private readonly List<UnitGroup> unitList;
+    private readonly List<UnitGroup> unitGroupList;
 
     public MindGroup(GameObject UiObject)
     {
-        unitList = new List<UnitGroup>();
+        unitGroupList = new List<UnitGroup>();
         Minds = new List<IMind>();
         Minds.Add(new Gathering());
         Minds.Add(new CombatMind());
@@ -36,9 +36,9 @@ public class MindGroup
 
     internal Guid AddUnit(UnitGroup unit)
     {
-        if (!unitList.Contains(unit))
+        if (!unitGroupList.Contains(unit))
         {
-            unitList.Add(unit);
+            unitGroupList.Add(unit);
 
             Count++;
 
@@ -54,9 +54,9 @@ public class MindGroup
 
     internal bool RemoveUnit(UnitGroup unit)
     {
-        if (unitList.Contains(unit))
+        if (unitGroupList.Contains(unit))
         {
-            unitList.Remove(unit);
+            unitGroupList.Remove(unit);
             Count--;
 
             unit.Ui_IconObj.transform.SetParent(null, false);
@@ -71,17 +71,17 @@ public class MindGroup
 
     internal UnitGroup FindUnit(GameObject gameObject)
     {
-        return unitList.Find(unitGroup => unitGroup.Ui_IconObj.Equals(gameObject));
+        return unitGroupList.Find(unitGroup => unitGroup.Ui_IconObj.Equals(gameObject));
     }
 
     internal UnitGroup FindUnit(Guid unitId)
     {
-        return unitList.Find(unitGroup => unitGroup.UnitGroupId.Equals(unitId));
+        return unitGroupList.Find(unitGroup => unitGroup.UnitGroupId.Equals(unitId));
     }
 
     internal bool UnitExists(UnitGroup unit)
     {
-        return unitList.Contains(unit);
+        return unitGroupList.Contains(unit);
     }
 
     internal void UpdateLayout()

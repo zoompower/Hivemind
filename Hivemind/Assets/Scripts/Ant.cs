@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,7 +13,6 @@ public class Ant : MonoBehaviour
     public int health;
 
     private List<IMind> minds;
-    public Gathering.State state;
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
@@ -30,7 +28,6 @@ public class Ant : MonoBehaviour
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
-        state = Gathering.State.Idle;
         audioSrc = GetComponent<AudioSource>();
         //get volume
         if (PlayerPrefs.HasKey("Volume"))
@@ -58,7 +55,7 @@ public class Ant : MonoBehaviour
     private void Update()
     {
         if (!IsBusy())
-            StartCoroutine(UpdateMind());
+            UpdateMind();
 
         if (minds.Count < 1) return;
         double likeliest = 0;
@@ -75,9 +72,7 @@ public class Ant : MonoBehaviour
 
             currentIndex++;
         }
-
-        if (minds.Count > 0)
-            minds[mindIndex].Execute();
+        minds[mindIndex].Execute();
     }
 
     private bool IsBusy()
@@ -139,20 +134,24 @@ public class Ant : MonoBehaviour
     {
         this.storage = storage;
     }
-    private IEnumerator UpdateMind()
+
+    private void UpdateMind()
     {
         if (AtBase())
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
+            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID)
                 .Minds;
 
             if (minds.Count < mindGroupMind.Count)
+            {
                 for (var i = minds.Count; i < mindGroupMind.Count; i++)
                 {
                     minds.Add(mindGroupMind[i].Clone());
                     minds[i].Initiate(this);
                 }
+            }
             for (var i = 0; i < minds.Count; i++)
+            {
                 if (!minds[i].Equals(mindGroupMind[i]))
                 {
                     minds[i].Update(mindGroupMind[i]);
@@ -162,8 +161,8 @@ public class Ant : MonoBehaviour
                         minds[i].Initiate(this);
                     }
                 }
+            }
         }
-        yield return new WaitForSeconds(0);
     }
 
     public void UpdateVolume()
