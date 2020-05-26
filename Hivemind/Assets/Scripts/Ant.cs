@@ -115,16 +115,19 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().mindGroupList.GetMindGroupFromUnitId(unitGroupID)
+            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID)
                 .Minds;
 
             if (minds.Count < mindGroupMind.Count)
+            {
                 for (var i = minds.Count; i < mindGroupMind.Count; i++)
                 {
                     minds.Add(mindGroupMind[i].Clone());
                     minds[i].Initiate(this);
                 }
+            }
             for (var i = 0; i < minds.Count; i++)
+            {
                 if (!minds[i].Equals(mindGroupMind[i]))
                 {
                     minds[i].Update(mindGroupMind[i]);
@@ -134,6 +137,7 @@ public class Ant : MonoBehaviour
                         minds[i].Initiate(this);
                     }
                 }
+            }
         }
     }
 

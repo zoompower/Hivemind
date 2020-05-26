@@ -48,9 +48,9 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         var groupResult = results.Find(result => result.gameObject.CompareTag("UI-UnitGroup"));
 
         if (groupResult.isValid)
-            unitController.mindGroupList.MoveUnitIntoGroup(unitGroupObj, groupResult.gameObject);
+            unitController.MindGroupList.MoveUnitIntoGroup(unitGroupObj, groupResult.gameObject);
         else
-            unitController.mindGroupList.UpdateLayout(unitGroupObj);
+            unitController.MindGroupList.UpdateLayout(unitGroupObj);
 
         unitGroupObj = null;
     }
@@ -64,7 +64,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         if (result.isValid)
         {
-            var group = unitController.mindGroupList.GetUnitGroupFromUIObject(result.gameObject);
+            var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
         }
 
