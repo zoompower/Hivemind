@@ -202,7 +202,7 @@ public class Gathering : IMind
 
     public void Update(IMind mind)
     {
-        var gathering = mind as Gathering;
+        Gathering gathering = mind as Gathering;
         if (gathering != null)
         {
             prefferedType = gathering.prefferedType;
@@ -214,7 +214,7 @@ public class Gathering : IMind
 
     public bool Equals(IMind mind)
     {
-        var gathering = mind as Gathering;
+        Gathering gathering = mind as Gathering;
         if (gathering != null)
             if (gathering.prefferedType == prefferedType
                 && gathering.carryWeight == carryWeight

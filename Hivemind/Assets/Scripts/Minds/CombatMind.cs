@@ -22,7 +22,7 @@ public class CombatMind : IMind
 
     public bool Equals(IMind mind)
     {
-        var combatmind = mind as CombatMind;
+        CombatMind combatmind = mind as CombatMind;
         if (combatmind != null)
             if (combatmind.minEstimatedDifference == minEstimatedDifference &&
                 combatmind.prefferedHealth == prefferedHealth)
@@ -67,7 +67,7 @@ public class CombatMind : IMind
 
     public void Update(IMind mind)
     {
-        var combatMind = mind as CombatMind;
+        CombatMind combatMind = mind as CombatMind;
         if (combatMind != null)
         {
             minEstimatedDifference = combatMind.minEstimatedDifference;
