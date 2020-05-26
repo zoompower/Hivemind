@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    public UnitGroupList UnitGroupList { get; private set; }
+    public MindGroupList MindGroupList { get; private set; }
 
     private UiController uiController;
 
@@ -13,17 +13,17 @@ public class UnitController : MonoBehaviour
     private void Awake()
     {
         uiController = FindObjectOfType<UiController>();
-        UnitGroupList = new UnitGroupList(uiController.UnitGroupObjects);
+        MindGroupList = new MindGroupList(uiController.UnitGroupObjects);
     }
 
     public Guid CreateUnitGroup()
     {
-        return UnitGroupList.CreateUnitGroup(uiController.unitIconBase);
+        return MindGroupList.CreateUnitGroup(uiController.unitIconBase);
     }
 
     public void SetCurrentUnits(Guid unitGroupId, int amount)
     {
-        var group = UnitGroupList.GetUnitGroupFromUnitId(unitGroupId);
+        var group = MindGroupList.GetUnitGroupFromUnitId(unitGroupId);
 
         if (group != null)
         {
@@ -33,7 +33,7 @@ public class UnitController : MonoBehaviour
 
     public void SetMaxUnits(Guid unitGroupId, int amount)
     {
-        var group = UnitGroupList.GetUnitGroupFromUnitId(unitGroupId);
+        var group = MindGroupList.GetUnitGroupFromUnitId(unitGroupId);
 
         if (group != null)
         {
@@ -43,7 +43,7 @@ public class UnitController : MonoBehaviour
 
     public void MergeGroupIntoGroup(Guid mergeGroup, Guid intoGroup)
     {
-        OnGroupIdChange.Invoke(null, UnitGroupList.MergeGroupIntoGroup(mergeGroup, intoGroup));
+        OnGroupIdChange.Invoke(null, MindGroupList.MergeGroupIntoGroup(mergeGroup, intoGroup));
     }
 
     public void SplitUnitGroups(BaseUnitRoom invokingRoom, List<BaseUnitRoom> roomList)
@@ -79,7 +79,7 @@ public class UnitController : MonoBehaviour
         int totalCount = 0;
         foreach (var pair in IdAndRoomSize)
         {
-            var uGroup = UnitGroupList.GetUnitGroupFromUnitId(pair.Key);
+            var uGroup = MindGroupList.GetUnitGroupFromUnitId(pair.Key);
 
             if (pair.Value == 0)
             {
@@ -103,7 +103,7 @@ public class UnitController : MonoBehaviour
 
     public void OnUnitDestroy(Guid unitGroupId)
     {
-        var group = UnitGroupList.GetUnitGroupFromUnitId(unitGroupId);
+        var group = MindGroupList.GetUnitGroupFromUnitId(unitGroupId);
 
         if (group != null)
         {
@@ -111,13 +111,13 @@ public class UnitController : MonoBehaviour
 
             if (group.MaxUnits <= 0 && group.CurrentUnits <= 0)
             {
-                UnitGroupList.DeleteUnitGroup(group);
+                MindGroupList.DeleteUnitGroup(group);
             }
         }
     }
 
     public MindGroup GetMindGroup(int Index)
     {
-        return UnitGroupList.GetMindGroupFromIndex(Index);
+        return MindGroupList.GetMindGroupFromIndex(Index);
     }
 }

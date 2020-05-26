@@ -111,7 +111,7 @@ public class MindBuilderTabbed : MonoBehaviour
         // SmartResources.isOn = gather.smartResources;
 
         PrefferedHealth.text = combat.GetPrefferedHealth().ToString();
-        EstimatedDifference.text = combat.GetMinEstimetedDifference().ToString();
+        EstimatedDifference.text = combat.GetMinEstimatedDifference().ToString();
         //Formation.value = (int) combat.formation;
     }
 
@@ -134,7 +134,7 @@ public class MindBuilderTabbed : MonoBehaviour
     private void UpdateCombatMind()
     {
         if (float.TryParse(EstimatedDifference.text, out var estDiff))
-            combat.SetMinEstimetedDifference(estDiff);
+            combat.SetMinEstimatedDifference(estDiff);
 
         if (int.TryParse(PrefferedHealth.text, out var prefferedHealth))
             combat.SetPrefferedHealth(prefferedHealth);

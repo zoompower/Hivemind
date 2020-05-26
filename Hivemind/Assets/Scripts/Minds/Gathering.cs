@@ -32,20 +32,23 @@ public class Gathering : IMind
 
     private Ant ant;
 
-    private List<GameObject> carryingObjects;
+    private List<GameObject> carryingObjects = new List<GameObject>();
 
 
-    private Dictionary<ResourceType, int> inventory;
+    private Dictionary<ResourceType, int> inventory = new Dictionary<ResourceType, int>();
     public bool IsScout;
     private int nextHarvest;
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
-
+    private bool busy = false;
     private bool leavingBase = false;
+    private State state = State.Idle;
 
     [SerializeField]
     private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
+
+    public Gathering() : this(ResourceType.Unknown, 1, Direction.None) { }
 
     public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
     {
@@ -59,18 +62,16 @@ public class Gathering : IMind
     public int carryWeight { get; set; }
     public Direction prefferedDirection { get; set; }
 
-    public void Initiate()
+    public void Initiate(Ant ant)
     {
-        inventory = new Dictionary<ResourceType, int>();
-        carryingObjects = new List<GameObject>();
+        this.ant = ant;
     }
 
-    public void Execute(Ant ant)
+    public void Execute()
     {
         if (leavingBase) return;
 
-        this.ant = ant;
-        switch (ant.state)
+        switch (state)
         {
             case State.Idle:
                 ant.GetAgent().isStopped = true;
@@ -90,7 +91,7 @@ public class Gathering : IMind
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
-                        ant.state = State.MovingToStorage;
+                        state = State.MovingToStorage;
                         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                         ant.StartCoroutine(Discover());
                     }
@@ -107,7 +108,7 @@ public class Gathering : IMind
                 if (target != null)
                 {
                     if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
-                        ant.state = State.Gathering;
+                        state = State.Gathering;
                 }
                 else
                 {
@@ -133,7 +134,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    ant.state = State.MovingToStorage;
+                    state = State.MovingToStorage;
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                 }
                 else
@@ -164,7 +165,8 @@ public class Gathering : IMind
                             ant.UpdateSpeed();
                         }
 
-                        ant.state = State.Idle;
+                        state = State.Idle;
+                        busy = false;
                     }
                 }
                 else
@@ -176,7 +178,7 @@ public class Gathering : IMind
         }
     }
 
-    public double Likelihood(Ant ant)
+    public double Likelihood()
     {
         return 50;
     }
@@ -194,14 +196,13 @@ public class Gathering : IMind
 
     public IMind Clone()
     {
-        var clone = new Gathering(prefferedType, carryWeight, prefferedDirection);
-        clone.Initiate();
+        var clone = new Gathering(prefferedType, carryWeight, prefferedDirection, IsScout);
         return clone;
     }
 
     public void Update(IMind mind)
     {
-        var gathering = mind as Gathering;
+        Gathering gathering = mind as Gathering;
         if (gathering != null)
         {
             prefferedType = gathering.prefferedType;
@@ -213,7 +214,7 @@ public class Gathering : IMind
 
     public bool Equals(IMind mind)
     {
-        var gathering = mind as Gathering;
+        Gathering gathering = mind as Gathering;
         if (gathering != null)
             if (gathering.prefferedType == prefferedType
                 && gathering.carryWeight == carryWeight
@@ -247,22 +248,24 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (ant.state == State.Idle) ant.GetAgent().isStopped = false;
+            if (state == State.Idle) ant.GetAgent().isStopped = false;
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
-            ant.state = State.MovingToResource;
+            state = State.MovingToResource;
+            busy = true;
         }
-        else if (ant.state == State.Idle && IsScout)
+        else if (state == State.Idle && IsScout)
         {
             ant.GetAgent().isStopped = false;
             ant.StartCoroutine(ExitBase(State.Scouting));
+            busy = true;
         }
-        else if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) > 2f)
+        else if (!ant.AtBase())
         {
-            ant.state = State.MovingToStorage;
+            state = State.MovingToStorage;
             ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         }
     }
@@ -272,7 +275,7 @@ public class Gathering : IMind
         leavingBase = true;
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
-        ant.state = nextState;
+        state = nextState;
         leavingBase = false;
     }
 
@@ -342,8 +345,13 @@ public class Gathering : IMind
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
         target = null;
-        ant.state = State.MovingToStorage;
+        state = State.MovingToStorage;
         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         preparingReturn = false;
+    }
+
+    public bool IsBusy()
+    {
+        return busy;
     }
 }
