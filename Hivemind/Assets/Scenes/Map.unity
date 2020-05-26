@@ -2065,11 +2065,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: IngameUI
       objectReference: {fileID: 0}
-    - target: {fileID: 5355944979987021365, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -5
-      objectReference: {fileID: 0}
     - target: {fileID: 5370419052115804966, guid: da43b2902c97f63498541dc275da4b36,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -11251,6 +11246,11 @@ PrefabInstance:
         type: 3}
       propertyPath: CollisionSize
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
+        type: 3}
+      propertyPath: HideTileIfSubTileExists
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
