@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,7 +35,7 @@ public class Ant : MonoBehaviour
         {
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume *=  0.15f;
+        audioSrc.volume *= 0.15f;
     }
 
     // Start is called before the first frame update
@@ -52,28 +53,16 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (AtBase())
-        {
-            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
-                .Minds;
+        if (!IsBusy())
+            StartCoroutine(UpdateMind());
 
-            if (minds.Count < mindGroupMind.Count)
-                for (var i = minds.Count; i < mindGroupMind.Count; i++)
-                    minds.Add(mindGroupMind[i].Clone());
-            for (var i = 0; i < minds.Count; i++)
-                if (!minds[i].Equals(mindGroupMind[i]))
-                {
-                    minds[i].Update(mindGroupMind[i]);
-                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
-                }
-        }
-
+        if (minds.Count < 1) return;
         double likeliest = 0;
         var mindIndex = 0;
         var currentIndex = 0;
         foreach (var mind in minds)
         {
-            var current = mind.Likelihood(this);
+            var current = mind.Likelihood();
             if (current > likeliest)
             {
                 mindIndex = currentIndex;
@@ -84,7 +73,17 @@ public class Ant : MonoBehaviour
         }
 
         if (minds.Count > 0)
-            minds[mindIndex].Execute(this);
+            minds[mindIndex].Execute();
+    }
+
+    private bool IsBusy()
+    {
+        foreach (var mind in minds)
+        {
+            if (mind.IsBusy())
+                return true;
+        }
+        return false;
     }
 
     public bool AtBase()
@@ -115,6 +114,32 @@ public class Ant : MonoBehaviour
     internal void SetStorage(Storage storage)
     {
         this.storage = storage;
+    }
+    private IEnumerator UpdateMind()
+    {
+        if (AtBase())
+        {
+            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
+                .Minds;
+
+            if (minds.Count < mindGroupMind.Count)
+                for (var i = minds.Count; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                    minds[i].Initiate(this);
+                }
+            for (var i = 0; i < minds.Count; i++)
+                if (!minds[i].Equals(mindGroupMind[i]))
+                {
+                    minds[i].Update(mindGroupMind[i]);
+                    if (!minds[i].Equals(mindGroupMind[i]))
+                    {
+                        minds[i] = mindGroupMind[i].Clone();
+                        minds[i].Initiate(this);
+                    }
+                }
+        }
+        yield return new WaitForSeconds(0);
     }
 
     public void UpdateVolume()

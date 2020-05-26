@@ -32,20 +32,23 @@ public class Gathering : IMind
 
     private Ant ant;
 
-    private List<GameObject> carryingObjects;
+    private List<GameObject> carryingObjects = new List<GameObject>();
 
 
-    private Dictionary<ResourceType, int> inventory;
+    private Dictionary<ResourceType, int> inventory = new Dictionary<ResourceType, int>();
     public bool IsScout;
     private int nextHarvest;
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
-
+    private bool busy = false;
     private bool leavingBase = false;
+    private State state = State.Idle;
 
     [SerializeField]
     private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
+
+    public Gathering() : this(ResourceType.Unknown, 1, Direction.None) { }
 
     public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
     {
@@ -59,17 +62,15 @@ public class Gathering : IMind
     public int carryWeight { get; set; }
     public Direction prefferedDirection { get; set; }
 
-    public void Initiate()
+    public void Initiate(Ant ant)
     {
-        inventory = new Dictionary<ResourceType, int>();
-        carryingObjects = new List<GameObject>();
+        this.ant = ant;
     }
 
-    public void Execute(Ant ant)
+    public void Execute()
     {
         if (leavingBase) return;
 
-        this.ant = ant;
         switch (ant.state)
         {
             case State.Idle:
@@ -165,6 +166,7 @@ public class Gathering : IMind
                         }
 
                         ant.state = State.Idle;
+                        busy = false;
                     }
                 }
                 else
@@ -176,7 +178,7 @@ public class Gathering : IMind
         }
     }
 
-    public double Likelihood(Ant ant)
+    public double Likelihood()
     {
         return 50;
     }
@@ -194,8 +196,7 @@ public class Gathering : IMind
 
     public IMind Clone()
     {
-        var clone = new Gathering(prefferedType, carryWeight, prefferedDirection);
-        clone.Initiate();
+        var clone = new Gathering(prefferedType, carryWeight, prefferedDirection, IsScout);
         return clone;
     }
 
@@ -254,13 +255,15 @@ public class Gathering : IMind
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
             ant.state = State.MovingToResource;
+            busy = true;
         }
         else if (ant.state == State.Idle && IsScout)
         {
             ant.GetAgent().isStopped = false;
             ant.StartCoroutine(ExitBase(State.Scouting));
+            busy = true;
         }
-        else if (Vector3.Distance(ant.transform.position, ant.GetStorage().GetPosition()) > 2f)
+        else if (!ant.AtBase())
         {
             ant.state = State.MovingToStorage;
             ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
@@ -345,5 +348,10 @@ public class Gathering : IMind
         ant.state = State.MovingToStorage;
         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         preparingReturn = false;
+    }
+
+    public bool IsBusy()
+    {
+        return busy;
     }
 }

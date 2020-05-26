@@ -4,7 +4,11 @@ public class CombatMind : IMind
 {
     private float minEstimatedDifference;
     private int prefferedHealth;
+    private Ant ant;
+    private bool busy;
 
+
+    public CombatMind() : this(0, 0) { }
 
     public CombatMind(float minEstimeted, int prefHealth)
     {
@@ -27,7 +31,7 @@ public class CombatMind : IMind
         return false;
     }
 
-    public void Execute(Ant ant)
+    public void Execute()
     {
         if (this == null) new CombatFight().Execute(ant);
 
@@ -46,14 +50,19 @@ public class CombatMind : IMind
         throw new NotImplementedException();
     }
 
-    public void Initiate()
+    public void Initiate(Ant ant)
     {
+        this.ant = ant;
     }
 
-    public double Likelihood(Ant ant)
+    public double Likelihood()
     {
         if (ant.InCombat())
+        {
+            busy = true;
             return 100;
+        }
+        busy = false;
         return 0;
     }
 
@@ -79,5 +88,10 @@ public class CombatMind : IMind
     public void SetPrefferedHealth(int prefHealth)
     {
         prefferedHealth = prefHealth;
+    }
+
+    public bool IsBusy()
+    {
+        return busy;
     }
 }
