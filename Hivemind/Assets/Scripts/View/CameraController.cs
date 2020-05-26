@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,7 +7,7 @@ public class CameraController : MonoBehaviour
 
     private AudioSource audioSource;
 
-    private void Start()
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
 
@@ -28,7 +26,7 @@ public class CameraController : MonoBehaviour
 
         movement.x += (Input.GetAxis("Horizontal") * MovementSpeed) * Time.deltaTime;
         movement.z += (Input.GetAxis("Vertical") * MovementSpeed) * Time.deltaTime;
-        
+
         if (Input.mousePosition.x < EdgeSize)
         {
             movement.x -= MovementSpeed * Time.deltaTime;
@@ -46,8 +44,10 @@ public class CameraController : MonoBehaviour
         {
             movement.z += MovementSpeed * Time.deltaTime;
         }
-        if(Time.timeScale == 0)
+        if (Time.timeScale == 0)
+        {
             movement *= Time.timeScale;
+        }
 
         transform.position += movement;
     }
