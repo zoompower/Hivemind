@@ -13,20 +13,12 @@ public class MindGroup
     {
         unitList = new List<UnitGroup>();
         Minds = new List<IMind>();
-        Mind = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
-        Mind.Initiate();
-        var Mind2 = new CombatMind(0, 0);
-        Mind2.Initiate();
-        Minds.Add(Mind);
-        Minds.Add(Mind2);
-
-
+        Minds.Add(new Gathering());
+        Minds.Add(new CombatMind());
         UIUnitGroup = UiObject;
     }
 
     public int Count { get; private set; }
-
-    public IMind Mind { get; } = new Gathering(ResourceType.Unknown, 1, Gathering.Direction.None);
 
     public List<IMind> Minds { get; }
 
