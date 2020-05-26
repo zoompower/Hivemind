@@ -9,4 +9,9 @@
     {
         return true;
     }
+
+    public override void Destroy()
+    {
+        Destroy(gameObject);
+    }
 }

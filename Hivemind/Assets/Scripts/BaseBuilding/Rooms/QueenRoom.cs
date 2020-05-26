@@ -1,6 +1,4 @@
-﻿using UnityEngine.Tilemaps;
-
-class QueenRoom : BaseRoom
+﻿class QueenRoom : BaseRoom
 {
     public override bool IsRoom()
     {
@@ -22,5 +20,10 @@ class QueenRoom : BaseRoom
             tileScript.IsUnbuildable = true;
             tileScript.DestroyRoom(true);
         }
+    }
+
+    public override void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

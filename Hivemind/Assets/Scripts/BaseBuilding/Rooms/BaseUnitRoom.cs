@@ -14,7 +14,6 @@ public abstract class BaseUnitRoom : BaseRoom
     internal string UnitResource;
 
     internal bool AstarVisited = false;
-    private bool applicationExit = false;
 
     public override bool IsDestructable()
     {
@@ -174,15 +173,14 @@ public abstract class BaseUnitRoom : BaseRoom
     private void OnDestroy()
     {
         RemoveEventListeners();
-        unitGroup?.RemoveMax();
-        if (!applicationExit)
-            SplitRoom();
         Astar.RemoveResetableRoom(this);
         CancelInvoke("CheckSpawnable");
     }
 
-    private void OnApplicationQuit()
+    public override void Destroy()
     {
-        applicationExit = true;
+        unitGroup?.RemoveMax();
+        SplitRoom();
+        Destroy(gameObject); 
     }
 }

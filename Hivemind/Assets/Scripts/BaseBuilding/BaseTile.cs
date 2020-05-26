@@ -27,6 +27,9 @@ public class BaseTile : MonoBehaviour
     [SerializeField]
     private Color MeshColor = new Color(53.0f / 255.0f, 124.0f / 255.0f, 44.0f / 255.0f);
 
+    [SerializeField]
+    private bool HideTileIfSubTileExists = true;
+
     private void Awake()
     {
         FindAndAttachNeighbors();
@@ -49,6 +52,11 @@ public class BaseTile : MonoBehaviour
         CurrTile.transform.localRotation = Quaternion.Euler(0, (DefaultRotation < 0) ? Random.Range(0, 5) * 60 : DefaultRotation, 0);
 
         RoomScript = CurrTile.GetComponent<BaseRoom>();
+
+        if (HideTileIfSubTileExists)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     internal void DestroyRoom(bool forced = false)
@@ -57,8 +65,13 @@ public class BaseTile : MonoBehaviour
 
         if ((!IsIndestructable && RoomScript.IsDestructable()) || forced)
         {
-            Destroy(CurrTile);
+            RoomScript.Destroy();
+            CurrTile = null;
             RoomScript = null;
+            if (HideTileIfSubTileExists)
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+            }
         }
     }
 

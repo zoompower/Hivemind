@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 public class BaseController : MonoBehaviour
 {
     [SerializeField]
+    public int TeamID;
+
+    [SerializeField]
     private int[] CollisionLayers;
 
     private int LayerMask = 0;

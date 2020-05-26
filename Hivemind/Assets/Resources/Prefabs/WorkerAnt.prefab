@@ -157,8 +157,8 @@ MonoBehaviour:
   currentSpeed: 0
   damage: 0
   health: 0
-  state: 0
   isAtBase: 0
+  TeamID: 0
 --- !u!65 &7673413027533756990
 BoxCollider:
   m_ObjectHideFlags: 0

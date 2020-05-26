@@ -200,30 +200,6 @@ public class Gathering : IMind
         return clone;
     }
 
-    public void Update(IMind mind)
-    {
-        Gathering gathering = mind as Gathering;
-        if (gathering != null)
-        {
-            prefferedType = gathering.prefferedType;
-            carryWeight = gathering.carryWeight;
-            prefferedDirection = gathering.prefferedDirection;
-            IsScout = gathering.IsScout;
-        }
-    }
-
-    public bool Equals(IMind mind)
-    {
-        Gathering gathering = mind as Gathering;
-        if (gathering != null)
-            if (gathering.prefferedType == prefferedType
-                && gathering.carryWeight == carryWeight
-                && gathering.prefferedDirection == prefferedDirection
-                && gathering.IsScout == IsScout)
-                return true;
-        return false;
-    }
-
     public void GenerateUI()
     {
         throw new NotImplementedException();
