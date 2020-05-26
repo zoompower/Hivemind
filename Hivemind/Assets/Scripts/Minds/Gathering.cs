@@ -71,7 +71,7 @@ public class Gathering : IMind
     {
         if (leavingBase) return;
 
-        switch (ant.state)
+        switch (state)
         {
             case State.Idle:
                 ant.GetAgent().isStopped = true;
@@ -91,7 +91,7 @@ public class Gathering : IMind
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
-                        ant.state = State.MovingToStorage;
+                        state = State.MovingToStorage;
                         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                         ant.StartCoroutine(Discover());
                     }
@@ -108,7 +108,7 @@ public class Gathering : IMind
                 if (target != null)
                 {
                     if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
-                        ant.state = State.Gathering;
+                        state = State.Gathering;
                 }
                 else
                 {
@@ -134,7 +134,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    ant.state = State.MovingToStorage;
+                    state = State.MovingToStorage;
                     ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                 }
                 else
@@ -165,7 +165,7 @@ public class Gathering : IMind
                             ant.UpdateSpeed();
                         }
 
-                        ant.state = State.Idle;
+                        state = State.Idle;
                         busy = false;
                     }
                 }
@@ -248,16 +248,16 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (ant.state == State.Idle) ant.GetAgent().isStopped = false;
+            if (state == State.Idle) ant.GetAgent().isStopped = false;
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
             ant.GetAgent().SetDestination(target.GetPosition());
-            ant.state = State.MovingToResource;
+            state = State.MovingToResource;
             busy = true;
         }
-        else if (ant.state == State.Idle && IsScout)
+        else if (state == State.Idle && IsScout)
         {
             ant.GetAgent().isStopped = false;
             ant.StartCoroutine(ExitBase(State.Scouting));
@@ -265,7 +265,7 @@ public class Gathering : IMind
         }
         else if (!ant.AtBase())
         {
-            ant.state = State.MovingToStorage;
+            state = State.MovingToStorage;
             ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         }
     }
@@ -275,7 +275,7 @@ public class Gathering : IMind
         leavingBase = true;
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
-        ant.state = nextState;
+        state = nextState;
         leavingBase = false;
     }
 
@@ -345,7 +345,7 @@ public class Gathering : IMind
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
         target = null;
-        ant.state = State.MovingToStorage;
+        state = State.MovingToStorage;
         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         preparingReturn = false;
     }

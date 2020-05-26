@@ -41,7 +41,7 @@ public abstract class BaseUnitRoom : BaseRoom
         if (GroupId == e.oldGuid)
         {
             GroupId = e.newGuid;
-            unitGroup = unitController.UnitGroupList.GetUnitGroupFromUnitId(GroupId);
+            unitGroup = unitController.mindGroupList.GetUnitGroupFromUnitId(GroupId);
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseUnitRoom : BaseRoom
 
     internal void AttachUnitGroup()
     {
-        unitGroup = unitController.UnitGroupList.GetUnitGroupFromUnitId(GroupId);
+        unitGroup = unitController.mindGroupList.GetUnitGroupFromUnitId(GroupId);
     }
 
     private void CheckSpawnable()

@@ -14,7 +14,6 @@ public class Ant : MonoBehaviour
     public int health;
 
     private List<IMind> minds;
-    public Gathering.State state;
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
@@ -28,7 +27,6 @@ public class Ant : MonoBehaviour
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
-        state = Gathering.State.Idle;
         audioSrc = GetComponent<AudioSource>();
         //get volume
         if (PlayerPrefs.HasKey("Volume"))
@@ -54,7 +52,7 @@ public class Ant : MonoBehaviour
     private void Update()
     {
         if (!IsBusy())
-            StartCoroutine(UpdateMind());
+            UpdateMind();
 
         if (minds.Count < 1) return;
         double likeliest = 0;
@@ -71,9 +69,7 @@ public class Ant : MonoBehaviour
 
             currentIndex++;
         }
-
-        if (minds.Count > 0)
-            minds[mindIndex].Execute();
+        minds[mindIndex].Execute();
     }
 
     private bool IsBusy()
@@ -115,11 +111,12 @@ public class Ant : MonoBehaviour
     {
         this.storage = storage;
     }
-    private IEnumerator UpdateMind()
+
+    private void UpdateMind()
     {
         if (AtBase())
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
+            var mindGroupMind = FindObjectOfType<UnitController>().mindGroupList.GetMindGroupFromUnitId(unitGroupID)
                 .Minds;
 
             if (minds.Count < mindGroupMind.Count)
@@ -139,7 +136,6 @@ public class Ant : MonoBehaviour
                     }
                 }
         }
-        yield return new WaitForSeconds(0);
     }
 
     public void UpdateVolume()
