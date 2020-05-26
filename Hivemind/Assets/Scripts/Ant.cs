@@ -100,26 +100,6 @@ public class Ant : MonoBehaviour
         return agent;
     }
 
-    private IEnumerator UpdateMind()
-    {
-        if (AtBase())
-        {
-            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID)
-                .Minds;
-
-            if (minds.Count < mindGroupMind.Count)
-                for (var i = minds.Count; i < mindGroupMind.Count; i++)
-                    minds.Add(mindGroupMind[i].Clone());
-            for (var i = 0; i < minds.Count; i++)
-                if (!minds[i].Equals(mindGroupMind[i]))
-                {
-                    minds[i].Update(mindGroupMind[i]);
-                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
-                }
-        }
-        yield return new WaitForSeconds(2);
-    }
-
     public Storage GetStorage()
     {
         return storage;

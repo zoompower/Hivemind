@@ -32,6 +32,7 @@ public class UnitGroup
 
     public void AddMax()
     {
+        for(int i = 0; i < 50; i++)
         SetMaxUnits(MaxUnits + 1);
     }
 
