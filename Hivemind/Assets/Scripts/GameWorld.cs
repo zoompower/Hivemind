@@ -100,6 +100,7 @@ public static class GameWorld
 
     public static void Save()
     {
+        MyUnitController.UpdateEventText("QuickSaving...");
         SaveObject saveObject = new SaveObject
         {
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
@@ -110,10 +111,12 @@ public static class GameWorld
         };
         string json = saveObject.ToJson();
         File.WriteAllText(Application.dataPath + "/save.txt", json);
+        MyUnitController.UpdateEventText("QuickSave Complete!");
     }
 
     public static void Load()
     {
+        MyUnitController.UpdateEventText("QuickLoading...");
         if (File.Exists(Application.dataPath + "/save.txt"))
         {
             string saveString = File.ReadAllText(Application.dataPath + "/save.txt");
@@ -140,6 +143,7 @@ public static class GameWorld
                 GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newAnt.GetComponent<Ant>().SetData(data);
             }
+            MyUnitController.UpdateEventText("QuickLoad Complete!");
         }
         else
         {

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler
 {
@@ -15,6 +17,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     [SerializeField] private GameObject mindBuilderPanel;
 
     [SerializeField] private TextMeshProUGUI resourceTextBox;
+
+    [SerializeField] private GameObject EventDisplayer;
 
     private UnitController unitController;
 
@@ -131,11 +135,25 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         var sb = new StringBuilder();
 
-        foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
+        foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
                 sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
+    }
+
+    public IEnumerator UpdateEventText(string text, float seconds = 3f)
+    {
+        float startSeconds = seconds;
+        Text myText = EventDisplayer.GetComponent<Text>();
+        myText.text = text;
+        while (seconds > 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            myText.color = new Color(0, 0, 0, (float)seconds) * 2 / (float)startSeconds;
+            seconds -= 0.1f;
+        }
+        myText.text = "";
     }
 
     private string FormatResource(string spriteName, int val)

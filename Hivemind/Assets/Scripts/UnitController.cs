@@ -7,7 +7,7 @@ public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
 
-    private UiController uiController;
+    public UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
 
@@ -133,6 +133,12 @@ public class UnitController : MonoBehaviour
     public MindGroup GetMindGroup(int Index)
     {
         return MindGroupList.GetMindGroupFromIndex(Index);
+    }
+
+    public void UpdateEventText(string text)
+    {
+        uiController.StopAllCoroutines();
+        uiController.StartCoroutine(uiController.UpdateEventText(text));
     }
 
     public void LoadData(UnitController data)
