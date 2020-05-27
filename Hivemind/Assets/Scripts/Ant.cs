@@ -16,7 +16,6 @@ public class Ant : MonoBehaviour
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
-    public bool finishedTask;
 
     public Ant closestEnemy { get; private set; }
 
