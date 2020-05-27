@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Assets.Scripts;
+using Assets.Scripts.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
+[Serializable]
 public class Gathering : IMind
 {
     public enum Direction
@@ -32,15 +35,18 @@ public class Gathering : IMind
 
     private Ant ant;
 
-    private List<GameObject> carryingObjects;
+    private List<GameObject> carryingObjects = new List<GameObject>();
+    private List<string> gatheredResources = new List<string>();
 
-
-    private Dictionary<ResourceType, int> inventory;
+    private Dictionary<ResourceType, int> inventory = new Dictionary<ResourceType, int>();
     public bool IsScout;
     private int nextHarvest;
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
+    private Vector3 scoutingDestination;
+    private float scoutSeconds;
+    private float returnSeconds;
 
     public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = true)
     {
@@ -56,8 +62,6 @@ public class Gathering : IMind
 
     public void Initiate()
     {
-        inventory = new Dictionary<ResourceType, int>();
-        carryingObjects = new List<GameObject>();
     }
 
     public void Execute(Ant ant)
@@ -261,64 +265,127 @@ public class Gathering : IMind
         carryingObject.transform.position = new Vector3(ant.transform.position.x,
             ant.transform.position.y + 0.08f * (carryingObjects.Count + 1), ant.transform.position.z);
         carryingObjects.Add(carryingObject);
+        gatheredResources.Add(resource.myGuid.ToString());
     }
 
-    private IEnumerator Scout()
+    private IEnumerator Scout(float seconds = -1f, Vector3 scoutingDestination = new Vector3())
     {
-        var destination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y,
-            ant.transform.position.z + Random.Range(-5, 5));
-        switch (prefferedDirection)
+        if (seconds < 0f)
         {
-            case Direction.None:
-                break;
-
-            case Direction.North:
-                destination.z += 2;
-                break;
-
-            case Direction.West:
-                destination.x -= 2;
-                break;
-
-            case Direction.South:
-                destination.z -= 2;
-                break;
-
-            case Direction.East:
-                destination.x += 2;
-                break;
-
-            case Direction.NorthWest:
-                destination.z += 2;
-                destination.x -= 2;
-                break;
-
-            case Direction.NorthEast:
-                destination.z += 2;
-                destination.x += 2;
-                break;
-
-            case Direction.SouthEast:
-                destination.z -= 2;
-                destination.x += 2;
-                break;
-
-            case Direction.SouthWest:
-                destination.z -= 2;
-                destination.x -= 2;
-                break;
+            scoutSeconds = Random.Range(1, 3);
         }
+        if (scoutingDestination == new Vector3())
+        {
+            scoutingDestination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y, ant.transform.position.z + Random.Range(-5, 5));
+            switch (prefferedDirection)
+            {
+                case Direction.None:
+                    break;
 
-        ant.GetAgent().SetDestination(destination);
-        yield return new WaitForSeconds(Random.Range(1, 3));
+                case Direction.North:
+                    scoutingDestination.z += 2;
+                    break;
+
+                case Direction.West:
+                    scoutingDestination.x -= 2;
+                    break;
+
+                case Direction.South:
+                    scoutingDestination.z -= 2;
+                    break;
+
+                case Direction.East:
+                    scoutingDestination.x += 2;
+                    break;
+
+                case Direction.NorthWest:
+                    scoutingDestination.z += 2;
+                    scoutingDestination.x -= 2;
+                    break;
+
+                case Direction.NorthEast:
+                    scoutingDestination.z += 2;
+                    scoutingDestination.x += 2;
+                    break;
+
+                case Direction.SouthEast:
+                    scoutingDestination.z -= 2;
+                    scoutingDestination.x += 2;
+                    break;
+
+                case Direction.SouthWest:
+                    scoutingDestination.z -= 2;
+                    scoutingDestination.x -= 2;
+                    break;
+            }
+        }
+        this.scoutingDestination = scoutingDestination;
+        ant.GetAgent().SetDestination(scoutingDestination);
+        while(scoutSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            scoutSeconds -= 0.1f;
+        }
         scouting = false;
     }
 
-    private IEnumerator ReturnToBase()
+    private IEnumerator ReturnToBase(float seconds = -1f)
     {
-        yield return new WaitForSeconds(Random.Range(30, 40));
+        if (seconds < 0f)
+        {
+            returnSeconds = Random.Range(30, 40);
+        }
+        while (returnSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            returnSeconds -= 0.1f;
+        }
         target = null;
         ant.state = State.MovingToStorage;
         preparingReturn = false;
+    }
+
+    public MindData GetData()
+    {
+        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, scoutingDestination, scoutSeconds, returnSeconds);
+    }
+
+    public void SetData(MindData mindData)
+    {
+        var data = mindData as GatheringData;
+        ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+        ant.UpdateSpeed();
+        carryingObjects = new List<GameObject>();
+        gatheredResources = new List<string>();
+        foreach(string guid in data.GatheredResources)
+        {
+            carryResource(GameWorld.FindResourceNode(Guid.Parse(guid)));
+        }
+        inventory = new Dictionary<ResourceType, int>();
+        for (int i = 0; i < data.InventoryKeys.Count; i++)
+        {
+            inventory[data.InventoryKeys[i]] = data.InventoryValues[i];
+        }
+        IsScout = data.IsScout;
+        nextHarvest = data.NextHarvest;
+        preparingReturn = data.PreparingReturn;
+        scouting = data.Scouting;
+        ant.StopAllCoroutines();
+        if (scouting)
+        {
+            ant.StartCoroutine(Scout(data.ScoutSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));
+        }
+        if (preparingReturn)
+        {
+            ant.StartCoroutine(ReturnToBase(data.ReturnSeconds));
+        }
+        if (data.TargetGuid != "")
+        {
+            target = GameWorld.FindResourceNode(Guid.Parse(data.TargetGuid));
+            ant.GetAgent().SetDestination(target.GetPosition());
+        }
+        prefferedType = data.PrefferedType;
+        carryWeight = data.CarryWeight;
+        prefferedDirection = data.PrefferedDirection;
     }
 }

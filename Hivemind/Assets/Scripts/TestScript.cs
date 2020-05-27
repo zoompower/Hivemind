@@ -9,7 +9,7 @@ public class TestScript : MonoBehaviour
 {
     private UnitController controller;
 
-    private Guid guid;
+    private Guid Guid;
 
     [SerializeField] private Transform SpawnPosition;
 
@@ -40,38 +40,38 @@ public class TestScript : MonoBehaviour
 
     public void CreateUnit()
     {
-        guid = controller.CreateUnitGroup();
+        Guid = controller.CreateUnitGroup();
     }
 
     public void AddCurrentUnits()
     {
-        controller.SetCurrentUnits(guid, controller.UnitGroupList.GetUnitGroupFromUnitId(guid).CurrentUnits + 1);
+        controller.SetCurrentUnits(Guid, controller.UnitGroupList.GetUnitGroupFromUnitId(Guid).CurrentUnits + 1);
     }
 
     public void RemoveCurrentUnits()
     {
-        controller.SetCurrentUnits(guid, controller.UnitGroupList.GetUnitGroupFromUnitId(guid).CurrentUnits - 1);
+        controller.SetCurrentUnits(Guid, controller.UnitGroupList.GetUnitGroupFromUnitId(Guid).CurrentUnits - 1);
     }
 
     public void AddMaxUnits()
     {
-        controller.SetMaxUnits(guid, controller.UnitGroupList.GetUnitGroupFromUnitId(guid).MaxUnits + 1);
+        controller.SetMaxUnits(Guid, controller.UnitGroupList.GetUnitGroupFromUnitId(Guid).MaxUnits + 1);
     }
 
     public void RemoveMaxUnits()
     {
-        controller.SetMaxUnits(guid, controller.UnitGroupList.GetUnitGroupFromUnitId(guid).MaxUnits - 1);
+        controller.SetMaxUnits(Guid, controller.UnitGroupList.GetUnitGroupFromUnitId(Guid).MaxUnits - 1);
     }
 
     public void SpawnUnitForLastGroup()
     {
-        if (!guid.Equals(Guid.Empty))
+        if (!Guid.Equals(Guid.Empty))
         {
             var go = Instantiate(WorkerPrefab, SpawnPosition.position, Quaternion.identity,
                 GameObject.Find("Ants").transform);
             var a = go.GetComponent<Ant>();
 
-            controller.UnitGroupList.GetUnitGroupFromUnitId(guid).AddUnits(a);
+            controller.UnitGroupList.GetUnitGroupFromUnitId(Guid).AddUnits(a);
             AddMaxUnits();
             AddCurrentUnits();
         }

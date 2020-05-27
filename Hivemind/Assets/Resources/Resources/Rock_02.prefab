@@ -99,6 +99,8 @@ MonoBehaviour:
   CanRespawn: 1
   TimeToRespawn: 30
   DestroyWhenEmpty: 0
+  IsKnown: 0
+  Prefab: Rock_02
   audioSrc: {fileID: 6949658102422686531}
 --- !u!82 &6949658102422686531
 AudioSource:
@@ -196,5 +198,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  IsKnown: 0
-  Prefab: Rock_02

@@ -16,6 +16,7 @@ namespace Assets.Scripts
         public List<ResourceNodeData> ResourceData = new List<ResourceNodeData>();
         public List<Ant> Ants;
         public List<AntData> AntData = new List<AntData>();
+        public UnitController UnitController;
 
         public string ToJson()
         {

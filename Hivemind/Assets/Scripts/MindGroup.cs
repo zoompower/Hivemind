@@ -7,6 +7,7 @@ using UnityEngine.UI;
  * Authors:
  * René Duivenvoorden
  */
+ [Serializable]
 public class MindGroup
 {
     private protected GameObject UIUnitGroup;

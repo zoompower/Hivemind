@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ public static class GameWorld
 {
     public static List<ResourceNode> ResourceList = new List<ResourceNode>();
     public static List<Ant> AntList = new List<Ant>();
+    public static UnitController MyUnitController;
     private static Storage storage = null;
 
     public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
@@ -71,6 +73,11 @@ public static class GameWorld
         ResourceList.Add(resource);
     }
 
+    public static void SetUnitController(UnitController unitController)
+    {
+        MyUnitController = unitController;
+    }
+
     public static void AddNewAnt(Ant ant)
     {
         AntList.Add(ant);
@@ -81,6 +88,16 @@ public static class GameWorld
         AntList.Remove(ant);
     }
 
+    public static Ant FindAnt(Guid guid)
+    {
+        return AntList.FirstOrDefault(myAnt => myAnt.myGuid == guid);
+    }
+
+    public static ResourceNode FindResourceNode(Guid guid)
+    {
+        return ResourceList.FirstOrDefault(resource => resource.myGuid == guid);
+    }
+
     public static void Save()
     {
         SaveObject saveObject = new SaveObject
@@ -88,10 +105,10 @@ public static class GameWorld
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
-            Ants = AntList
+            Ants = AntList,
+            UnitController = MyUnitController
         };
         string json = saveObject.ToJson();
-        Debug.Log(json);
         File.WriteAllText(Application.dataPath + "/save.txt", json);
     }
 
@@ -112,6 +129,7 @@ public static class GameWorld
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
+            MyUnitController.LoadData(saveObject.UnitController);
             for (int i = 0; i < AntList.Count;)
             {
                 AntList[i].Destroy();

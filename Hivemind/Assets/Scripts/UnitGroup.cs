@@ -6,6 +6,7 @@ using UnityEngine.UI;
  * Authors:
  * René Duivenvoorden
  */
+ [Serializable]
 public class UnitGroup
 {
     public int MaxUnits { get; private set; }

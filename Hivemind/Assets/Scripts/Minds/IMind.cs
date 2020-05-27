@@ -1,4 +1,6 @@
-﻿public interface IMind
+﻿using Assets.Scripts.Data;
+
+public interface IMind
 {
     void Execute(Ant ant);
     void Initiate();
@@ -12,4 +14,8 @@
     void Update(IMind mind);
 
     void GenerateUI();
+
+    MindData GetData();
+
+    void SetData(MindData mindData);
 }

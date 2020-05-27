@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Ant : MonoBehaviour
 {
+    public Guid myGuid = Guid.NewGuid();
     private NavMeshAgent agent;
     public float baseSpeed;
     public float currentSpeed;
@@ -35,13 +37,13 @@ public class Ant : MonoBehaviour
         }
         audioSrc.volume *=  0.05f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+        GameWorld.AddNewAnt(this);
     }
 
     // Start is called before the first frame update
     private void Start()
     {
         storage = GameWorld.GetStorage();
-        GameWorld.AddNewAnt(this);
     }
 
     // Update is called once per frame
@@ -148,25 +150,33 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(baseSpeed, currentSpeed, damage, health, minds, state, storage, unitGroupID, closestEnemy, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, state, storage, unitGroupID, closestEnemy, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
     }
 
     public void SetData(AntData data)
     {
         gameObject.SetActive(false);
+        myGuid = Guid.Parse(data.MyGuid);
         gameObject.transform.parent = data.Parent;
         baseSpeed = data.BaseSpeed;
         currentSpeed = data.CurrentSpeed;
         damage = data.Damage;
         health = data.Health;
         Prefab = data.Prefab;
-        //minds = data.Minds;
+        minds = data.Minds;
         state = data.State;
         storage = data.Storage;
         unitGroupID = Guid.Parse(data.UnitGroupID);
-        closestEnemy = data.ClosestEnemy;
+        if (data.ClosestEnemy != string.Empty)
+        {
+            closestEnemy = GameWorld.FindAnt(Guid.Parse(data.ClosestEnemy));
+        }
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
+        for (int i = 0; i < minds.Count; i++)
+        {
+            minds[i].SetData(data.MindData[i]);
+        }
     }
 
     public void PlaySoundDiscovery()

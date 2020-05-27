@@ -6,10 +6,11 @@ using UnityEngine;
  * Authors:
  * René Duivenvoorden
  */
+[Serializable]
 public class UnitGroupList
 {
-    private readonly int MaxGroupCount = 6;
-    private readonly List<MindGroup> unitGroupList;
+    private int MaxGroupCount = 6;
+    private List<MindGroup> unitGroupList;
 
     public UnitGroupList(GameObject[] unitGroupObjects)
     {
@@ -93,5 +94,10 @@ public class UnitGroupList
     public MindGroup GetMindGroupFromIndex(int Index)
     {
         return unitGroupList[Index];
+    }
+
+    public void SetData()
+    {
+
     }
 }

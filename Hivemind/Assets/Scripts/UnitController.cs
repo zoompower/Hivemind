@@ -1,10 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
+[Serializable]
 public class UnitController : MonoBehaviour
 {
     public UnitGroupList UnitGroupList { get; private set; }
@@ -15,6 +12,7 @@ public class UnitController : MonoBehaviour
     private void Awake()
     {
         UnitGroupList = new UnitGroupList(uiController.UnitGroupObjects);
+        GameWorld.SetUnitController(this);
     }
 
     public Guid CreateUnitGroup()
@@ -45,5 +43,10 @@ public class UnitController : MonoBehaviour
     public MindGroup GetMindGroup(int Index)
     {
         return UnitGroupList.GetMindGroupFromIndex(Index);
+    }
+
+    public void LoadData(UnitController data)
+    {
+        UnitGroupList = data.UnitGroupList;
     }
 }

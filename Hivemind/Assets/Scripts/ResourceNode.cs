@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public enum ResourceType
 
 public class ResourceNode : MonoBehaviour
 {
+    public Guid myGuid = Guid.NewGuid();
     private bool respawningResources = false;
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
@@ -72,7 +74,10 @@ public class ResourceNode : MonoBehaviour
 
     public void Destroy()
     {
-        Destroy(gameObject);
+        if (this != null)
+        {
+            Destroy(gameObject);
+        }
         Destroy(this);
         GameWorld.RemoveResource(this);
     }
@@ -112,7 +117,7 @@ public class ResourceNode : MonoBehaviour
         resourceAmount--;
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
-            Destroy();
+            Destroy(gameObject);
         }
         if (resourceType == ResourceType.Rock)
         {
@@ -142,13 +147,14 @@ public class ResourceNode : MonoBehaviour
 
     public ResourceNodeData GetData()
     {
-        ResourceNodeData data = new ResourceNodeData(IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, gameObject.transform.parent);
+        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, gameObject.transform.parent);
         return data;
     }
 
     public void SetData(ResourceNodeData data)
     {
         gameObject.SetActive(false);
+        myGuid = Guid.Parse(data.MyGuid);
         gameObject.transform.parent = data.Parent;
         respawningResources = data.RespawningResources;
         BaseResourceAmount = data.BaseResourceAmount;

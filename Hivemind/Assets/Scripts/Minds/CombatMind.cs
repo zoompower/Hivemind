@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 
+[Serializable]
 public class CombatMind : IMind
 {
     private float minEstimatedDifference;
@@ -79,5 +81,15 @@ public class CombatMind : IMind
     public void SetPrefferedHealth(int prefHealth)
     {
         prefferedHealth = prefHealth;
+    }
+
+    public MindData GetData()
+    {
+        return null;
+    }
+
+    public void SetData(MindData mindData)
+    {
+
     }
 }
