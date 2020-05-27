@@ -166,7 +166,7 @@ public class ResourceNode : MonoBehaviour
         TimeToRespawn = data.TimeToRespawn;
         DestroyWhenEmpty = data.DestroyWhenEmpty;
         resourceAmount = data.ResourceAmount;
-        futureResourceAmount = data.ResourceAmount;
+        futureResourceAmount = data.FutureResourceAmount;
         ColorResource(resourceAmount);
         IsKnown = data.IsKnown;
         gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
