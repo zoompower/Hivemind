@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using UnityEngine;
 
@@ -8,8 +10,9 @@ public class BaseTile : MonoBehaviour
     private GameObject StartObject = null;
     internal GameObject CurrTile;
     internal BaseRoom RoomScript;
+    internal bool AstarVisited = false;
 
-    internal List<GameObject> Neighbors = new List<GameObject>();
+    internal List<BaseTile> Neighbors = new List<BaseTile>();
 
     [SerializeField]
     internal bool IsIndestructable = false;
@@ -33,23 +36,29 @@ public class BaseTile : MonoBehaviour
     private void Awake()
     {
         FindAndAttachNeighbors();
+        Astar.RegisterResetableRoom(this);
     }
 
     private void Start()
     {
         if (StartObject)
         {
-            InitializeObject(StartObject);
+            InitializeObject(StartObject, true);
         }
     }
 
-    internal void InitializeObject(GameObject gObj)
+    private void OnDestroy()
     {
-        if (CurrTile != null || IsUnbuildable) return;
+        Astar.RemoveResetableRoom(this);
+    }
+
+    internal void InitializeObject(GameObject gObj, bool force = false)
+    {
+        if (!force && (CurrTile != null || IsUnbuildable)) return;
 
         CurrTile = Instantiate(gObj);
         CurrTile.transform.SetParent(gameObject.transform, false);
-        CurrTile.transform.localRotation = Quaternion.Euler(0, (DefaultRotation < 0) ? Random.Range(0, 5) * 60 : DefaultRotation, 0);
+        CurrTile.transform.localRotation = Quaternion.Euler(0, (DefaultRotation < 0) ? UnityEngine.Random.Range(0, 5) * 60 : DefaultRotation, 0);
 
         RoomScript = CurrTile.GetComponent<BaseRoom>();
 
@@ -75,6 +84,34 @@ public class BaseTile : MonoBehaviour
         }
     }
 
+    internal void AntDoesAction(BaseBuildingTool tool)
+    {
+        switch (tool)
+        {
+            case BaseBuildingTool.Destroy:
+                if (!IsIndestructable)
+                {
+                    DestroyRoom();
+                }
+                break;
+            case BaseBuildingTool.Wall:
+                    InitializeObject(GetComponentInParent<BaseController>().WallPrefab);
+                break;
+            case BaseBuildingTool.AntRoom:
+                if (!IsUnbuildable)
+                {
+                    InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab);
+                }
+                break;
+            default:
+                if (RoomScript != null && !RoomScript.IsRoom() && !IsIndestructable)
+                {
+                    DestroyRoom();
+                }
+                break;
+        }
+    }
+
     private void FindAndAttachNeighbors()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, CollisionSize);
@@ -82,7 +119,7 @@ public class BaseTile : MonoBehaviour
 
         foreach (Collider hit in colliders)
         {
-            Neighbors.Add(hit.gameObject);
+            Neighbors.Add(hit.GetComponent<BaseTile>());
         }
     }
 

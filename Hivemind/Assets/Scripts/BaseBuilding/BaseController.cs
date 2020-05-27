@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BaseController : MonoBehaviour
@@ -15,9 +16,15 @@ public class BaseController : MonoBehaviour
     private BaseBuildingTool currentTool = BaseBuildingTool.Wall;
 
     [SerializeField]
-    private GameObject WallPrefab;
+    internal GameObject WallPrefab;
     [SerializeField]
-    private GameObject WorkerRoomPrefab;
+    internal GameObject WorkerRoomPrefab;
+
+    private BaseTile HighlightedTile;
+
+    public BuildingQueue BuildingQueue;
+
+    public QueenRoom QueenRoom;
 
     void Awake()
     {
@@ -25,6 +32,8 @@ public class BaseController : MonoBehaviour
         {
             LayerMask += 1 << CollisionLayers[i];
         }
+
+        BuildingQueue = new BuildingQueue(this);
     }
 
     void Update()
@@ -54,24 +63,14 @@ public class BaseController : MonoBehaviour
         }
     }
 
+    {
+        {
+        }
+    }
+
     private void OnLeftClick(BaseTile tile)
     {
-        switch (currentTool)
-        {
-            case BaseBuildingTool.Destroy:
-                tile.DestroyRoom();
-                break;
-            case BaseBuildingTool.Wall:
-                tile.InitializeObject(WallPrefab);
-                break;
-            case BaseBuildingTool.AntRoom:
-                tile.InitializeObject(WorkerRoomPrefab);
-                break;
-            default:
-                if (tile.RoomScript != null && !tile.RoomScript.IsRoom())
-                    tile.DestroyRoom();
-                break;
-        }
+        BuildingQueue.AddNewJob(tile, currentTool);
     }
 
     public void SetTool(int tool)
