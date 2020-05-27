@@ -346,12 +346,12 @@ public class Gathering : IMind
     private IEnumerator ReturnToBase()
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
-        if(state == State.Scouting)
+        if (state == State.Scouting)
         {
-        target = null;
-        state = State.MovingToStorage;
-        ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-        preparingReturn = false;
+            target = null;
+            state = State.MovingToStorage;
+            ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+            preparingReturn = false;
         }
     }
 

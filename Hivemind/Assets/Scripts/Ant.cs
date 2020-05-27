@@ -33,9 +33,8 @@ public class Ant : MonoBehaviour
         {
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume *=  0.15f;
+        audioSrc.volume *= 0.15f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-        finishedTask = true;
     }
 
     // Start is called before the first frame update
