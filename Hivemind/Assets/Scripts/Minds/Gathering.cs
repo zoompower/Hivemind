@@ -94,6 +94,7 @@ public class Gathering : IMind
                         state = State.MovingToStorage;
                         ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                         ant.StartCoroutine(Discover());
+                        preparingReturn = false;
                     }
                     else
                     {
@@ -154,6 +155,7 @@ public class Gathering : IMind
                         if (IsScout && target != null && !target.knownResource())
                         {
                             target.AddToKnownResourceList();
+                            ant.StopCoroutine(ReturnToBase());
                         }
                         if (inventory != null)
                         {
@@ -344,10 +346,13 @@ public class Gathering : IMind
     private IEnumerator ReturnToBase()
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
-        target = null;
-        state = State.MovingToStorage;
-        ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-        preparingReturn = false;
+        if (state == State.Scouting)
+        {
+            target = null;
+            state = State.MovingToStorage;
+            ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+            preparingReturn = false;
+        }
     }
 
     public bool IsBusy()
