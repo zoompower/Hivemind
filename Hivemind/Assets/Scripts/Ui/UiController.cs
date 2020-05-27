@@ -6,10 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
 public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler
 {
     private MindGroup currentOpenMindGroup;
@@ -20,14 +16,12 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     [SerializeField] private TextMeshProUGUI resourceTextBox;
 
-    [SerializeField] private UnitController unitController;
+    private UnitController unitController;
 
     private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
 
     public GameObject[] UnitGroupObjects; // The unit group UI GameObjects
     public GameObject unitIconBase;
-
-    public AudioSource audioSrc;
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -54,9 +48,9 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         var groupResult = results.Find(result => result.gameObject.CompareTag("UI-UnitGroup"));
 
         if (groupResult.isValid)
-            unitController.UnitGroupList.MoveUnit(unitGroupObj, groupResult.gameObject);
+            unitController.MindGroupList.MoveUnitIntoGroup(unitGroupObj, groupResult.gameObject);
         else
-            unitController.UnitGroupList.UpdateLayout(unitGroupObj);
+            unitController.MindGroupList.UpdateLayout(unitGroupObj);
 
         unitGroupObj = null;
     }
@@ -70,7 +64,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         if (result.isValid)
         {
-            var group = unitController.UnitGroupList.GetUnitGroupFromUIObject(result.gameObject);
+            var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
         }
 
@@ -79,12 +73,9 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private void Awake()
     {
+        unitController = FindObjectOfType<UnitController>();
         GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
         UpdateResourceTextObject();
-        if (PlayerPrefs.HasKey("Volume"))
-        {
-            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
-        }
     }
 
     public void UI_OpenMindBuilder(int i)
@@ -102,7 +93,6 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         MBScript.mindGroup = currentOpenMindGroup;
         MBScript.GenerateMind();
-        // Hook the mindbuilder onto here
     }
 
     public void UI_CloseMindBuilder()
@@ -151,13 +141,5 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     private string FormatResource(string spriteName, int val)
     {
         return $" <sprite={spriteName}> ({val}/999)";
-    }
-
-    public void UpdateVolume()
-    {
-        if (PlayerPrefs.HasKey("Volume"))
-        {
-            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
-        }
     }
 }

@@ -23,13 +23,17 @@ namespace Assets.Scripts.Data
         public ResourceType PrefferedType;
         public int CarryWeight;
         public Direction PrefferedDirection;
+        public bool Busy;
+        public bool LeavingBase;
+        public State State;
+        public State NextState;
         public float ScoutDestinationX;
         public float ScoutDestinationY;
         public float ScoutDestinationZ;
         public float ScoutSeconds;
         public float ReturnSeconds;
 
-        public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType prefferedType, int carryWeight, Direction prefferedDirection, Vector3 scoutingDestination, float scoutSeconds, float returnSeconds)
+        public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType prefferedType, int carryWeight, Direction prefferedDirection, bool busy, bool leavingBase, State state, State nextState, Vector3 scoutingDestination, float scoutSeconds, float returnSeconds)
         {
             AntGuid = ant.myGuid.ToString();
             GatheredResources = gatheredResources;
@@ -46,6 +50,10 @@ namespace Assets.Scripts.Data
             PrefferedType = prefferedType;
             CarryWeight = carryWeight;
             PrefferedDirection = prefferedDirection;
+            Busy = busy;
+            LeavingBase = leavingBase;
+            State = state;
+            NextState = nextState;
             ScoutDestinationX = scoutingDestination.x;
             ScoutDestinationY = scoutingDestination.y;
             ScoutDestinationZ = scoutingDestination.z;

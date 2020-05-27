@@ -80,6 +80,7 @@ public class ResourceNode : MonoBehaviour
         }
         Destroy(this);
         GameWorld.RemoveResource(this);
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 
     private IEnumerator respawnResource()
@@ -115,6 +116,11 @@ public class ResourceNode : MonoBehaviour
     public void GrabResource()
     {
         resourceAmount--;
+        if (audioSrc != null)
+        {
+            audioSrc.Play();
+            audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
+        }
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
             Destroy(gameObject);
@@ -123,9 +129,6 @@ public class ResourceNode : MonoBehaviour
         {
             ColorResource(resourceAmount);
         }
-        if (audioSrc != null)
-            audioSrc.Play();
-        audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
     }
 
     public void ColorResource(int amount)
@@ -181,7 +184,7 @@ public class ResourceNode : MonoBehaviour
             }
             if (resourceType == ResourceType.Crystal)
             {
-                audioSrc.volume *= 2.5f;
+                audioSrc.volume *= 1.5f;
             }
         }
     }

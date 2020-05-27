@@ -2,11 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/**
- * Authors:
- * René Duivenvoorden
- */
- [Serializable]
 public class UnitGroup
 {
     public int MaxUnits { get; private set; }
@@ -30,28 +25,57 @@ public class UnitGroup
         UpdateText();
     }
 
+    public void RemoveMax()
+    {
+        SetMaxUnits(MaxUnits - 1);
+    }
+
+    public void AddMax()
+    {
+        SetMaxUnits(MaxUnits + 1);
+    }
+
     public void SetMaxUnits(int amount)
     {
         MaxUnits = amount;
         UpdateText();
     }
 
-    public void SetCurrentUnits(int amount)
+    public bool AddUnit()
     {
-        if (amount > MaxUnits || amount < 0) return;
+        return SetCurrentUnits(CurrentUnits + 1);
+    }
 
-        CurrentUnits = amount;
+    public void RemoveUnit()
+    {
+        CurrentUnits--;
         UpdateText();
     }
 
-    public void AddUnits(Ant ant)
+    public bool SetCurrentUnits(int amount)
     {
-        ant.SetUnitGroup(UnitGroupId);
+        return SetCurrentUnits(amount, false);
+    }
+
+    public bool SetCurrentUnits(int amount, bool force)
+    {
+        if (!force && (amount > MaxUnits || amount < 0)) return false;
+
+        CurrentUnits = amount;
+        UpdateText();
+        return true;
     }
 
     private void UpdateText()
     {
-        textBox.text = $"{CurrentUnits}/{MaxUnits}";
+        if (textBox != null)
+            textBox.text = $"{CurrentUnits}/{MaxUnits}";
+    }
+
+    internal void MergeGroupIntoThis(UnitGroup other)
+    {
+        MaxUnits += other.MaxUnits;
+        CurrentUnits += other.CurrentUnits;
     }
 
 }

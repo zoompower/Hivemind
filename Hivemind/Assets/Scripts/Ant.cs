@@ -16,11 +16,13 @@ public class Ant : MonoBehaviour
     public string Prefab;
 
     private List<IMind> minds;
-    public Gathering.State state;
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
+
     public Ant closestEnemy { get; private set; }
+
+    public bool isAtBase = true;
 
     private void Awake()
     {
@@ -28,14 +30,13 @@ public class Ant : MonoBehaviour
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
-        state = Gathering.State.Idle;
         audioSrc = GetComponent<AudioSource>();
         //get volume
         if (PlayerPrefs.HasKey("Volume"))
         {
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
-        audioSrc.volume *=  0.05f;
+        audioSrc.volume *= 0.15f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
         GameWorld.AddNewAnt(this);
     }
@@ -44,56 +45,51 @@ public class Ant : MonoBehaviour
     private void Start()
     {
         storage = GameWorld.GetStorage();
+        AddEventListeners();
+    }
+
+    public void OnDestroy()
+    {
+        RemoveEventListeners();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (AtBase())
+        if (!IsBusy())
+            UpdateMind();
+
+        if (minds.Count < 1) return;
+        double likeliest = 0;
+        var mindIndex = 0;
+        var currentIndex = 0;
+        foreach (var mind in minds)
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().UnitGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
+            var current = mind.Likelihood();
+            if (current > likeliest)
+            {
+                mindIndex = currentIndex;
+                likeliest = current;
+            }
 
-            if (minds.Count < mindGroupMind.Count)
-            {
-                for (var i = minds.Count; i < mindGroupMind.Count; i++)
-                {
-                    minds.Add(mindGroupMind[i].Clone());
-                }
-            }
-            for (var i = 0; i < minds.Count; i++)
-            {
-                if (!minds[i].Equals(mindGroupMind[i]))
-                {
-                    minds[i].Update(mindGroupMind[i]);
-                    if (!minds[i].Equals(mindGroupMind[i])) minds[i] = mindGroupMind[i].Clone();
-                }
-            }
+            currentIndex++;
         }
+        minds[mindIndex].Execute();
+    }
 
-        if (minds.Count > 0)
+    private bool IsBusy()
+    {
+        foreach (var mind in minds)
         {
-            double likeliest = 0;
-            var mindIndex = 0;
-            var currentIndex = 0;
-            foreach (var mind in minds)
-            {
-                var current = mind.Likelihood(this);
-                if (current > likeliest)
-                {
-                    mindIndex = currentIndex;
-                    likeliest = current;
-                }
-
-                currentIndex++;
-            }
-            minds[mindIndex].Execute(this);
+            if (mind.IsBusy())
+                return true;
         }
+        return false;
     }
 
     public bool AtBase()
     {
-        if (Vector3.Distance(transform.position, storage.GetPosition()) < 2f) return true;
-        return false;
+        return isAtBase;
     }
 
     public bool InCombat()
@@ -111,11 +107,6 @@ public class Ant : MonoBehaviour
         return storage;
     }
 
-    public void SetUnitGroup(Guid ug)
-    {
-        unitGroupID = ug;
-    }
-
     internal void UpdateSpeed()
     {
         agent.speed = currentSpeed;
@@ -126,12 +117,42 @@ public class Ant : MonoBehaviour
         this.storage = storage;
     }
 
+    private void UpdateMind()
+    {
+        if (AtBase())
+        {
+            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID)
+                .Minds;
+
+            if (minds.Count < mindGroupMind.Count)
+            {
+                for (var i = minds.Count; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                    minds[i].Initiate(this);
+                }
+            }
+            for (var i = 0; i < minds.Count; i++)
+            {
+                if (!minds[i].Equals(mindGroupMind[i]))
+                {
+                    minds[i].Update(mindGroupMind[i]);
+                    if (!minds[i].Equals(mindGroupMind[i]))
+                    {
+                        minds[i] = mindGroupMind[i].Clone();
+                        minds[i].Initiate(this);
+                    }
+                }
+            }
+        }
+    }
+
     public void UpdateVolume()
     {
         if (PlayerPrefs.HasKey("Volume"))
         {
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
-            audioSrc.volume *= 0.05f;
+            audioSrc.volume *= 0.15f;
         }
     }
 
@@ -150,11 +171,12 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, state, storage, unitGroupID, closestEnemy, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, storage, unitGroupID, closestEnemy, isAtBase, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
     }
 
     public void SetData(AntData data)
     {
+        Debug.ClearDeveloperConsole();
         gameObject.SetActive(false);
         myGuid = Guid.Parse(data.MyGuid);
         gameObject.transform.parent = data.Parent;
@@ -164,13 +186,13 @@ public class Ant : MonoBehaviour
         health = data.Health;
         Prefab = data.Prefab;
         minds = data.Minds;
-        state = data.State;
         storage = data.Storage;
         unitGroupID = Guid.Parse(data.UnitGroupID);
         if (data.ClosestEnemy != string.Empty)
         {
             closestEnemy = GameWorld.FindAnt(Guid.Parse(data.ClosestEnemy));
         }
+        isAtBase = data.IsAtBase;
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
         for (int i = 0; i < minds.Count; i++)
@@ -182,5 +204,30 @@ public class Ant : MonoBehaviour
     public void PlaySoundDiscovery()
     {
         audioSrc.Play();
+    }
+
+    private void AddEventListeners()
+    {
+        FindObjectOfType<UnitController>().OnGroupIdChange += ChangeGroupID;
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+    }
+
+    private void RemoveEventListeners()
+    {
+        if (FindObjectOfType<UnitController>() != null)
+        {
+            FindObjectOfType<UnitController>().OnGroupIdChange -= ChangeGroupID;
+        }
+
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+    }
+
+    private void ChangeGroupID(object sender, GroupIdChangedEventArgs e)
+    {
+        if (unitGroupID == e.oldGuid)
+        {
+            unitGroupID = e.newGuid;
+        }
     }
 }

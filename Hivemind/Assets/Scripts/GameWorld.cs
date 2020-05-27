@@ -126,7 +126,7 @@ public static class GameWorld
             for (int i = 0; i < saveObject.Resources.Count; i++)
             {
                 ResourceNodeData data = saveObject.ResourceData[i];
-                GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
+                GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
             MyUnitController.LoadData(saveObject.UnitController);
@@ -137,7 +137,7 @@ public static class GameWorld
             for (int i = 0; i < saveObject.Ants.Count; i++)
             {
                 AntData data = saveObject.AntData[i];
-                GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load(data.Prefab), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
+                GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newAnt.GetComponent<Ant>().SetData(data);
             }
         }

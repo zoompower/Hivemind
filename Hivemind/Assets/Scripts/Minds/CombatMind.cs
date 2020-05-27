@@ -1,16 +1,20 @@
 ﻿using Assets.Scripts.Data;
 using System;
+using UnityEngine;
 
 [Serializable]
 public class CombatMind : IMind
 {
     private float minEstimatedDifference;
     private int prefferedHealth;
+    private Ant ant;
+    private bool busy;
 
+    public CombatMind() : this(0, 0) { }
 
-    public CombatMind(float minEstimeted, int prefHealth)
+    public CombatMind(float minEstimated, int prefHealth)
     {
-        minEstimatedDifference = minEstimeted;
+        minEstimatedDifference = minEstimated;
         prefferedHealth = prefHealth;
     }
 
@@ -21,7 +25,7 @@ public class CombatMind : IMind
 
     public bool Equals(IMind mind)
     {
-        var combatmind = mind as CombatMind;
+        CombatMind combatmind = mind as CombatMind;
         if (combatmind != null)
             if (combatmind.minEstimatedDifference == minEstimatedDifference &&
                 combatmind.prefferedHealth == prefferedHealth)
@@ -29,7 +33,7 @@ public class CombatMind : IMind
         return false;
     }
 
-    public void Execute(Ant ant)
+    public void Execute()
     {
         if (this == null) new CombatFight().Execute(ant);
 
@@ -48,27 +52,38 @@ public class CombatMind : IMind
         throw new NotImplementedException();
     }
 
-    public void Initiate()
+    public void Initiate(Ant ant)
     {
+        this.ant = ant;
     }
 
-    public double Likelihood(Ant ant)
+    public double Likelihood()
     {
         if (ant.InCombat())
+        {
+            busy = true;
             return 100;
+        }
+        busy = false;
         return 0;
     }
 
     public void Update(IMind mind)
     {
+        CombatMind combatMind = mind as CombatMind;
+        if (combatMind != null)
+        {
+            minEstimatedDifference = combatMind.minEstimatedDifference;
+            prefferedHealth = combatMind.prefferedHealth;
+        }
     }
 
-    public float GetMinEstimetedDifference()
+    public float GetMinEstimatedDifference()
     {
         return minEstimatedDifference;
     }
 
-    public void SetMinEstimetedDifference(float estDiff)
+    public void SetMinEstimatedDifference(float estDiff)
     {
         minEstimatedDifference = estDiff;
     }
@@ -85,11 +100,27 @@ public class CombatMind : IMind
 
     public MindData GetData()
     {
-        return null;
+        return new CombatData(minEstimatedDifference, prefferedHealth, ant, busy);
     }
 
     public void SetData(MindData mindData)
     {
+        CombatData data = mindData as CombatData;
+        minEstimatedDifference = data.MinEstimatedDifference;
+        prefferedHealth = data.PrefferedHealth;
+        if(data.AntGuid != null)
+        {
+            ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+        }
+        else
+        {
+            Debug.Log("Wtf");
+        }
+        busy = data.Busy;
+    }
 
+    public bool IsBusy()
+    {
+        return busy;
     }
 }
