@@ -35,7 +35,10 @@ namespace Assets.Scripts.Data
 
         public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType prefferedType, int carryWeight, Direction prefferedDirection, bool busy, bool leavingBase, State state, State nextState, Vector3 scoutingDestination, float scoutSeconds, float returnSeconds)
         {
-            AntGuid = ant.myGuid.ToString();
+            if (ant != null)
+            {
+                AntGuid = ant.myGuid.ToString();
+            }
             GatheredResources = gatheredResources;
             InventoryKeys = inventory.Keys.ToList();
             InventoryValues = inventory.Values.ToList();

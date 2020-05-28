@@ -391,8 +391,6 @@ public class Gathering : IMind
     public void SetData(MindData mindData)
     {
         GatheringData data = mindData as GatheringData;
-        ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
-        ant.UpdateSpeed();
         carryingObjects = new List<GameObject>();
         gatheredResources = new List<string>();
         foreach(string guid in data.GatheredResources)
@@ -408,35 +406,40 @@ public class Gathering : IMind
         nextHarvest = data.NextHarvest;
         preparingReturn = data.PreparingReturn;
         scouting = data.Scouting;
-        ant.StopAllCoroutines();
-        if (scouting)
-        {
-            ant.StartCoroutine(Scout(data.ScoutSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));
-        }
-        if (preparingReturn)
-        {
-            ant.StartCoroutine(ReturnToBase(data.ReturnSeconds));
-        }
-        if (data.TargetGuid != "")
-        {
-            target = GameWorld.FindResourceNode(Guid.Parse(data.TargetGuid));
-            ant.GetAgent().SetDestination(target.GetPosition());
-        }
         busy = data.Busy;
         leavingBase = data.LeavingBase;
         state = data.State;
         nextState = data.NextState;
-        if (leavingBase)
-        {
-            ant.StartCoroutine(ExitBase(nextState));
-        }
-        if (state == State.MovingToStorage)
-        {
-            ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-        }
         prefferedType = data.PrefferedType;
         carryWeight = data.CarryWeight;
         prefferedDirection = data.PrefferedDirection;
+        if (data.AntGuid != "")
+        {
+            ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+            ant.UpdateSpeed();
+            ant.StopAllCoroutines();
+            if (scouting)
+            {
+                ant.StartCoroutine(Scout(data.ScoutSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));
+            }
+            if (preparingReturn)
+            {
+                ant.StartCoroutine(ReturnToBase(data.ReturnSeconds));
+            }
+            if (data.TargetGuid != "")
+            {
+                target = GameWorld.FindResourceNode(Guid.Parse(data.TargetGuid));
+                ant.GetAgent().SetDestination(target.GetPosition());
+            }
+            if (leavingBase)
+            {
+                ant.StartCoroutine(ExitBase(nextState));
+            }
+            if (state == State.MovingToStorage)
+            {
+                ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+            }
+        }
     }
     public bool IsBusy()
     {

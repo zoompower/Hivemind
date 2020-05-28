@@ -15,7 +15,7 @@ public class AntData
     [SerializeReference]
     public List<IMind> Minds;
     [SerializeReference]
-    public List<MindData> MindData;
+    public List<MindData> MindData = new List<MindData>();
 
     public Storage Storage;
     public string UnitGroupID;
@@ -37,7 +37,6 @@ public class AntData
         CurrentSpeed = currentSpeed;
         Damage = damage;
         Health = health;
-        MindData = new List<MindData>();
         Minds = minds;
         foreach (IMind mind in minds)
         {

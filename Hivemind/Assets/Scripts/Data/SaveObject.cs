@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace Assets.Scripts
         public List<ResourceNodeData> ResourceData = new List<ResourceNodeData>();
         public List<Ant> Ants;
         public List<AntData> AntData = new List<AntData>();
-        public UnitController UnitController;
+        public List<MindGroup> MindGroups = new List<MindGroup>();
+        public List<MindGroupData> MindGroupData = new List<MindGroupData>();
 
         public string ToJson()
         {
@@ -27,6 +29,10 @@ namespace Assets.Scripts
             foreach (Ant ant in Ants)
             {
                 AntData.Add(ant.GetData());
+            }
+            foreach (MindGroup MindGroup in MindGroups)
+            {
+                MindGroupData.Add(MindGroup.GetData());
             }
             return JsonUtility.ToJson(this, true);
         }

@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
- [Serializable]
 public class MindGroup
 {
     private protected GameObject UIUnitGroup;
 
-    private readonly List<UnitGroup> unitGroupList;
+    public List<UnitGroup> unitGroupList;
 
     public MindGroup(GameObject UiObject)
     {
@@ -22,7 +21,7 @@ public class MindGroup
 
     public int Count { get; private set; }
 
-    public List<IMind> Minds { get; }
+    public List<IMind> Minds { get; private set; }
 
     public int MindPoints { get; set; }
 
@@ -94,5 +93,30 @@ public class MindGroup
     public void AddMind(IMind mind, int Position)
     {
         Minds[Position] = mind;
+    }
+
+    public MindGroupData GetData()
+    {
+        return new MindGroupData(unitGroupList, Count, Minds, MindPoints);
+    }
+
+    public void SetData(MindGroupData data, GameObject UiObject)
+    {
+        Minds = data.Minds;
+        Count = data.Count;
+        MindPoints = data.MindPoints;
+        for (int i = 0; i < Minds.Count; i++)
+        {
+            Minds[i].SetData(data.MindData[i]);
+        }
+        unitGroupList = new List<UnitGroup>();
+        foreach (UnitGroupData unitGroupData in data.UnitGroupDataList)
+        {
+            UnitGroup newUnitGroup = new UnitGroup(UiObject);
+            newUnitGroup.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);
+            newUnitGroup.SetData(unitGroupData);
+            unitGroupList.Add(newUnitGroup);
+            UpdateLayout();
+        }
     }
 }

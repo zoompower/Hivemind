@@ -37,7 +37,7 @@ public static class GameWorld
         float minDistance = float.MaxValue;
         foreach (ResourceNode resource in ResourceList)
         {
-            if (resource.IsKnown && prefType == ResourceType.Unknown || resource.resourceType == prefType)
+            if (resource.IsKnown && (prefType == ResourceType.Unknown || resource.resourceType == prefType))
             {
                 if (resource.GetResourcesFuture() > 0)
                 {
@@ -73,14 +73,14 @@ public static class GameWorld
         ResourceList.Add(resource);
     }
 
-    public static void SetUnitController(UnitController unitController)
-    {
-        MyUnitController = unitController;
-    }
-
     public static void AddNewAnt(Ant ant)
     {
         AntList.Add(ant);
+    }
+
+    public static void SetUnitController(UnitController unitController)
+    {
+        MyUnitController = unitController;
     }
 
     public static void RemoveAnt(Ant ant)
@@ -107,7 +107,7 @@ public static class GameWorld
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
             Ants = AntList,
-            UnitController = MyUnitController
+            MindGroups = MyUnitController.MindGroupList.GetMindGroupList()
         };
         string json = saveObject.ToJson();
         File.WriteAllText(Application.dataPath + "/save.txt", json);
@@ -132,7 +132,7 @@ public static class GameWorld
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
-            MyUnitController.LoadData(saveObject.UnitController);
+            MyUnitController.SetData(saveObject.MindGroupData);
             for (int i = 0; i < AntList.Count;)
             {
                 AntList[i].Destroy();

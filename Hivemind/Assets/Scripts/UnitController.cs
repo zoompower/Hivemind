@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
 public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
@@ -141,8 +141,8 @@ public class UnitController : MonoBehaviour
         uiController.StartCoroutine(uiController.UpdateEventText(text));
     }
 
-    public void LoadData(UnitController data)
+    public void SetData(List<MindGroupData> data)
     {
-        
+        MindGroupList.SetData(data, uiController.unitIconBase);
     }
 }

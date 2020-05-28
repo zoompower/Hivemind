@@ -18,7 +18,7 @@ namespace Assets.Scripts.Data
         {
             MinEstimatedDifference = minEstimatedDifference;
             PrefferedHealth = prefferedHealth;
-            if (ant.myGuid != null)
+            if (ant != null)
             {
                 AntGuid = ant.myGuid.ToString();
             }

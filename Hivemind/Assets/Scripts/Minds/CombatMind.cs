@@ -108,13 +108,9 @@ public class CombatMind : IMind
         CombatData data = mindData as CombatData;
         minEstimatedDifference = data.MinEstimatedDifference;
         prefferedHealth = data.PrefferedHealth;
-        if(data.AntGuid != null)
+        if(data.AntGuid != "")
         {
             ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
-        }
-        else
-        {
-            Debug.Log("Wtf");
         }
         busy = data.Busy;
     }

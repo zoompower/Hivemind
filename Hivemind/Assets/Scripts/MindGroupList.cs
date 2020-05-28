@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class MindGroupList
 {
     private List<MindGroup> mindGroupList;
@@ -119,5 +122,26 @@ public class MindGroupList
     public MindGroup GetMindGroupFromIndex(int Index)
     {
         return mindGroupList[Index];
+    }
+
+    public List<MindGroup> GetMindGroupList()
+    {
+        return mindGroupList;
+    }
+
+    public void SetData(List<MindGroupData> mindGroupDatas, GameObject unitGroup)
+    {
+        foreach(MindGroup mindGroup in mindGroupList)
+        {
+            while(mindGroup.unitGroupList.Count > 0)
+            { 
+                DeleteUnitGroup(mindGroup.unitGroupList.FirstOrDefault());
+            }
+        }
+        for (int i = 0; i < mindGroupDatas.Count; i++)
+        {
+            mindGroupList.Add(new MindGroup(unitGroup));
+            mindGroupList[i].SetData(mindGroupDatas[i], unitGroup);
+        }
     }
 }
