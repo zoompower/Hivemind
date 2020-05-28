@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,6 +29,7 @@ public class Ant : MonoBehaviour
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
+        storage = GameWorld.GetStorage();
         audioSrc = GetComponent<AudioSource>();
         //get volume
         if (PlayerPrefs.HasKey("Volume"))
@@ -44,7 +44,6 @@ public class Ant : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        storage = GameWorld.GetStorage();
         AddEventListeners();
     }
 
@@ -171,7 +170,7 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, storage, unitGroupID, closestEnemy, isAtBase, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
     }
 
     public void SetData(AntData data)
@@ -186,7 +185,6 @@ public class Ant : MonoBehaviour
         health = data.Health;
         Prefab = data.Prefab;
         minds = data.Minds;
-        storage = data.Storage;
         unitGroupID = Guid.Parse(data.UnitGroupID);
         if (data.ClosestEnemy != string.Empty)
         {

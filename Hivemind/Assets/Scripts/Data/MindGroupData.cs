@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Data
@@ -16,6 +13,7 @@ namespace Assets.Scripts.Data
 
         [SerializeReference]
         public List<IMind> Minds;
+
         [SerializeReference]
         public List<MindData> MindData = new List<MindData>();
 

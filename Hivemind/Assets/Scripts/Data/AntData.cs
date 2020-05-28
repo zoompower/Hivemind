@@ -14,10 +14,10 @@ public class AntData
 
     [SerializeReference]
     public List<IMind> Minds;
+
     [SerializeReference]
     public List<MindData> MindData = new List<MindData>();
 
-    public Storage Storage;
     public string UnitGroupID;
     public string ClosestEnemy;
     public bool IsAtBase;
@@ -30,7 +30,7 @@ public class AntData
     public string Prefab;
     public Transform Parent;
 
-    public AntData(Guid myGuid, float baseSpeed, float currentSpeed, int damage, int health, List<IMind> minds, Storage storage, Guid unitGroupID, Ant closestEnemy, bool isAtBase, string prefab, Vector3 position, Vector3 rotation, Transform parent)
+    public AntData(Guid myGuid, float baseSpeed, float currentSpeed, int damage, int health, List<IMind> minds, Guid unitGroupID, Ant closestEnemy, bool isAtBase, string prefab, Vector3 position, Vector3 rotation, Transform parent)
     {
         MyGuid = myGuid.ToString();
         BaseSpeed = baseSpeed;
@@ -42,9 +42,8 @@ public class AntData
         {
             MindData.Add(mind.GetData());
         }
-        Storage = storage;
         UnitGroupID = unitGroupID.ToString();
-        if(closestEnemy != null)
+        if (closestEnemy != null)
         {
             ClosestEnemy = closestEnemy.ToString();
         }

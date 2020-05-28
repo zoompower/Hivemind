@@ -3,6 +3,7 @@
 public interface IMind
 {
     void Execute();
+
     void Initiate(Ant ant);
 
     double Likelihood();

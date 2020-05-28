@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
+
 public class UnitGroup
 {
     public int MaxUnits { get; private set; }

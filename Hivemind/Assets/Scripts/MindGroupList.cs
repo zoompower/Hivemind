@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[Serializable]
+
 public class MindGroupList
 {
     private List<MindGroup> mindGroupList;

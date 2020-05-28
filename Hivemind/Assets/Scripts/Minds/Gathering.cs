@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Assets.Scripts;
+using Assets.Scripts.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Assets.Scripts;
-using Assets.Scripts.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-[Serializable]
+
 public class Gathering : IMind
 {
     public enum Direction
@@ -55,7 +54,9 @@ public class Gathering : IMind
     [SerializeField]
     private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
 
-    public Gathering() : this(ResourceType.Unknown, 1, Direction.None) { }
+    public Gathering() : this(ResourceType.Unknown, 1, Direction.None)
+    {
+    }
 
     public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
     {
@@ -356,7 +357,7 @@ public class Gathering : IMind
         }
         this.scoutingDestination = scoutingDestination;
         ant.GetAgent().SetDestination(scoutingDestination);
-        while(scoutSeconds > 0f)
+        while (scoutSeconds > 0f)
         {
             yield return new WaitForSeconds(0.1f);
             scoutSeconds -= 0.1f;
@@ -393,10 +394,6 @@ public class Gathering : IMind
         GatheringData data = mindData as GatheringData;
         carryingObjects = new List<GameObject>();
         gatheredResources = new List<string>();
-        foreach(string guid in data.GatheredResources)
-        {
-            carryResource(GameWorld.FindResourceNode(Guid.Parse(guid)));
-        }
         inventory = new Dictionary<ResourceType, int>();
         for (int i = 0; i < data.InventoryKeys.Count; i++)
         {
@@ -416,6 +413,10 @@ public class Gathering : IMind
         if (data.AntGuid != "")
         {
             ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+            foreach (string guid in data.GatheredResources)
+            {
+                carryResource(GameWorld.FindResourceNode(Guid.Parse(guid)));
+            }
             ant.UpdateSpeed();
             ant.StopAllCoroutines();
             if (scouting)
@@ -441,6 +442,7 @@ public class Gathering : IMind
             }
         }
     }
+
     public bool IsBusy()
     {
         return busy;
