@@ -80,34 +80,44 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        var mousePosition = eventData.position;
-        var clicked = InMiniMapClick(mousePosition);
+        Vector2 mousePosition = eventData.position;
+        (bool, int, float, float) clicked = InMiniMapClick(mousePosition);
         if (clicked.Item1)
         {
-            var boundingBox = BoundingBoxes[clicked.Item2];
+            //get the corrosponding bounding box of the minimap
+            BoxCollider boundingBox = BoundingBoxes[clicked.Item2];
 
-            var cameraX = (boundingBox.bounds.size.x) * clicked.Item3;
-            var cameraZ = (boundingBox.bounds.size.z) * clicked.Item4;
+            //calculate camera position in the minimap from the starting point of the bounding box
+            float cameraX = (boundingBox.bounds.size.x) * clicked.Item3;
+            float cameraZ = (boundingBox.bounds.size.z) * clicked.Item4;
 
+            //add everything together and make the new position
             mainCamera.transform.position = new Vector3(boundingBox.bounds.min.x + cameraX, mainCamera.transform.position.y, boundingBox.bounds.max.z - cameraZ);
         }
     }
 
     private (bool, int, float, float) InMiniMapClick(Vector2 mousePosition)
     {
+        //check all minimaps
         for (int i = 0; i < miniMaps.Count; i++)
         {
-            var globalPos = new Vector2(miniMaps[i].transform.position.x, miniMaps[i].transform.position.y);
-            var localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0)) * 0.85f);
+            //get the local position relative to the minimap
+            Vector2 globalPos = new Vector2(miniMaps[i].transform.position.x, miniMaps[i].transform.position.y);
+            Vector2 localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0)) * 0.85f);
 
-            var scaledX = localPosition.x / (miniMaps[i].rect.width * 0.85f);
-            var scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * 0.85f));
+            //get the scale from 0-1 where in the minimap UI the mouse was 
+            //if bigger than 1 or smaller than 0 it means it was outside of the minimap element
+            float scaledX = localPosition.x / (miniMaps[i].rect.width * 0.85f);
+            float scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * 0.85f));
 
+            //check if the mouse was inside the minimap UI
             if (scaledX < 1 && scaledX > 0 && scaledY < 1 && scaledY > 0)
             {
+                //return the number of the minimap and also the scale of where the mouse is so it does not have to be calculated again
                 return (true, i, scaledX, scaledY);
             }
         }
+        //return a false tuple
         return (false, -1, -1f, -1f);
     }
 

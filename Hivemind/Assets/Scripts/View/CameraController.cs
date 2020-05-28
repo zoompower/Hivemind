@@ -49,12 +49,15 @@ public class CameraController : MonoBehaviour
             movement *= Time.timeScale;
         }
 
-        var newPositionX = transform.position + new Vector3(movement.x, 0, 0);
+        Vector3 newPositionX = transform.position + new Vector3(movement.x, 0, 0);
+        //check if position can move along the X axis
         if (ValidatePosition(newPositionX))
         {
             transform.position = newPositionX;
         }
-        var newPositionZ = transform.position + new Vector3(0, 0, movement.z);
+
+        Vector3 newPositionZ = transform.position + new Vector3(0, 0, movement.z);
+        //check if position can move along the Z axis
         if (ValidatePosition(newPositionZ))
         {
             transform.position = newPositionZ;
