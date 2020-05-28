@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler
+public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private MindGroup currentOpenMindGroup;
 
     private Vector2 lastMousePosition; // Used in calculating screen drag of icons
 
     [SerializeField] private GameObject mindBuilderPanel;
+
+    [SerializeField] private GameObject mainCamera;
+
+    [SerializeField] private List<BoxCollider> BoundingBoxes;
 
     [SerializeField] private TextMeshProUGUI resourceTextBox;
 
@@ -22,6 +27,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     public GameObject[] UnitGroupObjects; // The unit group UI GameObjects
     public GameObject unitIconBase;
+
+    private List<RectTransform> miniMaps;
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -71,11 +78,49 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         lastMousePosition = eventData.position;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        var mousePosition = eventData.position;
+        var clicked = InMiniMapClick(mousePosition);
+        if (clicked.Item1)
+        {
+            var boundingBox = BoundingBoxes[clicked.Item2];
+
+            var cameraX = (boundingBox.bounds.size.x) * clicked.Item3;
+            var cameraZ = (boundingBox.bounds.size.z) * clicked.Item4;
+
+            mainCamera.transform.position = new Vector3(boundingBox.bounds.min.x + cameraX, mainCamera.transform.position.y, boundingBox.bounds.max.z - cameraZ);
+        }
+    }
+
+    private (bool, int, float, float) InMiniMapClick(Vector2 mousePosition)
+    {
+        for (int i = 0; i < miniMaps.Count; i++)
+        {
+            var globalPos = new Vector2(miniMaps[i].transform.position.x, miniMaps[i].transform.position.y);
+            var localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0)) * 0.85f);
+
+            var scaledX = localPosition.x / (miniMaps[i].rect.width * 0.85f);
+            var scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * 0.85f));
+
+            if (scaledX < 1 && scaledX > 0 && scaledY < 1 && scaledY > 0)
+            {
+                return (true, i, scaledX, scaledY);
+            }
+        }
+        return (false, -1, -1f, -1f);
+    }
+
     private void Awake()
     {
         unitController = FindObjectOfType<UnitController>();
         GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
         UpdateResourceTextObject();
+    }
+
+    private void Start()
+    {
+        miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
     }
 
     public void UI_OpenMindBuilder(int i)

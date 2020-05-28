@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public float MovementSpeed;
     public int EdgeSize;
-
+    private Vector3 collisionSize = new Vector3(0.01f, 0.01f, 0.01f);
     private AudioSource audioSource;
 
     private void Awake()
@@ -23,7 +24,6 @@ public class CameraController : MonoBehaviour
         if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height) return;
 
         var movement = new Vector3();
-
         movement.x += (Input.GetAxis("Horizontal") * MovementSpeed) * Time.deltaTime;
         movement.z += (Input.GetAxis("Vertical") * MovementSpeed) * Time.deltaTime;
 
@@ -49,7 +49,11 @@ public class CameraController : MonoBehaviour
             movement *= Time.timeScale;
         }
 
-        transform.position += movement;
+        var newPosition = transform.position + movement;
+        if (ValidatePosition(newPosition))
+        {
+            transform.position = newPosition;
+        }
     }
 
     private void OnDestroy()
@@ -59,10 +63,23 @@ public class CameraController : MonoBehaviour
 
     private void UpdateVolume(object sender, System.EventArgs e)
     {
-        if(audioSource != null)
-        if (PlayerPrefs.HasKey("Volume"))
+        if (audioSource != null)
         {
-            audioSource.volume = PlayerPrefs.GetFloat("Volume");
+            if (PlayerPrefs.HasKey("Volume"))
+            {
+                audioSource.volume = PlayerPrefs.GetFloat("Volume");
+            }
         }
+    }
+
+    private bool ValidatePosition(Vector3 newPos)
+    {
+        Collider[] colliders = Physics.OverlapBox(newPos, collisionSize);
+        colliders = colliders.Where(x => x.CompareTag("MapBoundaries")).ToArray();
+        if (colliders.Length < 1)
+        {
+            return false;
+        }
+        return true;
     }
 }
