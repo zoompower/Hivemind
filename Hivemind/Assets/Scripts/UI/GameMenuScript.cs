@@ -44,6 +44,7 @@ public class GameMenuScript : MonoBehaviour
 
     public void ReturnToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
 

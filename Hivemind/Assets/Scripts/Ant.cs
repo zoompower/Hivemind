@@ -16,6 +16,7 @@ public class Ant : MonoBehaviour
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
+
     public Ant closestEnemy { get; private set; }
 
     public bool isAtBase = true;
@@ -34,6 +35,7 @@ public class Ant : MonoBehaviour
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
         audioSrc.volume *= 0.15f;
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     // Start is called before the first frame update

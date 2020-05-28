@@ -107,6 +107,11 @@ public class ResourceNode : MonoBehaviour
     public void GrabResource()
     {
         resourceAmount--;
+        if (audioSrc != null)
+        {
+            audioSrc.Play();
+            audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
+        }
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
             Destroy(gameObject);
@@ -115,9 +120,6 @@ public class ResourceNode : MonoBehaviour
         {
             ColorResource(resourceAmount);
         }
-        if (audioSrc != null)
-            audioSrc.Play();
-        audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
     }
 
     public void ColorResource(int amount)
