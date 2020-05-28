@@ -33,6 +33,11 @@ public class BaseController : MonoBehaviour
             LayerMask += 1 << CollisionLayers[i];
         }
 
+        InvokeRepeating("VerifyBuildingTasks", 1.0f, 5.0f);
+    }
+
+    private void Start()
+    {
         BuildingQueue = new BuildingQueue(this);
     }
 
@@ -63,6 +68,11 @@ public class BaseController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        CancelInvoke("VerifyBuildingTasks");
+    }
+
     {
         {
         }
@@ -76,5 +86,10 @@ public class BaseController : MonoBehaviour
     public void SetTool(int tool)
     {
         currentTool = (BaseBuildingTool)tool;
+    }
+
+    private void VerifyBuildingTasks()
+    {
+        BuildingQueue.VerifyTasks();
     }
 }

@@ -34,55 +34,66 @@ public class BuildingQueue
             switch (tool)
             {
                 case BaseBuildingTool.Destroy:
-                    if (!tile.IsIndestructable)
+                    if (!tile.IsIndestructable && tile.RoomScript != null && tile.RoomScript.IsRoom())
                     {
-                        CheckTask(buildingTask);
+                        Queue.Add(buildingTask);
                     }
                     break;
                 case BaseBuildingTool.Wall:
-                    CheckTask(buildingTask);
+                    //Queue.Add(buildingTask); // TODO: when building walls is gonna be a thing
                     break;
                 case BaseBuildingTool.AntRoom:
                     if (!tile.IsUnbuildable)
                     {
-                        CheckTask(buildingTask);
+                        Queue.Add(buildingTask);
                     }
                     break;
                 default:
                     if (tile.RoomScript != null && !tile.RoomScript.IsRoom() && !tile.IsIndestructable)
                     {
-                        CheckTask(buildingTask);
+                        bool able = false;
+                        foreach (var neighbor in buildingTask.BaseTile.Neighbors)
+                        {
+                            if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetComponentInParent<BaseTile>()))
+                            {
+                                able = true;
+                                break;
+                            }
+                        }
+                        if (able)
+                        {
+                            Queue.Add(buildingTask);
+                        }
+                        else
+                        {
+                            WaitQueue.Add(buildingTask);
+                        }
                     }
                     break;
             }
         }
     }
 
-    private void CheckTask(BuildingTask task)
-    {
-        switch (task.BaseBuildingTool)
-        {
-            case BaseBuildingTool.Wall:
-                // TODO: When building walls is allowed final restrictions
-                break;
-            case BaseBuildingTool.AntRoom:
-                Queue.Add(task);
-                break;
-            case BaseBuildingTool.Destroy:
-            default:
-                bool able = true;
-                foreach (var neighbor in task.BaseTile.Neighbors)
-                {
-                    Astar.CanFindQueen(neighbor, controller.QueenRoom as BaseRoom); // TODO: continue here
-                    // TODO: fix bug of rooms not connecting properly.
-                }
-                if (able) Queue.Add(task);
-                break;
-        }
-    }
-
     public void FinishTask(BuildingTask task)
     {
         Queue.Remove(task);
+    }
+
+    public void VerifyTasks()
+    {
+        if (WaitQueue.Count == 0) return;
+
+        for (int i = WaitQueue.Count - 1; i >= 0; i--)
+        {
+            foreach (var neighbor in WaitQueue[i].BaseTile.Neighbors)
+            {
+                if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetComponentInParent<BaseTile>()))
+                {
+                    Queue.Add(WaitQueue[i]);
+                    WaitQueue.RemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }

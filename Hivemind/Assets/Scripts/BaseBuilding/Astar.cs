@@ -47,7 +47,7 @@ static class Astar
 
             foreach (var neighbor in currTile.Neighbors)
             {
-                if (neighbor.RoomScript != null && neighbor.RoomScript.IsRoom() && neighbor.RoomScript.GetType() == currTile.GetType())
+                if (neighbor.RoomScript != null && neighbor.RoomScript.IsRoom() && neighbor.RoomScript.GetType() == currTile.RoomScript.GetType())
                 {
                     queue.push(neighbor);
                 }
@@ -71,12 +71,11 @@ static class Astar
             var currTile = roomList[0];
             roomList.RemoveAt(0);
             currTile.GetComponentInChildren<BaseUnitRoom>().GroupId = newId;
-            currTile.GetComponentInChildren<BaseUnitRoom>();
             tileCount++;
 
-            foreach (var neighbor in currTile.GetComponentInParent<BaseTile>()?.Neighbors)
+            foreach (var neighbor in currTile.Neighbors)
             {
-                if (neighbor.RoomScript != null && neighbor.RoomScript.IsRoom() && neighbor.RoomScript.GetType() == currTile.GetType())
+                if (neighbor.RoomScript != null && neighbor.RoomScript.IsRoom() && neighbor.RoomScript.GetType() == currTile.RoomScript.GetType())
                 {
                     if (!neighbor.AstarVisited)
                     {
@@ -89,12 +88,33 @@ static class Astar
         return tileCount;
     }
 
-    internal static void CanFindQueen(BaseTile initialRoom, BaseRoom queenRoom)
+    internal static bool CanFindQueen(BaseTile initialRoom, BaseTile queenRoom)
     {
         ResetList();
-        initialRoom.AstarVisited = true;
 
-        List<BaseTile> roomList = new List<BaseTile>() { initialRoom };
+        if (initialRoom.RoomScript != null && !initialRoom.RoomScript.IsRoom()) return false;
+
+        BaseTilePriorityQueue queue = new BaseTilePriorityQueue();
+
+        queue.push(initialRoom);
+
+        BaseTile currTile;
+        while ((currTile = queue.pop(queenRoom.transform.position)) != null)
+        {
+            if (currTile == queenRoom) return true;
+
+            currTile.AstarVisited = true;
+
+            foreach (var neighbor in currTile.Neighbors)
+            {
+                if (neighbor.RoomScript == null || (neighbor.RoomScript != null && neighbor.RoomScript.IsRoom()))
+                {
+                    queue.push(neighbor);
+                }
+            }
+        }
+
+        return false;
     }
 }
 

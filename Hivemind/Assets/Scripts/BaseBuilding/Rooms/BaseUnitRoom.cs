@@ -104,7 +104,9 @@ public abstract class BaseUnitRoom : BaseRoom
         {
             if (UnitResource != null)
             {
-                GameObject ant = Instantiate(Resources.Load(UnitResource) as GameObject);
+                GameObject antPrefab = Resources.Load(UnitResource) as GameObject;
+                antPrefab.transform.position = transform.position;
+                GameObject ant = Instantiate(antPrefab);
 
                 GameObject container = GameObject.Find("Ants");
                 if (container == null)
