@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,7 +24,10 @@ public class BaseController : MonoBehaviour
 
     public BuildingQueue BuildingQueue;
 
+    [NonSerialized]
     public QueenRoom QueenRoom;
+    [SerializeField]
+    public Transform TeleporterExit;
 
     void Awake()
     {

@@ -190,6 +190,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c54b820f7ee471144917a2d156eb38d2, type: 3}
+--- !u!4 &188450466 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6511577134913746557, guid: 297146aca901da5449ae0b7907391039,
+    type: 3}
+  m_PrefabInstance: {fileID: 1125647497}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &438903240
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,17 +397,17 @@ PrefabInstance:
     - target: {fileID: 6511577134913746557, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 119.958
+      value: 17.695
       objectReference: {fileID: 0}
     - target: {fileID: 6511577134913746557, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 65.877
+      value: 80.744
       objectReference: {fileID: 0}
     - target: {fileID: 6511577134913746557, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4
+      value: 0.039
       objectReference: {fileID: 0}
     - target: {fileID: 6511577135693495156, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
@@ -466,17 +472,17 @@ PrefabInstance:
     - target: {fileID: 6511577136415457784, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.695
+      value: 119.958
       objectReference: {fileID: 0}
     - target: {fileID: 6511577136415457784, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 80.744
+      value: 65.877
       objectReference: {fileID: 0}
     - target: {fileID: 6511577136415457784, guid: 297146aca901da5449ae0b7907391039,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.039
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 297146aca901da5449ae0b7907391039, type: 3}
@@ -21159,6 +21165,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: TeleporterExit
+      value: 
+      objectReference: {fileID: 188450466}
     - target: {fileID: 8888611467676301667, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: m_RootOrder

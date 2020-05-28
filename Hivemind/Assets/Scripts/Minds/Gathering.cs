@@ -45,8 +45,7 @@ public class Gathering : IMind
     private bool leavingBase = false;
     private State state = State.Idle;
 
-    [SerializeField]
-    private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
+    private Vector3 TeleporterExit;
 
     public Gathering() : this(ResourceType.Unknown, 1, Direction.None) { }
 
@@ -65,6 +64,14 @@ public class Gathering : IMind
     public void Initiate(Ant ant)
     {
         this.ant = ant;
+
+        foreach (BaseController controller in GameObject.FindObjectsOfType<BaseController>())
+        {
+            if (controller.TeamID == ant.TeamID)
+            {
+                TeleporterExit = controller.TeleporterExit.position;
+            }
+        }
     }
 
     public void Execute()
