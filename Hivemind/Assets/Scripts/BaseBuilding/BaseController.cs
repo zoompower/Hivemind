@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BaseController : MonoBehaviour
@@ -43,6 +42,11 @@ public class BaseController : MonoBehaviour
 
     void Update()
     {
+        if (true) // TODO: if you are the owner of the base
+        {
+            Highlight();
+        }
+
         if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -73,9 +77,67 @@ public class BaseController : MonoBehaviour
         CancelInvoke("VerifyBuildingTasks");
     }
 
+    GameObject highlight;
+    private void Highlight()
     {
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100.0f, LayerMask) && !EventSystem.current.IsPointerOverGameObject())
         {
+            GameObject plate;
+            if (hit.transform.gameObject.layer == UnityEngine.LayerMask.NameToLayer("BaseFloor"))
+            {
+                plate = hit.transform.gameObject;
+            }
+            else
+            {
+                plate = hit.transform.parent.gameObject;
+            }
+
+            var baseTile = plate.GetComponent<BaseTile>();
+
+            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlight == null)
+            {
+                if (baseTile.CurrTile == null)
+                {
+                    highlight = Instantiate(baseTile.HighlightPrefab);
+                }
+                else
+                {
+                    highlight = Instantiate(baseTile.RoomScript.HighlightPrefab);
+                }
+
+                HighlightedTile = baseTile;
+                highlight.transform.SetParent(baseTile.transform, false);
+            }
+            else if (HighlightedTile != null && baseTile != HighlightedTile || baseTile == null)
+            {
+                Destroy(highlight);
+                HighlightedTile = null;
+            }
         }
+        else
+        {
+            if (highlight != null)
+            {
+                Destroy(highlight);
+                HighlightedTile = null;
+            }
+        }
+    }
+
+    internal GameObject GetHighlightObj(BaseBuildingTool tool)
+    {
+        switch (tool)
+        {
+            case BaseBuildingTool.Default:
+                return WallPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+            case BaseBuildingTool.Destroy:
+                return WorkerRoomPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+            case BaseBuildingTool.Wall:
+                return WallPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+            case BaseBuildingTool.AntRoom:
+                return WorkerRoomPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+        }
+        return null;
     }
 
     private void OnLeftClick(BaseTile tile)

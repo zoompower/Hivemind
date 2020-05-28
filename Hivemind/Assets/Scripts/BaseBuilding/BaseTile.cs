@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -32,6 +30,9 @@ public class BaseTile : MonoBehaviour
 
     [SerializeField]
     private bool HideTileIfSubTileExists = true;
+
+    [SerializeField]
+    internal GameObject HighlightPrefab;
 
     private void Awake()
     {

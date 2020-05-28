@@ -1,4 +1,4 @@
-﻿class Wall : BaseRoom
+﻿public class Wall : BaseRoom
 {
     public override bool IsRoom()
     {

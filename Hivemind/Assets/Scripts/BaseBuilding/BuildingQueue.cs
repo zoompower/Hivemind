@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class BuildingQueue
 {
@@ -28,7 +30,9 @@ public class BuildingQueue
 
     public void AddNewJob(BaseTile tile, BaseBuildingTool tool)
     {
-        if (Queue.FirstOrDefault(task => task.BaseTile == tile) == null)
+        BuildingTask existingTask = Queue.FirstOrDefault(task => task.BaseTile == tile) ?? WaitQueue.FirstOrDefault(task => task.BaseTile == tile);
+
+        if (existingTask == null)
         {
             BuildingTask buildingTask = new BuildingTask(tile, tool);
             switch (tool)
@@ -36,7 +40,7 @@ public class BuildingQueue
                 case BaseBuildingTool.Destroy:
                     if (!tile.IsIndestructable && tile.RoomScript != null && tile.RoomScript.IsRoom())
                     {
-                        Queue.Add(buildingTask);
+                        Add(buildingTask);
                     }
                     break;
                 case BaseBuildingTool.Wall:
@@ -45,7 +49,7 @@ public class BuildingQueue
                 case BaseBuildingTool.AntRoom:
                     if (!tile.IsUnbuildable)
                     {
-                        Queue.Add(buildingTask);
+                        Add(buildingTask);
                     }
                     break;
                 default:
@@ -60,23 +64,27 @@ public class BuildingQueue
                                 break;
                             }
                         }
-                        if (able)
-                        {
-                            Queue.Add(buildingTask);
-                        }
-                        else
-                        {
-                            WaitQueue.Add(buildingTask);
-                        }
+
+                        Add(buildingTask, !able);
                     }
                     break;
+            }
+        }
+        else
+        {
+            if (existingTask.BaseBuildingTool == tool)
+            {
+                Remove(existingTask);
             }
         }
     }
 
     public void FinishTask(BuildingTask task)
     {
-        Queue.Remove(task);
+        if (task.IsRemoved) return;
+
+        task.BaseTile.AntDoesAction(task.BaseBuildingTool);
+        Remove(task);
     }
 
     public void VerifyTasks()
@@ -95,5 +103,33 @@ public class BuildingQueue
                 }
             }
         }
+    }
+
+    private void Add(BuildingTask task, bool wait = false)
+    {
+        GameObject prefab = controller.GetHighlightObj(task.BaseBuildingTool);
+
+        if (prefab == null) throw new Exception($"There is no highlight for the tool: {task.BaseBuildingTool}");
+
+        task.HighlightObj = GameObject.Instantiate(prefab);
+        task.HighlightObj.transform.SetParent(task.BaseTile.transform, false);
+
+        if (wait)
+        {
+            WaitQueue.Add(task);
+        }
+        else
+        {
+            Queue.Add(task);
+        }
+    }
+
+    private void Remove(BuildingTask task)
+    {
+        task.IsRemoved = true;
+        GameObject.Destroy(task.HighlightObj);
+
+        Queue.Remove(task);
+        WaitQueue.Remove(task);
     }
 }

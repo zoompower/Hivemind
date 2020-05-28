@@ -54,6 +54,8 @@ public class BaseGroupMind : IMind
 
         yield return new WaitWhile(() =>
         {
+            if (task.IsRemoved) return false;
+
             target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) + task.BaseTile.transform.position;
             if (Vector3.Distance(target, ant.transform.position) < 1)
             {
@@ -67,10 +69,12 @@ public class BaseGroupMind : IMind
             return true;
         });
 
-        yield return new WaitForSeconds(2);
+        if (!task.IsRemoved)
+        {
+            yield return new WaitForSeconds(2);
 
-        task.BaseTile.AntDoesAction(task.BaseBuildingTool);
-        controller.BuildingQueue.FinishTask(task);
+            controller.BuildingQueue.FinishTask(task);
+        }
 
         busy = false;
     }

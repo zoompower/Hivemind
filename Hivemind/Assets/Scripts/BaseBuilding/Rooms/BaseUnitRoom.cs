@@ -104,9 +104,7 @@ public abstract class BaseUnitRoom : BaseRoom
         {
             if (UnitResource != null)
             {
-                GameObject antPrefab = Resources.Load(UnitResource) as GameObject;
-                antPrefab.transform.position = transform.position;
-                GameObject ant = Instantiate(antPrefab);
+                GameObject ant = Instantiate(Resources.Load(UnitResource) as GameObject);
 
                 GameObject container = GameObject.Find("Ants");
                 if (container == null)
@@ -121,6 +119,7 @@ public abstract class BaseUnitRoom : BaseRoom
                 ant.GetComponent<Ant>().unitGroupID = GroupId;
 
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
+                ant.GetComponent<NavMeshAgent>().enabled = true;
             }
             else
             {
