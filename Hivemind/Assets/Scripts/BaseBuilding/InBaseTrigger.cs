@@ -3,7 +3,7 @@
 public class InBaseTrigger : MonoBehaviour
 {
     [SerializeField]
-    private float  inBaseAntScale = 0.1f;
+    private float inBaseAntScale = 0.1f;
 
     [SerializeField]
     private float inBaseMinimapScale = 50f;
