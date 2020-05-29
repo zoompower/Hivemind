@@ -105,3 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4b434842c1ebf44bf2e7f7f5a7d5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HighlightPrefab: {fileID: 3883875149649773518, guid: 3139dcc22c79eec4b9d3665144ea0811,
+    type: 3}

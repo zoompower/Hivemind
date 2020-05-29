@@ -100,7 +100,7 @@ public class BaseController : MonoBehaviour
 
             if ((HighlightedTile == null || baseTile != HighlightedTile) && highlight == null)
             {
-                if (baseTile.CurrTile == null)
+                if (baseTile.CurrTile == null || baseTile.RoomScript.HighlightPrefab == null)
                 {
                     highlight = Instantiate(baseTile.HighlightPrefab);
                 }
