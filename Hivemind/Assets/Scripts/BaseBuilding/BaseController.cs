@@ -28,6 +28,8 @@ public class BaseController : MonoBehaviour
     public QueenRoom QueenRoom;
     [SerializeField]
     public Transform TeleporterExit;
+    [SerializeField]
+    public Transform TeleporterEntrance;
 
     void Awake()
     {

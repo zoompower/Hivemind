@@ -56,18 +56,20 @@ public class BaseGroupMind : IMind
         {
             if (task.IsRemoved) return false;
 
-            target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) + task.BaseTile.transform.position;
-            if (Vector3.Distance(target, ant.transform.position) < 1)
+            target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.2f + task.BaseTile.transform.position;
+            if (Vector3.Distance(target, ant.transform.position) < 1 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
             {
                 ant.GetAgent().SetDestination(target);
             }
 
-            if (Vector3.Distance(target, ant.transform.position) < 0.1)
+            if (Vector3.Distance(target, ant.transform.position) < 0.3)
             {
                 return false;
             }
             return true;
         });
+
+        ant.GetAgent().ResetPath();
 
         if (!task.IsRemoved)
         {

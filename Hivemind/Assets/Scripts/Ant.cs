@@ -37,13 +37,7 @@ public class Ant : MonoBehaviour
         }
         audioSrc.volume *= 0.15f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-    }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        storage = GameWorld.GetStorage();
-        AddEventListeners();
         foreach (Transform child in transform)
         {
             if (child.gameObject.layer == UnityEngine.LayerMask.NameToLayer("Minimap"))
@@ -51,6 +45,13 @@ public class Ant : MonoBehaviour
                 miniMapRenderer = child;
             }
         }
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        storage = GameWorld.GetStorage();
+        AddEventListeners();
     }
 
     public void OnDestroy()
@@ -186,6 +187,5 @@ public class Ant : MonoBehaviour
     {
         transform.localScale = new Vector3(scaleAnt, scaleAnt, scaleAnt);
         miniMapRenderer.localScale = new Vector3(scaleMinimapRenderer, scaleMinimapRenderer, scaleMinimapRenderer);
-        Debug.Log(miniMapRenderer.localScale);
     }
 }
