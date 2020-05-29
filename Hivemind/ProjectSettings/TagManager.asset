@@ -9,6 +9,8 @@ TagManager:
   - Resource
   - Ui-Mind
   - UI-MindType
+  - MapBoundaries
+  - UI-MiniMap
   layers:
   - Default
   - TransparentFX
