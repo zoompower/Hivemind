@@ -33,6 +33,10 @@ public class SpatialPartitioning : MonoBehaviour
     private void OnTriggerEnter(Collider entity)
     {
         Entities.Add(entity.gameObject);
+        if (entity.GetComponent<Ant>())
+        {
+            entity.GetComponent<Ant>().SpatialPosition = this;
+        }
     }
 
     private void OnTriggerExit(Collider entity)

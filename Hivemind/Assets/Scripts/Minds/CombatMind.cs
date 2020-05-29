@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class CombatMind : IMind
 {
@@ -56,6 +57,22 @@ public class CombatMind : IMind
 
     public double Likelihood()
     {
+        var NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
+        foreach(GameObject a in NearbyEntitities)
+        {
+            if (a.GetComponent<Ant>())
+            {
+                if(a.GetComponent<Ant>().GetStorage() != this.ant.GetStorage())
+                {
+                    busy = true;
+                    return 100;
+                }
+            }
+        }
+        busy = false;
+        return 0;
+
+
         if (ant.InCombat())
         {
             busy = true;
