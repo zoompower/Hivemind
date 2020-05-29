@@ -135,10 +135,10 @@ public class UnitController : MonoBehaviour
         return MindGroupList.GetMindGroupFromIndex(Index);
     }
 
-    public void UpdateEventText(string text)
+    public void UpdateEventText(string text, Color? color = null)
     {
         uiController.StopAllCoroutines();
-        uiController.StartCoroutine(uiController.UpdateEventText(text));
+        uiController.StartCoroutine(uiController.UpdateEventText(text, color));
     }
 
     public void SetData(List<MindGroupData> data)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -29,13 +30,21 @@ public class MainMenuScript : MonoBehaviour
     {
         SceneManager.LoadScene("Map");
     }
-    public void QuitGame()
+
+    public void LoadGame()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Map");
+        GameWorld.Load();
     }
+
     public void SettingsMenu()
     {
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

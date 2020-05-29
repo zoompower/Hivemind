@@ -142,15 +142,18 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         resourceTextBox.text = sb.ToString();
     }
 
-    public IEnumerator UpdateEventText(string text, float seconds = 3f)
+    public IEnumerator UpdateEventText(string text, Color? color = null, float seconds = 3f)
     {
         float startSeconds = seconds;
         Text myText = EventDisplayer.GetComponent<Text>();
+        myText.color = color ?? Color.black;
         myText.text = text;
         while (seconds > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            myText.color = new Color(0, 0, 0, (float)seconds) * 2 / (float)startSeconds;
+            Color newColor = myText.color;
+            newColor.a = ((float)seconds * 2 / (float)startSeconds);
+            myText.color = newColor;
             seconds -= 0.1f;
         }
         myText.text = "";

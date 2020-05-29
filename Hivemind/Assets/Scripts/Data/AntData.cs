@@ -28,9 +28,8 @@ public class AntData
     public float RotationY;
     public float RotationZ;
     public string Prefab;
-    public Transform Parent;
 
-    public AntData(Guid myGuid, float baseSpeed, float currentSpeed, int damage, int health, List<IMind> minds, Guid unitGroupID, Ant closestEnemy, bool isAtBase, string prefab, Vector3 position, Vector3 rotation, Transform parent)
+    public AntData(Guid myGuid, float baseSpeed, float currentSpeed, int damage, int health, List<IMind> minds, Guid unitGroupID, Ant closestEnemy, bool isAtBase, string prefab, Vector3 position, Vector3 rotation)
     {
         MyGuid = myGuid.ToString();
         BaseSpeed = baseSpeed;
@@ -55,6 +54,5 @@ public class AntData
         RotationY = rotation.y;
         RotationZ = rotation.z;
         Prefab = prefab;
-        Parent = parent;
     }
 }

@@ -170,7 +170,7 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.parent);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles);
     }
 
     public void SetData(AntData data)
@@ -178,7 +178,7 @@ public class Ant : MonoBehaviour
         Debug.ClearDeveloperConsole();
         gameObject.SetActive(false);
         myGuid = Guid.Parse(data.MyGuid);
-        gameObject.transform.parent = data.Parent;
+        gameObject.transform.parent = GameObject.Find("Map").transform.Find("Ants").transform;
         baseSpeed = data.BaseSpeed;
         currentSpeed = data.CurrentSpeed;
         damage = data.Damage;
