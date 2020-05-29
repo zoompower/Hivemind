@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.1
-    agentHeight: 0.3
+    agentRadius: 0.03
+    agentHeight: 0.02
     agentSlope: 45
-    agentClimb: 0.3
+    agentClimb: 0.02
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
-    manualCellSize: 1
-    cellSize: 0.025
+    manualCellSize: 0
+    cellSize: 0.01
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -211,6 +211,12 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 106539592990692207, guid: 9a375304d0414b643bd52761505dea61,
     type: 3}
   m_PrefabInstance: {fileID: 1980809174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &410385697 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6511577136415457784, guid: 297146aca901da5449ae0b7907391039,
+    type: 3}
+  m_PrefabInstance: {fileID: 1125647497}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &438903240
 GameObject:
@@ -840,7 +846,7 @@ PrefabInstance:
     - target: {fileID: 106539592990692193, guid: 9a375304d0414b643bd52761505dea61,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 54.96
+      value: 50.46
       objectReference: {fileID: 0}
     - target: {fileID: 106539592990692193, guid: 9a375304d0414b643bd52761505dea61,
         type: 3}
@@ -850,7 +856,7 @@ PrefabInstance:
     - target: {fileID: 106539592990692193, guid: 9a375304d0414b643bd52761505dea61,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 24.17
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 106539592990692193, guid: 9a375304d0414b643bd52761505dea61,
         type: 3}
@@ -891,6 +897,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 106539592990692193, guid: 9a375304d0414b643bd52761505dea61,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 83.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 106539592990692193, guid: 9a375304d0414b643bd52761505dea61,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 77.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a375304d0414b643bd52761505dea61, type: 3}
@@ -21732,6 +21748,11 @@ PrefabInstance:
       propertyPath: TeleporterExit
       value: 
       objectReference: {fileID: 188450466}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: TeleporterEntrance
+      value: 
+      objectReference: {fileID: 410385697}
     - target: {fileID: 8108060859643536694, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: outBaseMinimapScale
