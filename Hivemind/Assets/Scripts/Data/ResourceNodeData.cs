@@ -23,8 +23,9 @@ namespace Assets.Scripts
         public float RotationY;
         public float RotationZ;
         public string Prefab;
+        public float RespawnSeconds;
 
-        public ResourceNodeData(Guid myGuid, bool isKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab)
+        public ResourceNodeData(Guid myGuid, bool isKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, float respawnSeconds)
         {
             MyGuid = myGuid.ToString();
             IsKnown = isKnown;
@@ -43,6 +44,7 @@ namespace Assets.Scripts
             RotationY = rotation.y;
             RotationZ = rotation.z;
             Prefab = prefab;
+            RespawnSeconds = respawnSeconds;
         }
     }
 }

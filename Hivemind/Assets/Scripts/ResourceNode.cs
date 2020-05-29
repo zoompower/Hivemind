@@ -25,6 +25,7 @@ public class ResourceNode : MonoBehaviour
     public bool DestroyWhenEmpty = false;
     public bool IsKnown;
     public string Prefab;
+    public float respawnSeconds;
 
     [SerializeField]
     private AudioSource audioSrc;
@@ -83,10 +84,18 @@ public class ResourceNode : MonoBehaviour
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 
-    private IEnumerator respawnResource()
+    private IEnumerator respawnResource(float timeToRespawn = -1f)
     {
         respawningResources = true;
-        yield return new WaitForSeconds(TimeToRespawn);
+        if (timeToRespawn < 0)
+        {
+            respawnSeconds = TimeToRespawn;
+        }
+        while (respawnSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            respawnSeconds -= 0.1f;
+        }
         resourceAmount++;
         futureResourceAmount++;
         ColorResource(resourceAmount);
@@ -150,7 +159,7 @@ public class ResourceNode : MonoBehaviour
 
     public ResourceNodeData GetData()
     {
-        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab);
+        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds);
         return data;
     }
 
@@ -169,8 +178,13 @@ public class ResourceNode : MonoBehaviour
         futureResourceAmount = data.FutureResourceAmount;
         ColorResource(resourceAmount);
         IsKnown = data.IsKnown;
+        respawnSeconds = data.RespawnSeconds;
         gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
         gameObject.SetActive(true);
+        if (respawningResources)
+        {
+            StartCoroutine(respawnResource(respawnSeconds));
+        }
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
     }
 
