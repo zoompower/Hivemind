@@ -147,6 +147,7 @@ public static class GameWorld
         }
         else
         {
+            MyUnitController.UpdateEventText("Save file not found!", Color.red);
             Debug.LogError($"Save file could not be found at {Application.dataPath}/save.txt");
         }
     }

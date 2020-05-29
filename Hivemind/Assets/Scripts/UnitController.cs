@@ -143,6 +143,6 @@ public class UnitController : MonoBehaviour
 
     public void SetData(List<MindGroupData> data)
     {
-        MindGroupList.SetData(data, uiController.unitIconBase);
+        MindGroupList.SetData(data, uiController.UnitGroupObjects, uiController.unitIconBase);
     }
 }

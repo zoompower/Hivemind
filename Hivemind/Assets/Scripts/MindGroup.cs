@@ -100,7 +100,7 @@ public class MindGroup
         return new MindGroupData(unitGroupList, Count, Minds, MindPoints);
     }
 
-    public void SetData(MindGroupData data, GameObject UiObject)
+    public void SetData(MindGroupData data, GameObject parent, GameObject UiObject)
     {
         Minds = data.Minds;
         Count = data.Count;
@@ -113,7 +113,7 @@ public class MindGroup
         foreach (UnitGroupData unitGroupData in data.UnitGroupDataList)
         {
             UnitGroup newUnitGroup = new UnitGroup(UiObject);
-            newUnitGroup.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);
+            newUnitGroup.Ui_IconObj.transform.SetParent(parent.transform, false);
             newUnitGroup.SetData(unitGroupData);
             unitGroupList.Add(newUnitGroup);
             UpdateLayout();

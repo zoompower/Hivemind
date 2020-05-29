@@ -129,7 +129,7 @@ public class MindGroupList
         return mindGroupList;
     }
 
-    public void SetData(List<MindGroupData> mindGroupDatas, GameObject unitGroup)
+    public void SetData(List<MindGroupData> mindGroupDatas, GameObject[] mindGroupIcons, GameObject unitIconBase)
     {
         foreach(MindGroup mindGroup in mindGroupList)
         {
@@ -138,10 +138,11 @@ public class MindGroupList
                 DeleteUnitGroup(mindGroup.unitGroupList.FirstOrDefault());
             }
         }
+        mindGroupList = new List<MindGroup>();
         for (int i = 0; i < mindGroupDatas.Count; i++)
         {
-            mindGroupList.Add(new MindGroup(unitGroup));
-            mindGroupList[i].SetData(mindGroupDatas[i], unitGroup);
+            mindGroupList.Add(new MindGroup(mindGroupIcons[i]));
+            mindGroupList[i].SetData(mindGroupDatas[i], mindGroupIcons[i], unitIconBase);
         }
     }
 }
