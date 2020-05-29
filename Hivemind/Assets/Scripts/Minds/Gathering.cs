@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -45,8 +45,8 @@ public class Gathering : IMind
     private bool leavingBase = false;
     private State state = State.Idle;
 
-    [SerializeField]
-    private Vector3 TeleporterExit = new Vector3(4.231f, 0, 8.612f);
+    private Vector3 TeleporterExit;
+    private bool enterBase = false;
 
     public Gathering() : this(ResourceType.Unknown, 1, Direction.None) { }
 
@@ -65,11 +65,19 @@ public class Gathering : IMind
     public void Initiate(Ant ant)
     {
         this.ant = ant;
+
+        foreach (BaseController controller in GameObject.FindObjectsOfType<BaseController>())
+        {
+            if (controller.TeamID == ant.TeamID)
+            {
+                TeleporterExit = controller.TeleporterExit.position;
+            }
+        }
     }
 
     public void Execute()
     {
-        if (leavingBase) return;
+        if (leavingBase || enterBase) return;
 
         switch (state)
         {
@@ -91,9 +99,10 @@ public class Gathering : IMind
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
+                        ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
                         state = State.MovingToStorage;
-                        ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                         ant.StartCoroutine(Discover());
+                        preparingReturn = false;
                     }
                     else
                     {
@@ -109,6 +118,10 @@ public class Gathering : IMind
                 {
                     if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
                         state = State.Gathering;
+                    if (Vector3.Distance(ant.GetAgent().destination, target.GetPosition()) > 1f)
+                    {
+                        ant.GetAgent().SetDestination(target.GetPosition());
+                    }
                 }
                 else
                 {
@@ -134,8 +147,8 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
+                    ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
                     state = State.MovingToStorage;
-                    ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
                 }
                 else
                 {
@@ -154,6 +167,7 @@ public class Gathering : IMind
                         if (IsScout && target != null && !target.knownResource())
                         {
                             target.AddToKnownResourceList();
+                            ant.StopCoroutine(ReturnToBase());
                         }
                         if (inventory != null)
                         {
@@ -241,8 +255,8 @@ public class Gathering : IMind
         }
         else if (!ant.AtBase())
         {
+            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
             state = State.MovingToStorage;
-            ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
         }
     }
 
@@ -253,6 +267,15 @@ public class Gathering : IMind
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
         leavingBase = false;
+    }
+
+    private IEnumerator EnterBase(Vector3 nextPosition)
+    {
+        enterBase = true;
+        ant.GetAgent().SetDestination(TeleporterExit);
+        yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterExit) < 1f);
+        ant.GetAgent().SetDestination(nextPosition);
+        enterBase = false;
     }
 
     private void carryResource(ResourceNode resource)
@@ -320,10 +343,13 @@ public class Gathering : IMind
     private IEnumerator ReturnToBase()
     {
         yield return new WaitForSeconds(Random.Range(30, 40));
-        target = null;
-        state = State.MovingToStorage;
-        ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-        preparingReturn = false;
+        if (state == State.Scouting)
+        {
+            target = null;
+            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            state = State.MovingToStorage;
+            preparingReturn = false;
+        }
     }
 
     public bool IsBusy()

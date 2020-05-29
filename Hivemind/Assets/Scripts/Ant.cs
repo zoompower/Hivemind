@@ -11,16 +11,18 @@ public class Ant : MonoBehaviour
     public int damage;
 
     public int health;
-    
+
     private List<IMind> minds = new List<IMind>();
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
+
     public Ant closestEnemy { get; private set; }
 
     public bool isAtBase = true;
 
     public int TeamID;
+    private Transform miniMapRenderer;
 
     private void Awake()
     {
@@ -34,6 +36,7 @@ public class Ant : MonoBehaviour
             audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
         audioSrc.volume *= 0.15f;
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     // Start is called before the first frame update
@@ -41,6 +44,13 @@ public class Ant : MonoBehaviour
     {
         storage = GameWorld.GetStorage();
         AddEventListeners();
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.layer == UnityEngine.LayerMask.NameToLayer("Minimap"))
+            {
+                miniMapRenderer = child;
+            }
+        }
     }
 
     public void OnDestroy()
@@ -170,5 +180,12 @@ public class Ant : MonoBehaviour
         {
             unitGroupID = e.newGuid;
         }
+    }
+
+    public void ChangeScale(float scaleAnt, float scaleMinimapRenderer)
+    {
+        transform.localScale = new Vector3(scaleAnt, scaleAnt, scaleAnt);
+        miniMapRenderer.localScale = new Vector3(scaleMinimapRenderer, scaleMinimapRenderer, scaleMinimapRenderer);
+        Debug.Log(miniMapRenderer.localScale);
     }
 }

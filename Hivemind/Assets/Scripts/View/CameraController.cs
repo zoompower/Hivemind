@@ -52,8 +52,14 @@ public class CameraController : MonoBehaviour
         transform.position += movement;
     }
 
+    private void OnDestroy()
+    {
+        SettingsScript.OnVolumeChanged -= UpdateVolume;
+    }
+
     private void UpdateVolume(object sender, System.EventArgs e)
     {
+        if(audioSource != null)
         if (PlayerPrefs.HasKey("Volume"))
         {
             audioSource.volume = PlayerPrefs.GetFloat("Volume");

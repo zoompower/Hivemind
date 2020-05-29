@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BaseController : MonoBehaviour
@@ -23,7 +24,10 @@ public class BaseController : MonoBehaviour
 
     public BuildingQueue BuildingQueue;
 
+    [NonSerialized]
     public QueenRoom QueenRoom;
+    [SerializeField]
+    public Transform TeleporterExit;
 
     void Awake()
     {
@@ -76,7 +80,7 @@ public class BaseController : MonoBehaviour
     {
         CancelInvoke("VerifyBuildingTasks");
     }
-
+    
     GameObject highlight;
     private void Highlight()
     {
@@ -139,7 +143,7 @@ public class BaseController : MonoBehaviour
         }
         return null;
     }
-
+    
     private void OnLeftClick(BaseTile tile)
     {
         BuildingQueue.AddNewJob(tile, currentTool);
