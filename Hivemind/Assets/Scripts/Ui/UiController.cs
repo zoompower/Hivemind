@@ -15,7 +15,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     [SerializeField] private GameObject mindBuilderPanel;
 
-    [SerializeField] private GameObject mainCamera;
+    private GameObject mainCamera;
 
     [SerializeField] private List<BoxCollider> BoundingBoxes;
 
@@ -29,6 +29,19 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public GameObject unitIconBase;
 
     private List<RectTransform> miniMaps;
+
+    private void Awake()
+    {
+        unitController = FindObjectOfType<UnitController>();
+        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
+        UpdateResourceTextObject();
+    }
+
+    private void Start()
+    {
+        mainCamera = FindObjectOfType<CameraController>().gameObject;
+        miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -121,18 +134,6 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         return (false, -1, -1f, -1f);
     }
 
-    private void Awake()
-    {
-        unitController = FindObjectOfType<UnitController>();
-        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
-        UpdateResourceTextObject();
-    }
-
-    private void Start()
-    {
-        miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
-    }
-
     public void UI_OpenMindBuilder(int i)
     {
         mindBuilderPanel.SetActive(true);
@@ -186,7 +187,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         var sb = new StringBuilder();
 
-        foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
+        foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
                 sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
 
