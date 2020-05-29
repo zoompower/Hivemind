@@ -43,6 +43,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         mainCamera = FindObjectOfType<CameraController>().gameObject;
         miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
+
+        //get the default resolution
         CanvasScaler canvasScaler = miniMaps[0].GetComponentInParent<CanvasScaler>();
         referenceResolution = canvasScaler.referenceResolution;
     }
@@ -115,9 +117,11 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private (bool, int, float, float) InMiniMapClick(Vector2 mousePosition)
     {
+        //calculate how small compared to default resolution it is
         Vector2 currentResolution = miniMaps[0].GetComponentInParent<Canvas>().pixelRect.size;
         float scalingMultiplierX = currentResolution.x / referenceResolution.x;
         float scalingMultiplierY = currentResolution.y / referenceResolution.y;
+
         //check all minimaps
         for (int i = 0; i < miniMaps.Count; i++)
         {
