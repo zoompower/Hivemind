@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5465358d22a4a84e8ac1b84bfcd23da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HighlightPrefab: {fileID: 3883875149649773518, guid: 3139dcc22c79eec4b9d3665144ea0811,
+    type: 3}
 --- !u!64 &-1327407897431200131
 MeshCollider:
   m_ObjectHideFlags: 0

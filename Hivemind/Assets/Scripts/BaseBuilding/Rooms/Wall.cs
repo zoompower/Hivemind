@@ -1,4 +1,4 @@
-﻿class Wall : BaseRoom
+﻿public class Wall : BaseRoom
 {
     public override bool IsRoom()
     {
@@ -8,5 +8,10 @@
     public override bool IsDestructable()
     {
         return true;
+    }
+
+    public override void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

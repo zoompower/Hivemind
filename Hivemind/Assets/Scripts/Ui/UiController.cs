@@ -32,11 +32,34 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     private List<RectTransform> miniMaps;
     private Vector2 referenceResolution;
 
+    private ColorBlock UnselectedToolButtonColor;
+    [SerializeField]
+    private ColorBlock SelectedToolButtonColor;
+
+    [SerializeField]
+    private Button DefaultToolButton;
+    [SerializeField]
+    private Button AntRoomToolButton;
+    [SerializeField]
+    private Button DestroyToolButton;
+
+
     private void Awake()
     {
         unitController = FindObjectOfType<UnitController>();
         GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
         UpdateResourceTextObject();
+
+        BaseController[] controllers = UnityEngine.Object.FindObjectsOfType<BaseController>();
+
+        foreach (BaseController controller in controllers)
+        {
+            if (controller.TeamID == 0)
+            {
+                controller.OnToolChanged += OnToolChanged;
+                break;
+            }
+        }
     }
 
     private void Start()
@@ -206,6 +229,51 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
                 sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
+    }
+
+    private void OnToolChanged(object sender, ToolChangedEventArgs args)
+    {
+        
+        if (args.newTool != args.oldTool)
+        {
+            switch (args.oldTool)
+            {
+                case BaseBuildingTool.Default:
+                    DefaultToolButton.colors = UnselectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.DestroyRoom:
+                    DestroyToolButton.colors = UnselectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.Wall:
+                    // TODO: when building walls is gonna be a thing
+                    break;
+                case BaseBuildingTool.AntRoom:
+                    AntRoomToolButton.colors = UnselectedToolButtonColor;
+                    break;
+            }
+        }
+
+        if (UnselectedToolButtonColor == default || args.newTool != args.oldTool)
+        {
+            switch (args.newTool)
+            {
+                case BaseBuildingTool.Default:
+                    UnselectedToolButtonColor = DefaultToolButton.colors;
+                    DefaultToolButton.colors = SelectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.DestroyRoom:
+                    UnselectedToolButtonColor = DestroyToolButton.colors;
+                    DestroyToolButton.colors = SelectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.Wall:
+                    // TODO: when building walls is gonna be a thing
+                    break;
+                case BaseBuildingTool.AntRoom:
+                    UnselectedToolButtonColor = AntRoomToolButton.colors;
+                    AntRoomToolButton.colors = SelectedToolButtonColor;
+                    break;
+            }
+        }
     }
 
     private string FormatResource(string spriteName, int val)

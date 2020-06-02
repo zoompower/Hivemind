@@ -13,8 +13,7 @@ public abstract class BaseUnitRoom : BaseRoom
 
     internal string UnitResource;
 
-    internal bool AstarVisited = false;
-    private bool applicationExit = false;
+    private BaseTile Parent;
 
     public override bool IsDestructable()
     {
@@ -54,15 +53,15 @@ public abstract class BaseUnitRoom : BaseRoom
         }
 
         AddEventListeners();
-        Astar.RegisterResetableRoom(this);
+        Parent = GetComponentInParent<BaseTile>();
 
         bool createNew = true;
 
-        foreach (var neighbor in transform.GetComponentInParent<BaseTile>().Neighbors)
+        foreach (var neighbor in Parent.Neighbors)
         {
-            if (neighbor.GetComponent<BaseTile>().RoomScript is BaseUnitRoom)
+            if (neighbor.RoomScript is BaseUnitRoom)
             {
-                var other = neighbor.GetComponent<BaseTile>().RoomScript as BaseUnitRoom;
+                var other = neighbor.RoomScript as BaseUnitRoom;
                 if (other.GroupId == Guid.Empty)
                 {
                     continue;
@@ -120,6 +119,7 @@ public abstract class BaseUnitRoom : BaseRoom
                 ant.GetComponent<Ant>().unitGroupID = GroupId;
 
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
+                ant.GetComponent<NavMeshAgent>().enabled = true;
             }
             else
             {
@@ -130,30 +130,29 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void SplitRoom()
     {
-        List<BaseUnitRoom> sameNeighborList = new List<BaseUnitRoom>();
+        List<BaseTile> sameNeighborList = new List<BaseTile>();
 
-        foreach (var neighbor in transform.GetComponentInParent<BaseTile>()?.Neighbors)
+        foreach (var neighbor in Parent.Neighbors)
         {
-            BaseTile neighborTile = neighbor.GetComponent<BaseTile>();
-            if (neighborTile.RoomScript != null && neighborTile.RoomScript.IsRoom() && neighborTile.RoomScript.GetType() == GetType())
+            if (neighbor.RoomScript != null && neighbor.RoomScript.IsRoom() && neighbor.RoomScript.GetType() == GetType())
             {
-                sameNeighborList.Add(neighborTile.RoomScript as BaseUnitRoom);
+                sameNeighborList.Add(neighbor);
             }
         }
 
         if (sameNeighborList.Count > 1 && sameNeighborList.Count < 5)
         {
-            List<BaseUnitRoom> checkList = new List<BaseUnitRoom>(sameNeighborList);
-            List<BaseUnitRoom> roomList = new List<BaseUnitRoom>();
+            List<BaseTile> checkList = new List<BaseTile>(sameNeighborList);
+            List<BaseTile> roomList = new List<BaseTile>();
 
             while (checkList.Count > 1)
             {
                 roomList.Add(checkList[0]);
 
-                List<BaseUnitRoom> swapList = new List<BaseUnitRoom>();
+                List<BaseTile> swapList = new List<BaseTile>();
                 for (int i = 1; i < checkList.Count; i++)
                 {
-                    if (!Astar.CanFind(checkList[0], checkList[i], new List<BaseUnitRoom>() { this }))
+                    if (!Astar.CanFindOwnNeighbor(checkList[0], checkList[i], new List<BaseTile>() { Parent }))
                     {
                         swapList.Add(checkList[i]);
                     }
@@ -166,7 +165,7 @@ public abstract class BaseUnitRoom : BaseRoom
             if (roomList.Count > 1)
             {
                 roomList.RemoveAt(0);
-                FindObjectOfType<UnitController>().SplitUnitGroups(this, roomList);
+                unitController.SplitUnitGroups(Parent, roomList);
             }
         }
     }
@@ -174,15 +173,13 @@ public abstract class BaseUnitRoom : BaseRoom
     private void OnDestroy()
     {
         RemoveEventListeners();
-        unitGroup?.RemoveMax();
-        if (!applicationExit)
-            SplitRoom();
-        Astar.RemoveResetableRoom(this);
         CancelInvoke("CheckSpawnable");
     }
 
-    private void OnApplicationQuit()
+    public override void Destroy()
     {
-        applicationExit = true;
+        unitGroup?.RemoveMax();
+        SplitRoom();
+        Destroy(gameObject); 
     }
 }
