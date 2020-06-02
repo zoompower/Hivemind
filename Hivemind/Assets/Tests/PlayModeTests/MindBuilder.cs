@@ -62,7 +62,7 @@ namespace Tests.PlayModeTests
             Ant ant = gameObjectAnt.GetComponent<Ant>();
             ant.SetunitGroupID(Id);
             ant.isAtBase = true;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.01f);
             for(int i = 0; i < mindGroup.Minds.Count; i++)
             {
                if(!mindGroup.Minds[i].Equals(ant.GetMinds()[i]))

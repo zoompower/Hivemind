@@ -23,10 +23,7 @@ public class Ant : MonoBehaviour
 
     private void Awake()
     {
-        if(gameObject.GetComponent<NavMeshAgent>() != null)
-        {
-            agent = gameObject.GetComponent<NavMeshAgent>();
-        }
+        agent = gameObject.GetComponent<NavMeshAgent>();
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
@@ -73,7 +70,10 @@ public class Ant : MonoBehaviour
 
             currentIndex++;
         }
-        minds[mindIndex].Execute();
+        if (agent.isOnNavMesh)
+        {
+            minds[mindIndex].Execute();
+        }
     }
 
     private bool IsBusy()
