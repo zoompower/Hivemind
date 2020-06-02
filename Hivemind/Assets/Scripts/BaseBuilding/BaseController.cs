@@ -12,8 +12,7 @@ public class BaseController : MonoBehaviour
 
     private int LayerMask = 0;
 
-    [SerializeField]
-    private BaseBuildingTool currentTool = BaseBuildingTool.Wall;
+    private BaseBuildingTool currentTool;
 
     [SerializeField]
     internal GameObject WallPrefab;
@@ -37,6 +36,8 @@ public class BaseController : MonoBehaviour
 
     private GameObject highlightObj;
 
+    public event EventHandler<ToolChangedEventArgs> OnToolChanged;
+
     void Awake()
     {
         for (int i = 0; i < CollisionLayers.Length; i++)
@@ -50,6 +51,8 @@ public class BaseController : MonoBehaviour
     private void Start()
     {
         BuildingQueue = new BuildingQueue(this);
+
+        SetTool((int)BaseBuildingTool.Default);
     }
 
     void Update()
@@ -105,34 +108,17 @@ public class BaseController : MonoBehaviour
 
             var baseTile = plate.GetComponent<BaseTile>();
 
-            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null && (baseTile.IsUnbuildable || baseTile.IsIndestructable))
+            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
             {
-                if (baseTile.IsIndestructable && baseTile.RoomScript != null && !baseTile.RoomScript.IsRoom())
+                GameObject highlight = GetHightLightWithTool(baseTile);
+                if (highlight)
                 {
-                    highlightObj = Instantiate(IndestructablePrefab);
+                    highlightObj = Instantiate(highlight);
+                    HighlightedTile = baseTile;
+                    highlightObj.transform.SetParent(baseTile.transform, false);
                 }
-                else if (baseTile.IsUnbuildable)
-                {
-                    highlightObj = Instantiate(UnbuildablePrefab);
-                }
-                HighlightedTile = baseTile;
-                highlightObj.transform.SetParent(baseTile.transform, false);
             }
-            else if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
-            {
-                if (baseTile.CurrTile == null || baseTile.RoomScript.HighlightPrefab == null)
-                {
-                    highlightObj = Instantiate(baseTile.HighlightPrefab);
-                }
-                else
-                {
-                    highlightObj = Instantiate(baseTile.RoomScript.HighlightPrefab);
-                }
-
-                HighlightedTile = baseTile;
-                highlightObj.transform.SetParent(baseTile.transform, false);
-            }
-            else if (HighlightedTile != null && baseTile != HighlightedTile || baseTile == null)
+            else if (HighlightedTile != null && baseTile != HighlightedTile)
             {
                 Destroy(highlightObj);
                 HighlightedTile = null;
@@ -146,6 +132,42 @@ public class BaseController : MonoBehaviour
                 HighlightedTile = null;
             }
         }
+    }
+
+    private GameObject GetHightLightWithTool(BaseTile tile)
+    {
+        if ((HighlightedTile == null || tile != HighlightedTile) && highlightObj == null && (tile.IsUnbuildable || tile.IsIndestructable))
+        {
+            if (tile.IsIndestructable && tile.RoomScript != null && !tile.RoomScript.IsRoom())
+            {
+                return IndestructablePrefab;
+            }
+            else if (tile.IsUnbuildable)
+            {
+                return UnbuildablePrefab;
+            }
+        }
+
+        switch (currentTool)
+        {
+            case BaseBuildingTool.Default:
+                if (tile.RoomScript != null && !tile.RoomScript.IsRoom())
+                    return tile.RoomScript.HighlightPrefab;
+                break;
+            case BaseBuildingTool.Destroy:
+                if (tile.RoomScript != null)
+                    return tile.RoomScript.HighlightPrefab;
+                break;
+            case BaseBuildingTool.Wall:
+                // TODO: when building walls is gonna be a thing
+                break;
+            case BaseBuildingTool.AntRoom:
+                if (tile.RoomScript == null)
+                    return GetHighlightObj(BaseBuildingTool.AntRoom);
+                break;
+        }
+
+        return null;
     }
 
     internal GameObject GetHighlightObj(BaseBuildingTool tool)
@@ -171,6 +193,11 @@ public class BaseController : MonoBehaviour
 
     public void SetTool(int tool)
     {
+        if  (OnToolChanged != null)
+        {
+            OnToolChanged.Invoke(this, new ToolChangedEventArgs(currentTool, (BaseBuildingTool)tool));
+        }
+
         currentTool = (BaseBuildingTool)tool;
     }
 
