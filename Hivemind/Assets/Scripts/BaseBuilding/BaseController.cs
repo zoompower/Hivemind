@@ -19,6 +19,10 @@ public class BaseController : MonoBehaviour
     internal GameObject WallPrefab;
     [SerializeField]
     internal GameObject WorkerRoomPrefab;
+    [SerializeField]
+    internal GameObject UnbuildablePrefab;
+    [SerializeField]
+    internal GameObject IndestructablePrefab;
 
     private BaseTile HighlightedTile;
 
@@ -30,6 +34,8 @@ public class BaseController : MonoBehaviour
     public Transform TeleporterExit;
     [SerializeField]
     public Transform TeleporterEntrance;
+
+    private GameObject highlightObj;
 
     void Awake()
     {
@@ -82,8 +88,7 @@ public class BaseController : MonoBehaviour
     {
         CancelInvoke("VerifyBuildingTasks");
     }
-    
-    GameObject highlight;
+
     private void Highlight()
     {
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100.0f, LayerMask) && !EventSystem.current.IsPointerOverGameObject())
@@ -100,31 +105,44 @@ public class BaseController : MonoBehaviour
 
             var baseTile = plate.GetComponent<BaseTile>();
 
-            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlight == null)
+            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null && (baseTile.IsUnbuildable || baseTile.IsIndestructable))
+            {
+                if (baseTile.IsIndestructable && baseTile.RoomScript != null && !baseTile.RoomScript.IsRoom())
+                {
+                    highlightObj = Instantiate(IndestructablePrefab);
+                }
+                else if (baseTile.IsUnbuildable)
+                {
+                    highlightObj = Instantiate(UnbuildablePrefab);
+                }
+                HighlightedTile = baseTile;
+                highlightObj.transform.SetParent(baseTile.transform, false);
+            }
+            else if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
             {
                 if (baseTile.CurrTile == null || baseTile.RoomScript.HighlightPrefab == null)
                 {
-                    highlight = Instantiate(baseTile.HighlightPrefab);
+                    highlightObj = Instantiate(baseTile.HighlightPrefab);
                 }
                 else
                 {
-                    highlight = Instantiate(baseTile.RoomScript.HighlightPrefab);
+                    highlightObj = Instantiate(baseTile.RoomScript.HighlightPrefab);
                 }
 
                 HighlightedTile = baseTile;
-                highlight.transform.SetParent(baseTile.transform, false);
+                highlightObj.transform.SetParent(baseTile.transform, false);
             }
             else if (HighlightedTile != null && baseTile != HighlightedTile || baseTile == null)
             {
-                Destroy(highlight);
+                Destroy(highlightObj);
                 HighlightedTile = null;
             }
         }
         else
         {
-            if (highlight != null)
+            if (highlightObj != null)
             {
-                Destroy(highlight);
+                Destroy(highlightObj);
                 HighlightedTile = null;
             }
         }
@@ -145,7 +163,7 @@ public class BaseController : MonoBehaviour
         }
         return null;
     }
-    
+
     private void OnLeftClick(BaseTile tile)
     {
         BuildingQueue.AddNewJob(tile, currentTool);

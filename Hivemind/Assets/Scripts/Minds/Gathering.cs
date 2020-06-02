@@ -285,7 +285,7 @@ public class Gathering : IMind
         carryingObject.transform.localScale = new Vector3(carryingObject.transform.localScale.x * 3,
             carryingObject.transform.localScale.y * 3, carryingObject.transform.localScale.z * 3);
         carryingObject.transform.position = new Vector3(ant.transform.position.x,
-            ant.transform.position.y + 0.08f * (carryingObjects.Count + 1), ant.transform.position.z);
+            ant.transform.position.y + (ant.transform.localScale.y * 2.5f) * (carryingObjects.Count + 1), ant.transform.position.z);
         carryingObjects.Add(carryingObject);
     }
 
