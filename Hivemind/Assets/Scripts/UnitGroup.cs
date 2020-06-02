@@ -14,7 +14,7 @@ public class UnitGroup
 
     private Text textBox;
 
-    internal UnitGroup(GameObject unitIconBase)
+    public UnitGroup(GameObject unitIconBase)
     {
         Ui_IconObj = UnityEngine.Object.Instantiate(unitIconBase);
 

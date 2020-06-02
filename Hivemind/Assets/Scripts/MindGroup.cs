@@ -34,7 +34,7 @@ public class MindGroup
         return UIUnitGroup.Equals(groupObject);
     }
 
-    internal Guid AddUnit(UnitGroup unit)
+    public Guid AddUnit(UnitGroup unit)
     {
         if (!unitGroupList.Contains(unit))
         {

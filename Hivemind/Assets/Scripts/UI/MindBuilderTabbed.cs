@@ -74,10 +74,6 @@ public class MindBuilderTabbed : MonoBehaviour
         PrefferedDirection.AddOptions(dropdownElements);
     }
 
-    private void Update()
-    {
-    }
-
     public void OpenResourceMind(Button resButton)
     {
         if (!resourceMindPanel.activeSelf)
@@ -106,16 +102,9 @@ public class MindBuilderTabbed : MonoBehaviour
     {
         gather = (Gathering) mindGroup.Minds.Find(mind => mind.GetType() == typeof(Gathering));
         combat = (CombatMind) mindGroup.Minds.Find(mind => mind.GetType() == typeof(CombatMind));
-        CarryWeight.placeholder.GetComponent<Text>().text = gather.carryWeight.ToString();
-        CarryWeight.text = gather.carryWeight.ToString();
-        Scouting.isOn = gather.IsScout;
-        PrefferedType.value = (int) gather.prefferedType;
-        PrefferedDirection.value = (int) gather.prefferedDirection;
-        // SmartResources.isOn = gather.smartResources;
+        UpdateResourceValues(gather.carryWeight, gather.IsScout, gather.prefferedType, gather.prefferedDirection);
 
-        PrefferedHealth.text = combat.GetPrefferedHealth().ToString();
-        EstimatedDifference.text = combat.GetMinEstimatedDifference().ToString();
-        //Formation.value = (int) combat.formation;
+        UpdateCombatValues(combat.GetMinEstimatedDifference(), combat.GetPrefferedHealth());
     }
 
     public void UpdateMind()
@@ -134,6 +123,16 @@ public class MindBuilderTabbed : MonoBehaviour
         gather.prefferedDirection = (Gathering.Direction) PrefferedDirection.value;
     }
 
+    public void UpdateResourceValues(int carryweight, bool scouting, ResourceType resType, Gathering.Direction direction)
+    {
+        CarryWeight.placeholder.GetComponent<Text>().text = carryweight.ToString();
+        CarryWeight.text = carryweight.ToString();
+        Scouting.isOn = scouting;
+        PrefferedType.value = (int)resType;
+        PrefferedDirection.value = (int)direction;
+        // SmartResources.isOn = gather.smartResources;
+    }
+
     private void UpdateCombatMind()
     {
         if (float.TryParse(EstimatedDifference.text, out var estDiff))
@@ -142,5 +141,12 @@ public class MindBuilderTabbed : MonoBehaviour
         if (int.TryParse(PrefferedHealth.text, out var prefferedHealth))
             combat.SetPrefferedHealth(prefferedHealth);
         // combat.formation = (Formation)Formation.value;
+    }
+
+    public void UpdateCombatValues(float estimatedDifference, float prefferedHealth)
+    {
+        PrefferedHealth.text = prefferedHealth.ToString();
+        EstimatedDifference.text = estimatedDifference.ToString();
+        //Formation.value = (int) combat.formation;
     }
 }

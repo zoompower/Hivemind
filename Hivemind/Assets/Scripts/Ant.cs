@@ -23,7 +23,10 @@ public class Ant : MonoBehaviour
 
     private void Awake()
     {
-        agent = gameObject.GetComponent<NavMeshAgent>();
+        if(gameObject.GetComponent<NavMeshAgent>() != null)
+        {
+            agent = gameObject.GetComponent<NavMeshAgent>();
+        }
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
         minds = new List<IMind>();
@@ -108,6 +111,11 @@ public class Ant : MonoBehaviour
         agent.speed = currentSpeed;
     }
 
+    public void SetunitGroupID(Guid id)
+    {
+        unitGroupID = id;
+    }
+
     internal void SetStorage(Storage storage)
     {
         this.storage = storage;
@@ -186,5 +194,10 @@ public class Ant : MonoBehaviour
         {
             unitGroupID = e.newGuid;
         }
+    }
+
+    public List<IMind> GetMinds()
+    {
+        return minds;
     }
 }
