@@ -238,7 +238,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
                 case BaseBuildingTool.Default:
                     DefaultToolButton.colors = UnselectedToolButtonColor;
                     break;
-                case BaseBuildingTool.Destroy:
+                case BaseBuildingTool.DestroyRoom:
                     DestroyToolButton.colors = UnselectedToolButtonColor;
                     break;
                 case BaseBuildingTool.Wall:
@@ -258,7 +258,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
                     UnselectedToolButtonColor = DefaultToolButton.colors;
                     DefaultToolButton.colors = SelectedToolButtonColor;
                     break;
-                case BaseBuildingTool.Destroy:
+                case BaseBuildingTool.DestroyRoom:
                     UnselectedToolButtonColor = DestroyToolButton.colors;
                     DestroyToolButton.colors = SelectedToolButtonColor;
                     break;

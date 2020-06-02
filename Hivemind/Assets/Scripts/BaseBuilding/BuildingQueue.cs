@@ -37,7 +37,7 @@ public class BuildingQueue
             BuildingTask buildingTask = new BuildingTask(tile, tool);
             switch (tool)
             {
-                case BaseBuildingTool.Destroy:
+                case BaseBuildingTool.DestroyRoom:
                     if (!tile.IsIndestructable && tile.RoomScript != null && tile.RoomScript.IsRoom())
                     {
                         Add(buildingTask);
@@ -47,7 +47,7 @@ public class BuildingQueue
                     //Queue.Add(buildingTask); // TODO: when building walls is gonna be a thing
                     break;
                 case BaseBuildingTool.AntRoom:
-                    if (!tile.IsUnbuildable)
+                    if (!tile.IsUnbuildable && tile.RoomScript == null)
                     {
                         Add(buildingTask);
                     }

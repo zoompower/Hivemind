@@ -154,8 +154,8 @@ public class BaseController : MonoBehaviour
                 if (tile.RoomScript != null && !tile.RoomScript.IsRoom())
                     return tile.RoomScript.HighlightPrefab;
                 break;
-            case BaseBuildingTool.Destroy:
-                if (tile.RoomScript != null)
+            case BaseBuildingTool.DestroyRoom:
+                if (tile.RoomScript != null && tile.RoomScript.IsRoom())
                     return tile.RoomScript.HighlightPrefab;
                 break;
             case BaseBuildingTool.Wall:
@@ -176,7 +176,7 @@ public class BaseController : MonoBehaviour
         {
             case BaseBuildingTool.Default:
                 return WallPrefab.GetComponent<BaseRoom>().HighlightPrefab;
-            case BaseBuildingTool.Destroy:
+            case BaseBuildingTool.DestroyRoom:
                 return WorkerRoomPrefab.GetComponent<BaseRoom>().HighlightPrefab;
             case BaseBuildingTool.Wall:
                 return WallPrefab.GetComponent<BaseRoom>().HighlightPrefab;

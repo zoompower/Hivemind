@@ -89,7 +89,7 @@ public class BaseTile : MonoBehaviour
     {
         switch (tool)
         {
-            case BaseBuildingTool.Destroy:
+            case BaseBuildingTool.DestroyRoom:
                 if (!IsIndestructable)
                 {
                     DestroyRoom();
