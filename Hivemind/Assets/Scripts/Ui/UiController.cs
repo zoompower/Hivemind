@@ -6,6 +6,7 @@ using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
@@ -29,6 +30,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public GameObject unitIconBase;
 
     private List<RectTransform> miniMaps;
+    private Vector2 referenceResolution;
 
     private void Awake()
     {
@@ -41,6 +43,10 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         mainCamera = FindObjectOfType<CameraController>().gameObject;
         miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
+
+        //get the default resolution
+        CanvasScaler canvasScaler = miniMaps[0].GetComponentInParent<CanvasScaler>();
+        referenceResolution = canvasScaler.referenceResolution;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -111,17 +117,22 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private (bool, int, float, float) InMiniMapClick(Vector2 mousePosition)
     {
+        //calculate how small compared to default resolution it is
+        Vector2 currentResolution = miniMaps[0].GetComponentInParent<Canvas>().pixelRect.size;
+        float scalingMultiplierX = currentResolution.x / referenceResolution.x;
+        float scalingMultiplierY = currentResolution.y / referenceResolution.y;
+
         //check all minimaps
         for (int i = 0; i < miniMaps.Count; i++)
         {
             //get the local position relative to the minimap
             Vector2 globalPos = new Vector2(miniMaps[i].transform.position.x, miniMaps[i].transform.position.y);
-            Vector2 localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0)) * 0.85f);
+            Vector2 localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0) * scalingMultiplierX));
 
             //get the scale from 0-1 where in the minimap UI the mouse was 
             //if bigger than 1 or smaller than 0 it means it was outside of the minimap element
-            float scaledX = localPosition.x / (miniMaps[i].rect.width * 0.85f);
-            float scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * 0.85f));
+            float scaledX = localPosition.x / (miniMaps[i].rect.width * scalingMultiplierX);
+            float scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * scalingMultiplierY));
 
             //check if the mouse was inside the minimap UI
             if (scaledX < 1 && scaledX > 0 && scaledY < 1 && scaledY > 0)

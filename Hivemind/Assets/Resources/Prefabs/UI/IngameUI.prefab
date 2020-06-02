@@ -1624,6 +1624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mindBuilderPanel: {fileID: 7182466406255856753}
+  BoundingBoxes: []
   resourceTextBox: {fileID: 60507895977195941}
   UnitGroupObjects:
   - {fileID: 4909370830675607487}
