@@ -42,6 +42,11 @@ public class GameMenuScript : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    public void SaveGame()
+    {
+        GameWorld.Save();
+    }
+
     public void LoadGame()
     {
         GameWorld.Load();
