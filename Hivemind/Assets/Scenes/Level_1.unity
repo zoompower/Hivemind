@@ -21683,6 +21683,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3576413492537916881, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 258
+      objectReference: {fileID: 0}
     - target: {fileID: 5042379450988062323, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: m_Name
@@ -21753,10 +21758,10 @@ PrefabInstance:
       propertyPath: TeleporterEntrance
       value: 
       objectReference: {fileID: 410385697}
-    - target: {fileID: 8108060859643536694, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+    - target: {fileID: 8228913769396678830, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
-      propertyPath: outBaseMinimapScale
-      value: 150
+      propertyPath: m_RootOrder
+      value: 259
       objectReference: {fileID: 0}
     - target: {fileID: 8888611467676301667, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
