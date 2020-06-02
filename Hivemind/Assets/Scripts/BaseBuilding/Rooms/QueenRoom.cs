@@ -1,6 +1,4 @@
-﻿using UnityEngine.Tilemaps;
-
-class QueenRoom : BaseRoom
+﻿public class QueenRoom : BaseRoom
 {
     public override bool IsRoom()
     {
@@ -14,13 +12,17 @@ class QueenRoom : BaseRoom
 
     private void Start()
     {
-        foreach(var TileObject in transform.parent.GetComponent<BaseTile>().Neighbors)
+        foreach(var baseTile in GetComponentInParent<BaseTile>().Neighbors)
         {
-            BaseTile tileScript = TileObject.GetComponent<BaseTile>();
-
-            tileScript.IsIndestructable = true;
-            tileScript.IsUnbuildable = true;
-            tileScript.DestroyRoom(true);
+            baseTile.IsIndestructable = true;
+            baseTile.IsUnbuildable = true;
+            baseTile.DestroyRoom(true);
         }
+        transform.parent.GetComponentInParent<BaseController>().QueenRoom = this;
+    }
+
+    public override void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

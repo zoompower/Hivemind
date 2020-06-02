@@ -4566,6 +4566,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: TeleporterExit
+      value: 
+      objectReference: {fileID: 1281749201}
     - target: {fileID: 8888611467676301667, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: m_RootOrder
@@ -9263,11 +9268,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 538421663}
     m_Modifications:
-    - target: {fileID: 2541855361054698246, guid: 3f6a3b776538e714ea341a781d0981d6,
-        type: 3}
-      propertyPath: CanRespawn
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 140991645961466648, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: m_Name
@@ -9347,6 +9347,11 @@ PrefabInstance:
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541855361054698246, guid: 3f6a3b776538e714ea341a781d0981d6,
+        type: 3}
+      propertyPath: CanRespawn
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -10546,6 +10551,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d, type: 3}
+--- !u!4 &1281749201 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6511577134913746557, guid: 297146aca901da5449ae0b7907391039,
+    type: 3}
+  m_PrefabInstance: {fileID: 2118678334}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1289143358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11507,6 +11518,11 @@ PrefabInstance:
         type: 3}
       propertyPath: CollisionSize
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
+        type: 3}
+      propertyPath: HideTileIfSubTileExists
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
