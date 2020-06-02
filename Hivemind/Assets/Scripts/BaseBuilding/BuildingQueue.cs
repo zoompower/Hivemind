@@ -17,6 +17,15 @@ public class BuildingQueue
 
     public BuildingTask GetJob(Ant ant)
     {
+        Queue.Sort((taskA, taskB) =>
+        {
+            Vector3 va = taskA.BaseTile.transform.position;
+            Vector3 vb = taskB.BaseTile.transform.position;
+            Vector3 vant = ant.transform.position;
+
+            return Mathf.Abs(va.x - vant.x) + Mathf.Abs(va.z - vant.z) < Mathf.Abs(vb.x - vant.x) + Mathf.Abs(vb.z - vant.z) ? -1 : 1;
+        });
+
         var job = Queue.Where((task) => task.Ant == null).FirstOrDefault();
 
         if (job != null)
