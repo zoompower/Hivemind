@@ -317,36 +317,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 60507895977195941, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 60507895977195941, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 60507895977195941, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 60507895977195941, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 60507895977195941, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 60507895977195941, guid: da43b2902c97f63498541dc275da4b36,
-        type: 3}
-      propertyPath: m_textInfo.materialCount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 77179646253625896, guid: da43b2902c97f63498541dc275da4b36,
         type: 3}
       propertyPath: BoundingBoxes.Array.size

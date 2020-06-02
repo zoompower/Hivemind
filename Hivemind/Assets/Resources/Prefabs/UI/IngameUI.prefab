@@ -3417,11 +3417,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UI_CloseMindBuilder
       objectReference: {fileID: 0}
-    - target: {fileID: 8727987474090936076, guid: eeb36947102dcc94fb97735ec6bc5b14,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeb36947102dcc94fb97735ec6bc5b14, type: 3}
 --- !u!1 &7182466406255856753 stripped
