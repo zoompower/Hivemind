@@ -987,6 +987,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseMenuPanel: {fileID: 6184045256084326441}
   SettingsMenuPanel: {fileID: 4976436950424106282}
+  LoadMenuPanel: {fileID: 5060740119609226827}
+  SaveMenuPanel: {fileID: 0}
   UIgameobject: {fileID: 0}
 --- !u!1 &6641626875792100155
 GameObject:
@@ -1445,26 +1447,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1026624920253314488, guid: b9e0cd8368d439d4eb34f1afdedccf30,
+    - target: {fileID: 2139314864831824464, guid: b9e0cd8368d439d4eb34f1afdedccf30,
         type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+      propertyPath: m_Size
+      value: 0.9999747
       objectReference: {fileID: 0}
-    - target: {fileID: 1026624920304721485, guid: b9e0cd8368d439d4eb34f1afdedccf30,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2640317489654149774, guid: b9e0cd8368d439d4eb34f1afdedccf30,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.00035380048
-      objectReference: {fileID: 0}
-    - target: {fileID: 4298698203908801355, guid: b9e0cd8368d439d4eb34f1afdedccf30,
+    - target: {fileID: 2347500859310573693, guid: b9e0cd8368d439d4eb34f1afdedccf30,
         type: 3}
       propertyPath: prevPanel
       value: 
       objectReference: {fileID: 6184045256084326441}
+    - target: {fileID: 2640317489654149774, guid: b9e0cd8368d439d4eb34f1afdedccf30,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0017544535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2895142477666054536, guid: b9e0cd8368d439d4eb34f1afdedccf30,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7507076960678199084, guid: b9e0cd8368d439d4eb34f1afdedccf30,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1488,10 +1490,16 @@ PrefabInstance:
     - target: {fileID: 7768491387924023305, guid: b9e0cd8368d439d4eb34f1afdedccf30,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.9999747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9e0cd8368d439d4eb34f1afdedccf30, type: 3}
+--- !u!1 &5060740119609226827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1026624918776694401, guid: b9e0cd8368d439d4eb34f1afdedccf30,
+    type: 3}
+  m_PrefabInstance: {fileID: 5189292186044199114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5060740119609226826 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1026624918776694400, guid: b9e0cd8368d439d4eb34f1afdedccf30,

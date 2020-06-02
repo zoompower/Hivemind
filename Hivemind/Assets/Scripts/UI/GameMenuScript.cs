@@ -10,6 +10,12 @@ public class GameMenuScript : MonoBehaviour
     private GameObject SettingsMenuPanel;
 
     [SerializeField]
+    private GameObject LoadMenuPanel;
+
+    [SerializeField]
+    private GameObject SaveMenuPanel;
+
+    [SerializeField]
     private UiController UIgameobject;
 
     private bool paused = false;
@@ -49,7 +55,8 @@ public class GameMenuScript : MonoBehaviour
 
     public void LoadGame()
     {
-        GameWorld.Load();
+        PauseMenuPanel.SetActive(false);
+        LoadMenuPanel.SetActive(true);
     }
 
     public void ReturnToMenu()
