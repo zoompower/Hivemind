@@ -48,7 +48,7 @@ namespace Tests.PlayModeTests
             mbTabbed.UpdateResourceValues(carryweight, isScout, resType, exploreDirection);
             mbTabbed.UpdateMind();
 
-            Assert.True(gather.Equals(new Gathering(resType, carryweight, exploreDirection, isScout)));
+            Assert.True(MindEquals(gather, new Gathering(resType, carryweight, exploreDirection, isScout)));
         }
 
         [UnityTest]
@@ -65,12 +65,44 @@ namespace Tests.PlayModeTests
             yield return new WaitForSeconds(0.01f);
             for(int i = 0; i < mindGroup.Minds.Count; i++)
             {
-               if(!mindGroup.Minds[i].Equals(ant.GetMinds()[i]))
+               if(!MindEquals(mindGroup.Minds[i], ant.GetMinds()[i]))
                 {
                     valid = false;
                 }
             }
             Assert.True(valid);
+        }
+
+        public bool MindEquals(IMind mind1, IMind mind2)
+        {
+            if(mind1.GetType() == mind2.GetType())
+            {
+                bool returnvalue = true;
+                if(mind1.GetType() == typeof(Gathering))
+                {
+                    Gathering gather = (Gathering)mind1;
+                    Gathering gather2 = (Gathering)mind2;
+                    if(!(gather.prefferedType == gather2.prefferedType &&
+                        gather.prefferedDirection == gather2.prefferedDirection &&
+                        gather.carryWeight == gather2.carryWeight &&
+                        gather.IsScout == gather2.IsScout))
+                    {
+                        returnvalue = false;
+                    }
+                }
+                if (mind1.GetType() == typeof(CombatMind))
+                {
+                    CombatMind combat = (CombatMind)mind1;
+                    CombatMind combat2 = (CombatMind)mind2;
+                    if (!(combat.GetMinEstimatedDifference() == combat2.GetMinEstimatedDifference() &&
+                        combat.GetPrefferedHealth() == combat2.GetPrefferedHealth()))
+                    {
+                        returnvalue =  false;
+                    }
+                }
+                return returnvalue;
+            }
+            return false;
         }
     }
 }
