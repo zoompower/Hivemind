@@ -18,6 +18,11 @@ public class MindGroupList
         foreach (var obj in unitGroupObjects)
         {
             mindGroupList.Add(new MindGroup(obj));
+            if (mindGroupList.Count == 1)
+            {
+                mindGroupList[0].Minds.Clear();
+                mindGroupList[0].Minds.Add(new BaseGroupMind());
+            }
         }
     }
 

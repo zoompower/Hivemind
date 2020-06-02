@@ -44,12 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b28d79a96e0a74aaefadb26d656a5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamID: 0
   CollisionLayers: 0a0000000b000000
   currentTool: 0
   WallPrefab: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
     type: 3}
   WorkerRoomPrefab: {fileID: 4215289098503841324, guid: 644e7517485a1264fa2886dbe3e97f23,
     type: 3}
+  UnbuildablePrefab: {fileID: 354567939711767980, guid: 177408e5f41dd5f4d8d896a3eb00c639,
+    type: 3}
+  IndestructablePrefab: {fileID: 5308411474038379295, guid: e6e3c350b9a143c4791dd64424accc92,
+    type: 3}
+  TeleporterExit: {fileID: 0}
+  TeleporterEntrance: {fileID: 0}
 --- !u!1 &9091765219717218699
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,3 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0549dbbbdb4ba944a35c38fab6bea0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inBaseAntScale: 0.1
+  inBaseMinimapScale: 50
+  outBaseAntScale: 0.1
+  outBaseMinimapScale: 150

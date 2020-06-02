@@ -41,12 +41,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.85, y: 0.5, z: 0.415}
-  m_MoveThreshold: 0.1
+  m_Extents: {x: 0.865, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0
   m_Carve: 1
-  m_CarveOnlyStationary: 0
+  m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.5, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0
 --- !u!1 &7377537905761463474
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +110,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3033667219593020291, guid: 11ed1077758b4624a8db7ed6c4abbbc8, type: 3}
+  - {fileID: 2100000, guid: 17731db3e87351d41a4528138133791d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -157,6 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42f414a6a5bca845b0023bb47771ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HighlightPrefab: {fileID: 487003472022924544, guid: a2208ed8062e4f5478de64aea04e8231,
+    type: 3}
 --- !u!1 &8143320024512137398
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,12 +200,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.85, y: 0.5, z: 0.415}
-  m_MoveThreshold: 0.1
+  m_Extents: {x: 0.865, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0
   m_Carve: 1
-  m_CarveOnlyStationary: 0
+  m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.5, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0
 --- !u!1 &8647718125016394770
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,9 +247,9 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.85, y: 0.5, z: 0.415}
-  m_MoveThreshold: 0.1
+  m_Extents: {x: 0.865, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0
   m_Carve: 1
-  m_CarveOnlyStationary: 0
+  m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.5, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0

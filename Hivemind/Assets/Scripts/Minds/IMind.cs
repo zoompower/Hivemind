@@ -10,10 +10,6 @@ public interface IMind
 
     IMind Clone();
 
-    bool Equals(IMind mind);
-
-    void Update(IMind mind);
-
     bool IsBusy();
 
     void GenerateUI();

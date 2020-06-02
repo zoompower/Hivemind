@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3033667219593020291, guid: 90db71d2baa7cce4c90805e8d98c6db4, type: 3}
+  - {fileID: 2100000, guid: 671bf16f191b92f4e9d1789c72da734e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,8 +109,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartObject: {fileID: 0}
   IsIndestructable: 0
+  IsUnbuildable: 0
   DefaultRotation: -1
   CollisionSize: 0.5
   ShowDebugInfo: 0
   ShowMeshPreview: 1
   MeshColor: {r: 0.20784314, g: 0.4862745, b: 0.17254902, a: 1}
+  HideTileIfSubTileExists: 1
+  HighlightPrefab: {fileID: 3883875149649773518, guid: 3139dcc22c79eec4b9d3665144ea0811,
+    type: 3}

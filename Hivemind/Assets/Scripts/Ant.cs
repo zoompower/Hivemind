@@ -14,7 +14,7 @@ public class Ant : MonoBehaviour
     public int health;
     public string Prefab;
 
-    private List<IMind> minds;
+    private List<IMind> minds = new List<IMind>();
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
@@ -23,13 +23,14 @@ public class Ant : MonoBehaviour
 
     public bool isAtBase = true;
 
+    public int TeamID;
+    private Transform miniMapRenderer;
+
     private void Awake()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         baseSpeed = agent.speed;
         currentSpeed = baseSpeed;
-        minds = new List<IMind>();
-        storage = GameWorld.GetStorage();
         audioSrc = GetComponent<AudioSource>();
         //get volume
         if (PlayerPrefs.HasKey("Volume"))
@@ -38,12 +39,21 @@ public class Ant : MonoBehaviour
         }
         audioSrc.volume *= 0.15f;
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.layer == UnityEngine.LayerMask.NameToLayer("Minimap"))
+            {
+                miniMapRenderer = child;
+            }
+        }
         GameWorld.AddNewAnt(this);
     }
 
     // Start is called before the first frame update
     private void Start()
     {
+        storage = GameWorld.GetStorage();
         AddEventListeners();
     }
 
@@ -120,28 +130,13 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID)
-                .Minds;
+            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
 
-            if (minds.Count < mindGroupMind.Count)
+            minds.Clear();
+            for (var i = 0; i < mindGroupMind.Count; i++)
             {
-                for (var i = minds.Count; i < mindGroupMind.Count; i++)
-                {
-                    minds.Add(mindGroupMind[i].Clone());
-                    minds[i].Initiate(this);
-                }
-            }
-            for (var i = 0; i < minds.Count; i++)
-            {
-                if (!minds[i].Equals(mindGroupMind[i]))
-                {
-                    minds[i].Update(mindGroupMind[i]);
-                    if (!minds[i].Equals(mindGroupMind[i]))
-                    {
-                        minds[i] = mindGroupMind[i].Clone();
-                        minds[i].Initiate(this);
-                    }
-                }
+                minds.Add(mindGroupMind[i].Clone());
+                minds[i].Initiate(this);
             }
         }
     }
@@ -227,5 +222,11 @@ public class Ant : MonoBehaviour
         {
             unitGroupID = e.newGuid;
         }
+    }
+
+    public void ChangeScale(float scaleAnt, float scaleMinimapRenderer)
+    {
+        transform.localScale = new Vector3(scaleAnt, scaleAnt, scaleAnt);
+        miniMapRenderer.localScale = new Vector3(scaleMinimapRenderer, scaleMinimapRenderer, scaleMinimapRenderer);
     }
 }

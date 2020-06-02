@@ -48,9 +48,9 @@ public class UnitController : MonoBehaviour
         OnGroupIdChange.Invoke(null, MindGroupList.MergeGroupIntoGroup(mergeGroup, intoGroup));
     }
 
-    public void SplitUnitGroups(BaseUnitRoom invokingRoom, List<BaseUnitRoom> roomList)
+    public void SplitUnitGroups(BaseTile invokingRoom, List<BaseTile> roomList)
     {
-        var oldId = roomList[0].GroupId;
+        var oldId = (roomList[0].RoomScript as BaseUnitRoom).GroupId;
 
         Dictionary<Guid, int> IdAndRoomSize = new Dictionary<Guid, int>();
 

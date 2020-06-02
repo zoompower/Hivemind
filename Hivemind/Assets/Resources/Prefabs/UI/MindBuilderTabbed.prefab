@@ -3452,6 +3452,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatMindPanel: {fileID: 7259890825632780147}
+  HighlightedColorBlock:
+    m_NormalColor: {r: 0.54901963, g: 0.81960785, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.50980395, g: 0.78039217, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.39215687, g: 0.6627451, b: 0.84313726, a: 1}
+    m_SelectedColor: {r: 0.54901963, g: 0.81960785, b: 1, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0
   resourceMindPanel: {fileID: 3651390271773294498}
 --- !u!1 &5998446391670567861
 GameObject:

@@ -17,7 +17,15 @@ public class MindBuilderTabbed : MonoBehaviour
 
     //save old minds
     private Gathering gather;
-    private ColorBlock HighlightedColorBlock;
+    [SerializeField]
+    private ColorBlock HighlightedColorBlock = new ColorBlock()
+    {
+        normalColor = new Color(140f / 255f, 209f / 255f, 255f / 255f),
+        highlightedColor = new Color(140f / 255f, 209f / 255f, 255f / 255f),
+        pressedColor = new Color(140f / 255f, 209f / 255f, 255f / 255f),
+        selectedColor = new Color(130f / 255f, 199f / 255f, 245f / 255f),
+        colorMultiplier = 1
+    };
 
     public MindGroup mindGroup;
     private Dropdown PrefferedDirection;
@@ -32,13 +40,6 @@ public class MindBuilderTabbed : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        HighlightedColorBlock = new ColorBlock();
-        HighlightedColorBlock.normalColor = new Color(140f / 255f, 209f / 255f, 255f / 255f);
-        HighlightedColorBlock.highlightedColor = new Color(140f / 255f, 209f / 255f, 255f / 255f);
-        HighlightedColorBlock.pressedColor = new Color(140f / 255f, 209f / 255f, 255f / 255f);
-        HighlightedColorBlock.selectedColor = new Color(130f / 255f, 199f / 255f, 245f / 255f);
-        HighlightedColorBlock.colorMultiplier = 1;
-
         //initialize all UI elements
         CarryWeight = resourceMindPanel.GetComponentInChildren<InputField>();
         Scouting = resourceMindPanel.GetComponentsInChildren<Toggle>().Where(x => x.name.Equals("Scouting"))
@@ -72,10 +73,6 @@ public class MindBuilderTabbed : MonoBehaviour
         for (var i = 0; i < directionTypes.Length; i++)
             dropdownElements.Add(new Dropdown.OptionData(directionTypes.GetValue(i).ToString()));
         PrefferedDirection.AddOptions(dropdownElements);
-    }
-
-    private void Update()
-    {
     }
 
     public void OpenResourceMind(Button resButton)

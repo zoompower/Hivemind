@@ -8,8 +8,9 @@ public class BaseTile : MonoBehaviour
     private GameObject StartObject = null;
     internal GameObject CurrTile;
     internal BaseRoom RoomScript;
+    internal bool AstarVisited = false;
 
-    internal List<GameObject> Neighbors = new List<GameObject>();
+    internal List<BaseTile> Neighbors = new List<BaseTile>();
 
     [SerializeField]
     internal bool IsIndestructable = false;
@@ -27,28 +28,45 @@ public class BaseTile : MonoBehaviour
     [SerializeField]
     private Color MeshColor = new Color(53.0f / 255.0f, 124.0f / 255.0f, 44.0f / 255.0f);
 
+    [SerializeField]
+    private bool HideTileIfSubTileExists = true;
+
+    [SerializeField]
+    internal GameObject HighlightPrefab;
+
     private void Awake()
     {
         FindAndAttachNeighbors();
+        Astar.RegisterResetableRoom(this);
     }
 
     private void Start()
     {
         if (StartObject)
         {
-            InitializeObject(StartObject);
+            InitializeObject(StartObject, true);
         }
     }
 
-    internal void InitializeObject(GameObject gObj)
+    private void OnDestroy()
     {
-        if (CurrTile != null || IsUnbuildable) return;
+        Astar.RemoveResetableRoom(this);
+    }
+
+    internal void InitializeObject(GameObject gObj, bool force = false)
+    {
+        if (!force && (CurrTile != null || IsUnbuildable)) return;
 
         CurrTile = Instantiate(gObj);
         CurrTile.transform.SetParent(gameObject.transform, false);
-        CurrTile.transform.localRotation = Quaternion.Euler(0, (DefaultRotation < 0) ? Random.Range(0, 5) * 60 : DefaultRotation, 0);
+        CurrTile.transform.localRotation = Quaternion.Euler(0, (DefaultRotation < 0) ? UnityEngine.Random.Range(0, 5) * 60 : DefaultRotation, 0);
 
         RoomScript = CurrTile.GetComponent<BaseRoom>();
+
+        if (HideTileIfSubTileExists)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     internal void DestroyRoom(bool forced = false)
@@ -57,8 +75,41 @@ public class BaseTile : MonoBehaviour
 
         if ((!IsIndestructable && RoomScript.IsDestructable()) || forced)
         {
-            Destroy(CurrTile);
+            RoomScript.Destroy();
+            CurrTile = null;
             RoomScript = null;
+            if (HideTileIfSubTileExists)
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+    }
+
+    internal void AntDoesAction(BaseBuildingTool tool)
+    {
+        switch (tool)
+        {
+            case BaseBuildingTool.DestroyRoom:
+                if (!IsIndestructable)
+                {
+                    DestroyRoom();
+                }
+                break;
+            case BaseBuildingTool.Wall:
+                    InitializeObject(GetComponentInParent<BaseController>().WallPrefab);
+                break;
+            case BaseBuildingTool.AntRoom:
+                if (!IsUnbuildable)
+                {
+                    InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab);
+                }
+                break;
+            default:
+                if (RoomScript != null && !RoomScript.IsRoom() && !IsIndestructable)
+                {
+                    DestroyRoom();
+                }
+                break;
         }
     }
 
@@ -69,7 +120,7 @@ public class BaseTile : MonoBehaviour
 
         foreach (Collider hit in colliders)
         {
-            Neighbors.Add(hit.gameObject);
+            Neighbors.Add(hit.GetComponent<BaseTile>());
         }
     }
 
