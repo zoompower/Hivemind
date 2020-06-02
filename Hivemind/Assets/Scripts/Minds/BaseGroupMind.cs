@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -106,6 +107,16 @@ public class BaseGroupMind : IMind
     public bool IsBusy()
     {
         return busy;
+    }
+
+    public MindData GetData()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetData(MindData mindData)
+    {
+        throw new NotImplementedException();
     }
 }
 

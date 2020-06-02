@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5188427223547497519}
   - component: {fileID: 5076719618665996067}
   - component: {fileID: 4134381991306860339}
-  - component: {fileID: 4792264282872441677}
   m_Layer: 0
   m_Name: BasePlateHighlight
   m_TagString: Untagged
@@ -95,25 +94,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: 90db71d2baa7cce4c90805e8d98c6db4, type: 3}
---- !u!114 &4792264282872441677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3883875149649773518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc1a0e5d7fae3744b7cf280f3422e21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartObject: {fileID: 0}
-  IsIndestructable: 0
-  IsUnbuildable: 0
-  DefaultRotation: -1
-  CollisionSize: 0.5
-  ShowDebugInfo: 0
-  ShowMeshPreview: 1
-  MeshColor: {r: 0.20784314, g: 0.4862745, b: 0.17254902, a: 1}
-  HideTileIfSubTileExists: 1
-  HighlightPrefab: {fileID: 0}
