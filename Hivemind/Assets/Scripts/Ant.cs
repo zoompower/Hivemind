@@ -12,6 +12,7 @@ public class Ant : MonoBehaviour
     public int damage;
 
     public int health;
+    public bool alive;
 
     private List<IMind> minds;
     private Storage storage;
@@ -41,6 +42,7 @@ public class Ant : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        alive = true;
         storage = GameWorld.GetStorage();
         AddEventListeners();
     }
@@ -53,6 +55,7 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
         if (!IsBusy())
             UpdateMind();
 
@@ -92,6 +95,25 @@ public class Ant : MonoBehaviour
     public bool InCombat()
     {
         return false;
+    }
+
+    public void SetClosestEnemy(Ant c)
+    {
+        closestEnemy = c;
+    }
+
+    public void Die()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool CheckAlive()
+    {
+        if (health < 1)
+        {
+            alive = false;
+        }
+        return alive;
     }
 
     public NavMeshAgent GetAgent()

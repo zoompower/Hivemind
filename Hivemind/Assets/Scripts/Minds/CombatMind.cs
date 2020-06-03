@@ -8,6 +8,8 @@ public class CombatMind : IMind
     private Ant ant;
     private bool busy;
 
+    public int EngageRange;
+
     public CombatMind() : this(0, 0) { }
 
     public CombatMind(float minEstimated, int prefHealth)
@@ -58,28 +60,29 @@ public class CombatMind : IMind
     public double Likelihood()
     {
         var NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
-        foreach(GameObject a in NearbyEntitities)
+        busy = false;
+        foreach (GameObject a in NearbyEntitities)
         {
             if (a.GetComponent<Ant>())
             {
                 if(a.GetComponent<Ant>().GetStorage() != this.ant.GetStorage())
                 {
+                    if(Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, ant.closestEnemy.transform.position))
+                    {
+                        this.ant.SetClosestEnemy(a.GetComponent<Ant>());
+                    }
                     busy = true;
-                    return 100;
                 }
             }
         }
-        busy = false;
-        return 0;
-
-
-        if (ant.InCombat())
+        if (busy)
         {
-            busy = true;
             return 100;
         }
-        busy = false;
-        return 0;
+        else
+        {
+            return 0;
+        }
     }
 
     public void Update(IMind mind)
