@@ -1,4 +1,4 @@
-﻿using Assets.Scripts;
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ public class Gathering : IMind
 
     private Ant ant;
 
-    private List<GameObject> carryingObjects = new List<GameObject>();
+    public List<GameObject> carryingObjects = new List<GameObject>();
 
 
     private Dictionary<ResourceType, int> inventory = new Dictionary<ResourceType, int>();
@@ -41,9 +41,9 @@ public class Gathering : IMind
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
-    private bool busy = false;
+    public bool busy = false;
     private bool leavingBase = false;
-    private State state = State.Idle;
+    public State state = State.Idle;
 
     private Vector3 TeleporterExit;
     private bool enterBase = false;
@@ -241,7 +241,13 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (state == State.Idle) ant.GetAgent().isStopped = false;
+            if (state == State.Idle)
+            {
+                if (ant.GetAgent().isOnNavMesh)
+                {
+                    ant.GetAgent().isStopped = false;
+                }
+            }
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
@@ -252,7 +258,10 @@ public class Gathering : IMind
         }
         else if (state == State.Idle && IsScout)
         {
-            ant.GetAgent().isStopped = false;
+            if (ant.GetAgent().isOnNavMesh)
+            {
+                ant.GetAgent().isStopped = false;
+            }
             ant.StartCoroutine(ExitBase(State.Scouting));
             busy = true;
         }
@@ -294,8 +303,34 @@ public class Gathering : IMind
 
     private IEnumerator Scout()
     {
+       
+
+        ant.GetAgent().SetDestination(GenerateScoutDirection());
+        yield return new WaitForSeconds(Random.Range(1, 3));
+        scouting = false;
+    }
+
+    private IEnumerator ReturnToBase()
+    {
+        yield return new WaitForSeconds(Random.Range(30, 40));
+        if (state == State.Scouting)
+        {
+            target = null;
+            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            state = State.MovingToStorage;
+            preparingReturn = false;
+        }
+    }
+
+    public bool IsBusy()
+    {
+        return busy;
+    }
+
+    public Vector3 GenerateScoutDirection()
+    {
         var destination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y,
-            ant.transform.position.z + Random.Range(-5, 5));
+           ant.transform.position.z + Random.Range(-5, 5));
         switch (prefferedDirection)
         {
             case Direction.None:
@@ -337,26 +372,6 @@ public class Gathering : IMind
                 destination.x -= 2;
                 break;
         }
-
-        ant.GetAgent().SetDestination(destination);
-        yield return new WaitForSeconds(Random.Range(1, 3));
-        scouting = false;
-    }
-
-    private IEnumerator ReturnToBase()
-    {
-        yield return new WaitForSeconds(Random.Range(30, 40));
-        if (state == State.Scouting)
-        {
-            target = null;
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
-            state = State.MovingToStorage;
-            preparingReturn = false;
-        }
-    }
-
-    public bool IsBusy()
-    {
-        return busy;
+        return destination;
     }
 }

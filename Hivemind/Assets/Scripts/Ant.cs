@@ -12,7 +12,7 @@ public class Ant : MonoBehaviour
 
     public int health;
 
-    private List<IMind> minds = new List<IMind>();
+    public List<IMind> minds = new List<IMind>();
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
@@ -136,12 +136,14 @@ public class Ant : MonoBehaviour
         if (AtBase())
         {
             var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
-
-            minds.Clear();
-            for (var i = 0; i < mindGroupMind.Count; i++)
+            if (mindGroupMind != null)
             {
-                minds.Add(mindGroupMind[i].Clone());
-                minds[i].Initiate(this);
+                minds.Clear();
+                for (var i = 0; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                    minds[i].Initiate(this);
+                }
             }
         }
     }
