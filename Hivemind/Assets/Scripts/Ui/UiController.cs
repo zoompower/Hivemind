@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler
+public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private MindGroup currentOpenMindGroup;
 
     private Vector2 lastMousePosition; // Used in calculating screen drag of icons
 
     [SerializeField] private GameObject mindBuilderPanel;
+
+    private GameObject mainCamera;
+
+    [SerializeField] private List<BoxCollider> BoundingBoxes;
 
     [SerializeField] private TextMeshProUGUI resourceTextBox;
 
@@ -22,6 +28,49 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     public GameObject[] UnitGroupObjects; // The unit group UI GameObjects
     public GameObject unitIconBase;
+
+    private List<RectTransform> miniMaps;
+    private Vector2 referenceResolution;
+
+    private ColorBlock UnselectedToolButtonColor;
+    [SerializeField]
+    private ColorBlock SelectedToolButtonColor;
+
+    [SerializeField]
+    private Button DefaultToolButton;
+    [SerializeField]
+    private Button AntRoomToolButton;
+    [SerializeField]
+    private Button DestroyToolButton;
+
+
+    private void Awake()
+    {
+        unitController = FindObjectOfType<UnitController>();
+        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
+        UpdateResourceTextObject();
+
+        BaseController[] controllers = UnityEngine.Object.FindObjectsOfType<BaseController>();
+
+        foreach (BaseController controller in controllers)
+        {
+            if (controller.TeamID == 0)
+            {
+                controller.OnToolChanged += OnToolChanged;
+                break;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        mainCamera = FindObjectOfType<CameraController>().gameObject;
+        miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
+
+        //get the default resolution
+        CanvasScaler canvasScaler = miniMaps[0].GetComponentInParent<CanvasScaler>();
+        referenceResolution = canvasScaler.referenceResolution;
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -71,11 +120,52 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         lastMousePosition = eventData.position;
     }
 
-    private void Awake()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        unitController = FindObjectOfType<UnitController>();
-        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
-        UpdateResourceTextObject();
+        Vector2 mousePosition = eventData.position;
+        (bool, int, float, float) clicked = InMiniMapClick(mousePosition);
+        if (clicked.Item1)
+        {
+            //get the corrosponding bounding box of the minimap
+            BoxCollider boundingBox = BoundingBoxes[clicked.Item2];
+
+            //calculate camera position in the minimap from the starting point of the bounding box
+            float cameraX = (boundingBox.bounds.size.x) * clicked.Item3;
+            float cameraZ = (boundingBox.bounds.size.z) * clicked.Item4;
+
+            //add everything together and make the new position
+            mainCamera.transform.position = new Vector3(boundingBox.bounds.min.x + cameraX, mainCamera.transform.position.y, boundingBox.bounds.max.z - cameraZ);
+        }
+    }
+
+    private (bool, int, float, float) InMiniMapClick(Vector2 mousePosition)
+    {
+        //calculate how small compared to default resolution it is
+        Vector2 currentResolution = miniMaps[0].GetComponentInParent<Canvas>().pixelRect.size;
+        float scalingMultiplierX = currentResolution.x / referenceResolution.x;
+        float scalingMultiplierY = currentResolution.y / referenceResolution.y;
+
+        //check all minimaps
+        for (int i = 0; i < miniMaps.Count; i++)
+        {
+            //get the local position relative to the minimap
+            Vector2 globalPos = new Vector2(miniMaps[i].transform.position.x, miniMaps[i].transform.position.y);
+            Vector2 localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0) * scalingMultiplierX));
+
+            //get the scale from 0-1 where in the minimap UI the mouse was 
+            //if bigger than 1 or smaller than 0 it means it was outside of the minimap element
+            float scaledX = localPosition.x / (miniMaps[i].rect.width * scalingMultiplierX);
+            float scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * scalingMultiplierY));
+
+            //check if the mouse was inside the minimap UI
+            if (scaledX < 1 && scaledX > 0 && scaledY < 1 && scaledY > 0)
+            {
+                //return the number of the minimap and also the scale of where the mouse is so it does not have to be calculated again
+                return (true, i, scaledX, scaledY);
+            }
+        }
+        //return a false tuple
+        return (false, -1, -1f, -1f);
     }
 
     public void UI_OpenMindBuilder(int i)
@@ -131,11 +221,56 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         var sb = new StringBuilder();
 
-        foreach (var resourceType in (ResourceType[]) Enum.GetValues(typeof(ResourceType)))
+        foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
                 sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
+    }
+
+    private void OnToolChanged(object sender, ToolChangedEventArgs args)
+    {
+        
+        if (args.newTool != args.oldTool)
+        {
+            switch (args.oldTool)
+            {
+                case BaseBuildingTool.Default:
+                    DefaultToolButton.colors = UnselectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.DestroyRoom:
+                    DestroyToolButton.colors = UnselectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.Wall:
+                    // TODO: when building walls is gonna be a thing
+                    break;
+                case BaseBuildingTool.AntRoom:
+                    AntRoomToolButton.colors = UnselectedToolButtonColor;
+                    break;
+            }
+        }
+
+        if (UnselectedToolButtonColor == default || args.newTool != args.oldTool)
+        {
+            switch (args.newTool)
+            {
+                case BaseBuildingTool.Default:
+                    UnselectedToolButtonColor = DefaultToolButton.colors;
+                    DefaultToolButton.colors = SelectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.DestroyRoom:
+                    UnselectedToolButtonColor = DestroyToolButton.colors;
+                    DestroyToolButton.colors = SelectedToolButtonColor;
+                    break;
+                case BaseBuildingTool.Wall:
+                    // TODO: when building walls is gonna be a thing
+                    break;
+                case BaseBuildingTool.AntRoom:
+                    UnselectedToolButtonColor = AntRoomToolButton.colors;
+                    AntRoomToolButton.colors = SelectedToolButtonColor;
+                    break;
+            }
+        }
     }
 
     private string FormatResource(string spriteName, int val)

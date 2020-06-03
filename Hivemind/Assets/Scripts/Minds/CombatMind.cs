@@ -23,16 +23,6 @@ public class CombatMind : IMind
         return new CombatMind(minEstimatedDifference, prefferedHealth);
     }
 
-    public bool Equals(IMind mind)
-    {
-        CombatMind combatmind = mind as CombatMind;
-        if (combatmind != null)
-            if (combatmind.minEstimatedDifference == minEstimatedDifference &&
-                combatmind.prefferedHealth == prefferedHealth)
-                return true;
-        return false;
-    }
-
     public void Execute()
     {
         if (this == null) new CombatFight().Execute(ant);
@@ -82,16 +72,6 @@ public class CombatMind : IMind
         else
         {
             return 0;
-        }
-    }
-
-    public void Update(IMind mind)
-    {
-        CombatMind combatMind = mind as CombatMind;
-        if (combatMind != null)
-        {
-            minEstimatedDifference = combatMind.minEstimatedDifference;
-            prefferedHealth = combatMind.prefferedHealth;
         }
     }
 

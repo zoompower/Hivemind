@@ -889,7 +889,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7372948802228432916}
-  - component: {fileID: 9144564451159884380}
   m_Layer: 0
   m_Name: Nest
   m_TagString: Untagged
@@ -926,18 +925,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9144564451159884380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7372948802228432907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fd82e03094cace479642129412a41ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7372948802455585794
 GameObject:
   m_ObjectHideFlags: 0

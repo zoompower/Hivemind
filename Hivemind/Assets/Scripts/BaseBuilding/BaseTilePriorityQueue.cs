@@ -2,18 +2,18 @@
 using System.Linq;
 using UnityEngine;
 
-class UnitRoomPriorityQueue
+class BaseTilePriorityQueue
 {
-    private List<BaseUnitRoom> queue = new List<BaseUnitRoom>();
+    private List<BaseTile> queue = new List<BaseTile>();
 
-    public void push(BaseUnitRoom tile)
+    public void push(BaseTile tile)
     {
         if (tile.AstarVisited) return;
 
         queue.Add(tile);
     }
 
-    public BaseUnitRoom pop(Vector3 targetPosition)
+    public BaseTile pop(Vector3 targetPosition)
     {
         if (queue.Count > 0)
         {
