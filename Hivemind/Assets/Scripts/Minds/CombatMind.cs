@@ -92,11 +92,10 @@ public class CombatMind : IMind
                 if (!scouting)
                 {
                     CheckSurroundings();
-                    if (target != null && Vector3.Distance(ant.transform.position, target.transform.position) < 2f)
+                    if (target != null && Vector3.Distance(ant.transform.position, target.transform.position) < EngageRange)
                     {
-                        target = tempTarget;
                         ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
-                        state = State.MovingToNest;
+                        state = State.MovingToTarget;
                         ant.StartCoroutine(Discover());
                         preparingReturn = false;
                     }
