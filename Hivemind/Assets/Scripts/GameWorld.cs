@@ -10,6 +10,7 @@ public static class GameWorld
     public static List<ResourceNode> ResourceList = new List<ResourceNode>();
     public static List<Ant> AntList = new List<Ant>();
     public static UnitController MyUnitController;
+    public static List<BaseController> BaseControllerList = new List<BaseController>();
     private static Storage storage = null;
 
     public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
@@ -83,9 +84,19 @@ public static class GameWorld
         MyUnitController = unitController;
     }
 
+    public static void AddBaseController(BaseController baseController)
+    {
+        BaseControllerList.Add(baseController);
+    }
+
     public static void RemoveAnt(Ant ant)
     {
         AntList.Remove(ant);
+    }
+
+    public static BaseController FindBaseController(int ID)
+    {
+        return BaseControllerList.Find(myteam => myteam.TeamID == ID);
     }
 
     public static Ant FindAnt(Guid guid)
@@ -107,7 +118,8 @@ public static class GameWorld
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
             Ants = AntList,
-            MindGroups = MyUnitController.MindGroupList.GetMindGroupList()
+            MindGroups = MyUnitController.MindGroupList.GetMindGroupList(),
+            BaseControllers = BaseControllerList
         };
         string json = saveObject.ToJson();
         File.WriteAllText(Application.dataPath + "/save.txt", json);
@@ -142,6 +154,10 @@ public static class GameWorld
                 AntData data = saveObject.AntData[i];
                 GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newAnt.GetComponent<Ant>().SetData(data);
+            }
+            for (int i = 0; i < BaseControllerList.Count; i++)
+            {
+                BaseControllerList[i].SetData(saveObject.BaseControllerData[i]);
             }
             MyUnitController.UpdateEventText("QuickLoad Complete!");
         }

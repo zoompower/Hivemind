@@ -19,6 +19,8 @@ namespace Assets.Scripts
         public List<AntData> AntData = new List<AntData>();
         public List<MindGroup> MindGroups = new List<MindGroup>();
         public List<MindGroupData> MindGroupData = new List<MindGroupData>();
+        public List<BaseController> BaseControllers = new List<BaseController>();
+        public List<BaseControllerData> BaseControllerData = new List<BaseControllerData>();
 
         public string ToJson()
         {
@@ -33,6 +35,10 @@ namespace Assets.Scripts
             foreach (MindGroup MindGroup in MindGroups)
             {
                 MindGroupData.Add(MindGroup.GetData());
+            }
+            foreach (BaseController baseController in BaseControllers)
+            {
+                BaseControllerData.Add(baseController.GetData());
             }
             return JsonUtility.ToJson(this, true);
         }

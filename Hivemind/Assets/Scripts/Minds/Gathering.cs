@@ -78,7 +78,7 @@ public class Gathering : IMind
         {
             if (controller.TeamID == ant.TeamID)
             {
-                TeleporterExit = controller.TeleporterExit.position;
+                TeleporterExit = controller.TeleporterExit;
             }
         }
     }

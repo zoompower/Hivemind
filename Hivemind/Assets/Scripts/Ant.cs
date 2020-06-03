@@ -165,7 +165,7 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, gameObject.transform.position, gameObject.transform.localEulerAngles);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles);
     }
 
     public void SetData(AntData data)
@@ -173,7 +173,7 @@ public class Ant : MonoBehaviour
         Debug.ClearDeveloperConsole();
         gameObject.SetActive(false);
         myGuid = Guid.Parse(data.MyGuid);
-        gameObject.transform.parent = GameObject.Find("Map").transform.Find("Ants").transform;
+        gameObject.transform.parent = GameObject.Find("Ants").transform;
         baseSpeed = data.BaseSpeed;
         currentSpeed = data.CurrentSpeed;
         damage = data.Damage;
@@ -186,12 +186,14 @@ public class Ant : MonoBehaviour
             closestEnemy = GameWorld.FindAnt(Guid.Parse(data.ClosestEnemy));
         }
         isAtBase = data.IsAtBase;
+        TeamID = data.TeamID;
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
         for (int i = 0; i < minds.Count; i++)
         {
             minds[i].SetData(data.MindData[i]);
         }
+        GetComponent<NavMeshAgent>().enabled = true;
     }
 
     public void PlaySoundDiscovery()

@@ -21728,6 +21728,16 @@ PrefabInstance:
       propertyPath: TeleporterEntrance
       value: 
       objectReference: {fileID: 410385697}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: TeleporterExitTransform
+      value: 
+      objectReference: {fileID: 188450466}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: TeleporterEntranceTransform
+      value: 
+      objectReference: {fileID: 410385697}
     - target: {fileID: 8228913769396678830, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: m_RootOrder

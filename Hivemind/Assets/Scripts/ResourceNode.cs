@@ -167,7 +167,7 @@ public class ResourceNode : MonoBehaviour
     {
         gameObject.SetActive(false);
         myGuid = Guid.Parse(data.MyGuid);
-        gameObject.transform.parent = GameObject.Find("Map").transform.Find("Resources").transform.Find(resourceType.ToString() + "s").transform;
+        gameObject.transform.parent = GameObject.Find("Resources").transform.Find(resourceType.ToString() + "s").transform;
         respawningResources = data.RespawningResources;
         BaseResourceAmount = data.BaseResourceAmount;
         resourceType = data.ResourceType;

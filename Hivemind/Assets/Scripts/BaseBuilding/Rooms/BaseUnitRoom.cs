@@ -55,40 +55,45 @@ public abstract class BaseUnitRoom : BaseRoom
         AddEventListeners();
         Parent = GetComponentInParent<BaseTile>();
 
-        bool createNew = true;
-
-        foreach (var neighbor in Parent.Neighbors)
+        if (GroupId == Guid.Empty)
         {
-            if (neighbor.RoomScript is BaseUnitRoom)
+            bool createNew = true;
+
+            foreach (var neighbor in Parent.Neighbors)
             {
-                var other = neighbor.RoomScript as BaseUnitRoom;
-                if (other.GroupId == Guid.Empty)
+                if (neighbor.RoomScript is BaseUnitRoom)
                 {
-                    continue;
-                }
-                else
-                {
-                    if (createNew)
+                    var other = neighbor.RoomScript as BaseUnitRoom;
+                    if (other.GroupId == Guid.Empty)
                     {
-                        createNew = false;
-                        GroupId = other.GroupId;
+                        continue;
                     }
-                    else if (other.GroupId != GroupId)
+                    else
                     {
-                        unitController.MergeGroupIntoGroup(other.GroupId, GroupId);
+                        if (createNew)
+                        {
+                            createNew = false;
+                            GroupId = other.GroupId;
+                        }
+                        else if (other.GroupId != GroupId)
+                        {
+                            unitController.MergeGroupIntoGroup(other.GroupId, GroupId);
+                        }
                     }
                 }
             }
-        }
 
-        if (createNew)
-        {
-            GroupId = unitController.CreateUnitGroup();
+            if (createNew)
+            {
+                GroupId = unitController.CreateUnitGroup();
+            }
+
+            AttachUnitGroup();
+
+            unitGroup.AddMax();
         }
 
         AttachUnitGroup();
-
-        unitGroup.AddMax();
 
         InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
     }
@@ -180,6 +185,6 @@ public abstract class BaseUnitRoom : BaseRoom
     {
         unitGroup?.RemoveMax();
         SplitRoom();
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
 }
