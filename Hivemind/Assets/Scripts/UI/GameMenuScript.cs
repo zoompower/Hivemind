@@ -33,18 +33,18 @@ public class GameMenuScript : MonoBehaviour
     {
         SettingsMenuPanel.SetActive(false);
         PauseMenuPanel.SetActive(false);
-        Time.timeScale = 1;
+        TimeController.Instance.ResumeGame();
     }
 
     public void PauseGame()
     {
         PauseMenuPanel.SetActive(true);
-        Time.timeScale = 0;
+        TimeController.Instance.PauseGame();
     }
 
     public void ReturnToMenu()
     {
-        Time.timeScale = 1;
+        TimeController.Instance.ResumeGame(1f);
         SceneManager.LoadScene("MainMenu");
     }
 
