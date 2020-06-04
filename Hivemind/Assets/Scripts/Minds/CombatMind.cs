@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -25,11 +26,14 @@ public class CombatMind : IMind
 
     private Ant target;
     public int EngageRange;
+    private Timer AttackCooldown;
+    private bool AttackOnCooldown;
 
     public enum State
     {
         Idle,
         Scouting,
+        Escort,
         MovingToTarget,
         Engaging,
         MovingToNest
@@ -53,6 +57,8 @@ public class CombatMind : IMind
     {
         minEstimatedDifference = minEstimated;
         prefferedHealth = prefHealth;
+        AttackCooldown = new Timer(1000);
+        AttackCooldown.Elapsed += Cooldown;
     }
 
     public IMind Clone()
@@ -62,17 +68,6 @@ public class CombatMind : IMind
 
     public void Execute()
     {
-        if (this == null) new CombatFight().Execute(ant);
-
-        var healthDifference = ant.health / (float) ant.closestEnemy.health;
-        var damageDifference = ant.damage / (float) ant.closestEnemy.damage;
-        var strengthDifference = (healthDifference * 1 + damageDifference * 2) / 3;
-
-        if (strengthDifference >= minEstimatedDifference)
-            new CombatFight().Execute(ant);
-        else
-            new CombatFlee().Execute(ant);
-
         ///SwitchState
         if (leavingBase || enterBase) return;
 
@@ -80,6 +75,16 @@ public class CombatMind : IMind
         {
             case State.Idle:
                 ant.GetAgent().isStopped = true;
+
+                if (CheckSurroundings())
+                {
+                    state = State.MovingToTarget;
+                }
+                else
+                {
+                    state = State.Scouting;
+                }
+
                 break;
 
             case State.Scouting:
@@ -97,7 +102,6 @@ public class CombatMind : IMind
                         ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
                         state = State.MovingToTarget;
                         ant.StartCoroutine(Discover());
-                        preparingReturn = false;
                     }
                     else
                     {
@@ -107,15 +111,59 @@ public class CombatMind : IMind
                 }
                 break;
 
+            case State.Escort:
+                
+
+
+                break;
+
             case State.MovingToTarget:
+
+                ant.GetAgent().SetDestination(target.transform.position);
+
+                if (CheckAttackDistance())
+                {
+                    state = State.Engaging;
+                }
 
                 break;
 
             case State.Engaging:
 
+                if (!CheckAttackDistance())
+                {
+                    state = State.MovingToTarget;
+                }
+                else
+                {
+                    if (target.alive)
+                    {
+                        AttackTarget();
+                    }
+                    else
+                    {
+                        if (CheckSurroundings())
+                        {
+                            state = State.MovingToTarget;
+                        }
+                        else
+                        {
+                            state = State.MovingToNest;
+                        }
+                    }
+                }
+
                 break;
 
             case State.MovingToNest:
+                if (CheckSurroundings())
+                {
+                    state = State.MovingToTarget;
+                }
+                else
+                {
+                    ant.StartCoroutine(ReturnToBase());
+                }
 
                 break;
         }
@@ -124,24 +172,66 @@ public class CombatMind : IMind
     private bool CheckSurroundings()
     {
         target = null;
-        var NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
-        busy = false;
+        List<GameObject> NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
         foreach (GameObject a in NearbyEntitities)
         {
             if (a.GetComponent<Ant>())
             {
-                if (a.GetComponent<Ant>().GetStorage() != this.ant.GetStorage())
+                if (a.GetComponent<Ant>().TeamID != this.ant.TeamID)
                 {
                     if ( target == null || Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, target.transform.position))
                     {
                         target = a.GetComponent<Ant>();
                     }
-                    busy = true;
                 }
             }
         }
         if(target != null){     return true;}
         else {                  return false; }
+    }
+
+    private bool CheckAttackDistance()
+    {
+        if (Vector3.Distance(ant.transform.position, target.transform.position) < 1f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void Cooldown(object sender, ElapsedEventArgs e)
+    {
+        AttackCooldown.Stop();
+        AttackOnCooldown = false;
+    }
+
+    private bool AttackTarget()
+    {
+        if (!AttackOnCooldown)
+        {
+            target.health -= ant.damage;
+            AttackOnCooldown = true;
+            AttackCooldown.Start();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private IEnumerator Discover()
+    {
+        ant.PlaySoundDiscovery();
+
+        var excla = (GameObject)GameObject.Instantiate(Resources.Load("ExclamationMark"), ant.transform, false);
+        excla.transform.localScale *= 3;
+
+        yield return new WaitForSeconds(0.8f);
+        UnityEngine.GameObject.Destroy(excla.gameObject);
     }
 
     private IEnumerator Scout()
@@ -238,22 +328,12 @@ public class CombatMind : IMind
 
     public double Likelihood()
     {
-        var NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
         busy = false;
-        foreach (GameObject a in NearbyEntitities)
+        if (CheckSurroundings())
         {
-            if (a.GetComponent<Ant>())
-            {
-                if(a.GetComponent<Ant>().GetStorage() != this.ant.GetStorage())
-                {
-                    if(Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, ant.closestEnemy.transform.position))
-                    {
-                        this.ant.SetClosestEnemy(a.GetComponent<Ant>());
-                    }
-                    busy = true;
-                }
-            }
+            busy = true;
         }
+
         if (busy)
         {
             return 100;
