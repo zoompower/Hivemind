@@ -43,7 +43,6 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     [SerializeField]
     private Button DestroyToolButton;
 
-
     private void Awake()
     {
         unitController = FindObjectOfType<UnitController>();
@@ -271,6 +270,11 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
                     break;
             }
         }
+    }
+
+    public void SetTime(float timeScale)
+    {
+        TimeController.Instance.SetTimeScale(timeScale);
     }
 
     private string FormatResource(string spriteName, int val)
