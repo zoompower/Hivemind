@@ -67,7 +67,7 @@ namespace Tests.PlayModeTests
             ant.GetAgent().enabled = true;
             GameObject resource = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Resources/crystal") as GameObject);
             resource.transform.position = new Vector3(0, 0.6f, 0);
-            ant.isAtBase = true;
+            ant.SetAtBase(true);
             yield return new WaitForSeconds(0.1f);
             Assert.AreEqual(1, GameWorld.KnownResources.Count);
         }

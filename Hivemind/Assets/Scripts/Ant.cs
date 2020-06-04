@@ -19,7 +19,7 @@ public class Ant : MonoBehaviour
 
     public Ant closestEnemy { get; private set; }
 
-    public bool isAtBase = true;
+    internal bool isAtBase = true;
 
     public int TeamID;
     private Transform miniMapRenderer;
@@ -129,6 +129,11 @@ public class Ant : MonoBehaviour
     internal void SetStorage(Storage storage)
     {
         this.storage = storage;
+    }
+
+    public void SetAtBase(bool atBase)
+    {
+        isAtBase = atBase;
     }
 
     private void UpdateMind()

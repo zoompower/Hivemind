@@ -78,7 +78,7 @@ namespace Tests.PlayModeTests
         public IEnumerator AntDeliversResource()
         {
             ant.GetAgent().enabled = true;
-            ant.isAtBase = true;
+            ant.SetAtBase(true);
             yield return new WaitForSeconds(0.05f);
             Assert.LessOrEqual(1, GameResources.GetResourceAmount(ResourceType.Crystal));
         }

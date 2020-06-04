@@ -61,7 +61,7 @@ namespace Tests.PlayModeTests
             GameObject gameObjectAnt =  MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
             Ant ant = gameObjectAnt.GetComponent<Ant>();
             ant.SetunitGroupID(Id);
-            ant.isAtBase = atBase;
+            ant.SetAtBase(atBase);
             yield return new WaitForSeconds(0.01f);
             if(ant.GetMinds().Count < 1)
             {
@@ -78,7 +78,7 @@ namespace Tests.PlayModeTests
                 }
             }
             //put atbase at false so it does not try to access a disposed unitcontroller
-            ant.isAtBase = false;
+            ant.SetAtBase(false);
 
             Assert.True(valid == updatedMinds);
         }
