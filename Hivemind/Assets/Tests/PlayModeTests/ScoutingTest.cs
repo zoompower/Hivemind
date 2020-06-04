@@ -68,7 +68,10 @@ namespace Tests.PlayModeTests
             GameObject resource = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Resources/crystal") as GameObject);
             resource.transform.position = new Vector3(0, 0.6f, 0);
             ant.SetAtBase(true);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
             Assert.AreEqual(1, GameWorld.KnownResources.Count);
         }
 
