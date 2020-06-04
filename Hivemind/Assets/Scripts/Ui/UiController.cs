@@ -284,7 +284,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         myText.text = text;
         while (seconds > 0)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSecondsRealtime(0.1f);
             Color newColor = myText.color;
             newColor.a = ((float)seconds * 2 / (float)startSeconds);
             myText.color = newColor;

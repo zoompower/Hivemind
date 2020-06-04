@@ -109,9 +109,9 @@ public static class GameWorld
         return ResourceList.FirstOrDefault(resource => resource.myGuid == guid);
     }
 
-    public static void Save()
+    public static void Save(string name = "QuickSave")
     {
-        MyUnitController.UpdateEventText("QuickSaving...");
+        MyUnitController.UpdateEventText("Saving...");
         SaveObject saveObject = new SaveObject
         {
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
@@ -122,16 +122,26 @@ public static class GameWorld
             BaseControllers = BaseControllerList
         };
         string json = saveObject.ToJson();
-        File.WriteAllText(Application.dataPath + "/save.txt", json);
-        MyUnitController.UpdateEventText("QuickSave Complete!");
+        File.WriteAllText(GetSavePath() + $"/{name}.txt", json);
+        MyUnitController.UpdateEventText("Save Complete!");
     }
 
-    public static void Load()
+    public static string GetSavePath()
     {
-        MyUnitController.UpdateEventText("QuickLoading...");
-        if (File.Exists(Application.dataPath + "/save.txt"))
+        string path = Application.dataPath + "/Saves";
+        if (!Directory.Exists(path))
         {
-            string saveString = File.ReadAllText(Application.dataPath + "/save.txt");
+            Directory.CreateDirectory(path);
+        }
+        return path;
+    }
+
+    public static void Load(string name = "QuickSave")
+    {
+        MyUnitController.UpdateEventText("Loading...");
+        if (File.Exists(GetSavePath() + $"/{name}.txt"))
+        {
+            string saveString = File.ReadAllText(Application.dataPath + $"/Saves/{name}.txt");
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
             GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
             for (int i = 0; i < ResourceList.Count;)
@@ -159,12 +169,12 @@ public static class GameWorld
             {
                 BaseControllerList[i].SetData(saveObject.BaseControllerData[i]);
             }
-            MyUnitController.UpdateEventText("QuickLoad Complete!");
+            MyUnitController.UpdateEventText("Load Complete!");
         }
         else
         {
             MyUnitController.UpdateEventText("Save file not found!", Color.red);
-            Debug.LogError($"Save file could not be found at {Application.dataPath}/save.txt");
+            Debug.LogError($"Save file could not be found at {Application.dataPath}/Saves/{name}.txt");
         }
     }
 }

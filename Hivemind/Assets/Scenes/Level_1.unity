@@ -128,11 +128,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2483435940591025202, guid: c54b820f7ee471144917a2d156eb38d2,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483435940591025202, guid: c54b820f7ee471144917a2d156eb38d2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2561264657207089452, guid: c54b820f7ee471144917a2d156eb38d2,
         type: 3}
       propertyPath: UIgameobject
       value: 
       objectReference: {fileID: 969293564}
+    - target: {fileID: 5565749594049384138, guid: c54b820f7ee471144917a2d156eb38d2,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5565749594049384138, guid: c54b820f7ee471144917a2d156eb38d2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6425041796287988495, guid: c54b820f7ee471144917a2d156eb38d2,
         type: 3}
       propertyPath: m_Name

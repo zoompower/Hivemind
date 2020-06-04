@@ -57,6 +57,7 @@ public class GameMenuScript : MonoBehaviour
     {
         PauseMenuPanel.SetActive(false);
         LoadMenuPanel.SetActive(true);
+        LoadMenuPanel.GetComponent<LoadMenuScript>().Refresh();
     }
 
     public void ReturnToMenu()
