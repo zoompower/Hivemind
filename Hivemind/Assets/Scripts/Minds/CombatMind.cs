@@ -68,6 +68,8 @@ public class CombatMind : IMind
 
     public void Execute()
     {
+
+        Debug.Log("Hit");
         ///SwitchState
         if (leavingBase || enterBase) return;
 
@@ -171,23 +173,27 @@ public class CombatMind : IMind
 
     private bool CheckSurroundings()
     {
-        target = null;
-        List<GameObject> NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
-        foreach (GameObject a in NearbyEntitities)
+        if (ant.SpatialPosition != null)
         {
-            if (a.GetComponent<Ant>())
+            target = null;
+            List<GameObject> NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
+            foreach (GameObject a in NearbyEntitities)
             {
-                if (a.GetComponent<Ant>().TeamID != this.ant.TeamID)
+                if (a.GetComponent<Ant>())
                 {
-                    if ( target == null || Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, target.transform.position))
+                    if (a.GetComponent<Ant>().TeamID != this.ant.TeamID)
                     {
-                        target = a.GetComponent<Ant>();
+                        if (target == null || Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, target.transform.position))
+                        {
+                            target = a.GetComponent<Ant>();
+                        }
                     }
                 }
             }
+            if (target != null) { return true; }
+            else { return false; }
         }
-        if(target != null){     return true;}
-        else {                  return false; }
+        else { return false; }
     }
 
     private bool CheckAttackDistance()
