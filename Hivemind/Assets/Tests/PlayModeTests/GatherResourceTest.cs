@@ -49,6 +49,7 @@ namespace Tests.PlayModeTests
         [UnityTest]
         public IEnumerator AntpicksUpResourceCorrectly()
         {
+            ant.SetAtBase(false);
             ant.GetAgent().enabled = true;
             yield return new WaitForSeconds(0.1f);
             Gathering gather = (Gathering)ant.minds[0];
@@ -58,6 +59,7 @@ namespace Tests.PlayModeTests
         [UnityTest]
         public IEnumerator ResourceHasCorrectAmount()
         {
+            ant.SetAtBase(false);
             ant.GetAgent().enabled = true;
             yield return new WaitForSeconds(0.1f);
             Gathering gather = (Gathering)ant.minds[0];
@@ -67,10 +69,10 @@ namespace Tests.PlayModeTests
         [UnityTest]
         public IEnumerator ResourceHasCorrectFutureAmount()
         {
+            ant.SetAtBase(false);
             resource.transform.position = new Vector3(10, 0.6f, 10);
             ant.GetAgent().enabled = true;
             yield return new WaitForSeconds(0.1f);
-            Gathering gather = (Gathering)ant.minds[0];
             Assert.AreEqual(9, resourceNode.GetResourcesFuture());
         }
 
@@ -79,7 +81,7 @@ namespace Tests.PlayModeTests
         {
             ant.GetAgent().enabled = true;
             ant.SetAtBase(true);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
             Assert.LessOrEqual(1, GameResources.GetResourceAmount(ResourceType.Crystal));
         }
     }
