@@ -41,7 +41,7 @@ public class Gathering : IMind
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
-    private bool busy = false;
+    public bool busy = false;
     private bool leavingBase = false;
     public State state = State.Idle;
 
