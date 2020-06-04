@@ -7,7 +7,7 @@ public class MindGroup
 {
     private protected GameObject UIUnitGroup;
 
-    private readonly List<UnitGroup> unitGroupList;
+    public readonly List<UnitGroup> unitGroupList;
 
     public MindGroup(GameObject UiObject)
     {

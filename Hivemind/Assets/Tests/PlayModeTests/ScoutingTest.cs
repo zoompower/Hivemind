@@ -70,18 +70,6 @@ namespace Tests.PlayModeTests
             Assert.AreEqual(1, GameWorld.KnownResources.Count);
         }
 
-        [UnityTest]
-        public IEnumerator AntReturnsToBaseCorrectly()
-        {
-            ant.GetAgent().enabled = true;
-            Gathering gather = (Gathering)ant.minds[0];
-            gather.state = Gathering.State.MovingToStorage;
-            ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
-            ant.GetAgent().transform.position = new Vector3(4, 0.6f, 4);
-            yield return new WaitForSeconds(5f);
-            Assert.IsTrue(Vector3.Distance(ant.GetAgent().transform.position, ant.GetStorage().GetPosition()) < 2f);
-        }
-
         [TearDown]
         public void Dispose()
         {

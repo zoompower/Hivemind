@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MindGroupList
 {
-    private List<MindGroup> mindGroupList;
+    public readonly List<MindGroup> mindGroupList;
 
     private int MaxGroupCount = 6;
 
