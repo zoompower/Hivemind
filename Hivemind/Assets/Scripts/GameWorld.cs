@@ -75,6 +75,10 @@ public static class GameWorld
         }
     }
 
+    public static int AmountOfKnownResources()
+    {
+        return KnownResources.Count;
+    }
     //public static void CreateNewResource(int amount = 1)
     //{
     //    for (int i = 0; i < amount; i++)
