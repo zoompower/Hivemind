@@ -73,6 +73,11 @@ public class ResourceNode : MonoBehaviour
         return transform.position;
     }
 
+    private void OnDestroy()
+    {
+        GameWorld.RemoveResource(this);
+    }
+
     public void Destroy()
     {
         if (this != null)

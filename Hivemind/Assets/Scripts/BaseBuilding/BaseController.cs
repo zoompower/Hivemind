@@ -101,6 +101,7 @@ public class BaseController : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameWorld.RemoveBaseController(this);
         CancelInvoke("VerifyBuildingTasks");
     }
 

@@ -12,6 +12,9 @@ public class MainMenuScript : MonoBehaviour
     private GameObject settingsMenu;
 
     [SerializeField]
+    private GameObject loadMenu;
+
+    [SerializeField]
     private AudioSource mainMusic;
 
     void Start()
@@ -33,8 +36,9 @@ public class MainMenuScript : MonoBehaviour
 
     public void LoadGame()
     {
-        SceneManager.LoadScene("Map");
-        GameWorld.Load();
+        mainMenu.SetActive(false);
+        loadMenu.GetComponent<LoadMenuScript>().Refresh();
+        loadMenu.SetActive(true);
     }
 
     public void SettingsMenu()

@@ -59,11 +59,6 @@ public static class GameWorld
         return storage;
     }
 
-    public static void RemoveResource(ResourceNode resource)
-    {
-        ResourceList.Remove(resource);
-    }
-
     public static void SetStorage(Storage Storage)
     {
         storage = Storage;
@@ -74,9 +69,19 @@ public static class GameWorld
         ResourceList.Add(resource);
     }
 
+    public static void RemoveResource(ResourceNode resource)
+    {
+        ResourceList.Remove(resource);
+    }
+
     public static void AddNewAnt(Ant ant)
     {
         AntList.Add(ant);
+    }
+
+    public static void RemoveAnt(Ant ant)
+    {
+        AntList.Remove(ant);
     }
 
     public static void SetUnitController(UnitController unitController)
@@ -89,9 +94,9 @@ public static class GameWorld
         BaseControllerList.Add(baseController);
     }
 
-    public static void RemoveAnt(Ant ant)
+    public static void RemoveBaseController(BaseController baseController)
     {
-        AntList.Remove(ant);
+        BaseControllerList.Remove(baseController);
     }
 
     public static BaseController FindBaseController(int ID)
@@ -171,7 +176,7 @@ public static class GameWorld
 
     public static void Load(string name = "QuickSave")
     {
-        if(name == "QuickSave")
+        if (name == "QuickSave")
         {
             MyUnitController.UpdateEventText("QuickLoading...");
         }

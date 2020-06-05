@@ -59,6 +59,7 @@ public class Ant : MonoBehaviour
 
     public void OnDestroy()
     {
+        GameWorld.RemoveAnt(this);
         RemoveEventListeners();
     }
 
