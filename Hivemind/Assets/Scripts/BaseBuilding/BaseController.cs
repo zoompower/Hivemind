@@ -57,11 +57,11 @@ public class BaseController : MonoBehaviour
         }
 
         InvokeRepeating("VerifyBuildingTasks", 1.0f, 5.0f);
-        GameWorld.AddBaseController(this);
     }
 
     private void Start()
     {
+        GameWorld.Instance.AddBaseController(this);
         BuildingQueue = new BuildingQueue(this);
 
         SetTool((int)BaseBuildingTool.Default);
@@ -101,7 +101,7 @@ public class BaseController : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameWorld.RemoveBaseController(this);
+        GameWorld.Instance.RemoveBaseController(this);
         CancelInvoke("VerifyBuildingTasks");
     }
 

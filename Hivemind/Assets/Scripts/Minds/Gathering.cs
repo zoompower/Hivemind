@@ -103,7 +103,7 @@ public class Gathering : IMind
 
                 if (!scouting)
                 {
-                    var tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position);
+                    var tempTarget = GameWorld.Instance.FindNearestUnknownResource(ant.transform.position);
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
@@ -194,7 +194,7 @@ public class Gathering : IMind
                 }
                 else
                 {
-                    ant.SetStorage(GameWorld.GetStorage());
+                    ant.SetStorage(GameWorld.Instance.GetStorage());
                 }
 
                 break;
@@ -230,9 +230,9 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
-        var resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType);
+        var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType);
         if (prefferedType != ResourceType.Unknown && resourceNode == null)
-            resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown);
+            resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown);
         return resourceNode;
     }
 
@@ -410,10 +410,10 @@ public class Gathering : IMind
         prefferedDirection = data.PrefferedDirection;
         if (data.AntGuid != "")
         {
-            ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
             foreach (string guid in data.GatheredResources)
             {
-                carryResource(GameWorld.FindResourceNode(Guid.Parse(guid)));
+                carryResource(GameWorld.Instance.FindResourceNode(Guid.Parse(guid)));
             }
             ant.UpdateSpeed();
             ant.StopAllCoroutines();
@@ -427,7 +427,7 @@ public class Gathering : IMind
             }
             if (data.TargetGuid != "")
             {
-                target = GameWorld.FindResourceNode(Guid.Parse(data.TargetGuid));
+                target = GameWorld.Instance.FindResourceNode(Guid.Parse(data.TargetGuid));
                 ant.GetAgent().SetDestination(target.GetPosition());
             }
             if (leavingBase)

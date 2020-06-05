@@ -90,7 +90,7 @@ public class CombatMind : IMind
         prefferedHealth = data.PrefferedHealth;
         if(data.AntGuid != "")
         {
-            ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
         }
         busy = data.Busy;
     }

@@ -21,7 +21,7 @@ public class SaveMenuScript : MonoBehaviour
         {
             GameObject.Destroy(child.gameObject);
         }
-        FileInfo[] info = new DirectoryInfo(GameWorld.GetSavePath()).GetFiles().OrderByDescending(p => p.LastWriteTime).ToArray();
+        FileInfo[] info = new DirectoryInfo(GameWorld.Instance.GetSavePath()).GetFiles().OrderByDescending(p => p.LastWriteTime).ToArray();
         foreach (FileInfo savefilepath in info)
         {
             if (savefilepath.Extension == ".txt")
@@ -37,7 +37,7 @@ public class SaveMenuScript : MonoBehaviour
     {
         if (selectedSave != "" && selectedSave != null)
         {
-            GameWorld.DeleteFile(selectedSave);
+            GameWorld.Instance.DeleteFile(selectedSave);
             Refresh();
             transform.Find("DeleteButton").GetComponent<Button>().interactable = false;
             transform.Find("SaveButton").GetComponent<Button>().interactable = false;
@@ -74,7 +74,7 @@ public class SaveMenuScript : MonoBehaviour
     {
         if (selectedSave != "" && selectedSave != null)
         {
-            GameWorld.Save(selectedSave);
+            GameWorld.Instance.Save(selectedSave);
             Refresh();
             transform.Find("SaveButton").GetComponent<Button>().interactable = false;
             transform.Find("DeleteButton").GetComponent<Button>().interactable = false;

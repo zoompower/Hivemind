@@ -34,7 +34,7 @@ public class BuildingTask
         BaseBuildingTool = data.BaseBuildingTool;
         if(data.AntGuid != "")
         {
-            Ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+            Ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
         }
         BaseTile = GameObject.Find(data.BaseTileName).GetComponent<BaseTile>();
         HighlightObj = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/BaseBuilding/{data.HighlightObjPrefab}"), BaseTile.transform);

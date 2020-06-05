@@ -31,7 +31,7 @@ public class MainMenuScript : MonoBehaviour
     }
     public void PlayGame()
     {
-        SceneManager.LoadScene("Map");
+        SceneManager.LoadScene("Level_1");
     }
 
     public void LoadGame()

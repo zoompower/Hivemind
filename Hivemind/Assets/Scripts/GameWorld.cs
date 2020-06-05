@@ -1,19 +1,37 @@
 ﻿using Assets.Scripts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public static class GameWorld
+public class GameWorld : MonoBehaviour
 {
-    public static List<ResourceNode> ResourceList = new List<ResourceNode>();
-    public static List<Ant> AntList = new List<Ant>();
-    public static UnitController MyUnitController;
-    public static List<BaseController> BaseControllerList = new List<BaseController>();
-    private static Storage storage = null;
+    public static GameWorld Instance;
 
-    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
+    public static List<ResourceNode> ResourceList = new List<ResourceNode>();
+    public List<Ant> AntList = new List<Ant>();
+    public UnitController MyUnitController;
+    public List<BaseController> BaseControllerList = new List<BaseController>();
+    private Storage storage = null;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else if (Instance != this)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+    }
+
+    public ResourceNode FindNearestUnknownResource(Vector3 antPosition)
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;
@@ -32,7 +50,7 @@ public static class GameWorld
         return closest;
     }
 
-    public static ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType)
+    public ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType)
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;
@@ -54,67 +72,67 @@ public static class GameWorld
         return closest;
     }
 
-    public static Storage GetStorage()
+    public Storage GetStorage()
     {
         return storage;
     }
 
-    public static void SetStorage(Storage Storage)
+    public void SetStorage(Storage Storage)
     {
         storage = Storage;
     }
 
-    public static void AddNewResource(ResourceNode resource)
+    public void AddNewResource(ResourceNode resource)
     {
         ResourceList.Add(resource);
     }
 
-    public static void RemoveResource(ResourceNode resource)
+    public void RemoveResource(ResourceNode resource)
     {
         ResourceList.Remove(resource);
     }
 
-    public static void AddNewAnt(Ant ant)
+    public void AddNewAnt(Ant ant)
     {
         AntList.Add(ant);
     }
 
-    public static void RemoveAnt(Ant ant)
+    public void RemoveAnt(Ant ant)
     {
         AntList.Remove(ant);
     }
 
-    public static void SetUnitController(UnitController unitController)
+    public void SetUnitController(UnitController unitController)
     {
         MyUnitController = unitController;
     }
 
-    public static void AddBaseController(BaseController baseController)
+    public void AddBaseController(BaseController baseController)
     {
         BaseControllerList.Add(baseController);
     }
 
-    public static void RemoveBaseController(BaseController baseController)
+    public void RemoveBaseController(BaseController baseController)
     {
         BaseControllerList.Remove(baseController);
     }
 
-    public static BaseController FindBaseController(int ID)
+    public BaseController FindBaseController(int ID)
     {
         return BaseControllerList.Find(myteam => myteam.TeamID == ID);
     }
 
-    public static Ant FindAnt(Guid guid)
+    public Ant FindAnt(Guid guid)
     {
         return AntList.FirstOrDefault(myAnt => myAnt.myGuid == guid);
     }
 
-    public static ResourceNode FindResourceNode(Guid guid)
+    public ResourceNode FindResourceNode(Guid guid)
     {
         return ResourceList.FirstOrDefault(resource => resource.myGuid == guid);
     }
 
-    public static void Save(string name = "QuickSave")
+    public void Save(string name = "QuickSave")
     {
         if (name == "QuickSave")
         {
@@ -145,7 +163,7 @@ public static class GameWorld
         }
     }
 
-    public static string GetSavePath()
+    public string GetSavePath()
     {
         string path = Application.dataPath + "/Saves";
         if (!Directory.Exists(path))
@@ -155,7 +173,7 @@ public static class GameWorld
         return path;
     }
 
-    public static void DeleteFile(string name)
+    public void DeleteFile(string name)
     {
         if (File.Exists(GetSavePath() + $"/{name}.txt"))
         {
@@ -174,8 +192,22 @@ public static class GameWorld
         }
     }
 
-    public static void Load(string name = "QuickSave")
+    public void Load(string name = "QuickSave")
     {
+        Instance.StartCoroutine(LoadEnumerator(name));
+    }
+
+    private IEnumerator LoadEnumerator(string name)
+    {
+        if(SceneManager.GetActiveScene().name != "Level_1")
+        {
+            AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Level_1", LoadSceneMode.Single);
+            while (!asyncLoadLevel.isDone)
+            {
+                Debug.Log("Loading the Scene");
+                yield return null;
+            }
+        }
         if (name == "QuickSave")
         {
             MyUnitController.UpdateEventText("QuickLoading...");

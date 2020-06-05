@@ -40,7 +40,6 @@ public class ResourceNode : MonoBehaviour
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         IsKnown = false;
-        GameWorld.AddNewResource(this);
         audioSrc = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey("Volume"))
         {
@@ -52,6 +51,11 @@ public class ResourceNode : MonoBehaviour
         }
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+    }
+
+    private void Start()
+    {
+        GameWorld.Instance.AddNewResource(this);
     }
 
     private void Update()
@@ -75,7 +79,7 @@ public class ResourceNode : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameWorld.RemoveResource(this);
+        GameWorld.Instance.RemoveResource(this);
     }
 
     public void Destroy()
@@ -85,7 +89,7 @@ public class ResourceNode : MonoBehaviour
             Destroy(gameObject);
         }
         Destroy(this);
-        GameWorld.RemoveResource(this);
+        GameWorld.Instance.RemoveResource(this);
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 

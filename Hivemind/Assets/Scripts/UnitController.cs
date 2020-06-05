@@ -15,7 +15,11 @@ public class UnitController : MonoBehaviour
     {
         uiController = FindObjectOfType<UiController>();
         MindGroupList = new MindGroupList(uiController.UnitGroupObjects);
-        GameWorld.SetUnitController(this);
+    }
+
+    private void Start()
+    {
+        GameWorld.Instance.SetUnitController(this);
     }
 
     public Guid CreateUnitGroup()
@@ -122,11 +126,11 @@ public class UnitController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            GameWorld.Save();
+            GameWorld.Instance.Save();
         }
         if (Input.GetKeyDown(KeyCode.F9))
         {
-            GameWorld.Load();
+            GameWorld.Instance.Load();
         }
     }
 

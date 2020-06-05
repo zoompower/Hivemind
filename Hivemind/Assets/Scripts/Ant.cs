@@ -47,19 +47,19 @@ public class Ant : MonoBehaviour
                 miniMapRenderer = child;
             }
         }
-        GameWorld.AddNewAnt(this);
+        GameWorld.Instance.AddNewAnt(this);
     }
 
     // Start is called before the first frame update
     private void Start()
     {
-        storage = GameWorld.GetStorage();
+        storage = GameWorld.Instance.GetStorage();
         AddEventListeners();
     }
 
     public void OnDestroy()
     {
-        GameWorld.RemoveAnt(this);
+        GameWorld.Instance.RemoveAnt(this);
         RemoveEventListeners();
     }
 
@@ -161,7 +161,7 @@ public class Ant : MonoBehaviour
     {
         Destroy(gameObject);
         Destroy(this);
-        GameWorld.RemoveAnt(this);
+        GameWorld.Instance.RemoveAnt(this);
     }
 
     public AntData GetData()
@@ -184,7 +184,7 @@ public class Ant : MonoBehaviour
         unitGroupID = Guid.Parse(data.UnitGroupID);
         if (data.ClosestEnemy != string.Empty)
         {
-            closestEnemy = GameWorld.FindAnt(Guid.Parse(data.ClosestEnemy));
+            closestEnemy = GameWorld.Instance.FindAnt(Guid.Parse(data.ClosestEnemy));
         }
         isAtBase = data.IsAtBase;
         TeamID = data.TeamID;

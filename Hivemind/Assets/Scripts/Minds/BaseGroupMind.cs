@@ -131,7 +131,7 @@ public class BaseGroupMind : IMind
         waiting = data.Waiting;
         if (data.AntGuid != "")
         {
-            ant = GameWorld.FindAnt(Guid.Parse(data.AntGuid));
+            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
             if (waiting && data.WaitTimer > 0f)
             {
                 ant.StartCoroutine(Wait(data.WaitTimer));

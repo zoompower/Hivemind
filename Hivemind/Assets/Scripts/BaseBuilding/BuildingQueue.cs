@@ -172,6 +172,6 @@ public class BuildingQueue
             task.SetData(buildingTaskData);
             WaitQueue.Add(task);
         }
-        controller = GameWorld.FindBaseController(data.ControllerID);
+        controller = GameWorld.Instance.FindBaseController(data.ControllerID);
     }
 }
