@@ -20,8 +20,12 @@ namespace Tests.PlayModeTests
         [UnitySetUp]
         public IEnumerator Init()
         {
-            SceneManager.LoadScene("TestScene");
-            yield return new WaitForSeconds(1f);
+            AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("TestScene", LoadSceneMode.Single);
+            while (!asyncLoadLevel.isDone)
+            {
+                Debug.Log("Loading the Scene");
+                yield return null;
+            }
             gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));
             uiController = gameUI.GetComponent<UiController>();
             unitControl = gameUI.GetComponent<UnitController>();
