@@ -45,7 +45,8 @@ namespace Tests.PlayModeTests
             {
                 baseTile.AntDoesAction(BaseBuildingTool.AntRoom);
             }
-            yield return new WaitForSeconds(0.01f);
+
+            yield return new WaitForSeconds(1.3f);
             foreach (MindGroup mindGroup in unitController.MindGroupList.mindGroupList)
             {
                 foreach (UnitGroup unitGroup in mindGroup.unitGroupList)
@@ -70,12 +71,12 @@ namespace Tests.PlayModeTests
             List<BaseTile> baseTiles = GameObject.FindObjectsOfType<BaseTile>().ToList();
             baseTiles = GetBaseTilesFromNames(baseTiles, baseTileNames.ToList());
 
+            yield return new WaitForSeconds(1.3f);
             foreach (BaseTile baseTile in baseTiles)
             {
                 baseTile.AntDoesAction(BaseBuildingTool.DestroyRoom);
             }
 
-            yield return new WaitForSeconds(0.01f);
             foreach (MindGroup mindGroup in unitController.MindGroupList.mindGroupList)
             {
                 foreach (UnitGroup unitGroup in mindGroup.unitGroupList)
