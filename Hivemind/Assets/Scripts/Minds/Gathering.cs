@@ -95,7 +95,7 @@ public class Gathering : IMind
 
                 if (!scouting)
                 {
-                    var tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position);
+                    var tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position, ant.TeamID);
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
@@ -166,7 +166,7 @@ public class Gathering : IMind
                     {
                         if (IsScout && target != null && !target.knownResource())
                         {
-                            target.AddToKnownResourceList();
+                            target.AddToKnownResourceList(ant.TeamID);
                             ant.StopCoroutine(ReturnToBase());
                         }
                         if (inventory != null)
@@ -221,9 +221,9 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
-        var resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType);
+        var resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
         if (prefferedType != ResourceType.Unknown && resourceNode == null)
-            resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown);
+            resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
         return resourceNode;
     }
 

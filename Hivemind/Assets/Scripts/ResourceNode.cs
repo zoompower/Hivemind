@@ -46,12 +46,12 @@ public class ResourceNode : MonoBehaviour
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
-    public void AddToKnownResourceList()
+    public void AddToKnownResourceList(int teamId)
     {
         if (!GameWorld.KnownResources.Contains(this) && gameObject != null)
         {
             gameObject.GetComponent<MeshRenderer>().enabled = true;
-            GameWorld.AddNewKnownResource(this);
+            GameWorld.AddNewKnownResource(this, teamId);
         }
     }
 

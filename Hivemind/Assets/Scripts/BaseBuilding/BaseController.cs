@@ -46,6 +46,8 @@ public class BaseController : MonoBehaviour
         }
 
         InvokeRepeating("VerifyBuildingTasks", 1.0f, 5.0f);
+
+        GameWorld.AddNewTeam(TeamID);
     }
 
     private void Start()

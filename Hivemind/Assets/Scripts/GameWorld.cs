@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class GameWorld
@@ -6,73 +7,82 @@ public static class GameWorld
     public static List<ResourceNode> UnknownResources = new List<ResourceNode>();
     public static List<ResourceNode> KnownResources = new List<ResourceNode>();
     private static Storage storage = null;
+    private static List<TeamResourceNodes> teamResourceNodes = new List<TeamResourceNodes>();
+    private static List<ResourceNode> allResourceNodes = new List<ResourceNode>();
 
-    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition)
+    public static bool AddNewTeam(int teamId)
     {
-        ResourceNode closest = null;
-        float minDistance = float.MaxValue;
-        foreach (ResourceNode resource in UnknownResources)
-        {
-            float dist = Vector3.Distance(antPosition, resource.GetPosition());
-            if (dist < minDistance)
-            {
-                closest = resource;
-                minDistance = dist;
-            }
-        }
-        return closest;
+        if (teamResourceNodes.FirstOrDefault(teamResource => teamResource.TeamID == teamId) != null) return false;
+
+        teamResourceNodes.Add(new TeamResourceNodes(teamId, allResourceNodes));
+
+        return true;
     }
 
-    public static ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType)
+    public static ResourceNode FindNearestUnknownResource(Vector3 antPosition, int teamID)
     {
-        ResourceNode closest = null;
-        float minDistance = float.MaxValue;
-        foreach (ResourceNode resource in KnownResources)
+        var team = teamResourceNodes.FirstOrDefault(teamResource => teamResource.TeamID == teamID);
+
+        if (team != null)
         {
-            if (prefType == ResourceType.Unknown || resource.resourceType == prefType)
-            {
-                if (resource.GetResourcesFuture() > 0)
-                {
-                    float dist = Vector3.Distance(antPosition, resource.GetPosition());
-                    if (dist < minDistance)
-                    {
-                        closest = resource;
-                        minDistance = dist;
-                    }
-                }
-            }
+            return team.FindNearestUnknownResource(antPosition);
         }
-        return closest;
+
+        Debug.LogWarning($"An ant tried to get teamId:{teamID}, which does not exist!");
+        return null;
     }
 
-    public static Storage GetStorage()
+    public static ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType, int teamID)
     {
-        return storage;
+        var team = teamResourceNodes.FirstOrDefault(teamResource => teamResource.TeamID == teamID);
+
+        if (team != null)
+        {
+            return team.FindNearestKnownResource(antPosition, prefType);
+        }
+
+        Debug.LogWarning($"An ant tried to get teamId:{teamID}, which does not exist!");
+        return null;
     }
 
     public static void RemoveResource(ResourceNode resource)
     {
-        KnownResources.Remove(resource);
-        UnknownResources.Remove(resource);
-    }
+        allResourceNodes.Remove(resource);
 
-    public static void SetStorage(Storage Storage)
-    {
-        storage = Storage;
+        foreach (TeamResourceNodes teamResource in teamResourceNodes)
+        {
+            teamResource.RemoveResource(resource);
+        }
     }
 
     public static void AddNewResource(ResourceNode resource)
     {
-        UnknownResources.Add(resource);
+        allResourceNodes.Add(resource);
+
+        foreach (TeamResourceNodes teamResource in teamResourceNodes)
+        {
+            teamResource.AddNewResource(resource);
+        }
     }
 
-    public static void AddNewKnownResource(ResourceNode resource)
+    public static void AddNewKnownResource(ResourceNode resource, int teamID)
     {
-        if (!KnownResources.Contains(resource))
+        var team = teamResourceNodes.FirstOrDefault(teamResource => teamResource.TeamID == teamID);
+
+        if (team != null)
         {
-            KnownResources.Add(resource);
-            UnknownResources.Remove(resource);
+            team.AddNewKnownResource(resource);
         }
+    }
+
+    public static Storage GetStorage() // TODO: add int teamid and make it list of storage
+    {
+        return storage;
+    }
+
+    public static void SetStorage(Storage Storage) // TODO: add int teamid and make it list of storage
+    {
+        storage = Storage;
     }
 
     //public static void CreateNewResource(int amount = 1)
