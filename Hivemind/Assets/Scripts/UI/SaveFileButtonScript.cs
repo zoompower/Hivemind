@@ -23,7 +23,15 @@ public class SaveFileButtonScript : MonoBehaviour
 
     public void SetSelectedSaveFile()
     {
-        GetComponentInParent<LoadMenuScript>().SetSelectedSaveFile(this);
-        transform.GetComponent<Button>().interactable = false;
+        if (GetComponentInParent<LoadMenuScript>() != null)
+        {
+            GetComponentInParent<LoadMenuScript>().SetSelectedSaveFile(this);
+            transform.GetComponent<Button>().interactable = false;
+        }
+        else if (GetComponentInParent<SaveMenuScript>() != null)
+        {
+            GetComponentInParent<SaveMenuScript>().SetSelectedSaveFile(this);
+            transform.GetComponent<Button>().interactable = false;
+        }
     }
 }

@@ -50,7 +50,9 @@ public class GameMenuScript : MonoBehaviour
 
     public void SaveGame()
     {
-        GameWorld.Save();
+        PauseMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(true);
+        SaveMenuPanel.GetComponent<SaveMenuScript>().Refresh();
     }
 
     public void LoadGame()

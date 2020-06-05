@@ -1,16 +1,18 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LoadMenuScript : MonoBehaviour
+public class SaveMenuScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject prevPanel;
     [SerializeField]
     private GameObject contentBox;
+    [SerializeField]
+    private InputField newSaveInput;
     private string selectedSave;
 
     public void Refresh()
@@ -37,9 +39,23 @@ public class LoadMenuScript : MonoBehaviour
         {
             GameWorld.DeleteFile(selectedSave);
             Refresh();
-            transform.Find("LoadButton").GetComponent<Button>().interactable = false;
             transform.Find("DeleteButton").GetComponent<Button>().interactable = false;
+            transform.Find("SaveButton").GetComponent<Button>().interactable = false;
             selectedSave = null;
+        }
+    }
+
+    public void SetSelectedNewSaveFile()
+    {
+        if(newSaveInput.text != "")
+        {
+            foreach (Transform child in contentBox.transform)
+            {
+                child.gameObject.GetComponent<Button>().interactable = true;
+            }
+            selectedSave = newSaveInput.text;
+            transform.Find("SaveButton").GetComponent<Button>().interactable = true;
+            transform.Find("DeleteButton").GetComponent<Button>().interactable = false;
         }
     }
 
@@ -50,17 +66,17 @@ public class LoadMenuScript : MonoBehaviour
             child.gameObject.GetComponent<Button>().interactable = true;
         }
         selectedSave = buttonScript.SaveFile;
-        transform.Find("LoadButton").GetComponent<Button>().interactable = true;
+        transform.Find("SaveButton").GetComponent<Button>().interactable = true;
         transform.Find("DeleteButton").GetComponent<Button>().interactable = true;
     }
 
-    public void Load()
+    public void Save()
     {
-        if(selectedSave != "" && selectedSave != null)
+        if (selectedSave != "" && selectedSave != null)
         {
-            GameWorld.Load(selectedSave);
+            GameWorld.Save(selectedSave);
             Refresh();
-            transform.Find("LoadButton").GetComponent<Button>().interactable = false;
+            transform.Find("SaveButton").GetComponent<Button>().interactable = false;
             transform.Find("DeleteButton").GetComponent<Button>().interactable = false;
             selectedSave = null;
         }
@@ -68,8 +84,9 @@ public class LoadMenuScript : MonoBehaviour
 
     public void Back()
     {
+        newSaveInput.text = null;
         selectedSave = null;
-        transform.Find("LoadButton").GetComponent<Button>().interactable = false;
+        transform.Find("SaveButton").GetComponent<Button>().interactable = false;
         transform.Find("DeleteButton").GetComponent<Button>().interactable = false;
         gameObject.SetActive(false);
         if (prevPanel != null)

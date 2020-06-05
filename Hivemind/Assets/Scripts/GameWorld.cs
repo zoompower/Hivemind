@@ -111,7 +111,14 @@ public static class GameWorld
 
     public static void Save(string name = "QuickSave")
     {
-        MyUnitController.UpdateEventText("Saving...");
+        if (name == "QuickSave")
+        {
+            MyUnitController.UpdateEventText("QuickSaving...");
+        }
+        else
+        {
+            MyUnitController.UpdateEventText("Saving...");
+        }
         SaveObject saveObject = new SaveObject
         {
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
@@ -123,7 +130,14 @@ public static class GameWorld
         };
         string json = saveObject.ToJson();
         File.WriteAllText(GetSavePath() + $"/{name}.txt", json);
-        MyUnitController.UpdateEventText("Save Complete!");
+        if (name == "QuickSave")
+        {
+            MyUnitController.UpdateEventText("QuickSave Complete!");
+        }
+        else
+        {
+            MyUnitController.UpdateEventText("Save Complete!");
+        }
     }
 
     public static string GetSavePath()
@@ -136,9 +150,35 @@ public static class GameWorld
         return path;
     }
 
+    public static void DeleteFile(string name)
+    {
+        if (File.Exists(GetSavePath() + $"/{name}.txt"))
+        {
+            try
+            {
+                File.Delete(Application.dataPath + $"/Saves/{name}.txt");
+            }
+            catch
+            {
+                MyUnitController.UpdateEventText("Deleting save file failed!", Color.red);
+            }
+        }
+        else
+        {
+            MyUnitController.UpdateEventText("Save file not found!", Color.red);
+        }
+    }
+
     public static void Load(string name = "QuickSave")
     {
-        MyUnitController.UpdateEventText("Loading...");
+        if(name == "QuickSave")
+        {
+            MyUnitController.UpdateEventText("QuickLoading...");
+        }
+        else
+        {
+            MyUnitController.UpdateEventText("Loading...");
+        }
         if (File.Exists(GetSavePath() + $"/{name}.txt"))
         {
             string saveString = File.ReadAllText(Application.dataPath + $"/Saves/{name}.txt");
@@ -169,12 +209,18 @@ public static class GameWorld
             {
                 BaseControllerList[i].SetData(saveObject.BaseControllerData[i]);
             }
-            MyUnitController.UpdateEventText("Load Complete!");
+            if (name == "QuickSave")
+            {
+                MyUnitController.UpdateEventText("QuickLoad Complete!");
+            }
+            else
+            {
+                MyUnitController.UpdateEventText("Load Complete!");
+            }
         }
         else
         {
             MyUnitController.UpdateEventText("Save file not found!", Color.red);
-            Debug.LogError($"Save file could not be found at {Application.dataPath}/Saves/{name}.txt");
         }
     }
 }
