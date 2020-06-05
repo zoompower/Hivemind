@@ -16,8 +16,8 @@ namespace Tests.PlayModeTests
         public void Init()
         {
             gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));
-             uiController = gameUI.GetComponent<UiController>();
-             unitControl = gameUI.GetComponent<UnitController>();
+            uiController = gameUI.GetComponent<UiController>();
+            unitControl = gameUI.GetComponent<UnitController>();
         }
 
         [TearDown]
@@ -34,7 +34,6 @@ namespace Tests.PlayModeTests
         {
             MindGroup mindGroup = unitControl.MindGroupList.GetMindGroupFromIndex(1);
             Gathering gather = new Gathering();
-
             for (int i = 0; i < mindGroup.Minds.Count; i++)
             {
                 if (mindGroup.Minds[i].GetType() == typeof(Gathering))
@@ -46,7 +45,6 @@ namespace Tests.PlayModeTests
             MindBuilderTabbed mbTabbed = uiController.GetComponentInChildren<MindBuilderTabbed>();
             mbTabbed.UpdateResourceValues(carryweight, isScout, resType, exploreDirection);
             mbTabbed.UpdateMind();
-
             Assert.True(MindEquals(gather, new Gathering(resType, carryweight, exploreDirection, isScout)));
         }
 
@@ -57,13 +55,13 @@ namespace Tests.PlayModeTests
         {
             bool valid = true;
             MindGroup mindGroup = unitControl.MindGroupList.GetMindGroupFromIndex(1);
-           var Id =  mindGroup.AddUnit(new UnitGroup(uiController.unitIconBase));
-            GameObject gameObjectAnt =  MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
+            var Id = mindGroup.AddUnit(new UnitGroup(uiController.unitIconBase));
+            GameObject gameObjectAnt = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
             Ant ant = gameObjectAnt.GetComponent<Ant>();
             ant.SetunitGroupID(Id);
             ant.SetAtBase(atBase);
             yield return new WaitForSeconds(0.01f);
-            if(ant.GetMinds().Count < 1)
+            if (ant.GetMinds().Count < 1)
             {
                 valid = false;
             }
@@ -79,20 +77,19 @@ namespace Tests.PlayModeTests
             }
             //put atbase at false so it does not try to access a disposed unitcontroller
             ant.SetAtBase(false);
-
             Assert.True(valid == updatedMinds);
         }
 
         public bool MindEquals(IMind mind1, IMind mind2)
         {
-            if(mind1.GetType() == mind2.GetType())
+            if (mind1.GetType() == mind2.GetType())
             {
                 bool returnvalue = true;
-                if(mind1.GetType() == typeof(Gathering))
+                if (mind1.GetType() == typeof(Gathering))
                 {
                     Gathering gather = (Gathering)mind1;
                     Gathering gather2 = (Gathering)mind2;
-                    if(!(gather.prefferedType == gather2.prefferedType &&
+                    if (!(gather.prefferedType == gather2.prefferedType &&
                         gather.prefferedDirection == gather2.prefferedDirection &&
                         gather.carryWeight == gather2.carryWeight &&
                         gather.IsScout == gather2.IsScout))
@@ -107,7 +104,7 @@ namespace Tests.PlayModeTests
                     if (!(combat.GetMinEstimatedDifference() == combat2.GetMinEstimatedDifference() &&
                         combat.GetPrefferedHealth() == combat2.GetPrefferedHealth()))
                     {
-                        returnvalue =  false;
+                        returnvalue = false;
                     }
                 }
                 return returnvalue;

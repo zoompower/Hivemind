@@ -30,8 +30,8 @@ namespace Tests.PlayModeTests
                 state = Gathering.State.Scouting,
                 busy = true
             };
-            ant.minds = new List<IMind>() { gather, new CombatMind() };
-            foreach (IMind mind in ant.minds)
+            ant.SetMinds(new List<IMind>() { gather, new CombatMind() });
+            foreach (IMind mind in ant.GetMinds())
             {
                 mind.Initiate(ant);
             }
@@ -57,7 +57,7 @@ namespace Tests.PlayModeTests
         {
             ant.GetAgent().enabled = true;
             yield return new WaitForSeconds(41f);
-            Gathering gather = (Gathering)ant.minds[0];
+            Gathering gather = (Gathering)ant.GetMinds()[0];
             Assert.AreNotEqual(Gathering.State.Scouting, gather.state);
         }
 

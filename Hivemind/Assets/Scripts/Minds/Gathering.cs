@@ -241,12 +241,9 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (state == State.Idle)
+            if (state == State.Idle && ant.GetAgent().isOnNavMesh)
             {
-                if (ant.GetAgent().isOnNavMesh)
-                {
-                    ant.GetAgent().isStopped = false;
-                }
+                ant.GetAgent().isStopped = false;
             }
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
@@ -303,8 +300,6 @@ public class Gathering : IMind
 
     private IEnumerator Scout()
     {
-       
-
         ant.GetAgent().SetDestination(GenerateScoutDirection());
         yield return new WaitForSeconds(Random.Range(1, 3));
         scouting = false;

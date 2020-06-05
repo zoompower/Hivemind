@@ -12,14 +12,15 @@ namespace Tests.PlayModeTests
     public class BaseBuildingTest
     {
         private GameObject gameUI;
-        private UiController uiController;
         private UnitController unitControl;
+
         [UnitySetUp]
         public IEnumerator Init()
         {
             SceneManager.LoadScene("BaseBuildingTestScene");
             yield return new WaitForSeconds(1f);
             gameUI = GameObject.FindObjectsOfType<GameObject>().FirstOrDefault(x => x.name == "IngameUI");
+            unitControl = gameUI.GetComponent<UnitController>();
         }
 
         [TearDown]
@@ -38,7 +39,6 @@ namespace Tests.PlayModeTests
         public IEnumerator MergeAntRooms(string[] baseTileNames, int expectedMaxUnits)
         {
             bool valid = false;
-            UnitController unitController = gameUI.GetComponent<UnitController>();
             List<BaseTile> baseTiles = GameObject.FindObjectsOfType<BaseTile>().ToList();
             baseTiles = GetBaseTilesFromNames(baseTiles, baseTileNames.ToList());
             foreach (BaseTile baseTile in baseTiles)
@@ -47,7 +47,7 @@ namespace Tests.PlayModeTests
             }
 
             yield return new WaitForSeconds(1.3f);
-            foreach (MindGroup mindGroup in unitController.MindGroupList.mindGroupList)
+            foreach (MindGroup mindGroup in unitControl.MindGroupList.mindGroupList)
             {
                 foreach (UnitGroup unitGroup in mindGroup.unitGroupList)
                 {
@@ -67,7 +67,6 @@ namespace Tests.PlayModeTests
         public IEnumerator SplitAntRooms(string[] baseTileNames, int expectedUnitGroups)
         {
             int uniqueUnitGroups = 0;
-            UnitController unitController = gameUI.GetComponent<UnitController>();
             List<BaseTile> baseTiles = GameObject.FindObjectsOfType<BaseTile>().ToList();
             baseTiles = GetBaseTilesFromNames(baseTiles, baseTileNames.ToList());
 
@@ -77,7 +76,7 @@ namespace Tests.PlayModeTests
                 baseTile.AntDoesAction(BaseBuildingTool.DestroyRoom);
             }
 
-            foreach (MindGroup mindGroup in unitController.MindGroupList.mindGroupList)
+            foreach (MindGroup mindGroup in unitControl.MindGroupList.mindGroupList)
             {
                 foreach (UnitGroup unitGroup in mindGroup.unitGroupList)
                 {
@@ -86,6 +85,7 @@ namespace Tests.PlayModeTests
             }
             Assert.AreEqual(expectedUnitGroups, uniqueUnitGroups);
         }
+
         private List<BaseTile> GetBaseTilesFromNames(List<BaseTile> objects, List<String> names)
         {
             List<BaseTile> returnObjects = new List<BaseTile>();

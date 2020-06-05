@@ -30,8 +30,8 @@ namespace Tests.PlayModeTests
             ant = gameObjectAnt.GetComponent<Ant>();
             Gathering gather = new Gathering(ResourceType.Crystal, 1, Gathering.Direction.South, true);
             gather.state = Gathering.State.Idle;
-            ant.minds = new List<IMind>() { gather, new CombatMind() };
-            foreach (IMind mind in ant.minds)
+            ant.SetMinds(new List<IMind>() { gather, new CombatMind() });
+            foreach (IMind mind in ant.GetMinds())
             {
                 mind.Initiate(ant);
             }
@@ -52,7 +52,7 @@ namespace Tests.PlayModeTests
             ant.SetAtBase(false);
             ant.GetAgent().enabled = true;
             yield return new WaitForSeconds(0.1f);
-            Gathering gather = (Gathering)ant.minds[0];
+            Gathering gather = (Gathering)ant.GetMinds()[0];
             Assert.AreEqual(1, gather.carryingObjects.Count);
         }
 
@@ -62,7 +62,7 @@ namespace Tests.PlayModeTests
             ant.SetAtBase(false);
             ant.GetAgent().enabled = true;
             yield return new WaitForSeconds(0.1f);
-            Gathering gather = (Gathering)ant.minds[0];
+            Gathering gather = (Gathering)ant.GetMinds()[0];
             Assert.AreEqual(9, resourceNode.GetResources());
         }
 

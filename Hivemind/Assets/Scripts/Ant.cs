@@ -12,7 +12,7 @@ public class Ant : MonoBehaviour
 
     public int health;
 
-    public List<IMind> minds = new List<IMind>();
+    private List<IMind> minds = new List<IMind>();
     private Storage storage;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
@@ -201,6 +201,11 @@ public class Ant : MonoBehaviour
     public List<IMind> GetMinds()
     {
         return minds;
+    }
+
+    public void SetMinds(List<IMind> minds)
+    {
+        this.minds = minds;
     }
 
     public void ChangeScale(float scaleAnt, float scaleMinimapRenderer)
