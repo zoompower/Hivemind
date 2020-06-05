@@ -23,7 +23,6 @@ namespace Tests.PlayModeTests
             AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("TestScene", LoadSceneMode.Single);
             while (!asyncLoadLevel.isDone)
             {
-                Debug.Log("Loading the Scene");
                 yield return null;
             }
             gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));

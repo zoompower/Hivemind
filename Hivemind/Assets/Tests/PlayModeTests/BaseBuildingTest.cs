@@ -20,7 +20,6 @@ namespace Tests.PlayModeTests
             AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("BaseBuildingTestScene", LoadSceneMode.Single);
             while (!asyncLoadLevel.isDone)
             {
-                Debug.Log("Loading the Scene");
                 yield return null;
             }
             gameUI = GameObject.FindObjectsOfType<GameObject>().FirstOrDefault(x => x.name == "IngameUI");
