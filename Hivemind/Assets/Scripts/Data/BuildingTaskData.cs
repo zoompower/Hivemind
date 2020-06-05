@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Data
@@ -20,15 +16,15 @@ namespace Assets.Scripts.Data
         {
             IsRemoved = isRemoved;
             BaseBuildingTool = baseBuildingTool;
-            if(ant != null && ant.myGuid != null)
+            if (ant != null && ant.myGuid != null)
             {
                 AntGuid = ant.myGuid.ToString();
             }
-            if(highlightObj != null && highlightObj.GetComponent<HighLightScript>() != null)
+            if (highlightObj != null && highlightObj.GetComponent<HighLightScript>() != null)
             {
                 HighlightObjPrefab = highlightObj.GetComponent<HighLightScript>().Prefab;
             }
-            if(baseTile != null)
+            if (baseTile != null)
             {
                 BaseTileName = baseTile.gameObject.name;
             }

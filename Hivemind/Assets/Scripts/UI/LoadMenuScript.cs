@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadMenuScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject prevPanel;
+
     [SerializeField]
     private GameObject contentBox;
+
     private string selectedSave;
 
     public void Refresh()
@@ -57,7 +56,7 @@ public class LoadMenuScript : MonoBehaviour
 
     public void Load()
     {
-        if(selectedSave != "" && selectedSave != null)
+        if (selectedSave != "" && selectedSave != null)
         {
             GameWorld.Instance.Load(selectedSave);
             Refresh();

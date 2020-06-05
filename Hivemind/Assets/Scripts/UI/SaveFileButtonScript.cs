@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +7,10 @@ public class SaveFileButtonScript : MonoBehaviour
 {
     [NonSerialized]
     public string SaveFile;
+
     [SerializeField]
     private Text NameText;
+
     [SerializeField]
     private Text DateText;
 

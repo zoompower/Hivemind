@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.Data
 {
@@ -15,7 +12,7 @@ namespace Assets.Scripts.Data
 
         public BuildingQueueData(List<BuildingTask> queue, List<BuildingTask> waitQueue, int controllerID)
         {
-            foreach(BuildingTask buildingTask in queue)
+            foreach (BuildingTask buildingTask in queue)
             {
                 Queue.Add(buildingTask.GetData());
             }

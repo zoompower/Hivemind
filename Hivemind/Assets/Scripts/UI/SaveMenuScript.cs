@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,10 +7,13 @@ public class SaveMenuScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject prevPanel;
+
     [SerializeField]
     private GameObject contentBox;
+
     [SerializeField]
     private InputField newSaveInput;
+
     private string selectedSave;
 
     public void Refresh()
@@ -47,7 +48,7 @@ public class SaveMenuScript : MonoBehaviour
 
     public void SetSelectedNewSaveFile()
     {
-        if(newSaveInput.text != "")
+        if (newSaveInput.text != "")
         {
             foreach (Transform child in contentBox.transform)
             {

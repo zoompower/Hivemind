@@ -199,7 +199,7 @@ public class GameWorld : MonoBehaviour
 
     private IEnumerator LoadEnumerator(string name)
     {
-        if(SceneManager.GetActiveScene().name != "Level_1")
+        if (SceneManager.GetActiveScene().name != "Level_1")
         {
             AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Level_1", LoadSceneMode.Single);
             while (!asyncLoadLevel.isDone)

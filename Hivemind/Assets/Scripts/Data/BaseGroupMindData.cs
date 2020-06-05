@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.Data
 {
@@ -15,7 +11,7 @@ namespace Assets.Scripts.Data
 
         public BaseGroupMindData(Ant ant, bool waiting, float waitTimer)
         {
-            if(ant != null)
+            if (ant != null)
             {
                 AntGuid = ant.myGuid.ToString();
             }

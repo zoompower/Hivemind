@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class UnitGroup
 {
     public int MaxUnits { get; private set; }

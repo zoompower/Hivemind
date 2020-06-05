@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 public class MindGroupList
 {
     private List<MindGroup> mindGroupList;
@@ -136,10 +135,10 @@ public class MindGroupList
 
     public void SetData(List<MindGroupData> mindGroupDatas, GameObject[] mindGroupIcons, GameObject unitIconBase)
     {
-        foreach(MindGroup mindGroup in mindGroupList)
+        foreach (MindGroup mindGroup in mindGroupList)
         {
-            while(mindGroup.unitGroupList.Count > 0)
-            { 
+            while (mindGroup.unitGroupList.Count > 0)
+            {
                 DeleteUnitGroup(mindGroup.unitGroupList.FirstOrDefault());
             }
         }
