@@ -17,8 +17,12 @@ namespace Tests.PlayModeTests
         [UnitySetUp]
         public IEnumerator Init()
         {
-            SceneManager.LoadScene("BaseBuildingTestScene");
-            yield return new WaitForSeconds(1f);
+            AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("BaseBuildingTestScene", LoadSceneMode.Single);
+            while (!asyncLoadLevel.isDone)
+            {
+                Debug.Log("Loading the Scene");
+                yield return null;
+            }
             gameUI = GameObject.FindObjectsOfType<GameObject>().FirstOrDefault(x => x.name == "IngameUI");
             unitControl = gameUI.GetComponent<UnitController>();
         }
