@@ -13,6 +13,8 @@ public class CombatMind : IMind
     private int prefferedHealth;
     private Ant ant;
     private bool busy;
+    private Timer Surroundingcheck;
+    private bool SurroundingcheckOncooldown;
 
     private State state = State.Idle;
     private bool leavingBase = false;
@@ -58,7 +60,11 @@ public class CombatMind : IMind
         minEstimatedDifference = minEstimated;
         prefferedHealth = prefHealth;
         AttackCooldown = new Timer(1000);
-        AttackCooldown.Elapsed += Cooldown;
+        AttackCooldown.Elapsed += AttackCooldownElapsed;
+
+        Surroundingcheck = new Timer(10000);
+        Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
+
     }
 
     public IMind Clone()
@@ -68,8 +74,6 @@ public class CombatMind : IMind
 
     public void Execute()
     {
-
-        Debug.Log("Hit");
         ///SwitchState
         if (leavingBase || enterBase) return;
 
@@ -173,10 +177,11 @@ public class CombatMind : IMind
 
     private bool CheckSurroundings()
     {
-        if (ant.SpatialPosition != null)
+        bool FoundEnemy = false;
+        if (ant.SpatialPositionId != 0)
         {
             target = null;
-            List<GameObject> NearbyEntitities = ant.SpatialPosition.GetEntitiesWithNeigbors();
+            List<GameObject> NearbyEntitities = SpatialPartition.GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors();
             foreach (GameObject a in NearbyEntitities)
             {
                 if (a.GetComponent<Ant>())
@@ -190,10 +195,10 @@ public class CombatMind : IMind
                     }
                 }
             }
-            if (target != null) { return true; }
-            else { return false; }
+            if (target != null) { FoundEnemy = true; }
         }
-        else { return false; }
+
+        return FoundEnemy;
     }
 
     private bool CheckAttackDistance()
@@ -208,10 +213,15 @@ public class CombatMind : IMind
         }
     }
 
-    private void Cooldown(object sender, ElapsedEventArgs e)
+    private void AttackCooldownElapsed(object sender, ElapsedEventArgs e)
     {
         AttackCooldown.Stop();
         AttackOnCooldown = false;
+    }
+    private void SurroundingcheckCooldownElapsed(object sender, ElapsedEventArgs e)
+    {
+        Surroundingcheck.Stop();
+        SurroundingcheckOncooldown = false;
     }
 
     private bool AttackTarget()
@@ -334,10 +344,18 @@ public class CombatMind : IMind
 
     public double Likelihood()
     {
-        busy = false;
-        if (CheckSurroundings())
+        Debug.Log(SurroundingcheckOncooldown);
+        if (SurroundingcheckOncooldown == false)
         {
-            busy = true;
+            SurroundingcheckOncooldown = true;
+            Surroundingcheck.Start();
+
+            Debug.Log("Hit");
+            busy = false;
+            if (CheckSurroundings())
+            {
+                busy = true;
+            }
         }
 
         if (busy)

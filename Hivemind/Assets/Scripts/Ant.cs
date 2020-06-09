@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Ant : MonoBehaviour
 {
-    public SpatialPartitioning SpatialPosition;
+    public int SpatialPositionId;
     private NavMeshAgent agent;
     public float baseSpeed;
     public float currentSpeed;

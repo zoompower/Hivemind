@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SpatialPartition : MonoBehaviour
 {
 
     [SerializeField]
     private GameObject obj;
+
+    public static Dictionary<int, SpatialPartitioning> Grid = new Dictionary<int, SpatialPartitioning>();
 
     [SerializeField]
     private int width;
@@ -13,6 +16,7 @@ public class SpatialPartition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int id = 1;
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < depth; j++)
@@ -28,7 +32,14 @@ public class SpatialPartition : MonoBehaviour
                 go.transform.Find("SpatialPartitioning");
                 go.GetComponent<SpatialPartitioning>().width = j;
                 go.GetComponent<SpatialPartitioning>().height = i;
+                Grid.Add(id,go.GetComponent<SpatialPartitioning>());
+                id++;
             }
         }
+    }
+
+    public static SpatialPartitioning GetSpatialFromGrid(int Id)
+    {
+        return Grid[Id];
     }
 }

@@ -7,6 +7,7 @@ public class SpatialPartitioning : MonoBehaviour
     public List<SpatialPartitioning> Neighbors;
     public List<SpatialPartitioning> ExtraNeighbors;
 
+    public int Id;
     public int height;
     public int width;
 
@@ -26,16 +27,16 @@ public class SpatialPartitioning : MonoBehaviour
         if(Entities.Count != 0)
         {
             Debug.ClearDeveloperConsole();
-            Debug.Log(this.name+" Count: "+Entities.Count);
+            Debug.Log(this.name+" Count: "+Entities.Count);x
         }*/
     }
 
     private void OnTriggerEnter(Collider entity)
     {
         Entities.Add(entity.gameObject);
-        if (entity.GetComponent<Ant>())
+        if (entity.GetComponent<Ant>() && entity.GetComponent<Ant>().SpatialPositionId != Id)
         {
-            entity.GetComponent<Ant>().SpatialPosition = this;
+            entity.GetComponent<Ant>().SpatialPositionId = Id;
         }
     }
 
