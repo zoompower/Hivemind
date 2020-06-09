@@ -43,7 +43,7 @@ namespace Tests.PlayModeTests
             ant.SetunitGroupID(Id);
             resource = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Resources/crystal") as GameObject);
             resource.transform.position = new Vector3(0, 0.6f, 0);
-            resource.GetComponent<ResourceNode>().AddToKnownResourceList();
+            resource.GetComponent<ResourceNode>().Discover();
             resourceNode = resource.GetComponent<ResourceNode>();
         }
 

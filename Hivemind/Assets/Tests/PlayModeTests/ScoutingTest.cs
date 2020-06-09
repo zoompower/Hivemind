@@ -75,7 +75,7 @@ namespace Tests.PlayModeTests
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
-            Assert.AreEqual(1, GameWorld.AmountOfKnownResources());
+            Assert.AreEqual(1, GameWorld.Instance.AmountOfKnownResources());
         }
 
         [TearDown]

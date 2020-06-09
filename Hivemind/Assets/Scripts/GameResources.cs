@@ -24,19 +24,18 @@ public static class GameResources
         }
         return resourceAmounts[resourceType];
     }
-    
-        public static Dictionary<ResourceType, int> GetResourceAmounts()
-        {
-            return resourceAmounts;
-        }
 
-        public static void SetResourceAmounts(List<ResourceType> keyList, List<int> valueList)
+    public static Dictionary<ResourceType, int> GetResourceAmounts()
+    {
+        return resourceAmounts;
+    }
+
+    public static void SetResourceAmounts(List<ResourceType> keyList, List<int> valueList)
+    {
+        for (int i = 0; i < keyList.Count; i++)
         {
-            for (int i = 0; i < keyList.Count; i++)
-            {
-                resourceAmounts[keyList[i]] = valueList[i];
-            }
-            OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
+            resourceAmounts[keyList[i]] = valueList[i];
         }
+        OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
     }
 }

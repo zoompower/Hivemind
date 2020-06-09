@@ -451,6 +451,10 @@ public class Gathering : IMind
 
     public bool IsBusy()
     {
+        if (leavingBase)
+        {
+            return true;
+        }
         return busy;
     }
 }

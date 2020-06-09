@@ -144,6 +144,10 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
+            if (FindObjectOfType<UnitController>() == null) 
+            {
+                return;
+            }
             var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
             if (mindGroupMind != null)
             {

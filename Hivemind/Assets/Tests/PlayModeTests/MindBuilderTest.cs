@@ -18,6 +18,7 @@ namespace Tests.PlayModeTests
             gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));
             uiController = gameUI.GetComponent<UiController>();
             unitControl = gameUI.GetComponent<UnitController>();
+            MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameWorld"));
         }
 
         [TearDown]
