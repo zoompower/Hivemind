@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
@@ -10,15 +12,20 @@ public enum ResourceType
 
 public class ResourceNode : MonoBehaviour
 {
+    public Guid myGuid = Guid.NewGuid();
     private bool respawningResources = false;
-
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
     public bool CanRespawn = false;
+
     [SerializeField]
     private int TimeToRespawn = 30;
+
     public bool DestroyWhenEmpty = false;
+    public bool IsKnown;
+    public string Prefab;
+    public float respawnSeconds;
 
     [SerializeField]
     private AudioSource audioSrc;
@@ -32,7 +39,7 @@ public class ResourceNode : MonoBehaviour
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
-        GameWorld.AddNewResource(this);
+        IsKnown = false;
         audioSrc = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey("Volume"))
         {
@@ -46,13 +53,9 @@ public class ResourceNode : MonoBehaviour
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
-    public void AddToKnownResourceList()
+    private void Start()
     {
-        if (!GameWorld.KnownResources.Contains(this) && gameObject != null)
-        {
-            gameObject.GetComponent<MeshRenderer>().enabled = true;
-            GameWorld.AddNewKnownResource(this);
-        }
+        GameWorld.Instance.AddResource(this);
     }
 
     private void Update()
@@ -63,21 +66,43 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
+    public void Discover()
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        IsKnown = true;
+    }
+
     public Vector3 GetPosition()
     {
         return transform.position;
     }
 
-    public void OnDestroy()
+    private void OnDestroy()
     {
-        GameWorld.RemoveResource(this);
+        GameWorld.Instance.RemoveResource(this);
+    }
+
+    public void Destroy()
+    {
+        if (this != null)
+        {
+            DestroyImmediate(gameObject);
+        }
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 
-    private IEnumerator respawnResource()
+    private IEnumerator respawnResource(float timeToRespawn = -1f)
     {
         respawningResources = true;
-        yield return new WaitForSeconds(TimeToRespawn);
+        if (timeToRespawn < 0)
+        {
+            respawnSeconds = TimeToRespawn;
+        }
+        while (respawnSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            respawnSeconds -= 0.1f;
+        }
         resourceAmount++;
         futureResourceAmount++;
         ColorResource(resourceAmount);
@@ -144,10 +169,35 @@ public class ResourceNode : MonoBehaviour
         return futureResourceAmount;
     }
 
-    public bool knownResource()
+    public ResourceNodeData GetData()
     {
-        var returnValue = GameWorld.KnownResources.Contains(this);
-        return returnValue;
+        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds);
+        return data;
+    }
+
+    public void SetData(ResourceNodeData data)
+    {
+        gameObject.SetActive(false);
+        myGuid = Guid.Parse(data.MyGuid);
+        gameObject.transform.parent = GameObject.Find("Resources").transform.Find(resourceType.ToString() + "s").transform;
+        respawningResources = data.RespawningResources;
+        BaseResourceAmount = data.BaseResourceAmount;
+        resourceType = data.ResourceType;
+        CanRespawn = data.CanRespawn;
+        TimeToRespawn = data.TimeToRespawn;
+        DestroyWhenEmpty = data.DestroyWhenEmpty;
+        resourceAmount = data.ResourceAmount;
+        futureResourceAmount = data.FutureResourceAmount;
+        ColorResource(resourceAmount);
+        IsKnown = data.IsKnown;
+        respawnSeconds = data.RespawnSeconds;
+        gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
+        gameObject.SetActive(true);
+        if (respawningResources)
+        {
+            StartCoroutine(respawnResource(respawnSeconds));
+        }
+        gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
     }
 
     public void UpdateVolume()

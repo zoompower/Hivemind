@@ -10,6 +10,12 @@ public class GameMenuScript : MonoBehaviour
     private GameObject SettingsMenuPanel;
 
     [SerializeField]
+    private GameObject LoadMenuPanel;
+
+    [SerializeField]
+    private GameObject SaveMenuPanel;
+
+    [SerializeField]
     private UiController UIgameobject;
 
     private bool paused = false;
@@ -42,15 +48,29 @@ public class GameMenuScript : MonoBehaviour
         TimeController.Instance.PauseGame();
     }
 
-    public void ReturnToMenu()
+    public void SaveMenu()
     {
-        TimeController.Instance.ResumeGame(1f);
-        SceneManager.LoadScene("MainMenu");
+        PauseMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(true);
+        SaveMenuPanel.GetComponent<SaveMenuScript>().Refresh();
+    }
+
+    public void LoadMenu()
+    {
+        PauseMenuPanel.SetActive(false);
+        LoadMenuPanel.SetActive(true);
+        LoadMenuPanel.GetComponent<LoadMenuScript>().Refresh();
     }
 
     public void SettingsMenu()
     {
         PauseMenuPanel.SetActive(false);
         SettingsMenuPanel.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        TimeController.Instance.ResumeGame(1f);
+        SceneManager.LoadScene("MainMenu");
     }
 }

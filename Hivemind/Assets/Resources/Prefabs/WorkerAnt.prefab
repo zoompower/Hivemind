@@ -157,6 +157,7 @@ MonoBehaviour:
   currentSpeed: 0
   damage: 0
   health: 0
+  Prefab: WorkerAnt
   isAtBase: 0
   TeamID: 0
 --- !u!65 &7673413027533756990

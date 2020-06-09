@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
 
-    private UiController uiController;
+    public UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
 
@@ -14,6 +15,11 @@ public class UnitController : MonoBehaviour
     {
         uiController = FindObjectOfType<UiController>();
         MindGroupList = new MindGroupList(uiController.UnitGroupObjects);
+    }
+
+    private void Start()
+    {
+        GameWorld.Instance.SetUnitController(this);
     }
 
     public Guid CreateUnitGroup()
@@ -89,7 +95,7 @@ public class UnitController : MonoBehaviour
             else
             {
                 uGroup.SetMaxUnits(pair.Value);
-                uGroup.SetCurrentUnits(pair.Value);                
+                uGroup.SetCurrentUnits(pair.Value);
             }
 
             for (int i = totalCount; i < totalCount + pair.Value; i++)
@@ -116,8 +122,31 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            GameWorld.Instance.Save();
+        }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            GameWorld.Instance.Load();
+        }
+    }
+
     public MindGroup GetMindGroup(int Index)
     {
         return MindGroupList.GetMindGroupFromIndex(Index);
+    }
+
+    public void UpdateEventText(string text, Color? color = null)
+    {
+        uiController.StopAllCoroutines();
+        uiController.StartCoroutine(uiController.UpdateEventText(text, color));
+    }
+
+    public void SetData(List<MindGroupData> data)
+    {
+        MindGroupList.SetData(data, uiController.UnitGroupObjects, uiController.unitIconBase);
     }
 }

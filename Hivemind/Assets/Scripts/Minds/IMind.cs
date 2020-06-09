@@ -1,4 +1,6 @@
-﻿public interface IMind
+﻿using Assets.Scripts.Data;
+
+public interface IMind
 {
     void Execute();
 
@@ -11,4 +13,8 @@
     bool IsBusy();
 
     void GenerateUI();
+
+    MindData GetData();
+
+    void SetData(MindData mindData);
 }

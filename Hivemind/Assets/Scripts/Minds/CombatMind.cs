@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
+using UnityEngine;
+
 
 public class CombatMind : IMind
 {
@@ -73,6 +76,23 @@ public class CombatMind : IMind
     public void SetPrefferedHealth(int prefHealth)
     {
         prefferedHealth = prefHealth;
+    }
+
+    public MindData GetData()
+    {
+        return new CombatData(minEstimatedDifference, prefferedHealth, ant, busy);
+    }
+
+    public void SetData(MindData mindData)
+    {
+        CombatData data = mindData as CombatData;
+        minEstimatedDifference = data.MinEstimatedDifference;
+        prefferedHealth = data.PrefferedHealth;
+        if(data.AntGuid != "")
+        {
+            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+        }
+        busy = data.Busy;
     }
 
     public bool IsBusy()

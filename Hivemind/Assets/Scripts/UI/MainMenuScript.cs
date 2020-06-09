@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -9,6 +10,9 @@ public class MainMenuScript : MonoBehaviour
 
     [SerializeField]
     private GameObject settingsMenu;
+
+    [SerializeField]
+    private GameObject loadMenu;
 
     [SerializeField]
     private AudioSource mainMusic;
@@ -27,15 +31,24 @@ public class MainMenuScript : MonoBehaviour
     }
     public void PlayGame()
     {
-        SceneManager.LoadScene("Map");
+        SceneManager.LoadScene("Level_1");
     }
-    public void QuitGame()
+
+    public void LoadGame()
     {
-        Application.Quit();
+        mainMenu.SetActive(false);
+        loadMenu.GetComponent<LoadMenuScript>().Refresh();
+        loadMenu.SetActive(true);
     }
+
     public void SettingsMenu()
     {
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
