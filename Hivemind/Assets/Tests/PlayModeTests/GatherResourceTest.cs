@@ -9,7 +9,6 @@ namespace Tests.PlayModeTests
 {
     public class GatherResourceTest
     {
-
         private Ant ant;
         private GameObject gameUI;
         private UiController uiController;
