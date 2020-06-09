@@ -14,6 +14,7 @@ public class GameWorld : MonoBehaviour
     public List<ResourceNode> ResourceList = new List<ResourceNode>();
     public List<Ant> AntList = new List<Ant>();
     public UnitController MyUnitController;
+    public UiController UiController;
     public List<BaseController> BaseControllerList = new List<BaseController>();
 
     public int LocalTeamId = 0;
@@ -30,6 +31,11 @@ public class GameWorld : MonoBehaviour
             gameObject.SetActive(false);
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        UiController = FindObjectOfType<UiController>();
     }
 
     public ResourceNode FindNearestUnknownResource(Vector3 antPosition, int teamID)
@@ -49,6 +55,18 @@ public class GameWorld : MonoBehaviour
             }
         }
         return closest;
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            Save();
+        }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            Load();
+        }
     }
 
     public ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType, int teamID)
@@ -127,11 +145,11 @@ public class GameWorld : MonoBehaviour
     {
         if (name == "QuickSave")
         {
-            MyUnitController.UpdateEventText("QuickSaving...");
+            UiController.UpdateEventText("QuickSaving...");
         }
         else
         {
-            MyUnitController.UpdateEventText("Saving...");
+            UiController.UpdateEventText("Saving...");
         }
         SaveObject saveObject = new SaveObject
         {
@@ -147,11 +165,11 @@ public class GameWorld : MonoBehaviour
         File.WriteAllText(GetSavePath() + $"/{name}.txt", json);
         if (name == "QuickSave")
         {
-            MyUnitController.UpdateEventText("QuickSave Complete!");
+            UiController.UpdateEventText("QuickSave Complete!");
         }
         else
         {
-            MyUnitController.UpdateEventText("Save Complete!");
+            UiController.UpdateEventText("Save Complete!");
         }
     }
 
@@ -175,12 +193,12 @@ public class GameWorld : MonoBehaviour
             }
             catch
             {
-                MyUnitController.UpdateEventText("Deleting save file failed!", Color.red);
+                UiController.UpdateEventText("Deleting save file failed!", Color.red);
             }
         }
         else
         {
-            MyUnitController.UpdateEventText("Save file not found!", Color.red);
+            UiController.UpdateEventText("Save file not found!", Color.red);
         }
     }
 
@@ -206,11 +224,11 @@ public class GameWorld : MonoBehaviour
             }
             if (name == "QuickSave")
             {
-                MyUnitController.UpdateEventText("QuickLoading...");
+                UiController.UpdateEventText("QuickLoading...");
             }
             else
             {
-                MyUnitController.UpdateEventText("Loading...");
+                UiController.UpdateEventText("Loading...");
             }
             GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
             for (int i = 0; i < ResourceList.Count;)
@@ -240,16 +258,16 @@ public class GameWorld : MonoBehaviour
             }
             if (name == "QuickSave")
             {
-                MyUnitController.UpdateEventText("QuickLoad Complete!");
+                UiController.UpdateEventText("QuickLoad Complete!");
             }
             else
             {
-                MyUnitController.UpdateEventText("Load Complete!");
+                UiController.UpdateEventText("Load Complete!");
             }
         }
         else
         {
-            MyUnitController.UpdateEventText("Save file not found!", Color.red);
+            UiController.UpdateEventText("Save file not found!", Color.red);
         }
     }
 }

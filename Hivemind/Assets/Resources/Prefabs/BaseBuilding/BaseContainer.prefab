@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5042379450988062348}
   - component: {fileID: 5042379450988062349}
+  - component: {fileID: 5659562022250165478}
   m_Layer: 0
   m_Name: BaseContainer
   m_TagString: Untagged
@@ -54,8 +55,21 @@ MonoBehaviour:
     type: 3}
   IndestructablePrefab: {fileID: 5308411474038379295, guid: e6e3c350b9a143c4791dd64424accc92,
     type: 3}
-  TeleporterExit: {fileID: 0}
-  TeleporterEntrance: {fileID: 0}
+  TeleporterExitTransform: {fileID: 0}
+  TeleporterEntranceTransform: {fileID: 0}
+--- !u!114 &5659562022250165478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042379450988062323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb3335d40df52e048b31f7b26b1a7de8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiController: {fileID: 0}
 --- !u!1 &9091765219717218699
 GameObject:
   m_ObjectHideFlags: 0

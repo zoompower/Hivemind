@@ -65,7 +65,7 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
-    public void Discover(int teamID) // TODO: add teamID;
+    public void Discover(int teamID)
     {
         if ((TeamIsKnown & (1 << teamID)) > 0)
         {

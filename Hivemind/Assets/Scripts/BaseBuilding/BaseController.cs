@@ -9,7 +9,7 @@ public class BaseController : MonoBehaviour
     public int TeamID;
 
     [SerializeField]
-    private int[] CollisionLayers;
+    private int[] CollisionLayers = { 10, 11 };
 
     private int LayerMask = 0;
 
@@ -45,7 +45,7 @@ public class BaseController : MonoBehaviour
 
     void Awake()
     {
-        if(TeleporterEntranceTransform != null && TeleporterExitTransform != null)
+        if (TeleporterEntranceTransform != null && TeleporterExitTransform != null)
         {
             TeleporterExit = TeleporterExitTransform.position;
             TeleporterEntrance = TeleporterEntranceTransform.position;
@@ -68,10 +68,9 @@ public class BaseController : MonoBehaviour
 
     void Update()
     {
-        if (true) // TODO: if you are the owner of the base
-        {
-            Highlight();
-        }
+        if (TeamID != GameWorld.Instance.LocalTeamId) return;
+
+        Highlight();
 
         if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
         {
@@ -88,7 +87,10 @@ public class BaseController : MonoBehaviour
                     plate = hit.transform.parent.gameObject;
                 }
 
-                OnLeftClick(plate.GetComponent<BaseTile>());
+                if (plate.transform.GetComponentInParent<BaseController>().TeamID == GameWorld.Instance.LocalTeamId)
+                {
+                    OnLeftClick(plate.GetComponent<BaseTile>());
+                }
             }
         }
 
@@ -120,7 +122,7 @@ public class BaseController : MonoBehaviour
 
             var baseTile = plate.GetComponent<BaseTile>();
 
-            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
+            if (baseTile.transform.GetComponentInParent<BaseController>().TeamID == GameWorld.Instance.LocalTeamId && (HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
             {
                 GameObject highlight = GetHightLightWithTool(baseTile);
                 if (highlight)
@@ -205,7 +207,7 @@ public class BaseController : MonoBehaviour
 
     public void SetTool(int tool)
     {
-        if  (OnToolChanged != null)
+        if (OnToolChanged != null)
         {
             OnToolChanged.Invoke(this, new ToolChangedEventArgs(currentTool, (BaseBuildingTool)tool));
         }
@@ -240,7 +242,7 @@ public class BaseController : MonoBehaviour
         TeleporterEntrance = new Vector3(data.TeleporterEntranceX, data.TeleporterEntranceY, data.TeleporterEntranceZ);
         BuildingQueue.SetData(data.queueData);
 
-        foreach(BaseTileData baseTileData in data.BaseTileData)
+        foreach (BaseTileData baseTileData in data.BaseTileData)
         {
             gameObject.transform.Find(baseTileData.Name).GetComponent<BaseTile>().SetData(baseTileData);
         }

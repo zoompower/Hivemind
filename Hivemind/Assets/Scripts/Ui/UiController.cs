@@ -275,7 +275,13 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         }
     }
 
-    public IEnumerator UpdateEventText(string text, Color? color = null, float seconds = 3f)
+    public void UpdateEventText(string text, Color? color = null)
+    {
+        StopAllCoroutines();
+        StartCoroutine(UpdateEventTextRoutine(text, color));
+    }
+
+    public IEnumerator UpdateEventTextRoutine(string text, Color? color = null, float seconds = 3f)
     {
         float startSeconds = seconds;
         Text myText = EventDisplayer.GetComponent<Text>();

@@ -7,14 +7,19 @@ public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
 
+    [NonSerialized]
     public UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
+
+    [NonSerialized]
+    public int TeamId;
 
     private void Awake()
     {
         uiController = FindObjectOfType<UiController>();
         MindGroupList = new MindGroupList(uiController.UnitGroupObjects);
+        TeamId = GetComponent<BaseController>().TeamID;
     }
 
     private void Start()
@@ -122,27 +127,9 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            GameWorld.Instance.Save();
-        }
-        if (Input.GetKeyDown(KeyCode.F9))
-        {
-            GameWorld.Instance.Load();
-        }
-    }
-
     public MindGroup GetMindGroup(int Index)
     {
         return MindGroupList.GetMindGroupFromIndex(Index);
-    }
-
-    public void UpdateEventText(string text, Color? color = null)
-    {
-        uiController.StopAllCoroutines();
-        uiController.StartCoroutine(uiController.UpdateEventText(text, color));
     }
 
     public void SetData(List<MindGroupData> data)

@@ -2002,7 +2002,7 @@ RectTransform:
   - {fileID: 3006111858897766132}
   - {fileID: 7394846802091369941}
   m_Father: {fileID: 2050556022305755016}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.0014641288, y: 0.90500003}
   m_AnchorMax: {x: 0.105143495, y: 0.95300007}
@@ -2355,7 +2355,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1150036802781033403}
   - component: {fileID: 77179646253625896}
-  - component: {fileID: 2933098746009246154}
   m_Layer: 0
   m_Name: IngameUI
   m_TagString: Untagged
@@ -2415,19 +2414,6 @@ MonoBehaviour:
   DefaultToolButton: {fileID: 6908021898691847759}
   AntRoomToolButton: {fileID: 548447172192851652}
   DestroyToolButton: {fileID: 2719349951067392297}
---- !u!114 &2933098746009246154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5099116314266223541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb3335d40df52e048b31f7b26b1a7de8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiController: {fileID: 0}
 --- !u!1 &5370992598482487869
 GameObject:
   m_ObjectHideFlags: 0
@@ -3029,6 +3015,7 @@ RectTransform:
   - {fileID: 5505047525111538757}
   - {fileID: 1168458940174308417}
   - {fileID: 406907389434471549}
+  - {fileID: 7650867155084020932}
   m_Father: {fileID: 1150036802781033403}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4412,15 +4399,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeb36947102dcc94fb97735ec6bc5b14, type: 3}
---- !u!224 &1168458940174308417 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
-    type: 3}
-  m_PrefabInstance: {fileID: 3289214281428310939}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7182466406255856753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5622917660689012714, guid: eeb36947102dcc94fb97735ec6bc5b14,
+    type: 3}
+  m_PrefabInstance: {fileID: 3289214281428310939}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1168458940174308417 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4436768842589736922, guid: eeb36947102dcc94fb97735ec6bc5b14,
     type: 3}
   m_PrefabInstance: {fileID: 3289214281428310939}
   m_PrefabAsset: {fileID: 0}
