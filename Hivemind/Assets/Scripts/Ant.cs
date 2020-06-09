@@ -48,6 +48,7 @@ public class Ant : MonoBehaviour
             }
         }
         GameWorld.Instance.AddAnt(this);
+        agent.enabled = true;
     }
 
     // Start is called before the first frame update
