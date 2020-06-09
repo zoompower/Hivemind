@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +22,6 @@ public class UnitGroup
         UnitGroupId = Guid.NewGuid();
 
         textBox = Ui_IconObj.GetComponentInChildren<Text>();
-
         UpdateText();
     }
 
@@ -78,4 +78,16 @@ public class UnitGroup
         CurrentUnits += other.CurrentUnits;
     }
 
+    public UnitGroupData GetData()
+    {
+        return new UnitGroupData(MaxUnits, CurrentUnits, UnitGroupId, textBox);
+    }
+
+    public void SetData(UnitGroupData data)
+    {
+        MaxUnits = data.MaxUnits;
+        CurrentUnits = data.CurrentUnits;
+        UnitGroupId = Guid.Parse(data.UnitGroupId);
+        textBox.text = data.Text;
+    }
 }

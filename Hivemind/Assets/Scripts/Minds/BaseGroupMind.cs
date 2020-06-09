@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class BaseGroupMind : IMind
     private BaseController controller;
 
     private bool busy = false;
+    private float waitTimer;
+    private bool waiting;
 
     public BaseGroupMind()
     {
@@ -33,7 +36,7 @@ public class BaseGroupMind : IMind
 
     public void Execute()
     {
-        if (IsBusy()) return;
+        if (IsBusy() || waiting) return;
 
         var job = controller.BuildingQueue.GetJob(ant);
         if (job != null)
@@ -59,6 +62,10 @@ public class BaseGroupMind : IMind
             target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.2f + task.BaseTile.transform.position;
             if (Vector3.Distance(target, ant.transform.position) < 1 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
             {
+                if(!ant.GetAgent().isOnNavMesh)
+                {
+                    ant.GetAgent().enabled = true;
+                }
                 ant.GetAgent().SetDestination(target);
             }
 
@@ -81,11 +88,16 @@ public class BaseGroupMind : IMind
         busy = false;
     }
 
-    private IEnumerator Wait(int seconds)
+    private IEnumerator Wait(float seconds)
     {
-        busy = true;
-        yield return new WaitForSeconds(seconds);
-        busy = false;
+        waiting = true;
+        waitTimer = seconds;
+        while (waitTimer > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            waitTimer -= 0.1f;
+        }
+        waiting = false;
     }
 
     public IMind Clone()
@@ -106,6 +118,25 @@ public class BaseGroupMind : IMind
     public bool IsBusy()
     {
         return busy;
+    }
+
+    public MindData GetData()
+    {
+        return new BaseGroupMindData(ant, waiting, waitTimer);
+    }
+
+    public void SetData(MindData mindData)
+    {
+        BaseGroupMindData data = mindData as BaseGroupMindData;
+        waiting = data.Waiting;
+        if (data.AntGuid != "")
+        {
+            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+            if (waiting && data.WaitTimer > 0f)
+            {
+                ant.StartCoroutine(Wait(data.WaitTimer));
+            }
+        }
     }
 }
 

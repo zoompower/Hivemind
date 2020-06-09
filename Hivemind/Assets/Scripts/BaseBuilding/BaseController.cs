@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,9 +31,14 @@ public class BaseController : MonoBehaviour
     [NonSerialized]
     public QueenRoom QueenRoom;
     [SerializeField]
-    public Transform TeleporterExit;
+    public Transform TeleporterExitTransform;
     [SerializeField]
-    public Transform TeleporterEntrance;
+    public Transform TeleporterEntranceTransform;
+
+    [NonSerialized]
+    public Vector3 TeleporterExit;
+    [NonSerialized]
+    public Vector3 TeleporterEntrance;
 
     private GameObject highlightObj;
 
@@ -40,6 +46,11 @@ public class BaseController : MonoBehaviour
 
     void Awake()
     {
+        if(TeleporterEntranceTransform != null && TeleporterExitTransform != null)
+        {
+            TeleporterExit = TeleporterExitTransform.position;
+            TeleporterEntrance = TeleporterEntranceTransform.position;
+        }
         for (int i = 0; i < CollisionLayers.Length; i++)
         {
             LayerMask += 1 << CollisionLayers[i];
@@ -50,6 +61,7 @@ public class BaseController : MonoBehaviour
 
     private void Start()
     {
+        GameWorld.Instance.AddBaseController(this);
         BuildingQueue = new BuildingQueue(this);
 
         SetTool((int)BaseBuildingTool.Default);
@@ -89,6 +101,7 @@ public class BaseController : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameWorld.Instance.RemoveBaseController(this);
         CancelInvoke("VerifyBuildingTasks");
     }
 
@@ -204,5 +217,24 @@ public class BaseController : MonoBehaviour
     private void VerifyBuildingTasks()
     {
         BuildingQueue.VerifyTasks();
+    }
+
+    public BaseControllerData GetData()
+    {
+        return new BaseControllerData(TeamID, currentTool, TeleporterExit, TeleporterEntrance, BuildingQueue, gameObject.transform);
+    }
+
+    public void SetData(BaseControllerData data)
+    {
+        TeamID = data.TeamID;
+        SetTool((int)data.CurrentTool);
+        TeleporterExit = new Vector3(data.TeleporterExitX, data.TeleporterExitY, data.TeleporterExitZ);
+        TeleporterEntrance = new Vector3(data.TeleporterEntranceX, data.TeleporterEntranceY, data.TeleporterEntranceZ);
+        BuildingQueue.SetData(data.queueData);
+
+        foreach(BaseTileData baseTileData in data.BaseTileData)
+        {
+            gameObject.transform.Find(baseTileData.Name).GetComponent<BaseTile>().SetData(baseTileData);
+        }
     }
 }

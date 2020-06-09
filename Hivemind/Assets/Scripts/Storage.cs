@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
-
 public class Storage : MonoBehaviour
 {
     private void Awake()
     {
-        GameWorld.SetStorage(this);
+        GameWorld.Instance.SetStorage(this);
     }
 
     public Vector3 GetPosition()
