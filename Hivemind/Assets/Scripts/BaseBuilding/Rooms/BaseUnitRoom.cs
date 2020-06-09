@@ -46,10 +46,10 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void Start()
     {
-        unitController = FindObjectOfType<UnitController>();
+        unitController = transform.parent.GetComponentInParent<UnitController>();
         if (unitController == null)
         {
-            throw new Exception("There is no unit controller present, please fix this issue.");
+            throw new Exception("There is no unit controller present on one of the base containers, please fix this issue.");
         }
 
         AddEventListeners();

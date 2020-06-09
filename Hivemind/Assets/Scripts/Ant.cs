@@ -19,6 +19,8 @@ public class Ant : MonoBehaviour
     internal Guid unitGroupID;
     private AudioSource audioSrc;
 
+    private UnitController unitController;
+
     public Ant closestEnemy { get; private set; }
 
     public bool isAtBase = true;
@@ -61,6 +63,17 @@ public class Ant : MonoBehaviour
             {
                 baseController = controller;
                 break;
+            }
+        }
+
+
+        var unitControllers = FindObjectsOfType<UnitController>();
+
+        foreach (var controller in unitControllers)
+        {
+            if (TeamID == controller.TeamId)
+            {
+                unitController = controller;
             }
         }
 
@@ -136,8 +149,7 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
-
+            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
             minds.Clear();
             for (var i = 0; i < mindGroupMind.Count; i++)
             {
@@ -207,16 +219,16 @@ public class Ant : MonoBehaviour
 
     private void AddEventListeners()
     {
-        FindObjectOfType<UnitController>().OnGroupIdChange += ChangeGroupID;
+        unitController.OnGroupIdChange += ChangeGroupID;
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     private void RemoveEventListeners()
     {
-        if (FindObjectOfType<UnitController>() != null)
+        if (unitController != null)
         {
-            FindObjectOfType<UnitController>().OnGroupIdChange -= ChangeGroupID;
+            unitController.OnGroupIdChange -= ChangeGroupID;
         }
 
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };

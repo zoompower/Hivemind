@@ -17,19 +17,23 @@ public class UnitController : MonoBehaviour
 
     private void Awake()
     {
-        uiController = FindObjectOfType<UiController>();
-        MindGroupList = new MindGroupList(uiController.UnitGroupObjects);
+        MindGroupList = new MindGroupList(FindObjectOfType<UiController>().UnitGroupObjects);
         TeamId = GetComponent<BaseController>().TeamID;
     }
 
     private void Start()
     {
-        GameWorld.Instance.SetUnitController(this);
+        if (TeamId == GameWorld.Instance.LocalTeamId)
+        {
+            uiController = FindObjectOfType<UiController>();
+            uiController.RegisterUnitController(this);
+        }
+        GameWorld.Instance.AddUnitController(this);
     }
 
     public Guid CreateUnitGroup()
     {
-        return MindGroupList.CreateUnitGroup(uiController.unitIconBase);
+        return MindGroupList.CreateUnitGroup(uiController?.unitIconBase);
     }
 
     public void SetCurrentUnits(Guid unitGroupId, int amount)

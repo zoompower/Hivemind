@@ -303,6 +303,11 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         TimeController.Instance.SetTimeScale(timeScale);
     }
 
+    public void RegisterUnitController(UnitController unitController)
+    {
+        this.unitController = unitController;
+    }
+
     private string FormatResource(string spriteName, int val)
     {
         return $" <sprite={spriteName}> ({val}/999)";

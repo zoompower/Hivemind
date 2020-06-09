@@ -17,8 +17,8 @@ namespace Assets.Scripts
         public List<ResourceNodeData> ResourceData = new List<ResourceNodeData>();
         public List<Ant> Ants;
         public List<AntData> AntData = new List<AntData>();
-        public List<MindGroup> MindGroups = new List<MindGroup>();
-        public List<MindGroupData> MindGroupData = new List<MindGroupData>();
+        public List<TeamMindGroup> TeamMindGroups = new List<TeamMindGroup>();
+        public List<TeamMindGroupData> TeamMindGroupData = new List<TeamMindGroupData>();
         public List<BaseController> BaseControllers = new List<BaseController>();
         public List<BaseControllerData> BaseControllerData = new List<BaseControllerData>();
 
@@ -32,15 +32,15 @@ namespace Assets.Scripts
             {
                 AntData.Add(ant.GetData());
             }
-            foreach (MindGroup MindGroup in MindGroups)
+            foreach (TeamMindGroup teamMindGroup in TeamMindGroups)
             {
-                MindGroupData.Add(MindGroup.GetData());
+                TeamMindGroupData.Add(teamMindGroup.GetData());
             }
             foreach (BaseController baseController in BaseControllers)
             {
                 BaseControllerData.Add(baseController.GetData());
             }
-            return JsonUtility.ToJson(this, false);
+            return JsonUtility.ToJson(this, true);
         }
     }
 }

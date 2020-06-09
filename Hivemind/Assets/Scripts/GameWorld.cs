@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ public class GameWorld : MonoBehaviour
 
     public List<ResourceNode> ResourceList = new List<ResourceNode>();
     public List<Ant> AntList = new List<Ant>();
-    public UnitController MyUnitController;
     public UiController UiController;
+    public List<UnitController> UnitControllerList = new List<UnitController>();
     public List<BaseController> BaseControllerList = new List<BaseController>();
 
     public int LocalTeamId = 0;
@@ -111,9 +112,9 @@ public class GameWorld : MonoBehaviour
         AntList.Remove(ant);
     }
 
-    public void SetUnitController(UnitController unitController)
+    public void AddUnitController(UnitController unitController)
     {
-        MyUnitController = unitController;
+        UnitControllerList.Add(unitController);
     }
 
     public void AddBaseController(BaseController baseController)
@@ -158,9 +159,14 @@ public class GameWorld : MonoBehaviour
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
             Ants = AntList,
-            MindGroups = MyUnitController.MindGroupList.GetMindGroupList(),
             BaseControllers = BaseControllerList
         };
+
+        foreach (var unitController in UnitControllerList)
+        {
+            saveObject.TeamMindGroups.Add(new TeamMindGroup(unitController.TeamId, unitController.MindGroupList.GetMindGroupList()));
+        }
+
         string json = saveObject.ToJson();
         File.WriteAllText(GetSavePath() + $"/{name}.txt", json);
         if (name == "QuickSave")
@@ -241,7 +247,12 @@ public class GameWorld : MonoBehaviour
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
-            MyUnitController.SetData(saveObject.MindGroupData);
+
+            foreach (UnitController controller in UnitControllerList)
+            {
+                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
+            }
+
             for (int i = 0; i < AntList.Count;)
             {
                 AntList[i].Destroy();
