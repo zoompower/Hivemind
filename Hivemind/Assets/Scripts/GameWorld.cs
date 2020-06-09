@@ -82,7 +82,7 @@ public class GameWorld : MonoBehaviour
         storage = Storage;
     }
 
-    public void AddNewResource(ResourceNode resource)
+    public void AddResource(ResourceNode resource)
     {
         ResourceList.Add(resource);
     }
@@ -92,7 +92,7 @@ public class GameWorld : MonoBehaviour
         ResourceList.Remove(resource);
     }
 
-    public void AddNewAnt(Ant ant)
+    public void AddAnt(Ant ant)
     {
         AntList.Add(ant);
     }
@@ -144,6 +144,7 @@ public class GameWorld : MonoBehaviour
         }
         SaveObject saveObject = new SaveObject
         {
+            LevelName = SceneManager.GetActiveScene().name,
             ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
             ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
@@ -199,27 +200,27 @@ public class GameWorld : MonoBehaviour
 
     private IEnumerator LoadEnumerator(string name)
     {
-        if (SceneManager.GetActiveScene().name != "Level_1")
-        {
-            AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Level_1", LoadSceneMode.Single);
-            while (!asyncLoadLevel.isDone)
-            {
-                Debug.Log("Loading the Scene");
-                yield return null;
-            }
-        }
-        if (name == "QuickSave")
-        {
-            MyUnitController.UpdateEventText("QuickLoading...");
-        }
-        else
-        {
-            MyUnitController.UpdateEventText("Loading...");
-        }
         if (File.Exists(GetSavePath() + $"/{name}.txt"))
         {
             string saveString = File.ReadAllText(Application.dataPath + $"/Saves/{name}.txt");
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+            if (SceneManager.GetActiveScene().name != saveObject.LevelName)
+            {
+                AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(saveObject.LevelName, LoadSceneMode.Single);
+                while (!asyncLoadLevel.isDone)
+                {
+                    Debug.Log("Loading the Scene");
+                    yield return null;
+                }
+            }
+            if (name == "QuickSave")
+            {
+                MyUnitController.UpdateEventText("QuickLoading...");
+            }
+            else
+            {
+                MyUnitController.UpdateEventText("Loading...");
+            }
             GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
             for (int i = 0; i < ResourceList.Count;)
             {

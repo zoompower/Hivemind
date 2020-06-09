@@ -47,7 +47,7 @@ public class Ant : MonoBehaviour
                 miniMapRenderer = child;
             }
         }
-        GameWorld.Instance.AddNewAnt(this);
+        GameWorld.Instance.AddAnt(this);
     }
 
     // Start is called before the first frame update
@@ -160,7 +160,6 @@ public class Ant : MonoBehaviour
     public void Destroy()
     {
         Destroy(gameObject);
-        Destroy(this);
         GameWorld.Instance.RemoveAnt(this);
     }
 

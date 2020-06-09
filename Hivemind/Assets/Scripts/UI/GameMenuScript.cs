@@ -48,29 +48,29 @@ public class GameMenuScript : MonoBehaviour
         TimeController.Instance.PauseGame();
     }
 
-    public void SaveGame()
+    public void SaveMenu()
     {
         PauseMenuPanel.SetActive(false);
         SaveMenuPanel.SetActive(true);
         SaveMenuPanel.GetComponent<SaveMenuScript>().Refresh();
     }
 
-    public void LoadGame()
+    public void LoadMenu()
     {
         PauseMenuPanel.SetActive(false);
         LoadMenuPanel.SetActive(true);
         LoadMenuPanel.GetComponent<LoadMenuScript>().Refresh();
     }
 
-    public void ReturnToMenu()
-    {
-        TimeController.Instance.ResumeGame(1f);
-        SceneManager.LoadScene("MainMenu");
-    }
-
     public void SettingsMenu()
     {
         PauseMenuPanel.SetActive(false);
         SettingsMenuPanel.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        TimeController.Instance.ResumeGame(1f);
+        SceneManager.LoadScene("MainMenu");
     }
 }
