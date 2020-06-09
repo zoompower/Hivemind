@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 196789637537496421}
   - component: {fileID: 8906292574365094293}
   - component: {fileID: 6875495588420141199}
-  - component: {fileID: 1663582969309721660}
+  - component: {fileID: -6444961400181453078}
   m_Layer: 0
   m_Name: WallHighlight
   m_TagString: Untagged
@@ -95,7 +95,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: 11ed1077758b4624a8db7ed6c4abbbc8, type: 3}
---- !u!114 &1663582969309721660
+--- !u!114 &-6444961400181453078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 487003472022924544}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a42f414a6a5bca845b0023bb47771ed8, type: 3}
+  m_Script: {fileID: 11500000, guid: ca3edfe46108732489afdfca18398e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightPrefab: {fileID: 0}
+  Prefab: WallHighlight

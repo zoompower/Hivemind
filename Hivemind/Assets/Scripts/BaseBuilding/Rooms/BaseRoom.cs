@@ -6,6 +6,8 @@ public abstract class BaseRoom : MonoBehaviour
 
     protected UnitController unitController;
 
+    public abstract RoomType GetRoomType();
+
     public abstract bool IsRoom();
 
     public abstract bool IsDestructable();

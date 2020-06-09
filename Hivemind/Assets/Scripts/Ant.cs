@@ -5,12 +5,14 @@ using UnityEngine.AI;
 
 public class Ant : MonoBehaviour
 {
+    public Guid myGuid = Guid.NewGuid();
     private NavMeshAgent agent;
     public float baseSpeed;
     public float currentSpeed;
     public int damage;
 
     public int health;
+    public string Prefab;
 
     private List<IMind> minds = new List<IMind>();
     private BaseController baseController;
@@ -45,6 +47,7 @@ public class Ant : MonoBehaviour
                 miniMapRenderer = child;
             }
         }
+        GameWorld.Instance.AddAnt(this);
     }
 
     // Start is called before the first frame update
@@ -66,6 +69,7 @@ public class Ant : MonoBehaviour
 
     public void OnDestroy()
     {
+        GameWorld.Instance.RemoveAnt(this);
         RemoveEventListeners();
     }
 
@@ -156,6 +160,44 @@ public class Ant : MonoBehaviour
     {
         Worker,
         Soldier
+    }
+
+    public void Destroy()
+    {
+        DestroyImmediate(gameObject);
+    }
+
+    public AntData GetData()
+    {
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles);
+    }
+
+    public void SetData(AntData data)
+    {
+        Debug.ClearDeveloperConsole();
+        gameObject.SetActive(false);
+        myGuid = Guid.Parse(data.MyGuid);
+        gameObject.transform.parent = GameObject.Find("Ants").transform;
+        baseSpeed = data.BaseSpeed;
+        currentSpeed = data.CurrentSpeed;
+        damage = data.Damage;
+        health = data.Health;
+        Prefab = data.Prefab;
+        minds = data.Minds;
+        unitGroupID = Guid.Parse(data.UnitGroupID);
+        if (data.ClosestEnemy != string.Empty)
+        {
+            closestEnemy = GameWorld.Instance.FindAnt(Guid.Parse(data.ClosestEnemy));
+        }
+        isAtBase = data.IsAtBase;
+        TeamID = data.TeamID;
+        gameObject.SetActive(true);
+        gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
+        for (int i = 0; i < minds.Count; i++)
+        {
+            minds[i].SetData(data.MindData[i]);
+        }
+        GetComponent<NavMeshAgent>().enabled = true;
     }
 
     public void PlaySoundDiscovery()

@@ -114,6 +114,8 @@ MonoBehaviour:
   CanRespawn: 0
   TimeToRespawn: 30
   DestroyWhenEmpty: 1
+  IsKnown: 0
+  Prefab: crystal
   audioSrc: {fileID: 6742177273389485626}
 --- !u!1001 &3417407799308130966
 PrefabInstance:

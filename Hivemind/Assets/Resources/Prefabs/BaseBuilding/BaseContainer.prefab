@@ -46,7 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamID: 0
   CollisionLayers: 0a0000000b000000
-  currentTool: 0
   WallPrefab: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
     type: 3}
   WorkerRoomPrefab: {fileID: 4215289098503841324, guid: 644e7517485a1264fa2886dbe3e97f23,

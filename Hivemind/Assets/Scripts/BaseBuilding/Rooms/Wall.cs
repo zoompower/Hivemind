@@ -1,5 +1,10 @@
 ﻿public class Wall : BaseRoom
 {
+    public override RoomType GetRoomType()
+    {
+        return RoomType.Wall;
+    }
+
     public override bool IsRoom()
     {
         return false;

@@ -2,6 +2,11 @@
 
 public class QueenRoom : BaseRoom
 {
+    public override RoomType GetRoomType()
+    {
+        return RoomType.QueenRoom;
+    }
+
     public override bool IsRoom()
     {
         return true;
