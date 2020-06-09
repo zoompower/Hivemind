@@ -99,7 +99,7 @@ public class Gathering : IMind
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
-                        ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                        ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                         state = State.MovingToStorage;
                         ant.StartCoroutine(Discover());
                         preparingReturn = false;
@@ -147,7 +147,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                    ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                     state = State.MovingToStorage;
                 }
                 else
@@ -160,7 +160,7 @@ public class Gathering : IMind
                 break;
 
             case State.MovingToStorage:
-                if (ant.GetStorage() != null)
+                if (ant.GetBaseController()?.QueenRoom != null)
                 {
                     if (ant.AtBase())
                     {
@@ -182,10 +182,6 @@ public class Gathering : IMind
                         state = State.Idle;
                         busy = false;
                     }
-                }
-                else
-                {
-                    ant.SetStorage(GameWorld.GetStorage());
                 }
 
                 break;
@@ -255,7 +251,7 @@ public class Gathering : IMind
         }
         else if (!ant.AtBase())
         {
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToStorage;
         }
     }
@@ -346,7 +342,7 @@ public class Gathering : IMind
         if (state == State.Scouting)
         {
             target = null;
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToStorage;
             preparingReturn = false;
         }

@@ -6,7 +6,6 @@ public static class GameWorld
 {
     public static List<ResourceNode> UnknownResources = new List<ResourceNode>();
     public static List<ResourceNode> KnownResources = new List<ResourceNode>();
-    private static Storage storage = null;
     private static List<TeamResourceNodes> teamResourceNodes = new List<TeamResourceNodes>();
     private static List<ResourceNode> allResourceNodes = new List<ResourceNode>();
 
@@ -73,16 +72,6 @@ public static class GameWorld
         {
             team.AddNewKnownResource(resource);
         }
-    }
-
-    public static Storage GetStorage() // TODO: add int teamid and make it list of storage
-    {
-        return storage;
-    }
-
-    public static void SetStorage(Storage Storage) // TODO: add int teamid and make it list of storage
-    {
-        storage = Storage;
     }
 
     //public static void CreateNewResource(int amount = 1)

@@ -67,7 +67,7 @@ public class BuildingQueue
                         bool able = false;
                         foreach (var neighbor in buildingTask.BaseTile.Neighbors)
                         {
-                            if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetComponentInParent<BaseTile>()))
+                            if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetBaseTile()))
                             {
                                 able = true;
                                 break;
@@ -104,7 +104,7 @@ public class BuildingQueue
         {
             foreach (var neighbor in WaitQueue[i].BaseTile.Neighbors)
             {
-                if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetComponentInParent<BaseTile>()))
+                if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetBaseTile()))
                 {
                     Queue.Add(WaitQueue[i]);
                     WaitQueue.RemoveAt(i);

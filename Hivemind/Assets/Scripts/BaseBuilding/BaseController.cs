@@ -27,8 +27,7 @@ public class BaseController : MonoBehaviour
 
     public BuildingQueue BuildingQueue;
 
-    [NonSerialized]
-    public QueenRoom QueenRoom;
+    public QueenRoom QueenRoom { get; private set; }
     [SerializeField]
     public Transform TeleporterExit;
     [SerializeField]
@@ -206,5 +205,15 @@ public class BaseController : MonoBehaviour
     private void VerifyBuildingTasks()
     {
         BuildingQueue.VerifyTasks();
+    }
+
+    public void SetQueenRoom(QueenRoom queenRoom)
+    {
+        QueenRoom = queenRoom;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return QueenRoom.GetPosition();
     }
 }

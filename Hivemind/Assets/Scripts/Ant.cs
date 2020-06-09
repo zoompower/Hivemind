@@ -13,7 +13,7 @@ public class Ant : MonoBehaviour
     public int health;
 
     private List<IMind> minds = new List<IMind>();
-    private Storage storage;
+    private BaseController baseController;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
 
@@ -40,7 +40,7 @@ public class Ant : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (child.gameObject.layer == UnityEngine.LayerMask.NameToLayer("Minimap"))
+            if (child.gameObject.layer == LayerMask.NameToLayer("Minimap"))
             {
                 miniMapRenderer = child;
             }
@@ -50,7 +50,17 @@ public class Ant : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        storage = GameWorld.GetStorage();
+        var controllers = FindObjectsOfType<BaseController>();
+
+        foreach (var controller in controllers)
+        {
+            if (controller.TeamID == TeamID)
+            {
+                baseController = controller;
+                break;
+            }
+        }
+
         AddEventListeners();
     }
 
@@ -108,19 +118,14 @@ public class Ant : MonoBehaviour
         return agent;
     }
 
-    public Storage GetStorage()
+    public BaseController GetBaseController()
     {
-        return storage;
+        return baseController;
     }
 
     internal void UpdateSpeed()
     {
         agent.speed = currentSpeed;
-    }
-
-    internal void SetStorage(Storage storage)
-    {
-        this.storage = storage;
     }
 
     private void UpdateMind()
