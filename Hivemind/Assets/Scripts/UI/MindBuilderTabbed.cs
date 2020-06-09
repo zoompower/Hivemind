@@ -36,25 +36,27 @@ public class MindBuilderTabbed : MonoBehaviour
     public GameObject resourceMindPanel;
     private Toggle Scouting;
     private Toggle SmartResources;
+    private Toggle CombatScouting;
+    private InputField EngageDistance;
 
     // Start is called before the first frame update
     private void Awake()
     {
         //initialize all UI elements
         CarryWeight = resourceMindPanel.GetComponentInChildren<InputField>();
-        Scouting = resourceMindPanel.GetComponentsInChildren<Toggle>().Where(x => x.name.Equals("Scouting"))
-            .FirstOrDefault();
-        //SmartResources = resourceMindPanel.GetComponentsInChildren<Toggle>().Where(x => x.name.Equals("SmartResources")).FirstOrDefault();
-        PrefferedType = resourceMindPanel.GetComponentsInChildren<Dropdown>().Where(x => x.name.Equals("ResourceType"))
-            .FirstOrDefault();
+        Scouting = resourceMindPanel.GetComponentsInChildren<Toggle>().FirstOrDefault(x => x.name.Equals("Scouting"));
+        PrefferedType = resourceMindPanel.GetComponentsInChildren<Dropdown>().FirstOrDefault(x => x.name.Equals("ResourceType"));
         PrefferedDirection = resourceMindPanel.GetComponentsInChildren<Dropdown>()
-            .Where(x => x.name.Equals("ScoutDirection")).FirstOrDefault();
+            .FirstOrDefault(x => x.name.Equals("ScoutDirection"));
 
         PrefferedHealth = combatMindPanel.GetComponentsInChildren<InputField>()
-            .Where(x => x.name.Equals("PrefferedHealth")).FirstOrDefault();
+            .FirstOrDefault(x => x.name.Equals("PrefferedHealth"));
         EstimatedDifference = combatMindPanel.GetComponentsInChildren<InputField>()
-            .Where(x => x.name.Equals("Estimated Difference")).FirstOrDefault();
-        //Formation = resourceMindPanel.GetComponentsInChildren<Dropdown>().Where(x => x.name.Equals("Formation")).FirstOrDefault();
+            .FirstOrDefault(x => x.name.Equals("Estimated Difference"));
+        EngageDistance = combatMindPanel.GetComponentsInChildren<InputField>()
+            .FirstOrDefault(x => x.name.Equals("EngageDistance"));
+        CombatScouting = combatMindPanel.GetComponentsInChildren<Toggle>()
+            .FirstOrDefault(x => x.name.Equals("Scouting"));
 
         //make dropdownmenu's
         PrefferedType.ClearOptions();
@@ -108,11 +110,11 @@ public class MindBuilderTabbed : MonoBehaviour
         Scouting.isOn = gather.IsScout;
         PrefferedType.value = (int) gather.prefferedType;
         PrefferedDirection.value = (int) gather.prefferedDirection;
-        // SmartResources.isOn = gather.smartResources;
 
-        PrefferedHealth.text = combat.GetPrefferedHealth().ToString();
-        EstimatedDifference.text = combat.GetMinEstimatedDifference().ToString();
-        //Formation.value = (int) combat.formation;
+       // PrefferedHealth.text = combat.GetPrefferedHealth().ToString();
+       // EstimatedDifference.text = combat.GetMinEstimatedDifference().ToString();
+        EngageDistance.text = combat.EngageRange.ToString();
+        CombatScouting.isOn = combat.IsScout;
     }
 
     public void UpdateMind()
@@ -133,11 +135,16 @@ public class MindBuilderTabbed : MonoBehaviour
 
     private void UpdateCombatMind()
     {
-        if (float.TryParse(EstimatedDifference.text, out var estDiff))
-            combat.SetMinEstimatedDifference(estDiff);
+        //if (float.TryParse(EstimatedDifference.text, out var estDiff))
+        //    combat.SetMinEstimatedDifference(estDiff);
 
-        if (int.TryParse(PrefferedHealth.text, out var prefferedHealth))
-            combat.SetPrefferedHealth(prefferedHealth);
+        //if (int.TryParse(PrefferedHealth.text, out var prefferedHealth))
+        //    combat.SetPrefferedHealth(prefferedHealth);
+
+        if (int.TryParse(EngageDistance.text, out var engageDistance))
+            combat.EngageRange = engageDistance;
+
+        combat.IsScout = CombatScouting.isOn;
         // combat.formation = (Formation)Formation.value;
     }
 }

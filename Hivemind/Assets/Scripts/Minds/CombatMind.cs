@@ -61,7 +61,8 @@ public class CombatMind : IMind
         prefferedHealth = prefHealth;
         AttackCooldown = new Timer(1000);
         AttackCooldown.Elapsed += AttackCooldownElapsed;
-
+        EngageRange = 0;
+        IsScout = false;
         Surroundingcheck = new Timer(10000);
         Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
 
