@@ -45,6 +45,7 @@ namespace Tests.PlayModeTests
             MindBuilderTabbed mbTabbed = uiController.GetComponentInChildren<MindBuilderTabbed>();
             mbTabbed.UpdateResourceValues(carryweight, isScout, resType, exploreDirection);
             mbTabbed.UpdateMind();
+
             Assert.True(MindEquals(gather, new Gathering(resType, carryweight, exploreDirection, isScout)));
         }
 
