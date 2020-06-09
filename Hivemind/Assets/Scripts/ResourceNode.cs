@@ -86,9 +86,8 @@ public class ResourceNode : MonoBehaviour
     {
         if (this != null)
         {
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         }
-        GameWorld.Instance.RemoveResource(this);
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
     }
 

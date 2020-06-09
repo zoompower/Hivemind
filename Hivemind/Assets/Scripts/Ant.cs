@@ -159,8 +159,7 @@ public class Ant : MonoBehaviour
 
     public void Destroy()
     {
-        Destroy(gameObject);
-        GameWorld.Instance.RemoveAnt(this);
+        DestroyImmediate(gameObject);
     }
 
     public AntData GetData()
