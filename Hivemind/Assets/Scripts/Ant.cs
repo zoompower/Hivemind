@@ -55,9 +55,9 @@ public class Ant : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        var controllers = FindObjectsOfType<BaseController>();
+        var baseControllers = FindObjectsOfType<BaseController>();
 
-        foreach (var controller in controllers)
+        foreach (var controller in baseControllers)
         {
             if (controller.TeamID == TeamID)
             {
@@ -66,12 +66,11 @@ public class Ant : MonoBehaviour
             }
         }
 
-
         var unitControllers = FindObjectsOfType<UnitController>();
 
         foreach (var controller in unitControllers)
         {
-            if (TeamID == controller.TeamId)
+            if (controller.TeamId == TeamID)
             {
                 unitController = controller;
             }
