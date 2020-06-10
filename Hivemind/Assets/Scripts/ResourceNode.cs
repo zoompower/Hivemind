@@ -19,6 +19,8 @@ public class ResourceNode : MonoBehaviour
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
     public bool CanRespawn = false;
+    public bool Enabled = true;
+
     [SerializeField]
     private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
@@ -69,10 +71,9 @@ public class ResourceNode : MonoBehaviour
     {
         if ((TeamIsKnown & (1 << teamID)) > 0)
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = true;
+            gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
             TeamIsKnown += 1 << teamID;
         }
-        
     }
 
     public Vector3 GetPosition()
@@ -142,7 +143,8 @@ public class ResourceNode : MonoBehaviour
         }
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
-            Destroy(gameObject);
+            Enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
         }
         if (resourceType == ResourceType.Rock)
         {
@@ -169,7 +171,7 @@ public class ResourceNode : MonoBehaviour
 
     public ResourceNodeData GetData()
     {
-        ResourceNodeData data = new ResourceNodeData(myGuid, TeamIsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds);
+        ResourceNodeData data = new ResourceNodeData(myGuid, TeamIsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds, Enabled);
         return data;
     }
 
@@ -190,6 +192,12 @@ public class ResourceNode : MonoBehaviour
         TeamIsKnown = data.TeamIsKnown;
         respawnSeconds = data.RespawnSeconds;
         gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
+
+        Enabled = data.Enabled;
+        if (!Enabled)
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
         gameObject.SetActive(true);
         if (respawningResources)
         {

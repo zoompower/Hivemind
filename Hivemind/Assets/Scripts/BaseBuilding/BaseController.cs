@@ -58,11 +58,11 @@ public class BaseController : MonoBehaviour
         }
 
         InvokeRepeating("VerifyBuildingTasks", 1.0f, 5.0f);
+        GameWorld.Instance.AddBaseController(this);
     }
 
     private void Start()
     {
-        GameWorld.Instance.AddBaseController(this);
         BuildingQueue = new BuildingQueue(this);
 
         SetTool((int)BaseBuildingTool.Default);

@@ -24,8 +24,9 @@ namespace Assets.Scripts
         public float RotationZ;
         public string Prefab;
         public float RespawnSeconds;
+        public bool Enabled;
 
-        public ResourceNodeData(Guid myGuid, int teamIsKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, float respawnSeconds)
+        public ResourceNodeData(Guid myGuid, int teamIsKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, float respawnSeconds, bool enabled)
         {
             MyGuid = myGuid.ToString();
             TeamIsKnown = teamIsKnown;
@@ -45,6 +46,7 @@ namespace Assets.Scripts
             RotationZ = rotation.z;
             Prefab = prefab;
             RespawnSeconds = respawnSeconds;
+            Enabled = enabled;
         }
     }
 }
