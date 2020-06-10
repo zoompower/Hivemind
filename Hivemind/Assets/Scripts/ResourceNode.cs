@@ -69,7 +69,7 @@ public class ResourceNode : MonoBehaviour
 
     public void Discover(int teamID)
     {
-        if ((TeamIsKnown & (1 << teamID)) > 0)
+        if ((TeamIsKnown & (1 << teamID)) == 0)
         {
             gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
             TeamIsKnown += 1 << teamID;
