@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 
 namespace Assets.Scripts
 {
-    public static class GameResources
+    public class GameResources
     {
-        public static event EventHandler OnResourceAmountChanged;
+        public event EventHandler OnResourceAmountChanged;
 
-        private static Dictionary<ResourceType, int> resourceAmounts = new Dictionary<ResourceType, int>();
+        private Dictionary<ResourceType, int> resourceAmounts = new Dictionary<ResourceType, int>();
 
-        public static void AddResources(Dictionary<ResourceType, int> resources)
+        public void AddResources(Dictionary<ResourceType, int> resources)
         {
             foreach (ResourceType resourceType in resources.Keys)
             {
@@ -18,7 +19,7 @@ namespace Assets.Scripts
             OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
         }
 
-        public static int GetResourceAmount(ResourceType resourceType)
+        public int GetResourceAmount(ResourceType resourceType)
         {
             if (!resourceAmounts.ContainsKey(resourceType))
             {
@@ -27,18 +28,28 @@ namespace Assets.Scripts
             return resourceAmounts[resourceType];
         }
 
-        public static Dictionary<ResourceType, int> GetResourceAmounts()
+        public Dictionary<ResourceType, int> GetResourceAmounts()
         {
             return resourceAmounts;
         }
 
-        public static void SetResourceAmounts(List<ResourceType> keyList, List<int> valueList)
+        public void SetResourceAmounts(List<ResourceType> keyList, List<int> valueList)
         {
             for (int i = 0; i < keyList.Count; i++)
             {
                 resourceAmounts[keyList[i]] = valueList[i];
             }
             OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
+        }
+
+        public ResourceDictionaryData GetData()
+        {
+            return new ResourceDictionaryData(resourceAmounts);
+        }
+
+        public void SetData(ResourceDictionaryData data)
+        {
+            SetResourceAmounts(data.ResourceAmountsKeys, data.ResourceAmountsValues);
         }
     }
 }

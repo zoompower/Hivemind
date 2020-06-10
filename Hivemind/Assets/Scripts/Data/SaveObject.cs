@@ -9,9 +9,6 @@ namespace Assets.Scripts
     public class SaveObject
     {
         public string LevelName;
-        //super ugly way to serialize a dictionary because of Unity's stupid serialization
-        public List<ResourceType> ResourceAmountsKeys;
-        public List<int> ResourceAmountsValues;
 
         public List<ResourceNode> Resources;
         public List<ResourceNodeData> ResourceData = new List<ResourceNodeData>();
@@ -40,7 +37,7 @@ namespace Assets.Scripts
             {
                 BaseControllerData.Add(baseController.GetData());
             }
-            return JsonUtility.ToJson(this, true);
+            return JsonUtility.ToJson(this);
         }
     }
 }

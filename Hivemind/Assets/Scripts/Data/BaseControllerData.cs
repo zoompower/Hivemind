@@ -17,8 +17,9 @@ namespace Assets.Scripts.Data
         public float TeleporterEntranceZ;
         public BuildingQueueData queueData;
         public List<BaseTileData> BaseTileData = new List<BaseTileData>();
+        public ResourceDictionaryData GameResources;
 
-        public BaseControllerData(int teamID, BaseBuildingTool currentTool, Vector3 teleporterExit, Vector3 teleporterEntrance, BuildingQueue buildingQueue, Transform transform)
+        public BaseControllerData(int teamID, BaseBuildingTool currentTool, Vector3 teleporterExit, Vector3 teleporterEntrance, BuildingQueue buildingQueue, Transform transform, GameResources gameResources)
         {
             TeamID = teamID;
             CurrentTool = currentTool;
@@ -36,6 +37,7 @@ namespace Assets.Scripts.Data
                     BaseTileData.Add(myTransform.GetComponent<BaseTile>().GetData());
                 }
             }
+            GameResources = gameResources.GetData();
         }
     }
 }

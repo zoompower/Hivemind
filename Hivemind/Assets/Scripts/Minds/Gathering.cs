@@ -178,7 +178,7 @@ public class Gathering : IMind
                         }
                         if (inventory != null)
                         {
-                            GameResources.AddResources(inventory);
+                            ant.GetBaseController().gameResources.AddResources(inventory);
                             inventory.Clear();
                             foreach (var gameObject in carryingObjects) Object.Destroy(gameObject);
                             carryingObjects.Clear();

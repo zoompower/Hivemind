@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Data;
+﻿using Assets.Scripts;
+using Assets.Scripts.Data;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -42,6 +43,8 @@ public class BaseController : MonoBehaviour
     private GameObject highlightObj;
 
     public event EventHandler<ToolChangedEventArgs> OnToolChanged;
+
+    internal GameResources gameResources = new GameResources();
 
     void Awake()
     {
@@ -231,7 +234,7 @@ public class BaseController : MonoBehaviour
     }
     public BaseControllerData GetData()
     {
-        return new BaseControllerData(TeamID, currentTool, TeleporterExit, TeleporterEntrance, BuildingQueue, gameObject.transform);
+        return new BaseControllerData(TeamID, currentTool, TeleporterExit, TeleporterEntrance, BuildingQueue, gameObject.transform, gameResources);
     }
 
     public void SetData(BaseControllerData data)
@@ -246,5 +249,7 @@ public class BaseController : MonoBehaviour
         {
             gameObject.transform.Find(baseTileData.Name).GetComponent<BaseTile>().SetData(baseTileData);
         }
+
+        gameResources.SetData(data.GameResources);
     }
 }

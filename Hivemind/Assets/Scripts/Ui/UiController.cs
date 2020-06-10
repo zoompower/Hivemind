@@ -26,6 +26,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     [SerializeField] private GameObject EventDisplayer;
 
     private UnitController unitController;
+    private BaseController baseController;
 
     private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
 
@@ -49,16 +50,17 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     private void Awake()
     {
         unitController = FindObjectOfType<UnitController>();
-        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
-        UpdateResourceTextObject();
 
-        BaseController[] controllers = UnityEngine.Object.FindObjectsOfType<BaseController>();
+        BaseController[] controllers = FindObjectsOfType<BaseController>();
 
         foreach (BaseController controller in controllers)
         {
-            if (controller.TeamID == 0)
+            if (controller.TeamID == GameWorld.Instance.LocalTeamId)
             {
-                controller.OnToolChanged += OnToolChanged;
+                baseController = controller;
+                baseController.OnToolChanged += OnToolChanged;
+                baseController.gameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
+                UpdateResourceTextObject();
                 break;
             }
         }
@@ -225,14 +227,14 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
-                sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
+                sb.Append($" {resourceType}: {baseController.gameResources.GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
     }
 
     private void OnToolChanged(object sender, ToolChangedEventArgs args)
     {
-        
+
         if (args.newTool != args.oldTool)
         {
             switch (args.oldTool)
@@ -291,7 +293,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         {
             yield return new WaitForSecondsRealtime(0.1f);
             Color newColor = myText.color;
-            newColor.a = ((float)seconds * 2 / (float)startSeconds);
+            newColor.a = seconds * 2f / startSeconds;
             myText.color = newColor;
             seconds -= 0.1f;
         }

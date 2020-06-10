@@ -155,8 +155,6 @@ public class GameWorld : MonoBehaviour
         SaveObject saveObject = new SaveObject
         {
             LevelName = SceneManager.GetActiveScene().name,
-            ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
-            ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
             Ants = AntList,
             BaseControllers = BaseControllerList
@@ -236,7 +234,6 @@ public class GameWorld : MonoBehaviour
             {
                 UiController.UpdateEventText("Loading...");
             }
-            GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
             for (int i = 0; i < ResourceList.Count;)
             {
                 ResourceList[i].Destroy();
