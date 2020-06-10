@@ -66,7 +66,10 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private void Start()
     {
-        mainCamera = FindObjectOfType<CameraController>().gameObject;
+        if(FindObjectOfType<CameraController>() != null) 
+        {
+            mainCamera = FindObjectOfType<CameraController>().gameObject;
+        }
         miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
 
         //get the default resolution

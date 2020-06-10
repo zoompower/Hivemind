@@ -4,7 +4,7 @@ public class TimeController : MonoBehaviour
 {
     public static TimeController Instance;
 
-    private float currentTimeScale;
+    private float currentTimeScale = 1;
 
     public bool Paused { get; private set; }
 
