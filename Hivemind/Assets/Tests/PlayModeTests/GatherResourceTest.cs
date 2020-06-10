@@ -10,9 +10,7 @@ namespace Tests.PlayModeTests
     public class GatherResourceTest
     {
         private Ant ant;
-        private GameObject gameUI;
         private UiController uiController;
-        private UnitController unitControl;
         private GameObject resource;
         private ResourceNode resourceNode;
 
@@ -24,21 +22,20 @@ namespace Tests.PlayModeTests
             {
                 yield return null;
             }
-            gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));
-            uiController = gameUI.GetComponent<UiController>();
-            unitControl = gameUI.GetComponent<UnitController>();
+            uiController = GameObject.FindObjectOfType<UiController>();
 
             GameObject gameObjectAnt = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
             ant = gameObjectAnt.GetComponent<Ant>();
+            
             Gathering gather = new Gathering(ResourceType.Crystal, 1, Gathering.Direction.South, true);
             gather.state = Gathering.State.Idle;
-            ant.SetMinds(new List<IMind>() { gather, new CombatMind() });
+            ant.SetMinds(new List<IMind>() { gather });
             foreach (IMind mind in ant.GetMinds())
             {
                 mind.Initiate(ant);
             }
-            MindGroup mindGroup = unitControl.MindGroupList.GetMindGroupFromIndex(1);
-            mindGroup.Minds = new List<IMind>() { gather, new CombatMind() };
+            MindGroup mindGroup = GameObject.FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromIndex(1);
+            mindGroup.Minds = new List<IMind>() { gather };
             var Id = mindGroup.AddUnit(new UnitGroup(uiController.unitIconBase));
             ant.SetunitGroupID(Id);
             resource = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Resources/crystal") as GameObject);

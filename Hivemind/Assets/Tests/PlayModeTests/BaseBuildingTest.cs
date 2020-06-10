@@ -11,7 +11,6 @@ namespace Tests.PlayModeTests
 {
     public class BaseBuildingTest
     {
-        private GameObject gameUI;
         private UnitController unitControl;
 
         [UnitySetUp]
@@ -22,14 +21,7 @@ namespace Tests.PlayModeTests
             {
                 yield return null;
             }
-            gameUI = GameObject.FindObjectsOfType<GameObject>().FirstOrDefault(x => x.name == "IngameUI");
-            unitControl = gameUI.GetComponent<UnitController>();
-        }
-
-        [TearDown]
-        public void Dispose()
-        {
-            GameObject.Destroy(gameUI);
+            unitControl = GameObject.FindObjectOfType<UnitController>();
         }
 
         [UnityTest]

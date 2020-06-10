@@ -50,11 +50,7 @@ public class Ant : MonoBehaviour
             }
         }
         GameWorld.Instance.AddAnt(this);
-    }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
         var baseControllers = FindObjectsOfType<BaseController>();
 
         foreach (var controller in baseControllers)
@@ -73,9 +69,14 @@ public class Ant : MonoBehaviour
             if (controller.TeamId == TeamID)
             {
                 unitController = controller;
+                break;
             }
         }
+    }
 
+    // Start is called before the first frame update
+    private void Start()
+    {
         AddEventListeners();
     }
 
@@ -161,7 +162,7 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
+            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
             if (mindGroupMind != null)
             {
                 minds.Clear();
@@ -235,7 +236,8 @@ public class Ant : MonoBehaviour
 
     private void AddEventListeners()
     {
-        unitController.OnGroupIdChange += ChangeGroupID;
+        if (unitController)
+            unitController.OnGroupIdChange += ChangeGroupID;
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
