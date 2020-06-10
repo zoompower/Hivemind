@@ -46,7 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TeamID: 0
-  CollisionLayers: 0a0000000b000000
+  ColisionLayers:
+  - serializedVersion: 2
+    m_Bits: 1024
+  - serializedVersion: 2
+    m_Bits: 2048
   WallPrefab: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
     type: 3}
   WorkerRoomPrefab: {fileID: 4215289098503841324, guid: 644e7517485a1264fa2886dbe3e97f23,
@@ -69,7 +73,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb3335d40df52e048b31f7b26b1a7de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiController: {fileID: 0}
 --- !u!1 &9091765219717218699
 GameObject:
   m_ObjectHideFlags: 0

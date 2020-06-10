@@ -6,7 +6,16 @@ public class UiRoomController : MonoBehaviour
 
     void Start()
     {
-        baseController = FindObjectOfType<BaseController>();
+        var controllers = FindObjectsOfType<BaseController>();
+
+        foreach (var controller in controllers)
+        {
+            if (controller.TeamID == GameWorld.Instance.LocalTeamId)
+            {
+                baseController = controller;
+                break;
+            }
+        }
     }
 
     public void SetTool(int tool)

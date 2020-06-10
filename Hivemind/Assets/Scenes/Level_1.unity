@@ -6438,6 +6438,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
+      propertyPath: LayerMaskField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
       propertyPath: TeamID
       value: 1
       objectReference: {fileID: 0}
@@ -6451,6 +6456,16 @@ PrefabInstance:
       propertyPath: TeleporterEntranceTransform
       value: 
       objectReference: {fileID: 413951126}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: LayerMaskField.Array.data[0].m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: LayerMaskField.Array.data[1].m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8fae2e4a2bb0fb4db1114f40a288a7c, type: 3}
 --- !u!4 &1963724953 stripped
@@ -27722,6 +27737,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
+      propertyPath: LayerMaskField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
       propertyPath: TeleporterExit
       value: 
       objectReference: {fileID: 188450466}
@@ -27740,6 +27760,16 @@ PrefabInstance:
       propertyPath: TeleporterEntranceTransform
       value: 
       objectReference: {fileID: 410385697}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: LayerMaskField.Array.data[0].m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042379450988062349, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: LayerMaskField.Array.data[1].m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 8228913769396678830, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: m_RootOrder

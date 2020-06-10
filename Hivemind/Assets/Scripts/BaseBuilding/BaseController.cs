@@ -10,8 +10,7 @@ public class BaseController : MonoBehaviour
     public int TeamID;
 
     [SerializeField]
-    private int[] CollisionLayers = { 10, 11 };
-
+    private LayerMask[] ColisionLayers;
     private int LayerMask = 0;
 
     private BaseBuildingTool currentTool;
@@ -53,9 +52,9 @@ public class BaseController : MonoBehaviour
             TeleporterExit = TeleporterExitTransform.position;
             TeleporterEntrance = TeleporterEntranceTransform.position;
         }
-        for (int i = 0; i < CollisionLayers.Length; i++)
+        for (int i = 0; i < ColisionLayers.Length; i++)
         {
-            LayerMask += 1 << CollisionLayers[i];
+            LayerMask += ColisionLayers[i].value;
         }
 
         InvokeRepeating("VerifyBuildingTasks", 1.0f, 5.0f);
