@@ -23,7 +23,7 @@ public class Ant : MonoBehaviour
 
     public Ant closestEnemy { get; private set; }
 
-    public bool isAtBase = true;
+    internal bool isAtBase = true;
 
     public int TeamID;
     private Transform miniMapRenderer;
@@ -106,7 +106,10 @@ public class Ant : MonoBehaviour
 
             currentIndex++;
         }
-        minds[mindIndex].Execute();
+        if (agent.isOnNavMesh)
+        {
+            minds[mindIndex].Execute();
+        }
     }
 
     private bool IsBusy()
@@ -144,16 +147,29 @@ public class Ant : MonoBehaviour
         agent.speed = currentSpeed;
     }
 
+    public void SetunitGroupID(Guid id)
+    {
+        unitGroupID = id;
+    }
+
+    public void SetAtBase(bool atBase)
+    {
+        isAtBase = atBase;
+    }
+
     private void UpdateMind()
     {
         if (AtBase())
         {
             var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
-            minds.Clear();
-            for (var i = 0; i < mindGroupMind.Count; i++)
+            if (mindGroupMind != null)
             {
-                minds.Add(mindGroupMind[i].Clone());
-                minds[i].Initiate(this);
+                minds.Clear();
+                for (var i = 0; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                    minds[i].Initiate(this);
+                }
             }
         }
     }
@@ -240,6 +256,16 @@ public class Ant : MonoBehaviour
         {
             unitGroupID = e.newGuid;
         }
+    }
+
+    public List<IMind> GetMinds()
+    {
+        return minds;
+    }
+
+    public void SetMinds(List<IMind> minds)
+    {
+        this.minds = minds;
     }
 
     public void ChangeScale(float scaleAnt, float scaleMinimapRenderer)

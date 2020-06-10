@@ -164,6 +164,11 @@ public class ResourceNode : MonoBehaviour
         return resourceAmount > 0;
     }
 
+    public int GetResources()
+    {
+        return resourceAmount;
+    }
+
     public int GetResourcesFuture()
     {
         return futureResourceAmount;

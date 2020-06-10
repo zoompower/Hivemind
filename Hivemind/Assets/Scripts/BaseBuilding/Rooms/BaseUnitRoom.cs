@@ -15,6 +15,8 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private BaseTile Parent;
 
+    private int TeamId;
+
     public override bool IsDestructable()
     {
         return Destructable;
@@ -54,6 +56,7 @@ public abstract class BaseUnitRoom : BaseRoom
 
         AddEventListeners();
         Parent = GetComponentInParent<BaseTile>();
+        TeamId = Parent.GetComponentInParent<BaseController>().TeamID;
 
         if (GroupId == Guid.Empty)
         {
@@ -122,6 +125,7 @@ public abstract class BaseUnitRoom : BaseRoom
                 }
 
                 ant.GetComponent<Ant>().unitGroupID = GroupId;
+                ant.GetComponent<Ant>().TeamID = TeamId;
 
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
                 ant.GetComponent<NavMeshAgent>().enabled = true;

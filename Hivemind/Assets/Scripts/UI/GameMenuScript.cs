@@ -24,7 +24,6 @@ public class GameMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown("escape"))
         {
-            paused = !paused;
             if (paused)
             {
                 ResumeGame();
@@ -33,6 +32,7 @@ public class GameMenuScript : MonoBehaviour
             {
                 PauseGame();
             }
+            paused = !paused;
         }
     }
     public void ResumeGame()

@@ -43,7 +43,7 @@ public class BaseController : MonoBehaviour
 
     public event EventHandler<ToolChangedEventArgs> OnToolChanged;
 
-    internal GameResources gameResources = new GameResources();
+    private GameResources gameResources = new GameResources();
 
     void Awake()
     {
@@ -231,6 +231,12 @@ public class BaseController : MonoBehaviour
     {
         return QueenRoom.GetPosition();
     }
+
+    public GameResources GetGameResources()
+    {
+        return gameResources;
+    }
+
     public BaseControllerData GetData()
     {
         return new BaseControllerData(TeamID, currentTool, TeleporterExit, TeleporterEntrance, BuildingQueue, gameObject.transform, gameResources);

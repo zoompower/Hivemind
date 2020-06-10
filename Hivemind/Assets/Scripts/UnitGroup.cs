@@ -15,7 +15,7 @@ public class UnitGroup
 
     private Text textBox;
 
-    internal UnitGroup(GameObject unitIconBase)
+    public UnitGroup(GameObject unitIconBase)
     {
         if (unitIconBase)
         {

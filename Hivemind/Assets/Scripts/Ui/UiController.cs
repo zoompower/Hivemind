@@ -59,7 +59,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
             {
                 baseController = controller;
                 baseController.OnToolChanged += OnToolChanged;
-                baseController.gameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
+                baseController.GetGameResources().OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
                 UpdateResourceTextObject();
                 break;
             }
@@ -68,7 +68,10 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private void Start()
     {
-        mainCamera = FindObjectOfType<CameraController>().gameObject;
+        if(FindObjectOfType<CameraController>() != null) 
+        {
+            mainCamera = FindObjectOfType<CameraController>().gameObject;
+        }
         miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
 
         //get the default resolution
@@ -227,7 +230,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
-                sb.Append($" {resourceType}: {baseController.gameResources.GetResourceAmount(resourceType)}");
+                sb.Append($" {resourceType}: {baseController.GetGameResources().GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
     }

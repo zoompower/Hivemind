@@ -87,7 +87,7 @@ public class BaseTile : MonoBehaviour
         }
     }
 
-    internal void AntDoesAction(BaseBuildingTool tool)
+    public void AntDoesAction(BaseBuildingTool tool)
     {
         switch (tool)
         {

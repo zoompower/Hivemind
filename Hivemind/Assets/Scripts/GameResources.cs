@@ -1,9 +1,6 @@
 ﻿using Assets.Scripts.Data;
 using System;
 using System.Collections.Generic;
-
-namespace Assets.Scripts
-{
     public class GameResources
     {
         public event EventHandler OnResourceAmountChanged;
@@ -52,4 +49,3 @@ namespace Assets.Scripts
             SetResourceAmounts(data.ResourceAmountsKeys, data.ResourceAmountsValues);
         }
     }
-}
