@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private MindGroup currentOpenMindGroup;
 
@@ -92,7 +92,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         if (unitGroupObj == null) return;
-
+        //return gameobject to the mask
+        unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
@@ -101,12 +102,12 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         if (groupResult.isValid)
             unitController.MindGroupList.MoveUnitIntoGroup(unitGroupObj, groupResult.gameObject);
         else
-            unitController.MindGroupList.UpdateLayout(unitGroupObj);
+        unitController.MindGroupList.UpdateLayout(unitGroupObj);
 
         unitGroupObj = null;
     }
 
-    public void OnInitializePotentialDrag(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
@@ -117,8 +118,9 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         {
             var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
+            //Remove the gameobject from the mask so it is visible outisde the mask
+            unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.parent.parent;
         }
-
         lastMousePosition = eventData.position;
     }
 
