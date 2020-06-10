@@ -198,19 +198,6 @@ public class GameWorld : MonoBehaviour
         Instance.StartCoroutine(LoadEnumerator(name));
     }
 
-    public int AmountOfKnownResources()
-    {
-        int amount = 0;
-        foreach (ResourceNode resource in ResourceList)
-        {
-            if (resource.IsKnown)
-            {
-                amount++;
-            }
-        }
-        return amount;
-    }
-
     private IEnumerator LoadEnumerator(string name)
     {
         if (File.Exists(GetSavePath() + $"/{name}.txt"))

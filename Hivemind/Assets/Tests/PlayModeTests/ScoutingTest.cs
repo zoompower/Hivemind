@@ -75,13 +75,26 @@ namespace Tests.PlayModeTests
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
-            Assert.AreEqual(1, GameWorld.Instance.AmountOfKnownResources());
+            Assert.AreEqual(1, AmountOfKnownResources());
         }
 
         [TearDown]
         public void Dispose()
         {
             GameObject.DestroyImmediate(ant);
+        }
+
+        public int AmountOfKnownResources()
+        {
+            int amount = 0;
+            foreach (ResourceNode resource in GameWorld.ResourceList)
+            {
+                if (resource.IsKnown)
+                {
+                    amount++;
+                }
+            }
+            return amount;
         }
     }
 }
