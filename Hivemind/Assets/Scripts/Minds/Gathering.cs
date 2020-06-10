@@ -50,6 +50,7 @@ public class Gathering : IMind
     private float returnSeconds;
 
     private Vector3 TeleporterExit;
+    private Vector3 TeleporterEntrance;
     private bool enterBase = false;
 
     public Gathering() : this(ResourceType.Unknown, 1, Direction.None)
@@ -77,6 +78,7 @@ public class Gathering : IMind
             if (controller.TeamID == ant.TeamID)
             {
                 TeleporterExit = controller.TeleporterExit;
+                TeleporterEntrance = controller.TeleporterEntrance;
             }
         }
     }
@@ -278,6 +280,8 @@ public class Gathering : IMind
     {
         leavingBase = true;
         this.nextState = nextState;
+        ant.GetAgent().SetDestination(TeleporterEntrance);
+        yield return new WaitWhile(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) > 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
