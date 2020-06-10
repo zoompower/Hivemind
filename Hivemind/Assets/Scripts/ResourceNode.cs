@@ -18,6 +18,7 @@ public class ResourceNode : MonoBehaviour
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
     public bool CanRespawn = false;
+    public bool Enabled = true;
 
     [SerializeField]
     private int TimeToRespawn = 30;
@@ -51,10 +52,6 @@ public class ResourceNode : MonoBehaviour
         }
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-    }
-
-    private void Start()
-    {
         GameWorld.Instance.AddResource(this);
     }
 
@@ -139,7 +136,8 @@ public class ResourceNode : MonoBehaviour
         }
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
-            Destroy(gameObject);
+            Enabled = false;
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
         }
         if (resourceType == ResourceType.Rock)
         {
@@ -166,7 +164,7 @@ public class ResourceNode : MonoBehaviour
 
     public ResourceNodeData GetData()
     {
-        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds);
+        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds, Enabled);
         return data;
     }
 
@@ -187,6 +185,11 @@ public class ResourceNode : MonoBehaviour
         IsKnown = data.IsKnown;
         respawnSeconds = data.RespawnSeconds;
         gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
+        Enabled = data.Enabled;
+        if (!Enabled)
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
         gameObject.SetActive(true);
         if (respawningResources)
         {

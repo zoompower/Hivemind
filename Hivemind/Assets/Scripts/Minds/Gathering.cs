@@ -134,7 +134,6 @@ public class Gathering : IMind
                 {
                     TargetResource();
                 }
-
                 break;
 
             case State.Gathering:
@@ -363,6 +362,7 @@ public class Gathering : IMind
 
     private IEnumerator ReturnToBase(float seconds = -1f)
     {
+        returnSeconds = seconds;
         if (seconds < 0f)
         {
             returnSeconds = Random.Range(30, 40);
@@ -383,7 +383,7 @@ public class Gathering : IMind
 
     public MindData GetData()
     {
-        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutSeconds, returnSeconds);
+        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutSeconds, returnSeconds, enterBase, TeleporterExit);
     }
 
     public void SetData(MindData mindData)
@@ -407,9 +407,11 @@ public class Gathering : IMind
         prefferedType = data.PrefferedType;
         carryWeight = data.CarryWeight;
         prefferedDirection = data.PrefferedDirection;
+        enterBase = data.EnterBase;
         if (data.AntGuid != "")
         {
             ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+            Initiate(ant);
             foreach (string guid in data.GatheredResources)
             {
                 carryResource(GameWorld.Instance.FindResourceNode(Guid.Parse(guid)));
@@ -433,7 +435,11 @@ public class Gathering : IMind
             {
                 ant.StartCoroutine(ExitBase(nextState));
             }
-            if (state == State.MovingToStorage)
+            else if (enterBase)
+            {
+                ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            }
+            else if (state == State.MovingToStorage)
             {
                 ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
             }

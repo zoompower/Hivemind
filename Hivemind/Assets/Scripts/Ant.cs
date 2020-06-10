@@ -48,12 +48,12 @@ public class Ant : MonoBehaviour
             }
         }
         GameWorld.Instance.AddAnt(this);
+        storage = GameWorld.Instance.GetStorage();
     }
 
     // Start is called before the first frame update
     private void Start()
     {
-        storage = GameWorld.Instance.GetStorage();
         AddEventListeners();
     }
 
@@ -164,7 +164,7 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.localScale);
     }
 
     public void SetData(AntData data)
@@ -188,11 +188,12 @@ public class Ant : MonoBehaviour
         TeamID = data.TeamID;
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
+        transform.localScale = new Vector3(data.ScaleX, data.ScaleY, data.ScaleZ);
+        GetComponent<NavMeshAgent>().enabled = true;
         for (int i = 0; i < minds.Count; i++)
         {
             minds[i].SetData(data.MindData[i]);
         }
-        GetComponent<NavMeshAgent>().enabled = true;
     }
 
     public void PlaySoundDiscovery()
