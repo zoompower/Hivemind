@@ -37,6 +37,8 @@ public class GameMenuScript : MonoBehaviour
     }
     public void ResumeGame()
     {
+        LoadMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(false);
         SettingsMenuPanel.SetActive(false);
         PauseMenuPanel.SetActive(false);
         TimeController.Instance.ResumeGame();
