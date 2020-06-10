@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class GameWorld : MonoBehaviour
@@ -37,7 +38,7 @@ public class GameWorld : MonoBehaviour
         float minDistance = float.MaxValue;
         foreach (ResourceNode resource in ResourceList)
         {
-            if (!resource.IsKnown)
+            if (!resource.IsKnown && resource.Enabled)
             {
                 float dist = Vector3.Distance(antPosition, resource.GetPosition());
                 if (dist < minDistance)
@@ -56,7 +57,7 @@ public class GameWorld : MonoBehaviour
         float minDistance = float.MaxValue;
         foreach (ResourceNode resource in ResourceList)
         {
-            if (resource.IsKnown && (prefType == ResourceType.Unknown || resource.resourceType == prefType))
+            if (resource.IsKnown && resource.Enabled && (prefType == ResourceType.Unknown || resource.resourceType == prefType))
             {
                 if (resource.GetResourcesFuture() > 0)
                 {
@@ -191,6 +192,12 @@ public class GameWorld : MonoBehaviour
         {
             MyUnitController.UpdateEventText("Save file not found!", Color.red);
         }
+    }
+
+    public IEnumerator MoveWhenOnNavMesh(NavMeshAgent agent, Vector3 destination)
+    {
+        yield return new WaitUntil(() => agent.isOnNavMesh);
+        agent.SetDestination(destination);
     }
 
     public void Load(string name = "QuickSave")
