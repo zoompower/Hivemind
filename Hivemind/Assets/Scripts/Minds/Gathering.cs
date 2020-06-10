@@ -270,7 +270,7 @@ public class Gathering : IMind
     {
         leavingBase = true;
         this.nextState = nextState;
-        ant.StartCoroutine(GameWorld.Instance.MoveWhenOnNavMesh(ant.GetAgent(), TeleporterExit));
+        ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
         leavingBase = false;
@@ -280,7 +280,7 @@ public class Gathering : IMind
     private IEnumerator EnterBase(Vector3 nextPosition)
     {
         enterBase = true;
-        ant.StartCoroutine(GameWorld.Instance.MoveWhenOnNavMesh(ant.GetAgent(), TeleporterExit));
+        ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterExit) < 1f);
         ant.GetAgent().SetDestination(nextPosition);
         enterBase = false;
@@ -351,7 +351,7 @@ public class Gathering : IMind
             }
         }
         this.scoutingDestination = scoutingDestination;
-        ant.StartCoroutine(GameWorld.Instance.MoveWhenOnNavMesh(ant.GetAgent(), scoutingDestination));
+        ant.GetAgent().SetDestination(scoutingDestination);
         while (scoutSeconds > 0f)
         {
             yield return new WaitForSeconds(0.1f);
@@ -429,7 +429,7 @@ public class Gathering : IMind
             if (data.TargetGuid != "")
             {
                 target = GameWorld.Instance.FindResourceNode(Guid.Parse(data.TargetGuid));
-                ant.StartCoroutine(GameWorld.Instance.MoveWhenOnNavMesh(ant.GetAgent(), target.GetPosition()));
+                ant.GetAgent().SetDestination(target.GetPosition());
             }
             if (leavingBase)
             {
@@ -441,7 +441,7 @@ public class Gathering : IMind
             }
             else if (state == State.MovingToStorage)
             {
-                ant.StartCoroutine(GameWorld.Instance.MoveWhenOnNavMesh(ant.GetAgent(), ant.GetStorage().GetPosition()));
+                ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
             }
         }
     }

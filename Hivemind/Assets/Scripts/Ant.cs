@@ -189,11 +189,11 @@ public class Ant : MonoBehaviour
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
         transform.localScale = new Vector3(data.ScaleX, data.ScaleY, data.ScaleZ);
+        GetComponent<NavMeshAgent>().enabled = true;
         for (int i = 0; i < minds.Count; i++)
         {
             minds[i].SetData(data.MindData[i]);
         }
-        GetComponent<NavMeshAgent>().enabled = true;
     }
 
     public void PlaySoundDiscovery()

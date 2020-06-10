@@ -194,12 +194,6 @@ public class GameWorld : MonoBehaviour
         }
     }
 
-    public IEnumerator MoveWhenOnNavMesh(NavMeshAgent agent, Vector3 destination)
-    {
-        yield return new WaitUntil(() => agent.isOnNavMesh);
-        agent.SetDestination(destination);
-    }
-
     public void Load(string name = "QuickSave")
     {
         Instance.StartCoroutine(LoadEnumerator(name));
