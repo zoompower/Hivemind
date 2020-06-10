@@ -21,7 +21,7 @@ public class MindGroup
 
     public int Count { get; private set; }
 
-    public List<IMind> Minds { get; set; }
+    public List<IMind> Minds;
 
     public int MindPoints { get; set; }
 
