@@ -52,10 +52,6 @@ public class ResourceNode : MonoBehaviour
         }
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-    }
-
-    private void Start()
-    {
         GameWorld.Instance.AddResource(this);
     }
 
@@ -71,8 +67,8 @@ public class ResourceNode : MonoBehaviour
     {
         if ((TeamIsKnown & (1 << teamID)) == 0)
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
             TeamIsKnown += 1 << teamID;
+            gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
         }
     }
 
