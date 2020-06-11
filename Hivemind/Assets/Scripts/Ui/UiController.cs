@@ -66,7 +66,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
 
     private void Start()
     {
-        if(FindObjectOfType<CameraController>() != null) 
+        if (FindObjectOfType<CameraController>() != null)
         {
             mainCamera = FindObjectOfType<CameraController>().gameObject;
         }
@@ -105,7 +105,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
         if (groupResult.isValid)
             unitController.MindGroupList.MoveUnitIntoGroup(unitGroupObj, groupResult.gameObject);
         else
-        unitController.MindGroupList.UpdateLayout(unitGroupObj);
+            unitController.MindGroupList.UpdateLayout(unitGroupObj);
 
         unitGroupObj = null;
     }
@@ -179,30 +179,13 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     {
         mindBuilderPanel.SetActive(true);
         currentOpenMindGroup = unitController.GetMindGroup(i);
-        var MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
-        if (MBScript == null)
-        {
-            var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            MBtabbed.mindGroup = currentOpenMindGroup;
-            MBtabbed.GenerateMind();
-            return;
-        }
-
-        MBScript.mindGroup = currentOpenMindGroup;
-        MBScript.GenerateMind();
+        var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
+        MBtabbed.mindGroup = currentOpenMindGroup;
+        MBtabbed.GenerateMind();
     }
 
     public void UI_CloseMindBuilder()
     {
-        var MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
-        if (MBScript == null)
-        {
-            var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            mindBuilderPanel.SetActive(false);
-            return;
-        }
-
-        MBScript.ClearMind();
         currentOpenMindGroup = null;
         mindBuilderPanel.SetActive(false);
     }
@@ -237,7 +220,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
 
     private void OnToolChanged(object sender, ToolChangedEventArgs args)
     {
-        
+
         if (args.newTool != args.oldTool)
         {
             switch (args.oldTool)
