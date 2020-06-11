@@ -123,6 +123,12 @@ public class CombatMind : IMind
                 break;
 
             case State.MovingToTarget:
+                if (!target)
+                {
+                    state = State.Idle;
+                    break;
+                }
+
                 if (target.transform.position != ant.GetAgent().destination){
                     ant.GetAgent().SetDestination(target.transform.position);
                 }

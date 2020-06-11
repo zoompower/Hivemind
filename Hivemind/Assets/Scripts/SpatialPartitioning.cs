@@ -48,7 +48,7 @@ public class SpatialPartitioning : MonoBehaviour
     public List<GameObject> GetEntitiesWithNeigbors()
     {
         //TO DO: Check the code while in practice, optimize for actual use
-        List<GameObject> EntitiesWithNeighbors = Entities;
+        List<GameObject> EntitiesWithNeighbors = new List<GameObject>(Entities);
 
         List<SpatialPartitioning> Test;
 
