@@ -98,7 +98,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     {
         if (unitGroupObj == null) return;
         //return gameobject to the mask
-        unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0);
+        unitGroupObj.Ui_IconObj.transform.SetParent(unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0));
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
@@ -124,7 +124,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
             var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
             //Remove the gameobject from the mask so it is visible outisde the mask
-            unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.parent.parent;
+            unitGroupObj.Ui_IconObj.transform.SetParent(unitGroupObj.Ui_IconObj.transform.parent.parent.parent);
         }
         lastMousePosition = eventData.position;
     }
