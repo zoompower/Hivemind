@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Data;
 using System;
 using System.Collections.Generic;
+
 public class GameResources
 {
     public event EventHandler OnResourceAmountChanged;
@@ -11,7 +12,14 @@ public class GameResources
     {
         foreach (ResourceType resourceType in resources.Keys)
         {
-            resourceAmounts[resourceType] += resources[resourceType];
+            if (resourceAmounts.ContainsKey(resourceType))
+            {
+                resourceAmounts[resourceType] += resources[resourceType];
+            }
+            else
+            {
+                resourceAmounts.Add(resourceType, resources[resourceType]);
+            }
         }
         if (OnResourceAmountChanged != null)
             OnResourceAmountChanged.Invoke(null, EventArgs.Empty);

@@ -52,7 +52,11 @@ public class Ant : MonoBehaviour
             }
         }
         GameWorld.Instance.AddAnt(this);
+    }
 
+    // Start is called before the first frame update
+    private void Start()
+    {
         var baseControllers = FindObjectsOfType<BaseController>();
 
         foreach (var controller in baseControllers)
@@ -74,11 +78,7 @@ public class Ant : MonoBehaviour
                 break;
             }
         }
-    }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
         alive = true;
         AddEventListeners();
     }
@@ -189,6 +189,11 @@ public class Ant : MonoBehaviour
             {
                 minds.Clear();
                 minds = new List<IMind>() { new Gathering(ResourceType.Crystal, 1, Gathering.Direction.East, true) };
+
+                foreach (var mind in minds)
+                {
+                    mind.Initiate(this);
+                }
                 return;
             }
 
