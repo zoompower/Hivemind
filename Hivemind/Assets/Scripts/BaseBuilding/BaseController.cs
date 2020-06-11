@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -44,6 +43,9 @@ public class BaseController : MonoBehaviour
     public event EventHandler<ToolChangedEventArgs> OnToolChanged;
 
     private GameResources gameResources = new GameResources();
+
+    [SerializeField]
+    public Color TeamColor;
 
     void Awake()
     {

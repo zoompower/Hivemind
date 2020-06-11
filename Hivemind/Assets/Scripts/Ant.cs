@@ -79,6 +79,8 @@ public class Ant : MonoBehaviour
             }
         }
 
+        miniMapRenderer.GetComponent<SpriteRenderer>().color = GetBaseController().TeamColor;
+
         alive = true;
         AddEventListeners();
     }
