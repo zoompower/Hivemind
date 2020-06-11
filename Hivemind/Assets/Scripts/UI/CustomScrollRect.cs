@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CustomScrollRect : ScrollRect
 {
-
     public override void OnDrag(PointerEventData eventData)
     {
         FindObjectOfType<UiController>().OnDrag(eventData);
