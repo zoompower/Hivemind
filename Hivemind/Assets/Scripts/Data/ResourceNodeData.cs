@@ -7,7 +7,7 @@ namespace Assets.Scripts
     public class ResourceNodeData
     {
         public string MyGuid;
-        public bool IsKnown;
+        public int TeamIsKnown;
         public bool RespawningResources;
         public int BaseResourceAmount;
         public ResourceType ResourceType;
@@ -26,10 +26,10 @@ namespace Assets.Scripts
         public float RespawnSeconds;
         public bool Enabled;
 
-        public ResourceNodeData(Guid myGuid, bool isKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, float respawnSeconds, bool enabled)
+        public ResourceNodeData(Guid myGuid, int teamIsKnown, bool respawningResources, int baseResourceAmount, ResourceType resourceType, bool canRespawn, int timeToRespawn, bool destroyWhenEmpty, int resourceAmount, int futureResourceAmount, Vector3 position, Vector3 rotation, string prefab, float respawnSeconds, bool enabled)
         {
             MyGuid = myGuid.ToString();
-            IsKnown = isKnown;
+            TeamIsKnown = teamIsKnown;
             RespawningResources = respawningResources;
             BaseResourceAmount = baseResourceAmount;
             ResourceType = resourceType;

@@ -26,6 +26,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     [SerializeField] private GameObject EventDisplayer;
 
     private UnitController unitController;
+    private BaseController baseController;
 
     private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
 
@@ -49,16 +50,17 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     private void Awake()
     {
         unitController = FindObjectOfType<UnitController>();
-        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
-        UpdateResourceTextObject();
 
-        BaseController[] controllers = UnityEngine.Object.FindObjectsOfType<BaseController>();
+        BaseController[] controllers = FindObjectsOfType<BaseController>();
 
         foreach (BaseController controller in controllers)
         {
-            if (controller.TeamID == 0)
+            if (controller.TeamID == GameWorld.Instance.LocalTeamId)
             {
-                controller.OnToolChanged += OnToolChanged;
+                baseController = controller;
+                baseController.OnToolChanged += OnToolChanged;
+                baseController.GetGameResources().OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
+                UpdateResourceTextObject();
                 break;
             }
         }
@@ -96,7 +98,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     {
         if (unitGroupObj == null) return;
         //return gameobject to the mask
-        unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0);
+        unitGroupObj.Ui_IconObj.transform.SetParent(unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0));
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
@@ -122,7 +124,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
             var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
             //Remove the gameobject from the mask so it is visible outisde the mask
-            unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.parent.parent;
+            unitGroupObj.Ui_IconObj.transform.SetParent(unitGroupObj.Ui_IconObj.transform.parent.parent.parent);
         }
         lastMousePosition = eventData.position;
     }
@@ -213,7 +215,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
 
         foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
-                sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
+                sb.Append($" {resourceType}: {baseController.GetGameResources().GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
     }
@@ -263,7 +265,13 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
         }
     }
 
-    public IEnumerator UpdateEventText(string text, Color? color = null, float seconds = 3f)
+    public void UpdateEventText(string text, Color? color = null)
+    {
+        StopAllCoroutines();
+        StartCoroutine(UpdateEventTextRoutine(text, color));
+    }
+
+    public IEnumerator UpdateEventTextRoutine(string text, Color? color = null, float seconds = 3f)
     {
         float startSeconds = seconds;
         Text myText = EventDisplayer.GetComponent<Text>();
@@ -273,7 +281,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
         {
             yield return new WaitForSecondsRealtime(0.1f);
             Color newColor = myText.color;
-            newColor.a = ((float)seconds * 2 / (float)startSeconds);
+            newColor.a = seconds * 2f / startSeconds;
             myText.color = newColor;
             seconds -= 0.1f;
         }
@@ -283,6 +291,11 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     public void SetTime(float timeScale)
     {
         TimeController.Instance.SetTimeScale(timeScale);
+    }
+
+    public void RegisterUnitController(UnitController unitController)
+    {
+        this.unitController = unitController;
     }
 
     private string FormatResource(string spriteName, int val)

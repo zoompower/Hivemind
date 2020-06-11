@@ -50,7 +50,8 @@ public class MindGroup
 
             Count++;
 
-            unit.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);
+            if (unit.Ui_IconObj)
+                unit.Ui_IconObj.transform.SetParent(UIUnitGroup.transform, false);
 
             UpdateLayout();
 
@@ -67,7 +68,8 @@ public class MindGroup
             unitGroupList.Remove(unit);
             Count--;
 
-            unit.Ui_IconObj.transform.SetParent(null, false);
+            if (unit.Ui_IconObj)
+                unit.Ui_IconObj.transform.SetParent(null, false);
 
             UpdateLayout();
 
@@ -120,7 +122,8 @@ public class MindGroup
         foreach (UnitGroupData unitGroupData in data.UnitGroupDataList)
         {
             UnitGroup newUnitGroup = new UnitGroup(UiObject);
-            newUnitGroup.Ui_IconObj.transform.SetParent(parent.transform, false);
+            if (newUnitGroup.Ui_IconObj)
+                newUnitGroup.Ui_IconObj.transform.SetParent(parent.transform, false);
             newUnitGroup.SetData(unitGroupData);
             unitGroupList.Add(newUnitGroup);
             UpdateLayout();

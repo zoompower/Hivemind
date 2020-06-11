@@ -14,6 +14,7 @@ public class ResourceNode : MonoBehaviour
 {
     public Guid myGuid = Guid.NewGuid();
     private bool respawningResources = false;
+
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
@@ -22,9 +23,8 @@ public class ResourceNode : MonoBehaviour
 
     [SerializeField]
     private int TimeToRespawn = 30;
-
     public bool DestroyWhenEmpty = false;
-    public bool IsKnown;
+    public int TeamIsKnown;
     public string Prefab;
     public float respawnSeconds;
 
@@ -40,7 +40,7 @@ public class ResourceNode : MonoBehaviour
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
-        IsKnown = false;
+        TeamIsKnown = 0;
         audioSrc = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey("Volume"))
         {
@@ -63,10 +63,13 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
-    public void Discover()
+    public void Discover(int teamID)
     {
-        gameObject.GetComponent<MeshRenderer>().enabled = true;
-        IsKnown = true;
+        if ((TeamIsKnown & (1 << teamID)) == 0)
+        {
+            TeamIsKnown += 1 << teamID;
+            gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
+        }
     }
 
     public Vector3 GetPosition()
@@ -137,7 +140,7 @@ public class ResourceNode : MonoBehaviour
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
             Enabled = false;
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
         }
         if (resourceType == ResourceType.Rock)
         {
@@ -169,7 +172,7 @@ public class ResourceNode : MonoBehaviour
 
     public ResourceNodeData GetData()
     {
-        ResourceNodeData data = new ResourceNodeData(myGuid, IsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds, Enabled);
+        ResourceNodeData data = new ResourceNodeData(myGuid, TeamIsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds, Enabled);
         return data;
     }
 
@@ -187,9 +190,10 @@ public class ResourceNode : MonoBehaviour
         resourceAmount = data.ResourceAmount;
         futureResourceAmount = data.FutureResourceAmount;
         ColorResource(resourceAmount);
-        IsKnown = data.IsKnown;
+        TeamIsKnown = data.TeamIsKnown;
         respawnSeconds = data.RespawnSeconds;
-        gameObject.GetComponent<MeshRenderer>().enabled = data.IsKnown;
+        gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
+
         Enabled = data.Enabled;
         if (!Enabled)
         {

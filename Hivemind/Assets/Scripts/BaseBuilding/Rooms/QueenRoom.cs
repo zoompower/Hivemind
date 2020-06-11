@@ -1,4 +1,6 @@
-﻿public class QueenRoom : BaseRoom
+﻿using UnityEngine;
+
+public class QueenRoom : BaseRoom
 {
     public override RoomType GetRoomType()
     {
@@ -23,11 +25,21 @@
             baseTile.IsUnbuildable = true;
             baseTile.DestroyRoom(true);
         }
-        transform.parent.GetComponentInParent<BaseController>().QueenRoom = this;
+        transform.parent.GetComponentInParent<BaseController>().SetQueenRoom(this);
     }
 
     public override void Destroy()
     {
         Destroy(gameObject);
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
+    public BaseTile GetBaseTile()
+    {
+        return GetComponentInParent<BaseTile>();
     }
 }

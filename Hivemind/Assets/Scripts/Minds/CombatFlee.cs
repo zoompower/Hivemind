@@ -2,6 +2,6 @@
 {
     public void Execute(Ant ant)
     {
-        ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+        ant.GetAgent().SetDestination(ant.GetBaseController().GetPosition());
     }
 }

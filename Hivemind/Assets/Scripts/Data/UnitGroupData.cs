@@ -16,7 +16,8 @@ namespace Assets.Scripts.Data
             MaxUnits = maxUnits;
             CurrentUnits = currentUnits;
             UnitGroupId = unitGroupId.ToString();
-            Text = text.text;
+            if (text)
+                Text = text.text;
         }
     }
 }

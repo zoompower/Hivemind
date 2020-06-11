@@ -17,11 +17,14 @@ public class UnitGroup
 
     public UnitGroup(GameObject unitIconBase)
     {
-        Ui_IconObj = UnityEngine.Object.Instantiate(unitIconBase);
+        if (unitIconBase)
+        {
+            Ui_IconObj = UnityEngine.Object.Instantiate(unitIconBase);
+            textBox = Ui_IconObj.GetComponentInChildren<Text>();
+        }
 
         UnitGroupId = Guid.NewGuid();
 
-        textBox = Ui_IconObj.GetComponentInChildren<Text>();
         UpdateText();
     }
 
@@ -88,6 +91,7 @@ public class UnitGroup
         MaxUnits = data.MaxUnits;
         CurrentUnits = data.CurrentUnits;
         UnitGroupId = Guid.Parse(data.UnitGroupId);
-        textBox.text = data.Text;
+        if (textBox != null)
+            textBox.text = data.Text;
     }
 }

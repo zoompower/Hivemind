@@ -7,24 +7,33 @@ public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
 
+    [NonSerialized]
     public UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
 
+    [NonSerialized]
+    public int TeamId;
+
     private void Awake()
     {
-        uiController = FindObjectOfType<UiController>();
-        MindGroupList = new MindGroupList(uiController.UnitGroupObjects);
+        MindGroupList = new MindGroupList(FindObjectOfType<UiController>().UnitGroupObjects);
+        TeamId = GetComponent<BaseController>().TeamID;
     }
 
     private void Start()
     {
-        GameWorld.Instance.SetUnitController(this);
+        if (TeamId == GameWorld.Instance.LocalTeamId)
+        {
+            uiController = FindObjectOfType<UiController>();
+            uiController.RegisterUnitController(this);
+        }
+        GameWorld.Instance.AddUnitController(this);
     }
 
     public Guid CreateUnitGroup()
     {
-        return MindGroupList.CreateUnitGroup(uiController.unitIconBase);
+        return MindGroupList.CreateUnitGroup(uiController?.unitIconBase);
     }
 
     public void SetCurrentUnits(Guid unitGroupId, int amount)
@@ -122,31 +131,13 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            GameWorld.Instance.Save();
-        }
-        if (Input.GetKeyDown(KeyCode.F9))
-        {
-            GameWorld.Instance.Load();
-        }
-    }
-
     public MindGroup GetMindGroup(int Index)
     {
         return MindGroupList.GetMindGroupFromIndex(Index);
     }
 
-    public void UpdateEventText(string text, Color? color = null)
-    {
-        uiController.StopAllCoroutines();
-        uiController.StartCoroutine(uiController.UpdateEventText(text, color));
-    }
-
     public void SetData(List<MindGroupData> data)
     {
-        MindGroupList.SetData(data, uiController.UnitGroupObjects, uiController.unitIconBase);
+        MindGroupList.SetData(data, FindObjectOfType<UiController>().UnitGroupObjects, TeamId == GameWorld.Instance.LocalTeamId ? FindObjectOfType<UiController>().unitIconBase : null);
     }
 }

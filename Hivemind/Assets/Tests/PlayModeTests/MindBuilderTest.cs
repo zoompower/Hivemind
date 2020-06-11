@@ -10,21 +10,31 @@ namespace Tests.PlayModeTests
     {
         private GameObject gameUI;
         private UiController uiController;
+        private GameObject baseContainer;
         private UnitController unitControl;
+        private GameObject Gameworld;
+        private GameObject MainCamera;
 
         [SetUp]
         public void Init()
         {
+            Gameworld = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameWorld"));
+            MainCamera = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/Main Camera"));
             gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));
             uiController = gameUI.GetComponent<UiController>();
-            unitControl = gameUI.GetComponent<UnitController>();
-            MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameWorld"));
+            baseContainer = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/BaseBuilding/BaseContainer"));
+            baseContainer.transform.position = new Vector3(100, 100, 100);
+            unitControl = baseContainer.GetComponent<UnitController>();
+            uiController.RegisterUnitController(unitControl);
         }
 
         [TearDown]
         public void Dispose()
         {
             Object.DestroyImmediate(gameUI);
+            Object.DestroyImmediate(baseContainer);
+            Object.DestroyImmediate(Gameworld);
+            Object.DestroyImmediate(MainCamera);
         }
 
         [TestCase(ResourceType.Crystal, 2, Direction.East, true)]

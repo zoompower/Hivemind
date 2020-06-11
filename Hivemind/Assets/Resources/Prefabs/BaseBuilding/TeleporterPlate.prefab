@@ -113,6 +113,7 @@ MonoBehaviour:
   DefaultRotation: -1
   CollisionSize: 0.5
   ShowDebugInfo: 0
-  ShowMeshPreview: 1
+  ShowMeshPreview: 0
   MeshColor: {r: 0.20784314, g: 0.4862745, b: 0.17254902, a: 1}
   HideTileIfSubTileExists: 1
+  HighlightPrefab: {fileID: 0}

@@ -1,22 +1,24 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class GameWorld : MonoBehaviour
 {
     public static GameWorld Instance;
 
-    public static List<ResourceNode> ResourceList = new List<ResourceNode>();
+    public List<ResourceNode> ResourceList = new List<ResourceNode>();
     public List<Ant> AntList = new List<Ant>();
-    public UnitController MyUnitController;
+    public UiController UiController;
+    public List<UnitController> UnitControllerList = new List<UnitController>();
     public List<BaseController> BaseControllerList = new List<BaseController>();
-    private Storage storage = null;
+
+    public int LocalTeamId = 0;
 
     private void Awake()
     {
@@ -32,13 +34,18 @@ public class GameWorld : MonoBehaviour
         }
     }
 
-    public ResourceNode FindNearestUnknownResource(Vector3 antPosition)
+    private void Start()
+    {
+        UiController = FindObjectOfType<UiController>();
+    }
+
+    public ResourceNode FindNearestUnknownResource(Vector3 antPosition, int teamID)
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;
         foreach (ResourceNode resource in ResourceList)
         {
-            if (!resource.IsKnown && resource.Enabled)
+            if ((resource.TeamIsKnown & (1 << teamID)) == 0)
             {
                 float dist = Vector3.Distance(antPosition, resource.GetPosition());
                 if (dist < minDistance)
@@ -51,13 +58,25 @@ public class GameWorld : MonoBehaviour
         return closest;
     }
 
-    public ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType)
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            Save();
+        }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            Load();
+        }
+    }
+
+    public ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType, int teamID)
     {
         ResourceNode closest = null;
         float minDistance = float.MaxValue;
         foreach (ResourceNode resource in ResourceList)
         {
-            if (resource.IsKnown && resource.Enabled && (prefType == ResourceType.Unknown || resource.resourceType == prefType))
+            if ((resource.TeamIsKnown & (1 << teamID)) > 0 && (prefType == ResourceType.Unknown || resource.resourceType == prefType))
             {
                 if (resource.GetResourcesFuture() > 0)
                 {
@@ -71,16 +90,6 @@ public class GameWorld : MonoBehaviour
             }
         }
         return closest;
-    }
-
-    public Storage GetStorage()
-    {
-        return storage;
-    }
-
-    public void SetStorage(Storage Storage)
-    {
-        storage = Storage;
     }
 
     public void AddResource(ResourceNode resource)
@@ -103,9 +112,9 @@ public class GameWorld : MonoBehaviour
         AntList.Remove(ant);
     }
 
-    public void SetUnitController(UnitController unitController)
+    public void AddUnitController(UnitController unitController)
     {
-        MyUnitController = unitController;
+        UnitControllerList.Add(unitController);
     }
 
     public void AddBaseController(BaseController baseController)
@@ -137,31 +146,34 @@ public class GameWorld : MonoBehaviour
     {
         if (name == "QuickSave")
         {
-            MyUnitController.UpdateEventText("QuickSaving...");
+            UiController.UpdateEventText("QuickSaving...");
         }
         else
         {
-            MyUnitController.UpdateEventText("Saving...");
+            UiController.UpdateEventText("Saving...");
         }
         SaveObject saveObject = new SaveObject
         {
             LevelName = SceneManager.GetActiveScene().name,
-            ResourceAmountsKeys = GameResources.GetResourceAmounts().Keys.ToList(),
-            ResourceAmountsValues = GameResources.GetResourceAmounts().Values.ToList(),
             Resources = ResourceList,
             Ants = AntList,
-            MindGroups = MyUnitController.MindGroupList.GetMindGroupList(),
             BaseControllers = BaseControllerList
         };
+
+        foreach (var unitController in UnitControllerList)
+        {
+            saveObject.TeamMindGroups.Add(new TeamMindGroup(unitController.TeamId, unitController.MindGroupList.GetMindGroupList()));
+        }
+
         string json = saveObject.ToJson();
         File.WriteAllText(GetSavePath() + $"/{name}.txt", json);
         if (name == "QuickSave")
         {
-            MyUnitController.UpdateEventText("QuickSave Complete!");
+            UiController.UpdateEventText("QuickSave Complete!");
         }
         else
         {
-            MyUnitController.UpdateEventText("Save Complete!");
+            UiController.UpdateEventText("Save Complete!");
         }
     }
 
@@ -185,12 +197,12 @@ public class GameWorld : MonoBehaviour
             }
             catch
             {
-                MyUnitController.UpdateEventText("Deleting save file failed!", Color.red);
+                UiController.UpdateEventText("Deleting save file failed!", Color.red);
             }
         }
         else
         {
-            MyUnitController.UpdateEventText("Save file not found!", Color.red);
+            UiController.UpdateEventText("Save file not found!", Color.red);
         }
     }
 
@@ -216,13 +228,12 @@ public class GameWorld : MonoBehaviour
             }
             if (name == "QuickSave")
             {
-                MyUnitController.UpdateEventText("QuickLoading...");
+                UiController.UpdateEventText("QuickLoading...");
             }
             else
             {
-                MyUnitController.UpdateEventText("Loading...");
+                UiController.UpdateEventText("Loading...");
             }
-            GameResources.SetResourceAmounts(saveObject.ResourceAmountsKeys, saveObject.ResourceAmountsValues);
             for (int i = 0; i < ResourceList.Count;)
             {
                 ResourceList[i].Destroy();
@@ -233,7 +244,12 @@ public class GameWorld : MonoBehaviour
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
-            MyUnitController.SetData(saveObject.MindGroupData);
+
+            foreach (UnitController controller in UnitControllerList)
+            {
+                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
+            }
+
             for (int i = 0; i < AntList.Count;)
             {
                 AntList[i].Destroy();
@@ -250,16 +266,16 @@ public class GameWorld : MonoBehaviour
             }
             if (name == "QuickSave")
             {
-                MyUnitController.UpdateEventText("QuickLoad Complete!");
+                UiController.UpdateEventText("QuickLoad Complete!");
             }
             else
             {
-                MyUnitController.UpdateEventText("Load Complete!");
+                UiController.UpdateEventText("Load Complete!");
             }
         }
         else
         {
-            MyUnitController.UpdateEventText("Save file not found!", Color.red);
+            UiController.UpdateEventText("Save file not found!", Color.red);
         }
     }
 }

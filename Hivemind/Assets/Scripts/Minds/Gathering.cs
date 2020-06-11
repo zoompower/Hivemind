@@ -72,15 +72,8 @@ public class Gathering : IMind
     public void Initiate(Ant ant)
     {
         this.ant = ant;
-
-        foreach (BaseController controller in GameObject.FindObjectsOfType<BaseController>())
-        {
-            if (controller.TeamID == ant.TeamID)
-            {
-                TeleporterExit = controller.TeleporterExit;
-                TeleporterEntrance = controller.TeleporterEntrance;
-            }
-        }
+        TeleporterExit = ant.GetBaseController().TeleporterExit;
+        TeleporterEntrance = ant.GetBaseController().TeleporterEntrance;
     }
 
     public void Execute()
@@ -106,11 +99,11 @@ public class Gathering : IMind
 
                 if (!scouting)
                 {
-                    var tempTarget = GameWorld.Instance.FindNearestUnknownResource(ant.transform.position);
+                    var tempTarget = GameWorld.Instance.FindNearestUnknownResource(ant.transform.position, ant.TeamID);
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
-                        ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                        ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                         state = State.MovingToStorage;
                         ant.StartCoroutine(Discover());
                         preparingReturn = false;
@@ -157,7 +150,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                    ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                     state = State.MovingToStorage;
                 }
                 else
@@ -170,18 +163,18 @@ public class Gathering : IMind
                 break;
 
             case State.MovingToStorage:
-                if (ant.GetStorage() != null)
+                if (ant.GetBaseController()?.QueenRoom != null)
                 {
                     if (ant.AtBase())
                     {
-                        if (IsScout && target != null && !target.IsKnown)
+                        if (IsScout && target != null && (target.TeamIsKnown & (1 << ant.TeamID)) == 0)
                         {
-                            target.Discover();
+                            target.Discover(ant.TeamID);
                             ant.StopCoroutine(ReturnToBase());
                         }
                         if (inventory != null)
                         {
-                            GameResources.AddResources(inventory);
+                            ant.GetBaseController().GetGameResources().AddResources(inventory);
                             inventory.Clear();
                             foreach (var gameObject in carryingObjects) Object.Destroy(gameObject);
                             carryingObjects.Clear();
@@ -193,10 +186,6 @@ public class Gathering : IMind
                         state = State.Idle;
                         busy = false;
                     }
-                }
-                else
-                {
-                    ant.SetStorage(GameWorld.Instance.GetStorage());
                 }
 
                 break;
@@ -232,9 +221,9 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
-        var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType);
+        var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
         if (prefferedType != ResourceType.Unknown && resourceNode == null)
-            resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown);
+            resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
         return resourceNode;
     }
 
@@ -271,7 +260,7 @@ public class Gathering : IMind
         }
         else if (!ant.AtBase())
         {
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToStorage;
         }
     }
@@ -387,7 +376,7 @@ public class Gathering : IMind
         if (state == State.Scouting)
         {
             target = null;
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToStorage;
             preparingReturn = false;
         }
@@ -422,8 +411,7 @@ public class Gathering : IMind
         enterBase = data.EnterBase;
         if (data.AntGuid != "")
         {
-            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
-            Initiate(ant);
+            Initiate(GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid)));
             foreach (string guid in data.GatheredResources)
             {
                 carryResource(GameWorld.Instance.FindResourceNode(Guid.Parse(guid)));
@@ -447,23 +435,15 @@ public class Gathering : IMind
             {
                 ant.StartCoroutine(ExitBase(nextState));
             }
-            else if (enterBase)
+            else if (enterBase || state == State.MovingToStorage)
             {
-                ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
-            }
-            else if (state == State.MovingToStorage)
-            {
-                ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
+                ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             }
         }
     }
 
     public bool IsBusy()
     {
-        if (leavingBase)
-        {
-            return true;
-        }
-        return busy;
+        return busy || leavingBase;
     }
 }

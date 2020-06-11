@@ -15,9 +15,11 @@ public class Ant : MonoBehaviour
     public string Prefab;
 
     private List<IMind> minds = new List<IMind>();
-    private Storage storage;
+    private BaseController baseController;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
+
+    private UnitController unitController;
 
     public Ant closestEnemy { get; private set; }
 
@@ -42,13 +44,34 @@ public class Ant : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (child.gameObject.layer == UnityEngine.LayerMask.NameToLayer("Minimap"))
+            if (child.gameObject.layer == LayerMask.NameToLayer("Minimap"))
             {
                 miniMapRenderer = child;
             }
         }
         GameWorld.Instance.AddAnt(this);
-        storage = GameWorld.Instance.GetStorage();
+
+        var baseControllers = FindObjectsOfType<BaseController>();
+
+        foreach (var controller in baseControllers)
+        {
+            if (controller.TeamID == TeamID)
+            {
+                baseController = controller;
+                break;
+            }
+        }
+
+        var unitControllers = FindObjectsOfType<UnitController>();
+
+        foreach (var controller in unitControllers)
+        {
+            if (controller.TeamId == TeamID)
+            {
+                unitController = controller;
+                break;
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -115,9 +138,9 @@ public class Ant : MonoBehaviour
         return agent;
     }
 
-    public Storage GetStorage()
+    public BaseController GetBaseController()
     {
-        return storage;
+        return baseController;
     }
 
     internal void UpdateSpeed()
@@ -130,11 +153,6 @@ public class Ant : MonoBehaviour
         unitGroupID = id;
     }
 
-    internal void SetStorage(Storage storage)
-    {
-        this.storage = storage;
-    }
-
     public void SetAtBase(bool atBase)
     {
         isAtBase = atBase;
@@ -144,11 +162,7 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            if (FindObjectOfType<UnitController>() == null) 
-            {
-                return;
-            }
-            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
+            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
             if (mindGroupMind != null)
             {
                 minds.Clear();
@@ -222,16 +236,17 @@ public class Ant : MonoBehaviour
 
     private void AddEventListeners()
     {
-        FindObjectOfType<UnitController>().OnGroupIdChange += ChangeGroupID;
+        if (unitController)
+            unitController.OnGroupIdChange += ChangeGroupID;
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     private void RemoveEventListeners()
     {
-        if (FindObjectOfType<UnitController>() != null)
+        if (unitController != null)
         {
-            FindObjectOfType<UnitController>().OnGroupIdChange -= ChangeGroupID;
+            unitController.OnGroupIdChange -= ChangeGroupID;
         }
 
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
