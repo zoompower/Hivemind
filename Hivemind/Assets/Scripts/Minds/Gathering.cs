@@ -435,13 +435,9 @@ public class Gathering : IMind
             {
                 ant.StartCoroutine(ExitBase(nextState));
             }
-            else if (enterBase)
+            else if (enterBase || state == State.MovingToStorage)
             {
                 ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
-            }
-            else if (state == State.MovingToStorage)
-            {
-                ant.GetAgent().SetDestination(ant.GetBaseController().GetPosition());
             }
         }
     }
