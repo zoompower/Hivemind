@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Data;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,6 @@ namespace Tests.PlayModeTests
     public class ScoutingTest
     {
         private Ant ant;
-        private GameObject gameUI;
         private UiController uiController;
         private UnitController unitControl;
 
@@ -22,9 +22,8 @@ namespace Tests.PlayModeTests
             {
                 yield return null;
             }
-            gameUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/UI/IngameUI"));
-            uiController = gameUI.GetComponent<UiController>();
-            unitControl = gameUI.GetComponent<UnitController>();
+            uiController = GameObject.FindObjectOfType<UiController>();
+            unitControl = GameObject.FindObjectOfType<UnitController>();
 
             GameObject gameObjectAnt = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
             ant = gameObjectAnt.GetComponent<Ant>();
@@ -44,7 +43,6 @@ namespace Tests.PlayModeTests
             ant.SetunitGroupID(Id);
         }
 
-
         [UnityTest]
         public IEnumerator AntIsWanderingWithScoutingBehaviour()
         {
@@ -52,7 +50,6 @@ namespace Tests.PlayModeTests
             Vector3 initialPosition = new Vector3(ant.transform.position.x, 0, ant.transform.position.z);
             yield return new WaitForSeconds(0.1f);
             Assert.AreNotEqual(initialPosition, new Vector3(ant.transform.position.x, 0, ant.transform.position.z));
-
         }
 
         [UnityTest]
@@ -71,17 +68,11 @@ namespace Tests.PlayModeTests
             GameObject resource = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Resources/crystal") as GameObject);
             resource.transform.position = new Vector3(0, 0.6f, 0);
             ant.SetAtBase(true);
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
             Assert.AreEqual(1, AmountOfKnownResources());
-        }
-
-        [TearDown]
-        public void Dispose()
-        {
-            GameObject.DestroyImmediate(ant);
         }
 
         public int AmountOfKnownResources()
