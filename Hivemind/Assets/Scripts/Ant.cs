@@ -185,6 +185,13 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
+            if (TeamID != 0)
+            {
+                minds.Clear();
+                minds = new List<IMind>() { new Gathering(ResourceType.Crystal, 1, Gathering.Direction.East, true) };
+                return;
+            }
+
             var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
             if (mindGroupMind != null)
             {
