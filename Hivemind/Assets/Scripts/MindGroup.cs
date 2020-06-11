@@ -21,7 +21,7 @@ public class MindGroup
 
     public int Count { get; private set; }
 
-    public List<IMind> Minds { get; private set; }
+    public List<IMind> Minds;
 
     public int MindPoints { get; set; }
 
@@ -42,7 +42,7 @@ public class MindGroup
         }
     }
 
-    internal Guid AddUnit(UnitGroup unit)
+    public Guid AddUnit(UnitGroup unit)
     {
         if (!unitGroupList.Contains(unit))
         {

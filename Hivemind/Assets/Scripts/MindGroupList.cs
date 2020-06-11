@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MindGroupList
 {
-    private List<MindGroup> mindGroupList;
+    public List<MindGroup> mindGroupList;
 
     public MindGroupList(GameObject[] unitGroupObjects)
     {

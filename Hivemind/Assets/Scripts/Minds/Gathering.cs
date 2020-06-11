@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +32,7 @@ public class Gathering : IMind
 
     private Ant ant;
 
-    private List<GameObject> carryingObjects = new List<GameObject>();
+    public List<GameObject> carryingObjects = new List<GameObject>();
     private List<string> gatheredResources = new List<string>();
 
     private Dictionary<ResourceType, int> inventory = new Dictionary<ResourceType, int>();
@@ -42,15 +41,16 @@ public class Gathering : IMind
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
-    private bool busy = false;
+    public bool busy = false;
     private bool leavingBase = false;
-    private State state = State.Idle;
+    public State state = State.Idle;
     private State nextState;
     private Vector3 scoutingDestination;
     private float scoutSeconds;
     private float returnSeconds;
 
     private Vector3 TeleporterExit;
+    private Vector3 TeleporterEntrance;
     private bool enterBase = false;
 
     public Gathering() : this(ResourceType.Unknown, 1, Direction.None)
@@ -78,6 +78,7 @@ public class Gathering : IMind
             if (controller.TeamID == ant.TeamID)
             {
                 TeleporterExit = controller.TeleporterExit;
+                TeleporterEntrance = controller.TeleporterEntrance;
             }
         }
     }
@@ -89,7 +90,10 @@ public class Gathering : IMind
         switch (state)
         {
             case State.Idle:
-                ant.GetAgent().isStopped = true;
+                if (ant.GetAgent().isOnNavMesh)
+                {
+                    ant.GetAgent().isStopped = true;
+                }
                 TargetResource();
                 break;
 
@@ -134,7 +138,6 @@ public class Gathering : IMind
                 {
                     TargetResource();
                 }
-
                 break;
 
             case State.Gathering:
@@ -246,7 +249,10 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (state == State.Idle) ant.GetAgent().isStopped = false;
+            if (state == State.Idle && ant.GetAgent().isOnNavMesh)
+            {
+                ant.GetAgent().isStopped = false;
+            }
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
@@ -257,7 +263,10 @@ public class Gathering : IMind
         }
         else if (state == State.Idle && IsScout)
         {
-            ant.GetAgent().isStopped = false;
+            if (ant.GetAgent().isOnNavMesh)
+            {
+                ant.GetAgent().isStopped = false;
+            }
             ant.StartCoroutine(ExitBase(State.Scouting));
         }
         else if (!ant.AtBase())
@@ -271,6 +280,8 @@ public class Gathering : IMind
     {
         leavingBase = true;
         this.nextState = nextState;
+        ant.GetAgent().SetDestination(TeleporterEntrance);
+        yield return new WaitWhile(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) > 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
@@ -363,6 +374,7 @@ public class Gathering : IMind
 
     private IEnumerator ReturnToBase(float seconds = -1f)
     {
+        returnSeconds = seconds;
         if (seconds < 0f)
         {
             returnSeconds = Random.Range(30, 40);
@@ -383,7 +395,7 @@ public class Gathering : IMind
 
     public MindData GetData()
     {
-        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutSeconds, returnSeconds);
+        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutSeconds, returnSeconds, enterBase, TeleporterExit);
     }
 
     public void SetData(MindData mindData)
@@ -407,9 +419,11 @@ public class Gathering : IMind
         prefferedType = data.PrefferedType;
         carryWeight = data.CarryWeight;
         prefferedDirection = data.PrefferedDirection;
+        enterBase = data.EnterBase;
         if (data.AntGuid != "")
         {
             ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+            Initiate(ant);
             foreach (string guid in data.GatheredResources)
             {
                 carryResource(GameWorld.Instance.FindResourceNode(Guid.Parse(guid)));
@@ -433,7 +447,11 @@ public class Gathering : IMind
             {
                 ant.StartCoroutine(ExitBase(nextState));
             }
-            if (state == State.MovingToStorage)
+            else if (enterBase)
+            {
+                ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            }
+            else if (state == State.MovingToStorage)
             {
                 ant.GetAgent().SetDestination(ant.GetStorage().GetPosition());
             }
@@ -442,6 +460,10 @@ public class Gathering : IMind
 
     public bool IsBusy()
     {
+        if (leavingBase)
+        {
+            return true;
+        }
         return busy;
     }
 }
