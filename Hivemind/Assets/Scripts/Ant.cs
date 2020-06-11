@@ -92,7 +92,7 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
+        CheckAlive();
         if (!IsBusy())
             UpdateMind();
 
@@ -144,7 +144,8 @@ public class Ant : MonoBehaviour
 
     public void Die()
     {
-        throw new NotImplementedException();
+        SpatialPartition.GetSpatialFromGrid(SpatialPositionId).Remove(gameObject);
+        Destroy(gameObject);
     }
 
     public bool CheckAlive()
@@ -152,6 +153,7 @@ public class Ant : MonoBehaviour
         if (health < 1)
         {
             alive = false;
+            Die();
         }
         return alive;
     }

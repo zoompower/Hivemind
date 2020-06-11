@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpatialPartitioning : MonoBehaviour
@@ -23,18 +24,17 @@ public class SpatialPartitioning : MonoBehaviour
     void Update()
     {
         //TO DO: delete this when done DEBUGGING
-        /*
+        
         if(Entities.Count != 0)
         {
-            Debug.ClearDeveloperConsole();
-            Debug.Log(this.name+" Count: "+Entities.Count);x
-        }*/
+            Debug.Log(this.name+" Count: "+Entities.Count);
+        }
     }
 
     private void OnTriggerEnter(Collider entity)
     {
         Entities.Add(entity.gameObject);
-        if (entity.GetComponent<Ant>() && entity.GetComponent<Ant>().SpatialPositionId != Id)
+        if (entity.GetComponent<Ant>())
         {
             entity.GetComponent<Ant>().SpatialPositionId = Id;
         }
@@ -42,7 +42,7 @@ public class SpatialPartitioning : MonoBehaviour
 
     private void OnTriggerExit(Collider entity)
     {
-        Entities.Remove(entity.gameObject);
+        Remove(entity.gameObject);
     }
 
     public List<GameObject> GetEntitiesWithNeigbors()
@@ -64,10 +64,13 @@ public class SpatialPartitioning : MonoBehaviour
         //Add entities of Neigboring SpatialPartitioning
         foreach (SpatialPartitioning neig in Test)
         {
-            foreach (GameObject ant in neig.Entities)
-            {
-                EntitiesWithNeighbors.Add(ant);
-            }
+                foreach (GameObject ant in neig.Entities)
+                {
+                    if (ant)
+                    {
+                        EntitiesWithNeighbors.Add(ant);
+                    }
+                }
         }
         return EntitiesWithNeighbors;
     }
@@ -108,5 +111,10 @@ public class SpatialPartitioning : MonoBehaviour
                 Neighbors.Add(NeighCollider);
             }
         }
+    }
+
+    internal void Remove(GameObject gameObject)
+    {
+        Entities.Remove(gameObject);
     }
 }

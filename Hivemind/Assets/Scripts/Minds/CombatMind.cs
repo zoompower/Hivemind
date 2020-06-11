@@ -60,9 +60,9 @@ public class CombatMind : IMind
         prefferedHealth = prefHealth;
         AttackCooldown = new Timer(1000);
         AttackCooldown.Elapsed += AttackCooldownElapsed;
-        EngageRange = 0;
+        EngageRange = 99999;
         IsScout = false;
-        Surroundingcheck = new Timer(10000);
+        Surroundingcheck = new Timer(1000);
         Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
 
     }
@@ -80,7 +80,6 @@ public class CombatMind : IMind
         switch (state)
         {
             case State.Idle:
-                ant.GetAgent().isStopped = true;
 
                 if (CheckSurroundings())
                 {
@@ -124,8 +123,9 @@ public class CombatMind : IMind
                 break;
 
             case State.MovingToTarget:
-
-                ant.GetAgent().SetDestination(target.transform.position);
+                if (target.transform.position != ant.GetAgent().destination){
+                    ant.GetAgent().SetDestination(target.transform.position);
+                }
 
                 if (CheckAttackDistance())
                 {
@@ -142,12 +142,14 @@ public class CombatMind : IMind
                 }
                 else
                 {
-                    if (target.alive)
+                    if (target && target.alive)
                     {
                         AttackTarget();
                     }
                     else
                     {
+                        Debug.Log("Kom ik hier?!");
+                        target = null;
                         if (CheckSurroundings())
                         {
                             state = State.MovingToTarget;
@@ -181,12 +183,11 @@ public class CombatMind : IMind
         if (ant.SpatialPositionId != 0)
         {
             target = null;
-            List<GameObject> NearbyEntitities = SpatialPartition.GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors();
-            foreach (GameObject a in NearbyEntitities)
+            foreach (GameObject a in SpatialPartition.GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors())
             {
-                if (a.GetComponent<Ant>())
+                if (a && a.GetComponent<Ant>())
                 {
-                    if (a.GetComponent<Ant>().TeamID != this.ant.TeamID)
+                    if (a.GetComponent<Ant>().TeamID != ant.TeamID && a.GetComponent<Ant>() != ant && a.GetComponent<Ant>().alive)
                     {
                         if (target == null || Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, target.transform.position))
                         {
@@ -203,6 +204,7 @@ public class CombatMind : IMind
 
     private bool CheckAttackDistance()
     {
+        if (target == null) return false;
         if (Vector3.Distance(ant.transform.position, target.transform.position) < 1f)
         {
             return true;
@@ -344,13 +346,11 @@ public class CombatMind : IMind
 
     public double Likelihood()
     {
-        Debug.Log(SurroundingcheckOncooldown);
         if (SurroundingcheckOncooldown == false)
         {
             SurroundingcheckOncooldown = true;
             Surroundingcheck.Start();
 
-            Debug.Log("Hit");
             busy = false;
             if (CheckSurroundings())
             {

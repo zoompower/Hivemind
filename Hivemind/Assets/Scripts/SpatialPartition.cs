@@ -32,6 +32,7 @@ public class SpatialPartition : MonoBehaviour
                 go.transform.Find("SpatialPartitioning");
                 go.GetComponent<SpatialPartitioning>().width = j;
                 go.GetComponent<SpatialPartitioning>().height = i;
+                go.GetComponent<SpatialPartitioning>().Id = id;
                 Grid.Add(id,go.GetComponent<SpatialPartitioning>());
                 id++;
             }

@@ -153,10 +153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbbc4a5eaabe1c49982b97975ef26d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpatialPositionId: 0
   baseSpeed: 0
   currentSpeed: 0
-  damage: 0
-  health: 0
+  damage: 5
+  health: 20
+  alive: 1
   Prefab: WorkerAnt
   TeamID: 0
 --- !u!65 &7673413027533756990

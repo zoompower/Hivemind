@@ -141,10 +141,10 @@ public class MindBuilderTabbed : MonoBehaviour
 
     private void UpdateCombatMind()
     {
-        if (float.TryParse(EstimatedDifference.text, out var estDiff))
+        if (float.TryParse(EstimatedDifference?.text, out var estDiff))
             combat.SetMinEstimatedDifference(estDiff);
 
-        if (int.TryParse(PrefferedHealth.text, out var prefferedHealth))
+        if (int.TryParse(PrefferedHealth?.text, out var prefferedHealth))
             combat.SetPrefferedHealth(prefferedHealth);
         // combat.formation = (Formation)Formation.value;
     }
