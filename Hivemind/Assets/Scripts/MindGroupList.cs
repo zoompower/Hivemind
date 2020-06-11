@@ -8,8 +8,6 @@ public class MindGroupList
 {
     public List<MindGroup> mindGroupList;
 
-    private int MaxGroupCount = 6;
-
     public MindGroupList(GameObject[] unitGroupObjects)
     {
         mindGroupList = new List<MindGroup>();
@@ -50,8 +48,7 @@ public class MindGroupList
     internal Guid CreateUnitGroup(GameObject unitIconBase)
     {
         for (var i = 0; i < mindGroupList.Count; i++)
-            if (mindGroupList[i].Count < MaxGroupCount)
-                return mindGroupList[i].AddUnit(new UnitGroup(unitIconBase));
+            return mindGroupList[i].AddUnit(new UnitGroup(unitIconBase));
 
         return Guid.Empty;
     }
@@ -94,7 +91,7 @@ public class MindGroupList
             }
         }
 
-        if (oldGroup.Equals(newGroup) || newGroup.Count >= MaxGroupCount)
+        if (oldGroup.Equals(newGroup))
         {
             oldGroup.UpdateLayout();
             return;

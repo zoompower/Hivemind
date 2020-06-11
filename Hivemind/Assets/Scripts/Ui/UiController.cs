@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private MindGroup currentOpenMindGroup;
 
@@ -66,7 +66,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private void Start()
     {
-        if(FindObjectOfType<CameraController>() != null) 
+        if (FindObjectOfType<CameraController>() != null)
         {
             mainCamera = FindObjectOfType<CameraController>().gameObject;
         }
@@ -95,7 +95,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         if (unitGroupObj == null) return;
-
+        //return gameobject to the mask
+        unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0);
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
@@ -109,7 +110,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         unitGroupObj = null;
     }
 
-    public void OnInitializePotentialDrag(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
@@ -120,8 +121,9 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         {
             var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
+            //Remove the gameobject from the mask so it is visible outisde the mask
+            unitGroupObj.Ui_IconObj.transform.parent = unitGroupObj.Ui_IconObj.transform.parent.parent.parent;
         }
-
         lastMousePosition = eventData.position;
     }
 
@@ -177,30 +179,13 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         mindBuilderPanel.SetActive(true);
         currentOpenMindGroup = unitController.GetMindGroup(i);
-        var MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
-        if (MBScript == null)
-        {
-            var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            MBtabbed.mindGroup = currentOpenMindGroup;
-            MBtabbed.GenerateMind();
-            return;
-        }
-
-        MBScript.mindGroup = currentOpenMindGroup;
-        MBScript.GenerateMind();
+        var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
+        MBtabbed.mindGroup = currentOpenMindGroup;
+        MBtabbed.GenerateMind();
     }
 
     public void UI_CloseMindBuilder()
     {
-        var MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
-        if (MBScript == null)
-        {
-            var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            mindBuilderPanel.SetActive(false);
-            return;
-        }
-
-        MBScript.ClearMind();
         currentOpenMindGroup = null;
         mindBuilderPanel.SetActive(false);
     }
@@ -235,7 +220,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private void OnToolChanged(object sender, ToolChangedEventArgs args)
     {
-        
+
         if (args.newTool != args.oldTool)
         {
             switch (args.oldTool)

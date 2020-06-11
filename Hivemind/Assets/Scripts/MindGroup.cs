@@ -32,7 +32,14 @@ public class MindGroup
 
     public bool Equals(GameObject groupObject)
     {
-        return UIUnitGroup.Equals(groupObject);
+        if (UIUnitGroup.Equals(groupObject))
+        {
+            return true;
+        }
+        else
+        {
+            return UIUnitGroup.Equals(groupObject.transform.GetChild(0).GetChild(0).gameObject);
+        }
     }
 
     public Guid AddUnit(UnitGroup unit)
