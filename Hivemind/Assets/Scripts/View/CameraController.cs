@@ -24,29 +24,25 @@ public class CameraController : MonoBehaviour
         if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height) return;
 
         var movement = new Vector3();
-        movement.x += (Input.GetAxis("Horizontal") * MovementSpeed) * Time.deltaTime;
-        movement.z += (Input.GetAxis("Vertical") * MovementSpeed) * Time.deltaTime;
+        //movement.x += (Input.GetAxis("Horizontal") * MovementSpeed) * Time.unscaledDeltaTime;
+        //movement.z += (Input.GetAxis("Vertical") * MovementSpeed) * Time.unscaledDeltaTime;
 
-        if (Input.mousePosition.x < EdgeSize)
+        if (Input.mousePosition.x < EdgeSize || Input.GetKey(KeyCode.A))
         {
-            movement.x -= MovementSpeed * Time.deltaTime;
+            movement.x -= MovementSpeed * Time.unscaledDeltaTime;
         }
-        if (Input.mousePosition.x > Screen.width - EdgeSize)
+        if (Input.mousePosition.x > Screen.width - EdgeSize || Input.GetKey(KeyCode.D))
         {
-            movement.x += MovementSpeed * Time.deltaTime;
+            movement.x += MovementSpeed * Time.unscaledDeltaTime;
         }
 
-        if (Input.mousePosition.y < EdgeSize)
+        if (Input.mousePosition.y < EdgeSize || Input.GetKey(KeyCode.S))
         {
-            movement.z -= MovementSpeed * Time.deltaTime;
+            movement.z -= MovementSpeed * Time.unscaledDeltaTime;
         }
-        if (Input.mousePosition.y > Screen.height - EdgeSize)
+        if (Input.mousePosition.y > Screen.height - EdgeSize || Input.GetKey(KeyCode.W))
         {
-            movement.z += MovementSpeed * Time.deltaTime;
-        }
-        if (Time.timeScale == 0)
-        {
-            movement *= Time.timeScale;
+            movement.z += MovementSpeed * Time.unscaledDeltaTime;
         }
 
         Vector3 newPositionX = transform.position + new Vector3(movement.x, 0, 0);

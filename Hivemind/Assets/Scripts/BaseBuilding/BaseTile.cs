@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Data;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -85,7 +87,7 @@ public class BaseTile : MonoBehaviour
         }
     }
 
-    internal void AntDoesAction(BaseBuildingTool tool)
+    public void AntDoesAction(BaseBuildingTool tool)
     {
         switch (tool)
         {
@@ -136,6 +138,41 @@ public class BaseTile : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, CollisionSize);
+        }
+    }
+
+    public BaseTileData GetData()
+    {
+        return new BaseTileData(RoomScript, CurrTile, gameObject.name, RoomScript is BaseUnitRoom ? (RoomScript as BaseUnitRoom).GroupId : Guid.Empty);
+    }
+
+    public void SetData(BaseTileData data)
+    {
+        if(data.RoomType != RoomType.QueenRoom)
+        {
+            Destroy(CurrTile);
+            CurrTile = null;
+            RoomScript = null;
+            if (HideTileIfSubTileExists)
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+        switch (data.RoomType)
+        {
+            case RoomType.None:
+                break;
+            case RoomType.Wall:
+                InitializeObject(GetComponentInParent<BaseController>().WallPrefab, true);
+                break;
+            case RoomType.WorkerRoom:
+                InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab, true);
+                (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
+                break;
+        }
+        if(CurrTile != null)
+        {
+            CurrTile.transform.localEulerAngles = new Vector3(0, data.RotationY, 0);
         }
     }
 }

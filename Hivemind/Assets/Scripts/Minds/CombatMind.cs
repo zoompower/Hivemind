@@ -1,10 +1,9 @@
-﻿using Assets.Scripts;
+﻿using Assets.Scripts.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class CombatMind : IMind
@@ -106,7 +105,7 @@ public class CombatMind : IMind
                     CheckSurroundings();
                     if (target != null && Vector3.Distance(ant.transform.position, target.transform.position) < EngageRange)
                     {
-                        ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                        ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                         state = State.MovingToTarget;
                         ant.StartCoroutine(Discover());
                     }
@@ -308,7 +307,7 @@ public class CombatMind : IMind
         if (state == State.Scouting)
         {
             target = null;
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToNest;
             preparingReturn = false;
         }
@@ -387,6 +386,23 @@ public class CombatMind : IMind
     public void SetPrefferedHealth(int prefHealth)
     {
         prefferedHealth = prefHealth;
+    }
+
+    public MindData GetData()
+    {
+        return new CombatData(minEstimatedDifference, prefferedHealth, ant, busy);
+    }
+
+    public void SetData(MindData mindData)
+    {
+        CombatData data = mindData as CombatData;
+        minEstimatedDifference = data.MinEstimatedDifference;
+        prefferedHealth = data.PrefferedHealth;
+        if(data.AntGuid != "")
+        {
+            ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+        }
+        busy = data.Busy;
     }
 
     public bool IsBusy()

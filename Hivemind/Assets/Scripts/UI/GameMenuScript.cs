@@ -10,6 +10,12 @@ public class GameMenuScript : MonoBehaviour
     private GameObject SettingsMenuPanel;
 
     [SerializeField]
+    private GameObject LoadMenuPanel;
+
+    [SerializeField]
+    private GameObject SaveMenuPanel;
+
+    [SerializeField]
     private UiController UIgameobject;
 
     private bool paused = false;
@@ -18,7 +24,6 @@ public class GameMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown("escape"))
         {
-            paused = !paused;
             if (paused)
             {
                 ResumeGame();
@@ -27,30 +32,47 @@ public class GameMenuScript : MonoBehaviour
             {
                 PauseGame();
             }
+            paused = !paused;
         }
     }
     public void ResumeGame()
     {
+        LoadMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(false);
         SettingsMenuPanel.SetActive(false);
         PauseMenuPanel.SetActive(false);
-        Time.timeScale = 1;
+        TimeController.Instance.ResumeGame();
     }
 
     public void PauseGame()
     {
         PauseMenuPanel.SetActive(true);
-        Time.timeScale = 0;
+        TimeController.Instance.PauseGame();
     }
 
-    public void ReturnToMenu()
+    public void SaveMenu()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene("MainMenu");
+        PauseMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(true);
+        SaveMenuPanel.GetComponent<SaveMenuScript>().Refresh();
+    }
+
+    public void LoadMenu()
+    {
+        PauseMenuPanel.SetActive(false);
+        LoadMenuPanel.SetActive(true);
+        LoadMenuPanel.GetComponent<LoadMenuScript>().Refresh();
     }
 
     public void SettingsMenu()
     {
         PauseMenuPanel.SetActive(false);
         SettingsMenuPanel.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        TimeController.Instance.ResumeGame(1f);
+        SceneManager.LoadScene("MainMenu");
     }
 }

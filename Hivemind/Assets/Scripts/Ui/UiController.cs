@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private MindGroup currentOpenMindGroup;
 
@@ -22,7 +23,10 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     [SerializeField] private TextMeshProUGUI resourceTextBox;
 
+    [SerializeField] private GameObject EventDisplayer;
+
     private UnitController unitController;
+    private BaseController baseController;
 
     private UnitGroup unitGroupObj; // The currently being dragged UnitGroup object
 
@@ -43,20 +47,20 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     [SerializeField]
     private Button DestroyToolButton;
 
-
     private void Awake()
     {
         unitController = FindObjectOfType<UnitController>();
-        GameResources.OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
-        UpdateResourceTextObject();
 
-        BaseController[] controllers = UnityEngine.Object.FindObjectsOfType<BaseController>();
+        BaseController[] controllers = FindObjectsOfType<BaseController>();
 
         foreach (BaseController controller in controllers)
         {
-            if (controller.TeamID == 0)
+            if (controller.TeamID == GameWorld.Instance.LocalTeamId)
             {
-                controller.OnToolChanged += OnToolChanged;
+                baseController = controller;
+                baseController.OnToolChanged += OnToolChanged;
+                baseController.GetGameResources().OnResourceAmountChanged += delegate { UpdateResourceTextObject(); };
+                UpdateResourceTextObject();
                 break;
             }
         }
@@ -64,7 +68,10 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
     private void Start()
     {
-        mainCamera = FindObjectOfType<CameraController>().gameObject;
+        if (FindObjectOfType<CameraController>() != null)
+        {
+            mainCamera = FindObjectOfType<CameraController>().gameObject;
+        }
         miniMaps = GetComponentsInChildren<RectTransform>().Where(x => x.CompareTag("UI-MiniMap")).ToList();
 
         //get the default resolution
@@ -90,7 +97,8 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         if (unitGroupObj == null) return;
-
+        //return gameobject to the mask
+        unitGroupObj.Ui_IconObj.transform.SetParent(unitGroupObj.Ui_IconObj.transform.parent.GetChild(0).GetChild(0));
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
@@ -104,7 +112,7 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         unitGroupObj = null;
     }
 
-    public void OnInitializePotentialDrag(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
@@ -115,8 +123,9 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
         {
             var group = unitController.MindGroupList.GetUnitGroupFromUIObject(result.gameObject);
             if (group != null) unitGroupObj = group;
+            //Remove the gameobject from the mask so it is visible outisde the mask
+            unitGroupObj.Ui_IconObj.transform.SetParent(unitGroupObj.Ui_IconObj.transform.parent.parent.parent);
         }
-
         lastMousePosition = eventData.position;
     }
 
@@ -172,30 +181,13 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
     {
         mindBuilderPanel.SetActive(true);
         currentOpenMindGroup = unitController.GetMindGroup(i);
-        var MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
-        if (MBScript == null)
-        {
-            var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            MBtabbed.mindGroup = currentOpenMindGroup;
-            MBtabbed.GenerateMind();
-            return;
-        }
-
-        MBScript.mindGroup = currentOpenMindGroup;
-        MBScript.GenerateMind();
+        var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
+        MBtabbed.mindGroup = currentOpenMindGroup;
+        MBtabbed.GenerateMind();
     }
 
     public void UI_CloseMindBuilder()
     {
-        var MBScript = mindBuilderPanel.GetComponent<MindBuilderScript>();
-        if (MBScript == null)
-        {
-            var MBtabbed = mindBuilderPanel.GetComponent<MindBuilderTabbed>();
-            mindBuilderPanel.SetActive(false);
-            return;
-        }
-
-        MBScript.ClearMind();
         currentOpenMindGroup = null;
         mindBuilderPanel.SetActive(false);
     }
@@ -223,14 +215,14 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
 
         foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
             if (resourceType != ResourceType.Unknown)
-                sb.Append($" {resourceType}: {GameResources.GetResourceAmount(resourceType)}");
+                sb.Append($" {resourceType}: {baseController.GetGameResources().GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
     }
 
     private void OnToolChanged(object sender, ToolChangedEventArgs args)
     {
-        
+
         if (args.newTool != args.oldTool)
         {
             switch (args.oldTool)
@@ -271,6 +263,39 @@ public class UiController : MonoBehaviour, IInitializePotentialDragHandler, IDra
                     break;
             }
         }
+    }
+
+    public void UpdateEventText(string text, Color? color = null)
+    {
+        StopAllCoroutines();
+        StartCoroutine(UpdateEventTextRoutine(text, color));
+    }
+
+    public IEnumerator UpdateEventTextRoutine(string text, Color? color = null, float seconds = 3f)
+    {
+        float startSeconds = seconds;
+        Text myText = EventDisplayer.GetComponent<Text>();
+        myText.color = color ?? Color.black;
+        myText.text = text;
+        while (seconds > 0)
+        {
+            yield return new WaitForSecondsRealtime(0.1f);
+            Color newColor = myText.color;
+            newColor.a = seconds * 2f / startSeconds;
+            myText.color = newColor;
+            seconds -= 0.1f;
+        }
+        myText.text = "";
+    }
+
+    public void SetTime(float timeScale)
+    {
+        TimeController.Instance.SetTimeScale(timeScale);
+    }
+
+    public void RegisterUnitController(UnitController unitController)
+    {
+        this.unitController = unitController;
     }
 
     private string FormatResource(string spriteName, int val)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class BuildingQueue
             return Mathf.Abs(va.x - vant.x) + Mathf.Abs(va.z - vant.z) < Mathf.Abs(vb.x - vant.x) + Mathf.Abs(vb.z - vant.z) ? -1 : 1;
         });
 
-        var job = Queue.Where((task) => task.Ant == null).FirstOrDefault();
+        var job = Queue.Where((task) => task.Ant == null || task.Ant == ant).FirstOrDefault();
 
         if (job != null)
         {
@@ -67,7 +68,7 @@ public class BuildingQueue
                         bool able = false;
                         foreach (var neighbor in buildingTask.BaseTile.Neighbors)
                         {
-                            if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetComponentInParent<BaseTile>()))
+                            if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetBaseTile()))
                             {
                                 able = true;
                                 break;
@@ -104,7 +105,7 @@ public class BuildingQueue
         {
             foreach (var neighbor in WaitQueue[i].BaseTile.Neighbors)
             {
-                if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetComponentInParent<BaseTile>()))
+                if (Astar.CanFindQueen(neighbor, controller.QueenRoom.GetBaseTile()))
                 {
                     Queue.Add(WaitQueue[i]);
                     WaitQueue.RemoveAt(i);
@@ -140,5 +141,37 @@ public class BuildingQueue
 
         Queue.Remove(task);
         WaitQueue.Remove(task);
+    }
+
+    public BuildingQueueData GetData()
+    {
+        return new BuildingQueueData(Queue, WaitQueue, controller.TeamID);
+    }
+
+    public void SetData(BuildingQueueData data)
+    {
+        foreach (BuildingTask buildingTask in Queue)
+        {
+            GameObject.Destroy(buildingTask.HighlightObj);
+        }
+        Queue.Clear(); 
+        foreach (BuildingTask buildingTask in WaitQueue)
+        {
+            GameObject.Destroy(buildingTask.HighlightObj);
+        }
+        WaitQueue.Clear();
+        foreach(BuildingTaskData buildingTaskData in data.Queue)
+        {
+            BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
+            task.SetData(buildingTaskData);
+            Queue.Add(task);
+        }
+        foreach (BuildingTaskData buildingTaskData in data.WaitQueue)
+        {
+            BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
+            task.SetData(buildingTaskData);
+            WaitQueue.Add(task);
+        }
+        controller = GameWorld.Instance.FindBaseController(data.ControllerID);
     }
 }

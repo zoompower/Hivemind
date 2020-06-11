@@ -15,6 +15,8 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private BaseTile Parent;
 
+    private int TeamId;
+
     public override bool IsDestructable()
     {
         return Destructable;
@@ -46,49 +48,55 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void Start()
     {
-        unitController = FindObjectOfType<UnitController>();
+        unitController = transform.parent.GetComponentInParent<UnitController>();
         if (unitController == null)
         {
-            throw new Exception("There is no unit controller present, please fix this issue.");
+            throw new Exception("There is no unit controller present on one of the base containers, please fix this issue.");
         }
 
         AddEventListeners();
         Parent = GetComponentInParent<BaseTile>();
+        TeamId = Parent.GetComponentInParent<BaseController>().TeamID;
 
-        bool createNew = true;
-
-        foreach (var neighbor in Parent.Neighbors)
+        if (GroupId == Guid.Empty)
         {
-            if (neighbor.RoomScript is BaseUnitRoom)
+            bool createNew = true;
+
+            foreach (var neighbor in Parent.Neighbors)
             {
-                var other = neighbor.RoomScript as BaseUnitRoom;
-                if (other.GroupId == Guid.Empty)
+                if (neighbor.RoomScript is BaseUnitRoom)
                 {
-                    continue;
-                }
-                else
-                {
-                    if (createNew)
+                    var other = neighbor.RoomScript as BaseUnitRoom;
+                    if (other.GroupId == Guid.Empty)
                     {
-                        createNew = false;
-                        GroupId = other.GroupId;
+                        continue;
                     }
-                    else if (other.GroupId != GroupId)
+                    else
                     {
-                        unitController.MergeGroupIntoGroup(other.GroupId, GroupId);
+                        if (createNew)
+                        {
+                            createNew = false;
+                            GroupId = other.GroupId;
+                        }
+                        else if (other.GroupId != GroupId)
+                        {
+                            unitController.MergeGroupIntoGroup(other.GroupId, GroupId);
+                        }
                     }
                 }
             }
-        }
 
-        if (createNew)
-        {
-            GroupId = unitController.CreateUnitGroup();
+            if (createNew)
+            {
+                GroupId = unitController.CreateUnitGroup();
+            }
+
+            AttachUnitGroup();
+
+            unitGroup.AddMax();
         }
 
         AttachUnitGroup();
-
-        unitGroup.AddMax();
 
         InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
     }
@@ -117,6 +125,7 @@ public abstract class BaseUnitRoom : BaseRoom
                 }
 
                 ant.GetComponent<Ant>().unitGroupID = GroupId;
+                ant.GetComponent<Ant>().TeamID = TeamId;
 
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
                 ant.GetComponent<NavMeshAgent>().enabled = true;
@@ -180,6 +189,6 @@ public abstract class BaseUnitRoom : BaseRoom
     {
         unitGroup?.RemoveMax();
         SplitRoom();
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Data;
+using System;
+using UnityEngine;
 
 public class BuildingTask
 {
@@ -19,5 +21,22 @@ public class BuildingTask
     public bool Equals(BaseTile obj)
     {
         return BaseTile.Equals(obj);
+    }
+
+    public BuildingTaskData GetData()
+    {
+        return new BuildingTaskData(IsRemoved, BaseBuildingTool, Ant, HighlightObj, BaseTile);
+    }
+
+    public void SetData(BuildingTaskData data)
+    {
+        IsRemoved = data.IsRemoved;
+        BaseBuildingTool = data.BaseBuildingTool;
+        if(data.AntGuid != "")
+        {
+            Ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+        }
+        BaseTile = GameObject.Find(data.BaseTileName).GetComponent<BaseTile>();
+        HighlightObj = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/BaseBuilding/{data.HighlightObjPrefab}"), BaseTile.transform);
     }
 }

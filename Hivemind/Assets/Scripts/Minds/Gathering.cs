@@ -1,4 +1,4 @@
-﻿using Assets.Scripts;
+﻿using Assets.Scripts.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,8 +32,8 @@ public class Gathering : IMind
 
     private Ant ant;
 
-    private List<GameObject> carryingObjects = new List<GameObject>();
-
+    public List<GameObject> carryingObjects = new List<GameObject>();
+    private List<string> gatheredResources = new List<string>();
 
     private Dictionary<ResourceType, int> inventory = new Dictionary<ResourceType, int>();
     public bool IsScout;
@@ -41,14 +41,21 @@ public class Gathering : IMind
     private bool preparingReturn;
     private bool scouting;
     private ResourceNode target;
-    private bool busy = false;
+    public bool busy = false;
     private bool leavingBase = false;
-    private State state = State.Idle;
+    public State state = State.Idle;
+    private State nextState;
+    private Vector3 scoutingDestination;
+    private float scoutSeconds;
+    private float returnSeconds;
 
     private Vector3 TeleporterExit;
+    private Vector3 TeleporterEntrance;
     private bool enterBase = false;
 
-    public Gathering() : this(ResourceType.Unknown, 1, Direction.None) { }
+    public Gathering() : this(ResourceType.Unknown, 1, Direction.None)
+    {
+    }
 
     public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
     {
@@ -65,14 +72,8 @@ public class Gathering : IMind
     public void Initiate(Ant ant)
     {
         this.ant = ant;
-
-        foreach (BaseController controller in GameObject.FindObjectsOfType<BaseController>())
-        {
-            if (controller.TeamID == ant.TeamID)
-            {
-                TeleporterExit = controller.TeleporterExit.position;
-            }
-        }
+        TeleporterExit = ant.GetBaseController().TeleporterExit;
+        TeleporterEntrance = ant.GetBaseController().TeleporterEntrance;
     }
 
     public void Execute()
@@ -82,7 +83,10 @@ public class Gathering : IMind
         switch (state)
         {
             case State.Idle:
-                ant.GetAgent().isStopped = true;
+                if (ant.GetAgent().isOnNavMesh)
+                {
+                    ant.GetAgent().isStopped = true;
+                }
                 TargetResource();
                 break;
 
@@ -95,11 +99,11 @@ public class Gathering : IMind
 
                 if (!scouting)
                 {
-                    var tempTarget = GameWorld.FindNearestUnknownResource(ant.transform.position);
+                    var tempTarget = GameWorld.Instance.FindNearestUnknownResource(ant.transform.position, ant.TeamID);
                     if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
                     {
                         target = tempTarget;
-                        ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                        ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                         state = State.MovingToStorage;
                         ant.StartCoroutine(Discover());
                         preparingReturn = false;
@@ -127,7 +131,6 @@ public class Gathering : IMind
                 {
                     TargetResource();
                 }
-
                 break;
 
             case State.Gathering:
@@ -147,7 +150,7 @@ public class Gathering : IMind
                 nextHarvest--;
                 if (carryingObjects.Count >= carryWeight)
                 {
-                    ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+                    ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
                     state = State.MovingToStorage;
                 }
                 else
@@ -160,21 +163,22 @@ public class Gathering : IMind
                 break;
 
             case State.MovingToStorage:
-                if (ant.GetStorage() != null)
+                if (ant.GetBaseController()?.QueenRoom != null)
                 {
                     if (ant.AtBase())
                     {
-                        if (IsScout && target != null && !target.knownResource())
+                        if (IsScout && target != null && (target.TeamIsKnown & (1 << ant.TeamID)) == 0)
                         {
-                            target.AddToKnownResourceList();
+                            target.Discover(ant.TeamID);
                             ant.StopCoroutine(ReturnToBase());
                         }
                         if (inventory != null)
                         {
-                            GameResources.AddResources(inventory);
+                            ant.GetBaseController().GetGameResources().AddResources(inventory);
                             inventory.Clear();
                             foreach (var gameObject in carryingObjects) Object.Destroy(gameObject);
                             carryingObjects.Clear();
+                            gatheredResources.Clear();
                             ant.currentSpeed = ant.baseSpeed;
                             ant.UpdateSpeed();
                         }
@@ -182,10 +186,6 @@ public class Gathering : IMind
                         state = State.Idle;
                         busy = false;
                     }
-                }
-                else
-                {
-                    ant.SetStorage(GameWorld.GetStorage());
                 }
 
                 break;
@@ -221,9 +221,9 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
-        var resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType);
+        var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
         if (prefferedType != ResourceType.Unknown && resourceNode == null)
-            resourceNode = GameWorld.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown);
+            resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
         return resourceNode;
     }
 
@@ -238,7 +238,10 @@ public class Gathering : IMind
 
         if (target != null)
         {
-            if (state == State.Idle) ant.GetAgent().isStopped = false;
+            if (state == State.Idle && ant.GetAgent().isOnNavMesh)
+            {
+                ant.GetAgent().isStopped = false;
+            }
             ant.StopCoroutine(Scout());
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
@@ -249,13 +252,15 @@ public class Gathering : IMind
         }
         else if (state == State.Idle && IsScout)
         {
-            ant.GetAgent().isStopped = false;
+            if (ant.GetAgent().isOnNavMesh)
+            {
+                ant.GetAgent().isStopped = false;
+            }
             ant.StartCoroutine(ExitBase(State.Scouting));
-            busy = true;
         }
         else if (!ant.AtBase())
         {
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToStorage;
         }
     }
@@ -263,10 +268,14 @@ public class Gathering : IMind
     private IEnumerator ExitBase(State nextState)
     {
         leavingBase = true;
+        this.nextState = nextState;
+        ant.GetAgent().SetDestination(TeleporterEntrance);
+        yield return new WaitWhile(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) > 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
         leavingBase = false;
+        busy = true;
     }
 
     private IEnumerator EnterBase(Vector3 nextPosition)
@@ -287,73 +296,154 @@ public class Gathering : IMind
         carryingObject.transform.position = new Vector3(ant.transform.position.x,
             ant.transform.position.y + (ant.transform.localScale.y * 2.5f) * (carryingObjects.Count + 1), ant.transform.position.z);
         carryingObjects.Add(carryingObject);
+        gatheredResources.Add(resource.myGuid.ToString());
     }
 
-    private IEnumerator Scout()
+    private IEnumerator Scout(float seconds = -1f, Vector3 scoutingDestination = new Vector3())
     {
-        var destination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y,
-            ant.transform.position.z + Random.Range(-5, 5));
-        switch (prefferedDirection)
+        scoutSeconds = seconds;
+        if (scoutSeconds < 0f)
         {
-            case Direction.None:
-                break;
-
-            case Direction.North:
-                destination.z += 2;
-                break;
-
-            case Direction.West:
-                destination.x -= 2;
-                break;
-
-            case Direction.South:
-                destination.z -= 2;
-                break;
-
-            case Direction.East:
-                destination.x += 2;
-                break;
-
-            case Direction.NorthWest:
-                destination.z += 2;
-                destination.x -= 2;
-                break;
-
-            case Direction.NorthEast:
-                destination.z += 2;
-                destination.x += 2;
-                break;
-
-            case Direction.SouthEast:
-                destination.z -= 2;
-                destination.x += 2;
-                break;
-
-            case Direction.SouthWest:
-                destination.z -= 2;
-                destination.x -= 2;
-                break;
+            scoutSeconds = Random.Range(1, 3);
         }
+        if (scoutingDestination == new Vector3())
+        {
+            scoutingDestination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y, ant.transform.position.z + Random.Range(-5, 5));
+            switch (prefferedDirection)
+            {
+                case Direction.None:
+                    break;
 
-        ant.GetAgent().SetDestination(destination);
-        yield return new WaitForSeconds(Random.Range(1, 3));
+                case Direction.North:
+                    scoutingDestination.z += 2;
+                    break;
+
+                case Direction.West:
+                    scoutingDestination.x -= 2;
+                    break;
+
+                case Direction.South:
+                    scoutingDestination.z -= 2;
+                    break;
+
+                case Direction.East:
+                    scoutingDestination.x += 2;
+                    break;
+
+                case Direction.NorthWest:
+                    scoutingDestination.z += 2;
+                    scoutingDestination.x -= 2;
+                    break;
+
+                case Direction.NorthEast:
+                    scoutingDestination.z += 2;
+                    scoutingDestination.x += 2;
+                    break;
+
+                case Direction.SouthEast:
+                    scoutingDestination.z -= 2;
+                    scoutingDestination.x += 2;
+                    break;
+
+                case Direction.SouthWest:
+                    scoutingDestination.z -= 2;
+                    scoutingDestination.x -= 2;
+                    break;
+            }
+        }
+        this.scoutingDestination = scoutingDestination;
+        ant.GetAgent().SetDestination(scoutingDestination);
+        while (scoutSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            scoutSeconds -= 0.1f;
+        }
         scouting = false;
     }
 
-    private IEnumerator ReturnToBase()
+    private IEnumerator ReturnToBase(float seconds = -1f)
     {
-        yield return new WaitForSeconds(Random.Range(30, 40));
+        returnSeconds = seconds;
+        if (seconds < 0f)
+        {
+            returnSeconds = Random.Range(30, 40);
+        }
+        while (returnSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            returnSeconds -= 0.1f;
+        }
         if (state == State.Scouting)
         {
             target = null;
-            ant.StartCoroutine(EnterBase(ant.GetStorage().GetPosition()));
+            ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
             state = State.MovingToStorage;
             preparingReturn = false;
         }
     }
 
+    public MindData GetData()
+    {
+        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutSeconds, returnSeconds, enterBase, TeleporterExit);
+    }
+
+    public void SetData(MindData mindData)
+    {
+        GatheringData data = mindData as GatheringData;
+        carryingObjects = new List<GameObject>();
+        gatheredResources = new List<string>();
+        inventory = new Dictionary<ResourceType, int>();
+        for (int i = 0; i < data.InventoryKeys.Count; i++)
+        {
+            inventory[data.InventoryKeys[i]] = data.InventoryValues[i];
+        }
+        IsScout = data.IsScout;
+        nextHarvest = data.NextHarvest;
+        preparingReturn = data.PreparingReturn;
+        scouting = data.Scouting;
+        busy = data.Busy;
+        leavingBase = data.LeavingBase;
+        state = data.State;
+        nextState = data.NextState;
+        prefferedType = data.PrefferedType;
+        carryWeight = data.CarryWeight;
+        prefferedDirection = data.PrefferedDirection;
+        enterBase = data.EnterBase;
+        if (data.AntGuid != "")
+        {
+            Initiate(GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid)));
+            foreach (string guid in data.GatheredResources)
+            {
+                carryResource(GameWorld.Instance.FindResourceNode(Guid.Parse(guid)));
+            }
+            ant.UpdateSpeed();
+            ant.StopAllCoroutines();
+            if (scouting)
+            {
+                ant.StartCoroutine(Scout(data.ScoutSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));
+            }
+            if (preparingReturn)
+            {
+                ant.StartCoroutine(ReturnToBase(data.ReturnSeconds));
+            }
+            if (data.TargetGuid != "")
+            {
+                target = GameWorld.Instance.FindResourceNode(Guid.Parse(data.TargetGuid));
+                ant.GetAgent().SetDestination(target.GetPosition());
+            }
+            if (leavingBase)
+            {
+                ant.StartCoroutine(ExitBase(nextState));
+            }
+            else if (enterBase || state == State.MovingToStorage)
+            {
+                ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
+            }
+        }
+    }
+
     public bool IsBusy()
     {
-        return busy;
+        return busy || leavingBase;
     }
 }

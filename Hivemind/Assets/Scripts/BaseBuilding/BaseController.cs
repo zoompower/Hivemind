@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts;
+using Assets.Scripts.Data;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,8 +10,7 @@ public class BaseController : MonoBehaviour
     public int TeamID;
 
     [SerializeField]
-    private int[] CollisionLayers;
-
+    private LayerMask[] ColisionLayers;
     private int LayerMask = 0;
 
     private BaseBuildingTool currentTool;
@@ -27,25 +28,37 @@ public class BaseController : MonoBehaviour
 
     public BuildingQueue BuildingQueue;
 
+    public QueenRoom QueenRoom { get; private set; }
+    [SerializeField]
+    public Transform TeleporterExitTransform;
+    [SerializeField]
+    public Transform TeleporterEntranceTransform;
+
     [NonSerialized]
-    public QueenRoom QueenRoom;
-    [SerializeField]
-    public Transform TeleporterExit;
-    [SerializeField]
-    public Transform TeleporterEntrance;
+    public Vector3 TeleporterExit;
+    [NonSerialized]
+    public Vector3 TeleporterEntrance;
 
     private GameObject highlightObj;
 
     public event EventHandler<ToolChangedEventArgs> OnToolChanged;
 
+    private GameResources gameResources = new GameResources();
+
     void Awake()
     {
-        for (int i = 0; i < CollisionLayers.Length; i++)
+        if (TeleporterEntranceTransform != null && TeleporterExitTransform != null)
         {
-            LayerMask += 1 << CollisionLayers[i];
+            TeleporterExit = TeleporterExitTransform.position;
+            TeleporterEntrance = TeleporterEntranceTransform.position;
+        }
+        for (int i = 0; i < ColisionLayers.Length; i++)
+        {
+            LayerMask += ColisionLayers[i].value;
         }
 
         InvokeRepeating("VerifyBuildingTasks", 1.0f, 5.0f);
+        GameWorld.Instance.AddBaseController(this);
     }
 
     private void Start()
@@ -57,10 +70,9 @@ public class BaseController : MonoBehaviour
 
     void Update()
     {
-        if (true) // TODO: if you are the owner of the base
-        {
-            Highlight();
-        }
+        if (TeamID != GameWorld.Instance.LocalTeamId) return;
+
+        Highlight();
 
         if (Input.GetButtonDown("Fire1") && !EventSystem.current.IsPointerOverGameObject())
         {
@@ -77,7 +89,10 @@ public class BaseController : MonoBehaviour
                     plate = hit.transform.parent.gameObject;
                 }
 
-                OnLeftClick(plate.GetComponent<BaseTile>());
+                if (plate.transform.GetComponentInParent<BaseController>().TeamID == GameWorld.Instance.LocalTeamId)
+                {
+                    OnLeftClick(plate.GetComponent<BaseTile>());
+                }
             }
         }
 
@@ -89,6 +104,7 @@ public class BaseController : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameWorld.Instance.RemoveBaseController(this);
         CancelInvoke("VerifyBuildingTasks");
     }
 
@@ -108,7 +124,7 @@ public class BaseController : MonoBehaviour
 
             var baseTile = plate.GetComponent<BaseTile>();
 
-            if ((HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
+            if (baseTile.transform.GetComponentInParent<BaseController>().TeamID == GameWorld.Instance.LocalTeamId && (HighlightedTile == null || baseTile != HighlightedTile) && highlightObj == null)
             {
                 GameObject highlight = GetHightLightWithTool(baseTile);
                 if (highlight)
@@ -193,7 +209,7 @@ public class BaseController : MonoBehaviour
 
     public void SetTool(int tool)
     {
-        if  (OnToolChanged != null)
+        if (OnToolChanged != null)
         {
             OnToolChanged.Invoke(this, new ToolChangedEventArgs(currentTool, (BaseBuildingTool)tool));
         }
@@ -204,5 +220,41 @@ public class BaseController : MonoBehaviour
     private void VerifyBuildingTasks()
     {
         BuildingQueue.VerifyTasks();
+    }
+
+    public void SetQueenRoom(QueenRoom queenRoom)
+    {
+        QueenRoom = queenRoom;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return QueenRoom.GetPosition();
+    }
+
+    public GameResources GetGameResources()
+    {
+        return gameResources;
+    }
+
+    public BaseControllerData GetData()
+    {
+        return new BaseControllerData(TeamID, currentTool, TeleporterExit, TeleporterEntrance, BuildingQueue, gameObject.transform, gameResources);
+    }
+
+    public void SetData(BaseControllerData data)
+    {
+        TeamID = data.TeamID;
+        SetTool((int)data.CurrentTool);
+        TeleporterExit = new Vector3(data.TeleporterExitX, data.TeleporterExitY, data.TeleporterExitZ);
+        TeleporterEntrance = new Vector3(data.TeleporterEntranceX, data.TeleporterEntranceY, data.TeleporterEntranceZ);
+        BuildingQueue.SetData(data.queueData);
+
+        foreach (BaseTileData baseTileData in data.BaseTileData)
+        {
+            gameObject.transform.Find(baseTileData.Name).GetComponent<BaseTile>().SetData(baseTileData);
+        }
+
+        gameResources.SetData(data.GameResources);
     }
 }

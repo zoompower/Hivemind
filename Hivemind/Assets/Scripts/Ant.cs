@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Ant : MonoBehaviour
 {
+    public Guid myGuid = Guid.NewGuid();
     public int SpatialPositionId;
     private NavMeshAgent agent;
     public float baseSpeed;
@@ -13,15 +14,18 @@ public class Ant : MonoBehaviour
 
     public int health;
     public bool alive;
+    public string Prefab;
 
     private List<IMind> minds = new List<IMind>();
-    private Storage storage;
+    private BaseController baseController;
     internal Guid unitGroupID;
     private AudioSource audioSrc;
 
+    private UnitController unitController;
+
     public Ant closestEnemy { get; private set; }
 
-    public bool isAtBase = true;
+    internal bool isAtBase = true;
 
     public int TeamID;
     private Transform miniMapRenderer;
@@ -42,9 +46,32 @@ public class Ant : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (child.gameObject.layer == UnityEngine.LayerMask.NameToLayer("Minimap"))
+            if (child.gameObject.layer == LayerMask.NameToLayer("Minimap"))
             {
                 miniMapRenderer = child;
+            }
+        }
+        GameWorld.Instance.AddAnt(this);
+
+        var baseControllers = FindObjectsOfType<BaseController>();
+
+        foreach (var controller in baseControllers)
+        {
+            if (controller.TeamID == TeamID)
+            {
+                baseController = controller;
+                break;
+            }
+        }
+
+        var unitControllers = FindObjectsOfType<UnitController>();
+
+        foreach (var controller in unitControllers)
+        {
+            if (controller.TeamId == TeamID)
+            {
+                unitController = controller;
+                break;
             }
         }
     }
@@ -53,12 +80,12 @@ public class Ant : MonoBehaviour
     private void Start()
     {
         alive = true;
-        storage = GameWorld.GetStorage();
         AddEventListeners();
     }
 
     public void OnDestroy()
     {
+        GameWorld.Instance.RemoveAnt(this);
         RemoveEventListeners();
     }
 
@@ -84,7 +111,10 @@ public class Ant : MonoBehaviour
 
             currentIndex++;
         }
-        minds[mindIndex].Execute();
+        if (agent.isOnNavMesh)
+        {
+            minds[mindIndex].Execute();
+        }
     }
 
     private bool IsBusy()
@@ -131,9 +161,9 @@ public class Ant : MonoBehaviour
         return agent;
     }
 
-    public Storage GetStorage()
+    public BaseController GetBaseController()
     {
-        return storage;
+        return baseController;
     }
 
     internal void UpdateSpeed()
@@ -141,22 +171,29 @@ public class Ant : MonoBehaviour
         agent.speed = currentSpeed;
     }
 
-    internal void SetStorage(Storage storage)
+    public void SetunitGroupID(Guid id)
     {
-        this.storage = storage;
+        unitGroupID = id;
+    }
+
+    public void SetAtBase(bool atBase)
+    {
+        isAtBase = atBase;
     }
 
     private void UpdateMind()
     {
         if (AtBase())
         {
-            var mindGroupMind = FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromUnitId(unitGroupID).Minds;
-
-            minds.Clear();
-            for (var i = 0; i < mindGroupMind.Count; i++)
+            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
+            if (mindGroupMind != null)
             {
-                minds.Add(mindGroupMind[i].Clone());
-                minds[i].Initiate(this);
+                minds.Clear();
+                for (var i = 0; i < mindGroupMind.Count; i++)
+                {
+                    minds.Add(mindGroupMind[i].Clone());
+                    minds[i].Initiate(this);
+                }
             }
         }
     }
@@ -176,6 +213,45 @@ public class Ant : MonoBehaviour
         Soldier
     }
 
+    public void Destroy()
+    {
+        DestroyImmediate(gameObject);
+    }
+
+    public AntData GetData()
+    {
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.localScale);
+    }
+
+    public void SetData(AntData data)
+    {
+        Debug.ClearDeveloperConsole();
+        gameObject.SetActive(false);
+        myGuid = Guid.Parse(data.MyGuid);
+        gameObject.transform.parent = GameObject.Find("Ants").transform;
+        baseSpeed = data.BaseSpeed;
+        currentSpeed = data.CurrentSpeed;
+        damage = data.Damage;
+        health = data.Health;
+        Prefab = data.Prefab;
+        minds = data.Minds;
+        unitGroupID = Guid.Parse(data.UnitGroupID);
+        if (data.ClosestEnemy != string.Empty)
+        {
+            closestEnemy = GameWorld.Instance.FindAnt(Guid.Parse(data.ClosestEnemy));
+        }
+        isAtBase = data.IsAtBase;
+        TeamID = data.TeamID;
+        gameObject.SetActive(true);
+        gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
+        transform.localScale = new Vector3(data.ScaleX, data.ScaleY, data.ScaleZ);
+        GetComponent<NavMeshAgent>().enabled = true;
+        for (int i = 0; i < minds.Count; i++)
+        {
+            minds[i].SetData(data.MindData[i]);
+        }
+    }
+
     public void PlaySoundDiscovery()
     {
         audioSrc.Play();
@@ -183,16 +259,17 @@ public class Ant : MonoBehaviour
 
     private void AddEventListeners()
     {
-        FindObjectOfType<UnitController>().OnGroupIdChange += ChangeGroupID;
+        if (unitController)
+            unitController.OnGroupIdChange += ChangeGroupID;
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
     }
 
     private void RemoveEventListeners()
     {
-        if (FindObjectOfType<UnitController>() != null)
+        if (unitController != null)
         {
-            FindObjectOfType<UnitController>().OnGroupIdChange -= ChangeGroupID;
+            unitController.OnGroupIdChange -= ChangeGroupID;
         }
 
         SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
@@ -204,6 +281,16 @@ public class Ant : MonoBehaviour
         {
             unitGroupID = e.newGuid;
         }
+    }
+
+    public List<IMind> GetMinds()
+    {
+        return minds;
+    }
+
+    public void SetMinds(List<IMind> minds)
+    {
+        this.minds = minds;
     }
 
     public void ChangeScale(float scaleAnt, float scaleMinimapRenderer)
