@@ -87,6 +87,7 @@ public class Ant : MonoBehaviour
 
     public void OnDestroy()
     {
+        unitController.MindGroupList.GetUnitGroupFromUnitId(unitGroupID).RemoveUnit();
         GameWorld.Instance.RemoveAnt(this);
         RemoveEventListeners();
     }
@@ -192,7 +193,7 @@ public class Ant : MonoBehaviour
             if (TeamID != 0)
             {
                 minds.Clear();
-                minds = new List<IMind>() { new Gathering(ResourceType.Crystal, 1, Gathering.Direction.East, true) };
+                minds = new List<IMind>() { new Gathering(ResourceType.Crystal, 1, Gathering.Direction.East, true), new CombatMind() };
 
                 foreach (var mind in minds)
                 {

@@ -154,7 +154,6 @@ public class CombatMind : IMind
                     }
                     else
                     {
-                        Debug.Log("Kom ik hier?!");
                         target = null;
                         if (CheckSurroundings())
                         {
