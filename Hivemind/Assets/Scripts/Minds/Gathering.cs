@@ -221,6 +221,8 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
+        if (carryWeight <= 0) return null;
+
         var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
         if (prefferedType != ResourceType.Unknown && resourceNode == null)
             resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);

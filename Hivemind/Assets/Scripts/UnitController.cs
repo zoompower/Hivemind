@@ -19,7 +19,8 @@ public class UnitController : MonoBehaviour
     #region Editor Items
     [NonSerialized]
     public int MindCount;
-    
+    [NonSerialized]
+    public DataEditor[] mindDatas = new DataEditor[0];
     #endregion
 
     private void Awake()
