@@ -15,6 +15,13 @@ public class UnitController : MonoBehaviour
     [NonSerialized]
     public int TeamId;
 
+
+    #region Editor Items
+    [NonSerialized]
+    public int MindCount;
+    
+    #endregion
+
     private void Awake()
     {
         MindGroupList = new MindGroupList(FindObjectOfType<UiController>().UnitGroupObjects);
