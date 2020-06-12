@@ -87,7 +87,7 @@ public class Ant : MonoBehaviour
 
     public void OnDestroy()
     {
-        unitController.MindGroupList.GetUnitGroupFromUnitId(unitGroupID).RemoveUnit();
+        unitController.OnUnitDestroy(unitGroupID);
         GameWorld.Instance.RemoveAnt(this);
         RemoveEventListeners();
     }
