@@ -4,6 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(UnitController))]
 public class UnitControllerEditor : Editor
 {
+    bool foldout;
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -11,6 +12,8 @@ public class UnitControllerEditor : Editor
 
         myTarget.MindCount = EditorGUILayout.IntField("Mind Count", myTarget.MindCount);
 
+
+        foldout = EditorGUILayout.Foldout(foldout, "Mind List");
         EditorGUI.indentLevel++;
         for (int i = 0; i < myTarget.MindCount; i++)
         {
