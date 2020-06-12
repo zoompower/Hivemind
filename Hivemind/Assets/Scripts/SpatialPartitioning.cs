@@ -25,10 +25,10 @@ public class SpatialPartitioning : MonoBehaviour
     {
         //TO DO: delete this when done DEBUGGING
         
-        if(Entities.Count != 0)
+        /*if(Entities.Count != 0)
         {
             Debug.Log(this.name+" Count: "+Entities.Count);
-        }
+        }*/
     }
 
     private void OnTriggerEnter(Collider entity)
