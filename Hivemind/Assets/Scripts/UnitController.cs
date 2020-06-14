@@ -7,25 +7,22 @@ public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
 
-    [NonSerialized]
+    [HideInInspector]
     public UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
 
-    [NonSerialized]
+    [HideInInspector]
     public int TeamId;
 
-
-    #region Editor Items
-    [NonSerialized]
-    public int MindCount;
-    [NonSerialized]
-    public DataEditor[] mindDatas = new DataEditor[0];
-    #endregion
+    // Property for overriding the default minds via the inspector menu
+    public DataEditor[] MindDatas;
 
     private void Awake()
     {
         MindGroupList = new MindGroupList(FindObjectOfType<UiController>().UnitGroupObjects);
+        MindGroupList.OverrideMinds(MindDatas);
+
         TeamId = GetComponent<BaseController>().TeamID;
     }
 

@@ -34,9 +34,9 @@ public class BaseController : MonoBehaviour
     [SerializeField]
     public Transform TeleporterEntranceTransform;
 
-    [NonSerialized]
+    [HideInInspector]
     public Vector3 TeleporterExit;
-    [NonSerialized]
+    [HideInInspector]
     public Vector3 TeleporterEntrance;
 
     private GameObject highlightObj;

@@ -146,4 +146,22 @@ public class MindGroupList
             mindGroupList[i].SetData(mindGroupDatas[i], mindGroupIcons[i], unitIconBase);
         }
     }
+
+    internal void OverrideMinds(DataEditor[] data)
+    {
+        if (data != null && data.Length > 0)
+        {
+            List<IMind> overrideMindList = new List<IMind>();
+            foreach (var dataInfo in data)
+            {
+                overrideMindList.Add(dataInfo.GenerateMind());
+            }
+
+            for (int i = 1; i < mindGroupList.Count; i++)
+            {
+                var group = mindGroupList[i];
+                group.Minds = new List<IMind>(overrideMindList);
+            }
+        }
+    }
 }

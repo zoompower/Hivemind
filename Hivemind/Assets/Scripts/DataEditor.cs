@@ -1,8 +1,13 @@
-﻿public class DataEditor
+﻿using System;
+using UnityEngine;
+
+[Serializable]
+public class DataEditor
 {
     public MindType type;
 
     #region Gathering settings
+    [Range(0, 5)]
     public int CarryWeight;
     public ResourceType PreferredResource;
     public Gathering.Direction PreferredDirection;
@@ -10,7 +15,7 @@
     #endregion
 
     #region Combat settings
-
+    public int VisionRadius;
     #endregion
 
     public IMind GenerateMind()
