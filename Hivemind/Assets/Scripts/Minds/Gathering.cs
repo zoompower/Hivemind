@@ -134,6 +134,11 @@ public class Gathering : IMind
                 break;
 
             case State.Gathering:
+                if(target == null)
+                {
+                    TargetResource();
+                    break;
+                }
                 if (!inventory.ContainsKey(target.resourceType))
                     inventory.Add(target.resourceType, 1);
                 else
@@ -221,10 +226,17 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
-        var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
-        if (prefferedType != ResourceType.Unknown && resourceNode == null)
-            resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
-        return resourceNode;
+        if(carryWeight > 0)
+        {
+            var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
+            if (prefferedType != ResourceType.Unknown && resourceNode == null)
+                resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
+            return resourceNode;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private void TargetResource()
