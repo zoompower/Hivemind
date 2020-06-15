@@ -101,16 +101,24 @@ public class UnitController : MonoBehaviour
         {
             var uGroup = MindGroupList.GetUnitGroupFromUnitId(pair.Key);
 
+            int count = 0;
+
+            for (int i = totalCount; (pair.Value > 0 && i < totalCount + pair.Value) && i < ants.Count; i++)
+            {
+                ants[i].unitGroupID = pair.Key;
+                count++;
+            }
+
             if (pair.Value == 0)
             {
                 uGroup.SetMaxUnits(uGroup.MaxUnits - totalCount);
-                uGroup.SetCurrentUnits(uGroup.CurrentUnits - totalCount, true);
             }
             else
             {
                 uGroup.SetMaxUnits(pair.Value);
-                uGroup.SetCurrentUnits(pair.Value);
             }
+
+            uGroup.SetCurrentUnits(count, true);
 
             for (int i = totalCount; i < totalCount + pair.Value && i < ants.Count; i++)
             {
