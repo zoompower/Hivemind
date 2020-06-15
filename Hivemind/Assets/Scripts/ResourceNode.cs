@@ -36,6 +36,9 @@ public class ResourceNode : MonoBehaviour
 
     private int futureResourceAmount;
 
+    [SerializeField]
+    private bool Recolor;
+
     private void Awake()
     {
         resourceAmount = BaseResourceAmount;
@@ -143,17 +146,17 @@ public class ResourceNode : MonoBehaviour
             Enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
         }
-        if (resourceType == ResourceType.Rock)
-        {
-            ColorResource(resourceAmount);
-        }
+        ColorResource(resourceAmount);
     }
 
     public void ColorResource(int amount)
     {
-        MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
-        float amountLeft = (float)amount / (float)BaseResourceAmount;
-        mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
+        if (Recolor)
+        {
+            MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
+            float amountLeft = (float)amount / (float)BaseResourceAmount;
+            mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
+        }
     }
 
     public bool HasResources()

@@ -82,7 +82,7 @@ public class BuildingQueue
         }
         else
         {
-            if (existingTask.BaseBuildingTool == tool)
+            if (existingTask.BaseBuildingTool == tool || tool == BaseBuildingTool.DestroyRoom)
             {
                 Remove(existingTask, true);
             }

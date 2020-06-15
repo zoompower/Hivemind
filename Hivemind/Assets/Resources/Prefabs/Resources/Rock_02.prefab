@@ -102,6 +102,7 @@ MonoBehaviour:
   DestroyWhenEmpty: 0
   TeamIsKnown: 0
   Prefab: Rock_02
+  Recolor: 1
 --- !u!82 &6949658102422686531
 AudioSource:
   m_ObjectHideFlags: 0
