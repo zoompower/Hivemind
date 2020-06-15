@@ -134,6 +134,11 @@ public class Gathering : IMind
                 break;
 
             case State.Gathering:
+                if(target == null)
+                {
+                    TargetResource();
+                    break;
+                }
                 if (!inventory.ContainsKey(target.resourceType))
                     inventory.Add(target.resourceType, 1);
                 else
