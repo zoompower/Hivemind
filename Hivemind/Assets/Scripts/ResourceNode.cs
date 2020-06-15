@@ -5,9 +5,10 @@ using UnityEngine;
 
 public enum ResourceType
 {
+    Unknown,
     Rock,
     Crystal,
-    Unknown,
+    Food
 }
 
 public class ResourceNode : MonoBehaviour
@@ -24,11 +25,11 @@ public class ResourceNode : MonoBehaviour
     [SerializeField]
     private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
+    [HideInInspector]
     public int TeamIsKnown;
     public string Prefab;
-    public float respawnSeconds;
+    private float respawnSeconds;
 
-    [SerializeField]
     private AudioSource audioSrc;
 
     private int resourceAmount;

@@ -8,7 +8,7 @@ public class DataEditor
 
     #region Gathering settings
     [Range(0, 5)]
-    public int CarryWeight;
+    public int CarryWeight = 1;
     public ResourceType PreferredResource;
     public Gathering.Direction PreferredDirection;
     public bool Scouting;

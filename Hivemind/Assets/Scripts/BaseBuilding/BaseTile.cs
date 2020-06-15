@@ -36,6 +36,8 @@ public class BaseTile : MonoBehaviour
     [SerializeField]
     internal GameObject HighlightPrefab;
 
+    internal bool Loaded = false;
+
     private void Awake()
     {
         FindAndAttachNeighbors();
@@ -48,6 +50,12 @@ public class BaseTile : MonoBehaviour
         {
             InitializeObject(StartObject, true);
         }
+    }
+
+    private void Update()
+    {
+        if (!Loaded)
+            Loaded = true;
     }
 
     private void OnDestroy()

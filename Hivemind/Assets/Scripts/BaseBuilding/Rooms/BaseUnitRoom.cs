@@ -49,6 +49,7 @@ public abstract class BaseUnitRoom : BaseRoom
     private void Start()
     {
         unitController = transform.parent.GetComponentInParent<UnitController>();
+        baseController = transform.parent.GetComponentInParent<BaseController>();
         if (unitController == null)
         {
             throw new Exception("There is no unit controller present on one of the base containers, please fix this issue.");
@@ -98,6 +99,11 @@ public abstract class BaseUnitRoom : BaseRoom
 
         AttachUnitGroup();
 
+        if (!Parent.Loaded)
+        {
+            SpawnUnit();
+        }
+
         InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
     }
 
@@ -108,9 +114,19 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void CheckSpawnable()
     {
-        if (unitGroup.AddUnit())
+        //baseController.GetGameResources().
+        bool enoughFood = true;
+        if (enoughFood)
         {
-            if (UnitResource != null)
+            SpawnUnit();
+        }
+    }
+
+    private void SpawnUnit()
+    {
+        if (UnitResource != null)
+        {
+            if (unitGroup.AddUnit())
             {
                 GameObject ant = Instantiate(Resources.Load(UnitResource) as GameObject);
 
@@ -130,10 +146,10 @@ public abstract class BaseUnitRoom : BaseRoom
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
                 ant.GetComponent<NavMeshAgent>().enabled = true;
             }
-            else
-            {
-                throw new Exception($"The {GetType()} has no UnitResource set!");
-            }
+        }
+        else
+        {
+            throw new Exception($"The {GetType()} has no UnitResource set!");
         }
     }
 
