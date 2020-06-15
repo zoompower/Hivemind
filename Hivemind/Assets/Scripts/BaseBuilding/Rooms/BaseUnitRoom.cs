@@ -17,6 +17,8 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private int TeamId;
 
+    internal Dictionary<ResourceType, int> RespawnCost;
+
     public override bool IsDestructable()
     {
         return Destructable;
@@ -114,9 +116,7 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void CheckSpawnable()
     {
-        //baseController.GetGameResources().
-        bool enoughFood = true;
-        if (enoughFood)
+        if (GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()))
         {
             SpawnUnit();
         }
