@@ -151,16 +151,15 @@ public class MindGroupList
     {
         if (data != null && data.Length > 0)
         {
-            List<IMind> overrideMindList = new List<IMind>();
-            foreach (var dataInfo in data)
-            {
-                overrideMindList.Add(dataInfo.GenerateMind());
-            }
-
             for (int i = 1; i < mindGroupList.Count; i++)
             {
+                List<IMind> overrideMindList = new List<IMind>();
+                foreach (var dataInfo in data)
+                {
+                    overrideMindList.Add(dataInfo.GenerateMind());
+                }
                 var group = mindGroupList[i];
-                group.Minds = new List<IMind>(overrideMindList);
+                group.Minds = overrideMindList;
             }
         }
     }
