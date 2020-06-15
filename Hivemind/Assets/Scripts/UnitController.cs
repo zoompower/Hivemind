@@ -104,7 +104,7 @@ public class UnitController : MonoBehaviour
             if (pair.Value == 0)
             {
                 uGroup.SetMaxUnits(uGroup.MaxUnits - totalCount);
-                uGroup.SetCurrentUnits(uGroup.MaxUnits + 1, true);
+                uGroup.SetCurrentUnits(uGroup.CurrentUnits - totalCount, true);
             }
             else
             {
