@@ -112,7 +112,7 @@ public class UnitController : MonoBehaviour
                 uGroup.SetCurrentUnits(pair.Value);
             }
 
-            for (int i = totalCount; i < totalCount + pair.Value; i++)
+            for (int i = totalCount; i < totalCount + pair.Value && i < ants.Count; i++)
             {
                 ants[i].unitGroupID = pair.Key;
             }
