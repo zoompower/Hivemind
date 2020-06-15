@@ -277,7 +277,7 @@ public class Gathering : IMind
         leavingBase = true;
         this.nextState = nextState;
         ant.GetAgent().SetDestination(TeleporterEntrance);
-        yield return new WaitWhile(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) > 1f);
+        yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) < 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
