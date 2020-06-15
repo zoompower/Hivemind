@@ -118,6 +118,7 @@ public abstract class BaseUnitRoom : BaseRoom
     {
         if (GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()))
         {
+            baseController.GetGameResources().SubtractResourceAmounts(RespawnCost);
             SpawnUnit();
         }
     }
