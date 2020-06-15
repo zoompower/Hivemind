@@ -57,7 +57,7 @@ public class BuildingQueue
                     //Queue.Add(buildingTask); // TODO: when building walls is gonna be a thing
                     break;
                 case BaseBuildingTool.AntRoom:
-                    if (!tile.IsUnbuildable && tile.RoomScript == null)
+                    if (!tile.IsUnbuildable && tile.RoomScript == null && CalculateAndDoCost(BaseBuildingTool.AntRoom))
                     {
                         Add(buildingTask);
                     }
@@ -84,7 +84,7 @@ public class BuildingQueue
         {
             if (existingTask.BaseBuildingTool == tool)
             {
-                Remove(existingTask);
+                Remove(existingTask, true);
             }
         }
     }
@@ -134,13 +134,18 @@ public class BuildingQueue
         }
     }
 
-    private void Remove(BuildingTask task)
+    private void Remove(BuildingTask task, bool refund = false)
     {
         task.IsRemoved = true;
         GameObject.Destroy(task.HighlightObj);
 
         Queue.Remove(task);
         WaitQueue.Remove(task);
+
+        if (refund)
+        {
+            RefundCost(task.BaseBuildingTool);
+        }
     }
 
     public BuildingQueueData GetData()
@@ -173,5 +178,22 @@ public class BuildingQueue
             WaitQueue.Add(task);
         }
         controller = GameWorld.Instance.FindBaseController(data.ControllerID);
+    }
+
+    private bool CalculateAndDoCost(BaseBuildingTool tool)
+    {
+        Dictionary<ResourceType, int> totalCost = GameResources.GetToolCost(tool);
+
+        if (GameResources.EnoughResources(totalCost, controller.GetGameResources()))
+        {
+            controller.GetGameResources().SubtractResourceAmounts(totalCost);
+            return true;
+        }
+        return false;
+    }
+
+    private void RefundCost(BaseBuildingTool tool)
+    {
+        controller.GetGameResources().AddResources(GameResources.GetToolCost(tool));
     }
 }

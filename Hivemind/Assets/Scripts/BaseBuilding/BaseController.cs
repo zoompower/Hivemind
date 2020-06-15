@@ -164,6 +164,8 @@ public class BaseController : MonoBehaviour
             }
         }
 
+        bool enoughResources = GameResources.EnoughResources(GameResources.GetToolCost(currentTool), gameResources);
+
         switch (currentTool)
         {
             case BaseBuildingTool.Default:
@@ -179,7 +181,16 @@ public class BaseController : MonoBehaviour
                 break;
             case BaseBuildingTool.AntRoom:
                 if (tile.RoomScript == null)
-                    return GetHighlightObj(BaseBuildingTool.AntRoom);
+                {
+                    if (enoughResources)
+                    {
+                        return GetHighlightObj(BaseBuildingTool.AntRoom);
+                    }
+                    else
+                    {
+                        return UnbuildablePrefab;
+                    }
+                }
                 break;
         }
 
