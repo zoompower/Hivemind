@@ -49,7 +49,7 @@ public class GameResources
         SetResourceAmounts(data.ResourceAmountsKeys, data.ResourceAmountsValues);
     }
 
-    internal void SubtractResourceAmounts(Dictionary<ResourceType, int> resourceList)
+    internal void SubtractResources(Dictionary<ResourceType, int> resourceList)
     {
         foreach (var item in resourceList)
         {

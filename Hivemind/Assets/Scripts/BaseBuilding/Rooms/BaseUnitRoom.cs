@@ -18,7 +18,7 @@ public abstract class BaseUnitRoom : BaseRoom
     private int TeamId;
 
     internal Dictionary<ResourceType, int> RespawnCost;
-
+    private bool singleFree = false;
     public override bool IsDestructable()
     {
         return Destructable;
@@ -101,12 +101,12 @@ public abstract class BaseUnitRoom : BaseRoom
 
         AttachUnitGroup();
 
+        InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
+
         if (!Parent.Loaded)
         {
-            SpawnUnit();
+            singleFree = true;
         }
-
-        InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
     }
 
     internal void AttachUnitGroup()
@@ -116,9 +116,8 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void CheckSpawnable()
     {
-        if (GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()))
+        if (GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()) || singleFree)
         {
-            baseController.GetGameResources().SubtractResourceAmounts(RespawnCost);
             SpawnUnit();
         }
     }
@@ -129,6 +128,14 @@ public abstract class BaseUnitRoom : BaseRoom
         {
             if (unitGroup.AddUnit())
             {
+                if (!singleFree)
+                {
+                    baseController.GetGameResources().SubtractResources(RespawnCost);
+                } else
+                {
+                    singleFree = false;
+                }
+
                 GameObject ant = Instantiate(Resources.Load(UnitResource) as GameObject);
 
                 GameObject container = GameObject.Find("Ants");

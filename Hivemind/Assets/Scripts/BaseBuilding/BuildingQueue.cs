@@ -186,7 +186,7 @@ public class BuildingQueue
 
         if (GameResources.EnoughResources(totalCost, controller.GetGameResources()))
         {
-            controller.GetGameResources().SubtractResourceAmounts(totalCost);
+            controller.GetGameResources().SubtractResources(totalCost);
             return true;
         }
         return false;
