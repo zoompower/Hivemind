@@ -23,6 +23,8 @@ public class BaseController : MonoBehaviour
     internal GameObject UnbuildablePrefab;
     [SerializeField]
     internal GameObject IndestructablePrefab;
+    [SerializeField]
+    internal GameObject ScalingWorkerRoomPrefab;
 
     private BaseTile HighlightedTile;
 

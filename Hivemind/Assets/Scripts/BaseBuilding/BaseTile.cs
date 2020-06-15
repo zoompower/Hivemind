@@ -177,6 +177,10 @@ public class BaseTile : MonoBehaviour
                 InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
                 break;
+            case RoomType.ScalingWorkerRoom:
+                InitializeObject(GetComponentInParent<BaseController>().ScalingWorkerRoomPrefab, true);
+                (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
+                break;
         }
         if(CurrTile != null)
         {

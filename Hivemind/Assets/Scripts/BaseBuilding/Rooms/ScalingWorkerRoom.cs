@@ -5,6 +5,11 @@ class ScalingWorkerRoom : WorkerRoom
 {
     private int checkTimer;
 
+    public override RoomType GetRoomType()
+    {
+        return RoomType.ScalingWorkerRoom;
+    }
+
     private void Update()
     {
         if (checkTimer <= 0)
