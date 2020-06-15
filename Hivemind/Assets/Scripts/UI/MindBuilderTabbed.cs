@@ -102,7 +102,19 @@ public class MindBuilderTabbed : MonoBehaviour
     internal void GenerateMind()
     {
         gather = (Gathering) mindGroup.Minds.Find(mind => mind.GetType() == typeof(Gathering));
+        if (gather == null)
+        {
+            gather = new Gathering();
+            mindGroup.Minds.Add(gather);
+        }
+
         combat = (CombatMind) mindGroup.Minds.Find(mind => mind.GetType() == typeof(CombatMind));
+        if (combat == null)
+        {
+            combat = new CombatMind();
+            mindGroup.Minds.Add(combat);
+        }
+
         UpdateResourceValues(gather.carryWeight, gather.IsScout, gather.prefferedType, gather.prefferedDirection);
 
         UpdateCombatValues(combat.GetMinEstimatedDifference(), combat.GetPrefferedHealth());
