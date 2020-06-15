@@ -131,7 +131,8 @@ public abstract class BaseUnitRoom : BaseRoom
                 if (!singleFree)
                 {
                     baseController.GetGameResources().SubtractResources(RespawnCost);
-                } else
+                }
+                else
                 {
                     singleFree = false;
                 }
