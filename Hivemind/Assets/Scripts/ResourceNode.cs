@@ -56,7 +56,9 @@ public class ResourceNode : MonoBehaviour
         }
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-        GameWorld.Instance.AddResource(this);
+        
+        if (GameWorld.Instance)
+            GameWorld.Instance.AddResource(this);
     }
 
     private void Update()
@@ -83,7 +85,8 @@ public class ResourceNode : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameWorld.Instance.RemoveResource(this);
+        if (GameWorld.Instance)
+            GameWorld.Instance.RemoveResource(this);
     }
 
     public void Destroy()
