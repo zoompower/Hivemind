@@ -16,7 +16,7 @@ public class QueenRoom : BaseRoom
     private void Die()
     {
         Debug.Log("Queen DIED!");
-        throw new NotImplementedException();
+        GameWorld.Instance.QueenDied(transform.parent.GetComponentInParent<BaseController>().TeamID);
     }
 
     public override RoomType GetRoomType()
