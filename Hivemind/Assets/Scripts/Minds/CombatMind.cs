@@ -31,7 +31,7 @@ public class CombatMind : IMind
     public int EngageRange;
     private Timer AttackCooldown;
     private bool AttackOnCooldown;
-
+    private bool enteredEnemyBase = false;
     public enum State
     {
         Idle,
@@ -68,7 +68,6 @@ public class CombatMind : IMind
         AttackingQueen = true;
         Surroundingcheck = new Timer(1000);
         Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
-
     }
 
     public IMind Clone()
@@ -80,7 +79,6 @@ public class CombatMind : IMind
     {
         ///SwitchState
         if (leavingBase || enterBase) return;
-        Debug.Log(state);
         switch (state)
         {
             case State.Idle:
@@ -104,15 +102,20 @@ public class CombatMind : IMind
                     {
                         state = State.MovingToTarget;
                     }
-
-                    if (Vector3.Distance(GetEnemyBase().GetPosition(), ant.GetAgent().destination) > 1f)
+                   
+                    if(Vector3.Distance(GetEnemyBase().TeleporterExitTransform.position, ant.GetAgent().destination) > 1f && !enteredEnemyBase)
                     {
-                        Debug.Log("Setting Position");
+                        ant.GetAgent().SetDestination(GetEnemyBase().TeleporterExitTransform.position);
+                    }
+
+                    if (Vector3.Distance(ant.transform.position, ant.GetAgent().destination) <= 1f)
+                    {
+                        enteredEnemyBase = true;
                         ant.GetAgent().SetDestination(GetEnemyBase().GetPosition());
                     }
-                    if (Vector3.Distance(ant.transform.position, GetEnemyBase().transform.position) < 8f)
+
+                    if (Vector3.Distance(ant.transform.position, GetEnemyBase().GetPosition()) < 8f)
                     {
-                        Debug.Log("I HIT it!");
                         AttackQueen();
                     }
 
