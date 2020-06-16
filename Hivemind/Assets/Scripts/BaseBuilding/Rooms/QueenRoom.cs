@@ -1,7 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class QueenRoom : BaseRoom
 {
+    public int health;
+
+    void Update()
+    {
+        if(health < 1)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Queen DIED!");
+        throw new NotImplementedException();
+    }
+
     public override RoomType GetRoomType()
     {
         return RoomType.QueenRoom;
@@ -19,6 +36,7 @@ public class QueenRoom : BaseRoom
 
     private void Start()
     {
+        health = 100;
         foreach(var baseTile in GetComponentInParent<BaseTile>().Neighbors)
         {
             baseTile.IsIndestructable = true;

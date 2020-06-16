@@ -25,7 +25,7 @@ public class CombatMind : IMind
     private bool scouting;
     public Direction prefferedDirection { get; set; }
 
-    public bool AttackQueen;
+    public bool AttackingQueen;
 
     private Ant target;
     public int EngageRange;
@@ -65,7 +65,7 @@ public class CombatMind : IMind
         AttackCooldown.Elapsed += AttackCooldownElapsed;
         EngageRange = 99999;
         IsScout = false;
-        AttackQueen = true;
+        AttackingQueen = true;
         Surroundingcheck = new Timer(1000);
         Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
 
@@ -85,32 +85,35 @@ public class CombatMind : IMind
         {
             case State.Idle:
 
-                if (AttackQueen)
+                if (AttackingQueen)
                 {
                     state = State.AttackingQueen;
-                    Debug.Log("Check AttackQueen");
                 }
 
                 if (CheckSurroundings())
                 {
                     state = State.MovingToTarget;
-                    Debug.Log("Check CheckSurroundings");
                 }
 
                 break;
 
             case State.AttackingQueen:
-                Debug.Log("In state");
-                if (AttackQueen)
+                if (AttackingQueen)
                 {
-                    if (GameWorld.Instance.BaseControllerList[1].transform.position != ant.GetAgent().destination)
+                    if (CheckAttackDistance())
+                    {
+                        state = State.MovingToTarget;
+                    }
+
+                    if (Vector3.Distance(GetEnemyBase().GetPosition(), ant.GetAgent().destination) > 1f)
                     {
                         Debug.Log("Setting Position");
-                        ant.GetAgent().SetDestination(GameWorld.Instance.BaseControllerList[1].transform.position);
+                        ant.GetAgent().SetDestination(GetEnemyBase().GetPosition());
                     }
-                    if (Vector3.Distance(ant.transform.position, GameWorld.Instance.BaseControllerList[1].transform.position) < 1f)
+                    if (Vector3.Distance(ant.transform.position, GetEnemyBase().transform.position) < 8f)
                     {
-                        Debug.Log("Done");
+                        Debug.Log("I HIT it!");
+                        AttackQueen();
                     }
 
                 }
@@ -177,6 +180,18 @@ public class CombatMind : IMind
         }
     }
 
+    private BaseController GetEnemyBase()
+    {
+        foreach(BaseController b in GameWorld.Instance.BaseControllerList)
+        { 
+            if(b.TeamID != ant.TeamID)
+            {
+                return b;
+            } 
+        }
+        return null;
+    }
+
     private bool CheckSurroundings()
     {
         bool FoundEnemy = false;
@@ -231,6 +246,20 @@ public class CombatMind : IMind
         if (!AttackOnCooldown)
         {
             target.health -= ant.damage;
+            AttackOnCooldown = true;
+            AttackCooldown.Start();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private bool AttackQueen()
+    {
+        if (!AttackOnCooldown)
+        {
+            GetEnemyBase().QueenRoom.health -= ant.damage;
             AttackOnCooldown = true;
             AttackCooldown.Start();
             return true;
@@ -362,7 +391,7 @@ public class CombatMind : IMind
         {
             return 100;
         }
-        else if (AttackQueen)
+        else if (AttackingQueen)
         {
             busy = true;
             return 80;
