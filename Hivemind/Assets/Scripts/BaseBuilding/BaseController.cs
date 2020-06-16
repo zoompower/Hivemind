@@ -23,6 +23,8 @@ public class BaseController : MonoBehaviour
     internal GameObject UnbuildablePrefab;
     [SerializeField]
     internal GameObject IndestructablePrefab;
+    [SerializeField]
+    internal GameObject ScalingWorkerRoomPrefab;
 
     private BaseTile HighlightedTile;
 
@@ -34,9 +36,9 @@ public class BaseController : MonoBehaviour
     [SerializeField]
     public Transform TeleporterEntranceTransform;
 
-    [NonSerialized]
+    [HideInInspector]
     public Vector3 TeleporterExit;
-    [NonSerialized]
+    [HideInInspector]
     public Vector3 TeleporterEntrance;
 
     private GameObject highlightObj;

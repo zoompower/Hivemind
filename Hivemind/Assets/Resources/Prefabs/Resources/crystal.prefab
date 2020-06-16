@@ -110,13 +110,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseObject: {fileID: 100000, guid: 4d7cc98ae5cab2947a8d9fa3c15e4fa8, type: 3}
   BaseResourceAmount: 10
-  resourceType: 1
+  resourceType: 2
   CanRespawn: 0
+  Enabled: 1
   TimeToRespawn: 30
   DestroyWhenEmpty: 1
-  IsKnown: 0
+  TeamIsKnown: 0
   Prefab: crystal
-  audioSrc: {fileID: 6742177273389485626}
 --- !u!1001 &3417407799308130966
 PrefabInstance:
   m_ObjectHideFlags: 0

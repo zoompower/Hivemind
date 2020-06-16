@@ -1,4 +1,6 @@
-﻿class WorkerRoom : BaseUnitRoom
+﻿using System.Collections.Generic;
+
+class WorkerRoom : BaseUnitRoom
 {
     public override RoomType GetRoomType()
     {
@@ -7,6 +9,8 @@
 
     private void Awake()
     {
-        UnitResource = "Prefabs/WorkerAnt"; 
+        UnitResource = "Prefabs/WorkerAnt";
+        RespawnCost = new Dictionary<ResourceType, int>() { { ResourceType.Food, 1 } };
+        DefaultRespawnTime = 30;
     }
 }

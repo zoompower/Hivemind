@@ -5,9 +5,10 @@ using UnityEngine;
 
 public enum ResourceType
 {
+    Unknown,
     Rock,
     Crystal,
-    Unknown,
+    Food
 }
 
 public class ResourceNode : MonoBehaviour
@@ -24,16 +25,19 @@ public class ResourceNode : MonoBehaviour
     [SerializeField]
     private int TimeToRespawn = 30;
     public bool DestroyWhenEmpty = false;
+    [HideInInspector]
     public int TeamIsKnown;
     public string Prefab;
-    public float respawnSeconds;
+    private float respawnSeconds;
 
-    [SerializeField]
     private AudioSource audioSrc;
 
     private int resourceAmount;
 
     private int futureResourceAmount;
+
+    [SerializeField]
+    private bool Recolor;
 
     private void Awake()
     {
@@ -52,7 +56,9 @@ public class ResourceNode : MonoBehaviour
         }
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-        GameWorld.Instance.AddResource(this);
+        
+        if (GameWorld.Instance)
+            GameWorld.Instance.AddResource(this);
     }
 
     private void Update()
@@ -79,7 +85,8 @@ public class ResourceNode : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameWorld.Instance.RemoveResource(this);
+        if (GameWorld.Instance)
+            GameWorld.Instance.RemoveResource(this);
     }
 
     public void Destroy()
@@ -142,17 +149,17 @@ public class ResourceNode : MonoBehaviour
             Enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
         }
-        if (resourceType == ResourceType.Rock)
-        {
-            ColorResource(resourceAmount);
-        }
+        ColorResource(resourceAmount);
     }
 
     public void ColorResource(int amount)
     {
-        MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
-        float amountLeft = (float)amount / (float)BaseResourceAmount;
-        mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
+        if (Recolor)
+        {
+            MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
+            float amountLeft = (float)amount / (float)BaseResourceAmount;
+            mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
+        }
     }
 
     public bool HasResources()
