@@ -11,5 +11,6 @@ class WorkerRoom : BaseUnitRoom
     {
         UnitResource = "Prefabs/WorkerAnt";
         RespawnCost = new Dictionary<ResourceType, int>() { { ResourceType.Food, 1 } };
+        DefaultRespawnTime = 30;
     }
 }
