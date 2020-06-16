@@ -25,6 +25,8 @@ public class CombatMind : IMind
     private bool scouting;
     public Direction prefferedDirection { get; set; }
 
+    public bool AttackQueen;
+
     private Ant target;
     public int EngageRange;
     private Timer AttackCooldown;
@@ -34,6 +36,7 @@ public class CombatMind : IMind
     {
         Idle,
         Scouting,
+        AttackingQueen,
         Escort,
         MovingToTarget,
         Engaging,
@@ -62,6 +65,7 @@ public class CombatMind : IMind
         AttackCooldown.Elapsed += AttackCooldownElapsed;
         EngageRange = 99999;
         IsScout = false;
+        AttackQueen = true;
         Surroundingcheck = new Timer(1000);
         Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
 
@@ -76,49 +80,40 @@ public class CombatMind : IMind
     {
         ///SwitchState
         if (leavingBase || enterBase) return;
-
+        Debug.Log(state);
         switch (state)
         {
             case State.Idle:
 
+                if (AttackQueen)
+                {
+                    state = State.AttackingQueen;
+                    Debug.Log("Check AttackQueen");
+                }
+
                 if (CheckSurroundings())
                 {
                     state = State.MovingToTarget;
-                }
-                else
-                {
-                    state = State.Scouting;
+                    Debug.Log("Check CheckSurroundings");
                 }
 
                 break;
 
-            case State.Scouting:
-                if (!preparingReturn)
+            case State.AttackingQueen:
+                Debug.Log("In state");
+                if (AttackQueen)
                 {
-                    preparingReturn = true;
-                    ant.StartCoroutine(ReturnToBase());
-                }
-
-                if (!scouting)
-                {
-                    CheckSurroundings();
-                    if (target != null && Vector3.Distance(ant.transform.position, target.transform.position) < EngageRange)
+                    if (GameWorld.Instance.BaseControllerList[1].transform.position != ant.GetAgent().destination)
                     {
-                        ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
-                        state = State.MovingToTarget;
-                        ant.StartCoroutine(Discover());
+                        Debug.Log("Setting Position");
+                        ant.GetAgent().SetDestination(GameWorld.Instance.BaseControllerList[1].transform.position);
                     }
-                    else
+                    if (Vector3.Distance(ant.transform.position, GameWorld.Instance.BaseControllerList[1].transform.position) < 1f)
                     {
-                        scouting = true;
-                        ant.StartCoroutine(Scout());
+                        Debug.Log("Done");
                     }
+
                 }
-                break;
-
-            case State.Escort:
-                
-
 
                 break;
 
@@ -366,6 +361,11 @@ public class CombatMind : IMind
         if (busy)
         {
             return 100;
+        }
+        else if (AttackQueen)
+        {
+            busy = true;
+            return 80;
         }
         else
         {
