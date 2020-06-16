@@ -7,7 +7,7 @@ class DataEditorDrawer : PropertyDrawer
 	Rect contentPosition;
 
 	float GatheringPropCount = 4;
-	float CombatPropCount = 1;
+	float CombatPropCount = 2;
 
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 	{
@@ -53,6 +53,11 @@ class DataEditorDrawer : PropertyDrawer
 			contentPosition.y += 18f;
 			EditorGUI.indentLevel = 0;
 			EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("VisionRadius"));
+
+			// Scouting bool
+			contentPosition.y += 18f;
+			EditorGUI.indentLevel = 0;
+			EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("AttackingQueen"));
 		}
 
 		EditorGUI.EndProperty();

@@ -23,7 +23,7 @@ public class BaseSpatialPartition : MonoBehaviour
     {
         Entities.Remove(col.gameObject);
     }
-    
+
     public List<GameObject> GetEntities()
     {
         return new List<GameObject>(Entities);
@@ -32,5 +32,10 @@ public class BaseSpatialPartition : MonoBehaviour
     public bool HasEntity(Ant ant)
     {
         return Entities.Contains(ant.gameObject);
+    }
+
+    internal void Remove(GameObject gameObject)
+    {
+        Entities.Remove(gameObject);
     }
 }

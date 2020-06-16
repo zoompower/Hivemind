@@ -16,6 +16,7 @@ public class DataEditor
 
     #region Combat settings
     public int VisionRadius;
+    public bool AttackingQueen;
     #endregion
 
     public IMind GenerateMind()
@@ -25,7 +26,7 @@ public class DataEditor
             case MindType.Gathering:
                 return new Gathering(PreferredResource, CarryWeight, PreferredDirection, Scouting);
             case MindType.Combat:
-                return new CombatMind();
+                return new CombatMind(VisionRadius, AttackingQueen);
             default:
                 return null;
         }
