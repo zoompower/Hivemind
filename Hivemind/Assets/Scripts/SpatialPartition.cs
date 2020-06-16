@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SpatialPartition : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject obj;
 

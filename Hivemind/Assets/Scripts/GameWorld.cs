@@ -288,4 +288,19 @@ public class GameWorld : MonoBehaviour
         }
         UiController.ShowEndGameScreen(EndGameMessage);
     }
+
+    public BaseController GetCurrentBase(Ant ant)
+    {
+        if (ant.SpatialPositionId == int.MinValue)
+        {
+            for (int i = 0; i < BaseControllerList.Count; i++)
+            {
+                if (BaseControllerList[i].GetSpatialPartition().HasEntity(ant))
+                {
+                    return BaseControllerList[i];
+                }
+            }
+        }
+        return null;
+    }
 }

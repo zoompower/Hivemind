@@ -195,10 +195,18 @@ public class CombatMind : IMind
     private bool CheckSurroundings()
     {
         bool FoundEnemy = false;
-        if (ant.SpatialPositionId != 0)
+        List<GameObject> entityList = new List<GameObject>();
+
+        if (ant.SpatialPositionId > 0)
         {
+            entityList = GameObject.FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors();
+        }
+        else if (ant.SpatialPositionId == int.MinValue)
+        {
+            entityList = GameWorld.Instance.GetCurrentBase(ant).GetSpatialPartition().GetEntities();
+        }
             target = null;
-            foreach (GameObject a in GameObject.FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors())
+        foreach (GameObject a in entityList)
             {
                 if (a && a.GetComponent<Ant>())
                 {
@@ -212,7 +220,7 @@ public class CombatMind : IMind
                 }
             }
             if (target != null) { FoundEnemy = true; }
-        }
+
 
         return FoundEnemy;
     }
