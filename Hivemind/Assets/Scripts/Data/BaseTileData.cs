@@ -10,8 +10,9 @@ namespace Assets.Scripts.Data
         public float RotationY;
         public string Name;
         public string GroupID;
+        public int RespawnTime;
 
-        public BaseTileData(BaseRoom room, GameObject currTile, string name, Guid groupID)
+        public BaseTileData(BaseRoom room, GameObject currTile, string name, Guid groupID, int respawnTime)
         {
             RoomType = room != null ? room.GetRoomType() : RoomType.None;
             RotationY = currTile != null ? currTile.transform.localEulerAngles.y : 0;
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Data
             {
                 GroupID = groupID.ToString();
             }
+            RespawnTime = respawnTime;
         }
     }
 }

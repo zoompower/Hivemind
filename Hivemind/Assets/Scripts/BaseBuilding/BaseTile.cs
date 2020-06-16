@@ -151,7 +151,7 @@ public class BaseTile : MonoBehaviour
 
     public BaseTileData GetData()
     {
-        return new BaseTileData(RoomScript, CurrTile, gameObject.name, RoomScript is BaseUnitRoom ? (RoomScript as BaseUnitRoom).GroupId : Guid.Empty);
+        return new BaseTileData(RoomScript, CurrTile, gameObject.name, RoomScript is BaseUnitRoom ? (RoomScript as BaseUnitRoom).GroupId : Guid.Empty, RoomScript is BaseUnitRoom ? (RoomScript as BaseUnitRoom).respawnTimer : -0);
     }
 
     public void SetData(BaseTileData data)
@@ -176,10 +176,12 @@ public class BaseTile : MonoBehaviour
             case RoomType.WorkerRoom:
                 InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
+                (RoomScript as BaseUnitRoom).respawnTimer = data.RespawnTime;
                 break;
             case RoomType.ScalingWorkerRoom:
                 InitializeObject(GetComponentInParent<BaseController>().ScalingWorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
+                (RoomScript as BaseUnitRoom).respawnTimer = data.RespawnTime;
                 break;
         }
         if(CurrTile != null)

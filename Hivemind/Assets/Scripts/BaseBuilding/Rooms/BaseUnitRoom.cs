@@ -19,6 +19,9 @@ public abstract class BaseUnitRoom : BaseRoom
 
     internal Dictionary<ResourceType, int> RespawnCost;
     private bool singleFree = false;
+
+    internal int respawnTimer;
+
     public override bool IsDestructable()
     {
         return Destructable;
@@ -116,9 +119,13 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void CheckSpawnable()
     {
-        if (GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()) || singleFree)
+        if ((respawnTimer <= 0 && GameResources.EnoughResources(RespawnCost, baseController.GetGameResources())) || singleFree)
         {
             SpawnUnit();
+        }
+        else
+        {
+            respawnTimer--;
         }
     }
 
