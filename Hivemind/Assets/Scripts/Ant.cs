@@ -147,7 +147,7 @@ public class Ant : MonoBehaviour
 
     public void Die()
     {
-        SpatialPartition.GetSpatialFromGrid(SpatialPositionId).Remove(gameObject);
+        FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(SpatialPositionId).Remove(gameObject);
         Destroy(gameObject);
     }
 
