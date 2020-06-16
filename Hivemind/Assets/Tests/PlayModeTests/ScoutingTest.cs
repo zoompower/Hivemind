@@ -27,6 +27,7 @@ namespace Tests.PlayModeTests
 
             GameObject gameObjectAnt = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
             ant = gameObjectAnt.GetComponent<Ant>();
+            yield return null;
             Gathering gather = new Gathering(ResourceType.Crystal, 1, Gathering.Direction.South, true)
             {
                 state = Gathering.State.Scouting,

@@ -21,8 +21,7 @@ public class GameResources
                 resourceAmounts.Add(resourceType, resources[resourceType]);
             }
         }
-        if (OnResourceAmountChanged != null)
-            OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
+        SendOnResourceAmountChangedEvent();
     }
 
     public int GetResourceAmount(ResourceType resourceType)
@@ -45,8 +44,7 @@ public class GameResources
         {
             resourceAmounts[keyList[i]] = valueList[i];
         }
-        if (OnResourceAmountChanged != null)
-            OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
+        SendOnResourceAmountChangedEvent();
     }
 
     public ResourceDictionaryData GetData()
@@ -57,5 +55,56 @@ public class GameResources
     public void SetData(ResourceDictionaryData data)
     {
         SetResourceAmounts(data.ResourceAmountsKeys, data.ResourceAmountsValues);
+    }
+
+    internal void SubtractResources(Dictionary<ResourceType, int> resourceList)
+    {
+        foreach (var item in resourceList)
+        {
+            if (resourceAmounts.ContainsKey(item.Key))
+            {
+                resourceAmounts[item.Key] -= item.Value;
+            }
+        }
+        SendOnResourceAmountChangedEvent();
+    }
+
+    private void SendOnResourceAmountChangedEvent()
+    {
+        if (OnResourceAmountChanged != null)
+            OnResourceAmountChanged.Invoke(null, EventArgs.Empty);
+    }
+
+    public static Dictionary<ResourceType, int> GetToolCost(BaseBuildingTool tool)
+    {
+        Dictionary<ResourceType, int> totalCost = new Dictionary<ResourceType, int>();
+        switch (tool)
+        {
+            case BaseBuildingTool.Default:
+                break;
+            case BaseBuildingTool.DestroyRoom:
+                break;
+            case BaseBuildingTool.Wall:
+                break;
+            case BaseBuildingTool.AntRoom:
+                totalCost = new Dictionary<ResourceType, int>() { { ResourceType.Rock, 10 } };
+                break;
+            default:
+                break;
+        }
+
+        return totalCost;
+    }
+
+    public static bool EnoughResources(Dictionary<ResourceType, int> costobj, GameResources resources)
+    {
+        foreach (var costItem in costobj)
+        {
+            if (resources.GetResourceAmount(costItem.Key) < costItem.Value)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

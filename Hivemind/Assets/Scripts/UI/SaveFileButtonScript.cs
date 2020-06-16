@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SaveFileButtonScript : MonoBehaviour
 {
-    [NonSerialized]
+    [HideInInspector]
     public string SaveFile;
 
     [SerializeField]

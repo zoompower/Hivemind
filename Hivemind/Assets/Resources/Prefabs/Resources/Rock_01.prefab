@@ -95,13 +95,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseObject: {fileID: 100002, guid: befdde6fd81058948a13ce55df4ac035, type: 3}
   BaseResourceAmount: 30
-  resourceType: 0
+  resourceType: 1
   CanRespawn: 1
+  Enabled: 1
   TimeToRespawn: 30
   DestroyWhenEmpty: 0
-  IsKnown: 0
+  TeamIsKnown: 0
   Prefab: Rock_01
-  audioSrc: {fileID: 8170503628719204321}
+  Recolor: 1
 --- !u!82 &8170503628719204321
 AudioSource:
   m_ObjectHideFlags: 0

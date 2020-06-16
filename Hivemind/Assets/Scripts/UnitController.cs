@@ -7,17 +7,22 @@ public class UnitController : MonoBehaviour
 {
     public MindGroupList MindGroupList { get; private set; }
 
-    [NonSerialized]
+    [HideInInspector]
     public UiController uiController;
 
     public event EventHandler<GroupIdChangedEventArgs> OnGroupIdChange;
 
-    [NonSerialized]
+    [HideInInspector]
     public int TeamId;
+
+    // Property for overriding the default minds via the inspector menu
+    public DataEditor[] MindDatas;
 
     private void Awake()
     {
         MindGroupList = new MindGroupList(FindObjectOfType<UiController>().UnitGroupObjects);
+        MindGroupList.OverrideMinds(MindDatas);
+
         TeamId = GetComponent<BaseController>().TeamID;
     }
 
@@ -96,18 +101,26 @@ public class UnitController : MonoBehaviour
         {
             var uGroup = MindGroupList.GetUnitGroupFromUnitId(pair.Key);
 
+            int count = 0;
+
+            for (int i = totalCount; (pair.Value > 0 && i < totalCount + pair.Value) && i < ants.Count; i++)
+            {
+                ants[i].unitGroupID = pair.Key;
+                count++;
+            }
+
             if (pair.Value == 0)
             {
                 uGroup.SetMaxUnits(uGroup.MaxUnits - totalCount);
-                uGroup.SetCurrentUnits(uGroup.MaxUnits + 1, true);
             }
             else
             {
                 uGroup.SetMaxUnits(pair.Value);
-                uGroup.SetCurrentUnits(pair.Value);
             }
 
-            for (int i = totalCount; i < totalCount + pair.Value; i++)
+            uGroup.SetCurrentUnits(count, true);
+
+            for (int i = totalCount; i < totalCount + pair.Value && i < ants.Count; i++)
             {
                 ants[i].unitGroupID = pair.Key;
             }
