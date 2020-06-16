@@ -50,9 +50,12 @@ public class Ant : MonoBehaviour
             }
         }
         GameWorld.Instance.AddAnt(this);
+    }
 
+    // Start is called before the first frame update
+    private void Start()
+    {
         var baseControllers = FindObjectsOfType<BaseController>();
-
         foreach (var controller in baseControllers)
         {
             if (controller.TeamID == TeamID)
@@ -63,7 +66,6 @@ public class Ant : MonoBehaviour
         }
 
         var unitControllers = FindObjectsOfType<UnitController>();
-
         foreach (var controller in unitControllers)
         {
             if (controller.TeamId == TeamID)
@@ -72,11 +74,6 @@ public class Ant : MonoBehaviour
                 break;
             }
         }
-    }
-
-    // Start is called before the first frame update
-    private void Start()
-    {
         AddEventListeners();
     }
 

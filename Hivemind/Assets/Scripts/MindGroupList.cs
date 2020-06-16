@@ -47,6 +47,8 @@ public class MindGroupList
 
     internal Guid CreateUnitGroup(GameObject unitIconBase)
     {
+        if (unitIconBase == null) return mindGroupList[1].AddUnit(new UnitGroup(unitIconBase));
+
         for (var i = 0; i < mindGroupList.Count; i++)
             return mindGroupList[i].AddUnit(new UnitGroup(unitIconBase));
 
