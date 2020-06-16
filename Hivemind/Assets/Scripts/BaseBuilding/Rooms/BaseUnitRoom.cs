@@ -120,10 +120,12 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void CheckSpawnable()
     {
-        if ((RespawnTimer <= 0 && GameResources.EnoughResources(RespawnCost, baseController.GetGameResources())) || singleFree)
+        if (RespawnTimer <= 0 || singleFree)
         {
-            SpawnUnit();
-            RespawnTimer = DefaultRespawnTime;
+            if (singleFree || GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()))
+            {
+                SpawnUnit();
+            }
         }
         else
         {
@@ -137,6 +139,7 @@ public abstract class BaseUnitRoom : BaseRoom
         {
             if (unitGroup.AddUnit())
             {
+                RespawnTimer = DefaultRespawnTime;
                 if (!singleFree)
                 {
                     baseController.GetGameResources().SubtractResources(RespawnCost);
