@@ -3,28 +3,22 @@ using UnityEngine;
 
 class ScalingWorkerRoom : WorkerRoom
 {
-    private int checkTimer;
-
     public override RoomType GetRoomType()
     {
         return RoomType.ScalingWorkerRoom;
     }
 
-    private void Update()
+    private void Start()
     {
-        if (checkTimer <= 0)
-        {
-            checkTimer = 100;
+        InvokeRepeating("CheckAndScale", 1f, 1f);
+    }
 
-            if (GameResources.EnoughResources(GetScaledUpgradeCost(), baseController.GetGameResources()))
-            {
-                baseController.GetGameResources().SubtractResources(GetScaledUpgradeCost());
-                unitGroup.AddMax();
-            }
-        }
-        else
+    private void CheckAndScale()
+    {
+        if (GameResources.EnoughResources(GetScaledUpgradeCost(), baseController.GetGameResources()))
         {
-            checkTimer--;
+            baseController.GetGameResources().SubtractResources(GetScaledUpgradeCost());
+            unitGroup.AddMax();
         }
     }
 
