@@ -24,6 +24,8 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     [SerializeField] private TextMeshProUGUI resourceTextBox;
 
     [SerializeField] private GameObject EventDisplayer;
+    
+    [SerializeField] private GameObject EndGameScreen;
 
     private UnitController unitController;
     private BaseController baseController;
@@ -301,5 +303,11 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     private string FormatResource(string spriteName, int val)
     {
         return $" <sprite={spriteName}> ({val}/999)";
+    }
+    
+    public void ShowEndGameScreen(string endGameScreenText)
+    {
+        EndGameScreen.SetActive(true);
+        EndGameScreen.GetComponentsInChildren<TMP_Text>().FirstOrDefault(x=> x.name == "EndGameText").text = endGameScreenText;
     }
 }

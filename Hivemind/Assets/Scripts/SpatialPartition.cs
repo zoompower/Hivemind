@@ -7,7 +7,7 @@ public class SpatialPartition : MonoBehaviour
     [SerializeField]
     private GameObject obj;
 
-    public static Dictionary<int, SpatialPartitioning> Grid = new Dictionary<int, SpatialPartitioning>();
+    public Dictionary<int, SpatialPartitioning> Grid = new Dictionary<int, SpatialPartitioning>();
 
     [SerializeField]
     private int width;
@@ -33,13 +33,13 @@ public class SpatialPartition : MonoBehaviour
                 go.GetComponent<SpatialPartitioning>().width = j;
                 go.GetComponent<SpatialPartitioning>().height = i;
                 go.GetComponent<SpatialPartitioning>().Id = id;
-                Grid.Add(id,go.GetComponent<SpatialPartitioning>());
+                Grid.Add(id, go.GetComponent<SpatialPartitioning>());
                 id++;
             }
         }
     }
 
-    public static SpatialPartitioning GetSpatialFromGrid(int Id)
+    public SpatialPartitioning GetSpatialFromGrid(int Id)
     {
         return Grid[Id];
     }

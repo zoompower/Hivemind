@@ -278,4 +278,14 @@ public class GameWorld : MonoBehaviour
             UiController.UpdateEventText("Save file not found!", Color.red);
         }
     }
+
+    public void QueenDied(int teamid)
+    {
+        string EndGameMessage = "Victory";
+        if (teamid == LocalTeamId)
+        {
+            EndGameMessage = "Defeat";
+        }
+        UiController.ShowEndGameScreen(EndGameMessage);
+    }
 }

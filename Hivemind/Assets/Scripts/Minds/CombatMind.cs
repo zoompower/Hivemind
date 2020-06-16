@@ -198,7 +198,7 @@ public class CombatMind : IMind
         if (ant.SpatialPositionId != 0)
         {
             target = null;
-            foreach (GameObject a in SpatialPartition.GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors())
+            foreach (GameObject a in GameObject.FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(ant.SpatialPositionId).GetEntitiesWithNeigbors())
             {
                 if (a && a.GetComponent<Ant>())
                 {
