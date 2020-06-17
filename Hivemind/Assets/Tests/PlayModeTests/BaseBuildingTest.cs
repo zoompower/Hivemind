@@ -65,6 +65,8 @@ namespace Tests.PlayModeTests
             List<BaseTile> baseTiles = GameObject.FindObjectsOfType<BaseTile>().ToList();
             baseTiles = GetBaseTilesFromNames(baseTiles, baseTileNames.ToList());
 
+            GameObject.FindObjectOfType<BaseController>().GetGameResources().AddResources(new Dictionary<ResourceType, int>() { { ResourceType.Food, 5000 } });
+
             yield return new WaitForSeconds(1.3f);
             foreach (BaseTile baseTile in baseTiles)
             {

@@ -4,4 +4,5 @@
     Wall,
     WorkerRoom,
     QueenRoom,
+    ScalingWorkerRoom,
 }

@@ -17,6 +17,12 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private int TeamId;
 
+    internal Dictionary<ResourceType, int> RespawnCost;
+    private bool singleFree = false;
+
+    internal int RespawnTimer;
+    internal int DefaultRespawnTime;
+
     public override bool IsDestructable()
     {
         return Destructable;
@@ -49,6 +55,7 @@ public abstract class BaseUnitRoom : BaseRoom
     private void Start()
     {
         unitController = transform.parent.GetComponentInParent<UnitController>();
+        baseController = transform.parent.GetComponentInParent<BaseController>();
         if (unitController == null)
         {
             throw new Exception("There is no unit controller present on one of the base containers, please fix this issue.");
@@ -99,6 +106,11 @@ public abstract class BaseUnitRoom : BaseRoom
         AttachUnitGroup();
 
         InvokeRepeating("CheckSpawnable", 1.0f, 1.0f);
+
+        if (!Parent.Loaded)
+        {
+            singleFree = true;
+        }
     }
 
     internal void AttachUnitGroup()
@@ -108,10 +120,35 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void CheckSpawnable()
     {
-        if (unitGroup.AddUnit())
+        if (RespawnTimer <= 0 || singleFree)
         {
-            if (UnitResource != null)
+            if (singleFree || GameResources.EnoughResources(RespawnCost, baseController.GetGameResources()))
             {
+                SpawnUnit();
+            }
+        }
+        else
+        {
+            RespawnTimer--;
+        }
+    }
+
+    private void SpawnUnit()
+    {
+        if (UnitResource != null)
+        {
+            if (unitGroup.AddUnit())
+            {
+                RespawnTimer = DefaultRespawnTime;
+                if (!singleFree)
+                {
+                    baseController.GetGameResources().SubtractResources(RespawnCost);
+                }
+                else
+                {
+                    singleFree = false;
+                }
+
                 GameObject ant = Instantiate(Resources.Load(UnitResource) as GameObject);
 
                 GameObject container = GameObject.Find("Ants");
@@ -130,10 +167,10 @@ public abstract class BaseUnitRoom : BaseRoom
                 ant.GetComponent<NavMeshAgent>().Warp(transform.position);
                 ant.GetComponent<NavMeshAgent>().enabled = true;
             }
-            else
-            {
-                throw new Exception($"The {GetType()} has no UnitResource set!");
-            }
+        }
+        else
+        {
+            throw new Exception($"The {GetType()} has no UnitResource set!");
         }
     }
 

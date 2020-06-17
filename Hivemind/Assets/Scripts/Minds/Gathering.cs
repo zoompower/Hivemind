@@ -134,6 +134,11 @@ public class Gathering : IMind
                 break;
 
             case State.Gathering:
+                if(target == null)
+                {
+                    TargetResource();
+                    break;
+                }
                 if (!inventory.ContainsKey(target.resourceType))
                     inventory.Add(target.resourceType, 1);
                 else
@@ -221,6 +226,8 @@ public class Gathering : IMind
 
     private ResourceNode findResource()
     {
+        if (carryWeight <= 0) return null;
+
         var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
         if (prefferedType != ResourceType.Unknown && resourceNode == null)
             resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
@@ -270,7 +277,7 @@ public class Gathering : IMind
         leavingBase = true;
         this.nextState = nextState;
         ant.GetAgent().SetDestination(TeleporterEntrance);
-        yield return new WaitWhile(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) > 1f);
+        yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) < 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;

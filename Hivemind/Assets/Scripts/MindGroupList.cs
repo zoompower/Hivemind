@@ -47,6 +47,8 @@ public class MindGroupList
 
     internal Guid CreateUnitGroup(GameObject unitIconBase)
     {
+        if (unitIconBase == null) return mindGroupList[1].AddUnit(new UnitGroup(unitIconBase));
+
         for (var i = 0; i < mindGroupList.Count; i++)
             return mindGroupList[i].AddUnit(new UnitGroup(unitIconBase));
 
@@ -144,6 +146,23 @@ public class MindGroupList
         {
             mindGroupList.Add(new MindGroup(mindGroupIcons[i]));
             mindGroupList[i].SetData(mindGroupDatas[i], mindGroupIcons[i], unitIconBase);
+        }
+    }
+
+    internal void OverrideMinds(DataEditor[] data)
+    {
+        if (data != null && data.Length > 0)
+        {
+            for (int i = 1; i < mindGroupList.Count; i++)
+            {
+                List<IMind> overrideMindList = new List<IMind>();
+                foreach (var dataInfo in data)
+                {
+                    overrideMindList.Add(dataInfo.GenerateMind());
+                }
+                var group = mindGroupList[i];
+                group.Minds = overrideMindList;
+            }
         }
     }
 }

@@ -22,6 +22,8 @@ public class BaseController : MonoBehaviour
     internal GameObject UnbuildablePrefab;
     [SerializeField]
     internal GameObject IndestructablePrefab;
+    [SerializeField]
+    internal GameObject ScalingWorkerRoomPrefab;
 
     private BaseTile HighlightedTile;
 
@@ -33,9 +35,9 @@ public class BaseController : MonoBehaviour
     [SerializeField]
     public Transform TeleporterEntranceTransform;
 
-    [NonSerialized]
+    [HideInInspector]
     public Vector3 TeleporterExit;
-    [NonSerialized]
+    [HideInInspector]
     public Vector3 TeleporterEntrance;
 
     private GameObject highlightObj;
@@ -46,6 +48,8 @@ public class BaseController : MonoBehaviour
 
     [SerializeField]
     public Color TeamColor;
+
+    private BaseSpatialPartition baseSpatialPartition;
 
     void Awake()
     {
@@ -166,6 +170,8 @@ public class BaseController : MonoBehaviour
             }
         }
 
+        bool enoughResources = GameResources.EnoughResources(GameResources.GetToolCost(currentTool), gameResources);
+
         switch (currentTool)
         {
             case BaseBuildingTool.Default:
@@ -181,7 +187,16 @@ public class BaseController : MonoBehaviour
                 break;
             case BaseBuildingTool.AntRoom:
                 if (tile.RoomScript == null)
-                    return GetHighlightObj(BaseBuildingTool.AntRoom);
+                {
+                    if (enoughResources)
+                    {
+                        return GetHighlightObj(BaseBuildingTool.AntRoom);
+                    }
+                    else
+                    {
+                        return UnbuildablePrefab;
+                    }
+                }
                 break;
         }
 
@@ -258,5 +273,15 @@ public class BaseController : MonoBehaviour
         }
 
         gameResources.SetData(data.GameResources);
+    }
+
+    public void RegisterSpatial(BaseSpatialPartition partition)
+    {
+        baseSpatialPartition = partition;
+    }
+
+    public BaseSpatialPartition GetSpatialPartition()
+    {
+        return baseSpatialPartition;
     }
 }

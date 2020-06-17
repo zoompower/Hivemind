@@ -147,7 +147,14 @@ public class Ant : MonoBehaviour
 
     public void Die()
     {
-        FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(SpatialPositionId).Remove(gameObject);
+        if (SpatialPositionId > 0)
+        {
+            FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(SpatialPositionId).Remove(gameObject);
+        }
+        else if (SpatialPositionId == int.MinValue)
+        {
+            GameWorld.Instance.GetCurrentBase(this).GetSpatialPartition().Remove(gameObject);
+        }
         Destroy(gameObject);
     }
 
@@ -190,17 +197,6 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            if (TeamID != 0)
-            {
-                minds.Clear();
-                minds = new List<IMind>() { new Gathering(ResourceType.Crystal, 1, Gathering.Direction.East, true), new CombatMind() };
-
-                foreach (var mind in minds)
-                {
-                    mind.Initiate(this);
-                }
-                return;
-            }
 
             var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
             if (mindGroupMind != null)

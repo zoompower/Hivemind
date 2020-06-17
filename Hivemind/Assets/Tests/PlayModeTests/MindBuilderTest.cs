@@ -39,7 +39,7 @@ namespace Tests.PlayModeTests
 
         [TestCase(ResourceType.Crystal, 2, Direction.East, true)]
         [TestCase(ResourceType.Rock, 2, Direction.East, true)]
-        [TestCase(ResourceType.Unknown, 10, Direction.South, false)]
+        [TestCase(ResourceType.Unknown, 5, Direction.South, false)]
         [TestCase(ResourceType.Rock, 4, Direction.West, true)]
         public void UpdateResourceMindCorrectly(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
         {
@@ -113,8 +113,8 @@ namespace Tests.PlayModeTests
                 {
                     CombatMind combat = (CombatMind)mind1;
                     CombatMind combat2 = (CombatMind)mind2;
-                    if (!(combat.GetMinEstimatedDifference() == combat2.GetMinEstimatedDifference() &&
-                        combat.GetPrefferedHealth() == combat2.GetPrefferedHealth()))
+                    if (!(combat.AttackingQueen == combat2.AttackingQueen &&
+                        combat.EngageRange == combat2.EngageRange))
                     {
                         returnvalue = false;
                     }

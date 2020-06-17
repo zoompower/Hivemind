@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -220,6 +219,15 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
                 sb.Append($" {resourceType}: {baseController.GetGameResources().GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
+
+        if (GameResources.EnoughResources(GameResources.GetToolCost(BaseBuildingTool.AntRoom), baseController.GetGameResources()))
+        {
+            AntRoomToolButton.interactable = true;
+        }
+        else
+        {
+            AntRoomToolButton.interactable = false;
+        }
     }
 
     private void OnToolChanged(object sender, ToolChangedEventArgs args)
