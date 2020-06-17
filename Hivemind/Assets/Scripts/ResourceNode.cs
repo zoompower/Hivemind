@@ -24,9 +24,12 @@ public class ResourceNode : MonoBehaviour
 
     [SerializeField]
     private int TimeToRespawn = 30;
+
     public bool DestroyWhenEmpty = false;
+
     [HideInInspector]
     public int TeamIsKnown;
+
     public string Prefab;
     private float respawnSeconds;
 
@@ -56,7 +59,7 @@ public class ResourceNode : MonoBehaviour
         }
 
         SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
-        
+
         if (GameWorld.Instance)
             GameWorld.Instance.AddResource(this);
     }

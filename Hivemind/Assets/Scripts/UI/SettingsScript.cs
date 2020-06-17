@@ -35,10 +35,9 @@ public class SettingsScript : MonoBehaviour
 
     public static bool globalFullscreen = true;
 
-    Resolution[] resolutions;
+    private Resolution[] resolutions;
+
     public static event EventHandler OnVolumeChanged;
-
-
 
     private void Awake()
     {
@@ -46,14 +45,14 @@ public class SettingsScript : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         resolutions = Screen.resolutions;
         dropdownMenu.ClearOptions();
         List<Dropdown.OptionData> dropdownElements = new List<Dropdown.OptionData>();
         for (int i = 0; i < resolutions.Length; i++)
         {
-            if(i != 0)
+            if (i != 0)
                 if (CompareRes(resolutions[i], resolutions[i - 1]))
                 {
                     continue;
@@ -75,7 +74,7 @@ public class SettingsScript : MonoBehaviour
 
         if (PlayerPrefs.HasKey("Fullscreen"))
         {
-            globalFullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1); 
+            globalFullscreen = (PlayerPrefs.GetInt("Fullscreen") == 1);
             fullscreenToggle.isOn = globalFullscreen;
             Fullscreen = globalFullscreen;
         }
@@ -105,6 +104,7 @@ public class SettingsScript : MonoBehaviour
         width = resolutions[index].width;
         height = resolutions[index].height;
     }
+
     public void ChangeResolution(int width, int height, bool fullscreen = true)
     {
         globalHeight = height;
@@ -124,10 +124,11 @@ public class SettingsScript : MonoBehaviour
 
     private bool CompareRes(Resolution resolution1, Resolution resolution2)
     {
-        return 
-            (resolution1.width == resolution2.width 
-            && resolution1.height == resolution2.height) ;
+        return
+            (resolution1.width == resolution2.width
+            && resolution1.height == resolution2.height);
     }
+
     public void Save()
     {
         globalWidth = width;
@@ -142,11 +143,12 @@ public class SettingsScript : MonoBehaviour
         mainAudioSource.volume = audioSrc.volume;
         PlayerPrefs.Save();
 
-        if(OnVolumeChanged != null)
+        if (OnVolumeChanged != null)
         {
             OnVolumeChanged.Invoke(null, EventArgs.Empty);
         }
     }
+
     public void Back()
     {
         volumeSlider.value = currentVolume;

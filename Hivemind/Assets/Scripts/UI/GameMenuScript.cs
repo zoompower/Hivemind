@@ -19,8 +19,9 @@ public class GameMenuScript : MonoBehaviour
     private UiController UIgameobject;
 
     private bool paused = false;
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown("escape"))
         {
@@ -35,6 +36,7 @@ public class GameMenuScript : MonoBehaviour
             paused = !paused;
         }
     }
+
     public void ResumeGame()
     {
         LoadMenuPanel.SetActive(false);

@@ -1,6 +1,6 @@
 ﻿// AgentLinkMover.cs
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public enum OffMeshLinkMoveMethod
@@ -16,7 +16,8 @@ public class AgentLinkMover : MonoBehaviour
 {
     public OffMeshLinkMoveMethod method = OffMeshLinkMoveMethod.Parabola;
     public AnimationCurve curve = new AnimationCurve();
-    IEnumerator Start()
+
+    private IEnumerator Start()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
         agent.autoTraverseOffMeshLink = false;
@@ -29,15 +30,19 @@ public class AgentLinkMover : MonoBehaviour
                     case OffMeshLinkMoveMethod.Teleport:
                         yield return StartCoroutine(Teleport(agent));
                         break;
+
                     case OffMeshLinkMoveMethod.NormalSpeed:
                         yield return StartCoroutine(NormalSpeed(agent));
                         break;
+
                     case OffMeshLinkMoveMethod.Parabola:
                         yield return StartCoroutine(Parabola(agent, 2.0f, 0.5f));
                         break;
+
                     case OffMeshLinkMoveMethod.Curve:
                         yield return StartCoroutine(Curve(agent, 0.5f));
                         break;
+
                     default:
                         break;
                 }
@@ -48,7 +53,7 @@ public class AgentLinkMover : MonoBehaviour
         }
     }
 
-    IEnumerator Teleport(NavMeshAgent agent)
+    private IEnumerator Teleport(NavMeshAgent agent)
     {
         OffMeshLinkData data = agent.currentOffMeshLinkData;
         Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
@@ -57,7 +62,7 @@ public class AgentLinkMover : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator NormalSpeed(NavMeshAgent agent)
+    private IEnumerator NormalSpeed(NavMeshAgent agent)
     {
         OffMeshLinkData data = agent.currentOffMeshLinkData;
         Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
@@ -68,7 +73,7 @@ public class AgentLinkMover : MonoBehaviour
         }
     }
 
-    IEnumerator Parabola(NavMeshAgent agent, float height, float duration)
+    private IEnumerator Parabola(NavMeshAgent agent, float height, float duration)
     {
         OffMeshLinkData data = agent.currentOffMeshLinkData;
         Vector3 startPos = agent.transform.position;
@@ -83,7 +88,7 @@ public class AgentLinkMover : MonoBehaviour
         }
     }
 
-    IEnumerator Curve(NavMeshAgent agent, float duration)
+    private IEnumerator Curve(NavMeshAgent agent, float duration)
     {
         OffMeshLinkData data = agent.currentOffMeshLinkData;
         Vector3 startPos = agent.transform.position;

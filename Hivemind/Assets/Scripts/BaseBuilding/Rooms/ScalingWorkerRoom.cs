@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-class ScalingWorkerRoom : WorkerRoom
+internal class ScalingWorkerRoom : WorkerRoom
 {
     public override RoomType GetRoomType()
     {

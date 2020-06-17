@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-static class Astar
+internal static class Astar
 {
     private static List<BaseTile> resetList = new List<BaseTile>();
 
@@ -117,4 +117,3 @@ static class Astar
         return false;
     }
 }
-

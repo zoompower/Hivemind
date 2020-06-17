@@ -7,16 +7,21 @@ public class DataEditor
     public MindType type;
 
     #region Gathering settings
+
     [Range(0, 5)]
     public int CarryWeight = 1;
+
     public ResourceType PreferredResource;
     public Gathering.Direction PreferredDirection;
     public bool Scouting;
-    #endregion
+
+    #endregion Gathering settings
 
     #region Combat settings
+
     public int VisionRadius;
-    #endregion
+
+    #endregion Combat settings
 
     public IMind GenerateMind()
     {
@@ -24,8 +29,10 @@ public class DataEditor
         {
             case MindType.Gathering:
                 return new Gathering(PreferredResource, CarryWeight, PreferredDirection, Scouting);
+
             case MindType.Combat:
                 return new CombatMind();
+
             default:
                 return null;
         }

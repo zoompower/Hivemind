@@ -2,9 +2,9 @@
 
 public class UiRoomController : MonoBehaviour
 {
-    BaseController baseController;
+    private BaseController baseController;
 
-    void Start()
+    private void Start()
     {
         var controllers = FindObjectsOfType<BaseController>();
 

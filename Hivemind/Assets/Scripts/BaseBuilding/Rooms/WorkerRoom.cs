@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-class WorkerRoom : BaseUnitRoom
+internal class WorkerRoom : BaseUnitRoom
 {
     public override RoomType GetRoomType()
     {

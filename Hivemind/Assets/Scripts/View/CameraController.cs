@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height) return;
 

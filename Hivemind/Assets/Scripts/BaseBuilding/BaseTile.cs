@@ -8,6 +8,7 @@ public class BaseTile : MonoBehaviour
 {
     [SerializeField]
     private GameObject StartObject = null;
+
     internal GameObject CurrTile;
     internal BaseRoom RoomScript;
     internal bool AstarVisited = false;
@@ -16,17 +17,22 @@ public class BaseTile : MonoBehaviour
 
     [SerializeField]
     internal bool IsIndestructable = false;
+
     [SerializeField]
     internal bool IsUnbuildable = false;
+
     [SerializeField]
     private int DefaultRotation = -1;
 
     [SerializeField]
     private float CollisionSize = 0.50f;
+
     [SerializeField]
     private bool ShowDebugInfo = false;
+
     [SerializeField]
     private bool ShowMeshPreview = false;
+
     [SerializeField]
     private Color MeshColor = new Color(53.0f / 255.0f, 124.0f / 255.0f, 44.0f / 255.0f);
 
@@ -105,15 +111,18 @@ public class BaseTile : MonoBehaviour
                     DestroyRoom();
                 }
                 break;
+
             case BaseBuildingTool.Wall:
-                    InitializeObject(GetComponentInParent<BaseController>().WallPrefab);
+                InitializeObject(GetComponentInParent<BaseController>().WallPrefab);
                 break;
+
             case BaseBuildingTool.AntRoom:
                 if (!IsUnbuildable)
                 {
                     InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab);
                 }
                 break;
+
             default:
                 if (RoomScript != null && !RoomScript.IsRoom() && !IsIndestructable)
                 {
@@ -156,7 +165,7 @@ public class BaseTile : MonoBehaviour
 
     public void SetData(BaseTileData data)
     {
-        if(data.RoomType != RoomType.QueenRoom)
+        if (data.RoomType != RoomType.QueenRoom)
         {
             Destroy(CurrTile);
             CurrTile = null;
@@ -170,21 +179,24 @@ public class BaseTile : MonoBehaviour
         {
             case RoomType.None:
                 break;
+
             case RoomType.Wall:
                 InitializeObject(GetComponentInParent<BaseController>().WallPrefab, true);
                 break;
+
             case RoomType.WorkerRoom:
                 InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
                 (RoomScript as BaseUnitRoom).RespawnTimer = data.RespawnTime;
                 break;
+
             case RoomType.ScalingWorkerRoom:
                 InitializeObject(GetComponentInParent<BaseController>().ScalingWorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
                 (RoomScript as BaseUnitRoom).RespawnTimer = data.RespawnTime;
                 break;
         }
-        if(CurrTile != null)
+        if (CurrTile != null)
         {
             CurrTile.transform.localEulerAngles = new Vector3(0, data.RotationY, 0);
         }

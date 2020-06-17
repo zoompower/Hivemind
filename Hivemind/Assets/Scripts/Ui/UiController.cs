@@ -36,13 +36,16 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     private Vector2 referenceResolution;
 
     private ColorBlock UnselectedToolButtonColor;
+
     [SerializeField]
     private ColorBlock SelectedToolButtonColor;
 
     [SerializeField]
     private Button DefaultToolButton;
+
     [SerializeField]
     private Button AntRoomToolButton;
+
     [SerializeField]
     private Button DestroyToolButton;
 
@@ -160,7 +163,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
             Vector2 globalPos = new Vector2(miniMaps[i].transform.position.x, miniMaps[i].transform.position.y);
             Vector2 localPosition = mousePosition - (globalPos - (new Vector2(-miniMaps[i].rect.xMin, 0) * scalingMultiplierX));
 
-            //get the scale from 0-1 where in the minimap UI the mouse was 
+            //get the scale from 0-1 where in the minimap UI the mouse was
             //if bigger than 1 or smaller than 0 it means it was outside of the minimap element
             float scaledX = localPosition.x / (miniMaps[i].rect.width * scalingMultiplierX);
             float scaledY = 1 - (localPosition.y / (miniMaps[i].rect.height * scalingMultiplierY));
@@ -230,7 +233,6 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
 
     private void OnToolChanged(object sender, ToolChangedEventArgs args)
     {
-
         if (args.newTool != args.oldTool)
         {
             switch (args.oldTool)
@@ -238,12 +240,15 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
                 case BaseBuildingTool.Default:
                     DefaultToolButton.colors = UnselectedToolButtonColor;
                     break;
+
                 case BaseBuildingTool.DestroyRoom:
                     DestroyToolButton.colors = UnselectedToolButtonColor;
                     break;
+
                 case BaseBuildingTool.Wall:
                     // TODO: when building walls is gonna be a thing
                     break;
+
                 case BaseBuildingTool.AntRoom:
                     AntRoomToolButton.colors = UnselectedToolButtonColor;
                     break;
@@ -258,13 +263,16 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
                     UnselectedToolButtonColor = DefaultToolButton.colors;
                     DefaultToolButton.colors = SelectedToolButtonColor;
                     break;
+
                 case BaseBuildingTool.DestroyRoom:
                     UnselectedToolButtonColor = DestroyToolButton.colors;
                     DestroyToolButton.colors = SelectedToolButtonColor;
                     break;
+
                 case BaseBuildingTool.Wall:
                     // TODO: when building walls is gonna be a thing
                     break;
+
                 case BaseBuildingTool.AntRoom:
                     UnselectedToolButtonColor = AntRoomToolButton.colors;
                     AntRoomToolButton.colors = SelectedToolButtonColor;

@@ -19,7 +19,7 @@ public class QueenRoom : BaseRoom
 
     private void Start()
     {
-        foreach(var baseTile in GetComponentInParent<BaseTile>().Neighbors)
+        foreach (var baseTile in GetComponentInParent<BaseTile>().Neighbors)
         {
             baseTile.IsIndestructable = true;
             baseTile.IsUnbuildable = true;

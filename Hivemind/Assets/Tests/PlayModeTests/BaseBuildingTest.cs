@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using System.Linq;
 
 namespace Tests.PlayModeTests
 {

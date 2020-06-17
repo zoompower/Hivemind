@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -27,7 +27,7 @@ namespace Tests.PlayModeTests
             GameObject gameObjectAnt = MonoBehaviour.Instantiate(Resources.Load("Prefabs/WorkerAnt") as GameObject);
             ant = gameObjectAnt.GetComponent<Ant>();
             yield return null;
-            
+
             Gathering gather = new Gathering(ResourceType.Crystal, 1, Gathering.Direction.South, true);
             gather.state = Gathering.State.Idle;
             ant.SetMinds(new List<IMind>() { gather });
@@ -44,7 +44,6 @@ namespace Tests.PlayModeTests
             resource.GetComponent<ResourceNode>().Discover(ant.TeamID);
             resourceNode = resource.GetComponent<ResourceNode>();
         }
-
 
         [UnityTest]
         public IEnumerator AntpicksUpResourceCorrectly()

@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -17,7 +15,7 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField]
     private AudioSource mainMusic;
 
-    void Start()
+    private void Start()
     {
         settingsMenu.SetActive(true);
         settingsMenu.SetActive(false);
@@ -29,6 +27,7 @@ public class MainMenuScript : MonoBehaviour
             }
         }
     }
+
     public void PlayGame()
     {
         SceneManager.LoadScene("Level_1");

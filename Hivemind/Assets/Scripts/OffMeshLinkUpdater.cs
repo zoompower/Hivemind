@@ -5,7 +5,7 @@ public class OffMeshLinkUpdater : MonoBehaviour
 {
     private OffMeshLink link;
 
-    void Start()
+    private void Start()
     {
         link = GetComponent<OffMeshLink>();
         link.UpdatePositions();

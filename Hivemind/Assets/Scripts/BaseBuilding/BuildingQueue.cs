@@ -53,15 +53,18 @@ public class BuildingQueue
                         Add(buildingTask);
                     }
                     break;
+
                 case BaseBuildingTool.Wall:
                     //Queue.Add(buildingTask); // TODO: when building walls is gonna be a thing
                     break;
+
                 case BaseBuildingTool.AntRoom:
                     if (!tile.IsUnbuildable && tile.RoomScript == null && CalculateAndDoCost(BaseBuildingTool.AntRoom))
                     {
                         Add(buildingTask);
                     }
                     break;
+
                 default:
                     if (tile.RoomScript != null && !tile.RoomScript.IsRoom() && !tile.IsIndestructable)
                     {
@@ -159,13 +162,13 @@ public class BuildingQueue
         {
             GameObject.Destroy(buildingTask.HighlightObj);
         }
-        Queue.Clear(); 
+        Queue.Clear();
         foreach (BuildingTask buildingTask in WaitQueue)
         {
             GameObject.Destroy(buildingTask.HighlightObj);
         }
         WaitQueue.Clear();
-        foreach(BuildingTaskData buildingTaskData in data.Queue)
+        foreach (BuildingTaskData buildingTaskData in data.Queue)
         {
             BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
             task.SetData(buildingTaskData);
