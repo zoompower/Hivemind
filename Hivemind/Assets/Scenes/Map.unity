@@ -2003,6 +2003,11 @@ PrefabInstance:
       propertyPath: MindDatas.Array.data[0].CarryWeight
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5659562022250165478, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: MindDatas.Array.data[1].AttackingQueen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8888611467676301667, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: m_RootOrder
@@ -6011,6 +6016,11 @@ PrefabInstance:
         type: 3}
       propertyPath: MindDatas.Array.data[0].VisionRadius
       value: 865
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659562022250165478, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: MindDatas.Array.data[0].AttackingQueen
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8888611467676301667, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}

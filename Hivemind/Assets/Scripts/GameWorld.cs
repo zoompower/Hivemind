@@ -34,11 +34,6 @@ public class GameWorld : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        UiController = FindObjectOfType<UiController>();
-    }
-
     public ResourceNode FindNearestUnknownResource(Vector3 antPosition, int teamID)
     {
         ResourceNode closest = null;
@@ -68,6 +63,11 @@ public class GameWorld : MonoBehaviour
         {
             Load();
         }
+    }
+
+    public void SetUiController(UiController controller)
+    {
+        UiController = controller;
     }
 
     public ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType, int teamID)

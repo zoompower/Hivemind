@@ -73,12 +73,13 @@ public class CombatMind : IMind
 
     public void Execute()
     {
+        ant.GetAgent().isStopped = false;
         ///SwitchState
         if (leavingBase || enterBase) return;
         switch (state)
         {
             case State.Idle:
-
+                
                 if (AttackingQueen)
                 {
                     ant.StartCoroutine(ExitBase(State.AttackingQueen));
@@ -156,6 +157,10 @@ public class CombatMind : IMind
                         if (CheckSurroundings())
                         {
                             state = State.MovingToTarget;
+                        }
+                        else if (AttackingQueen)
+                        {
+                            state = State.AttackingQueen;
                         }
                         else
                         {
@@ -319,8 +324,8 @@ public class CombatMind : IMind
     public void Initiate(Ant ant)
     {
         this.ant = ant;
-        TeleporterEntrance = ant.GetBaseController().TeleporterEntrance;
-        TeleporterExit = ant.GetBaseController().TeleporterExit;
+        TeleporterEntrance = ant.GetBaseController().TeleporterEntranceTransform.position;
+        TeleporterExit = ant.GetBaseController().TeleporterExitTransform.position;
     }
 
     public double Likelihood()

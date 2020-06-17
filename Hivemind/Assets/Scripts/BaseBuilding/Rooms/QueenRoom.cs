@@ -7,7 +7,7 @@ public class QueenRoom : BaseRoom
 
     void Update()
     {
-        if(health < 1)
+        if (health < 1)
         {
             Die();
         }
@@ -15,8 +15,8 @@ public class QueenRoom : BaseRoom
 
     private void Die()
     {
-        Debug.Log("Queen DIED!");
-        GameWorld.Instance.QueenDied(transform.parent.GetComponentInParent<BaseController>().TeamID);
+        if (GameWorld.Instance)
+            GameWorld.Instance.QueenDied(transform.parent.GetComponentInParent<BaseController>().TeamID);
     }
 
     public override RoomType GetRoomType()
@@ -37,7 +37,7 @@ public class QueenRoom : BaseRoom
     private void Start()
     {
         health = 100;
-        foreach(var baseTile in GetComponentInParent<BaseTile>().Neighbors)
+        foreach (var baseTile in GetComponentInParent<BaseTile>().Neighbors)
         {
             baseTile.IsIndestructable = true;
             baseTile.IsUnbuildable = true;
