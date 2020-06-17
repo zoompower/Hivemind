@@ -1,44 +1,67 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public enum ResourceType
 {
+    Unknown,
     Rock,
     Crystal,
-    Unknown,
+    Food
 }
 
 public class ResourceNode : MonoBehaviour
 {
+    public Guid myGuid = Guid.NewGuid();
     private bool respawningResources = false;
 
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
     public ResourceType resourceType = ResourceType.Unknown;
     public bool CanRespawn = false;
+    public bool Enabled = true;
+
     [SerializeField]
     private int TimeToRespawn = 30;
+
     public bool DestroyWhenEmpty = false;
+
+    [HideInInspector]
+    public int TeamIsKnown;
+
+    public string Prefab;
+    private float respawnSeconds;
+
+    private AudioSource audioSrc;
 
     private int resourceAmount;
 
     private int futureResourceAmount;
+
+    [SerializeField]
+    private bool Recolor;
 
     private void Awake()
     {
         resourceAmount = BaseResourceAmount;
         futureResourceAmount = resourceAmount;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
-        GameWorld.AddNewResource(this);
-    }
-
-    public void AddToKnownResourceList()
-    {
-        if (!GameWorld.KnownResources.Contains(this) && gameObject != null)
+        TeamIsKnown = 0;
+        audioSrc = GetComponent<AudioSource>();
+        if (PlayerPrefs.HasKey("Volume"))
         {
-            gameObject.GetComponent<MeshRenderer>().enabled = true;
-            GameWorld.AddNewKnownResource(this);
+            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
         }
+        if (resourceType == ResourceType.Crystal)
+        {
+            audioSrc.volume *= 2.5f;
+        }
+
+        SettingsScript.OnVolumeChanged += delegate { UpdateVolume(); };
+
+        if (GameWorld.Instance)
+            GameWorld.Instance.AddResource(this);
     }
 
     private void Update()
@@ -49,20 +72,47 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
+    public void Discover(int teamID)
+    {
+        if ((TeamIsKnown & (1 << teamID)) == 0)
+        {
+            TeamIsKnown += 1 << teamID;
+            gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
+        }
+    }
+
     public Vector3 GetPosition()
     {
         return transform.position;
     }
 
-    public void OnDestroy()
+    private void OnDestroy()
     {
-        GameWorld.RemoveResource(this);
+        if (GameWorld.Instance)
+            GameWorld.Instance.RemoveResource(this);
     }
 
-    private IEnumerator respawnResource()
+    public void Destroy()
+    {
+        if (this != null)
+        {
+            DestroyImmediate(gameObject);
+        }
+        SettingsScript.OnVolumeChanged -= delegate { UpdateVolume(); };
+    }
+
+    private IEnumerator respawnResource(float timeToRespawn = -1f)
     {
         respawningResources = true;
-        yield return new WaitForSeconds(TimeToRespawn);
+        if (timeToRespawn < 0)
+        {
+            respawnSeconds = TimeToRespawn;
+        }
+        while (respawnSeconds > 0f)
+        {
+            yield return new WaitForSeconds(0.1f);
+            respawnSeconds -= 0.1f;
+        }
         resourceAmount++;
         futureResourceAmount++;
         ColorResource(resourceAmount);
@@ -84,24 +134,35 @@ public class ResourceNode : MonoBehaviour
         }
     }
 
+    internal void IncreaseResourceAmount(int nextHarvest)
+    {
+        futureResourceAmount += nextHarvest;
+    }
+
     public void GrabResource()
     {
         resourceAmount--;
+        if (audioSrc != null)
+        {
+            audioSrc.Play();
+            audioSrc.SetScheduledEndTime(AudioSettings.dspTime + (1));
+        }
         if (resourceAmount == 0 && DestroyWhenEmpty)
         {
-            Destroy(gameObject);
+            Enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
         }
-        if (resourceType == ResourceType.Rock)
-        {
-            ColorResource(resourceAmount);
-        }
+        ColorResource(resourceAmount);
     }
 
     public void ColorResource(int amount)
     {
-        MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
-        float amountLeft = (float)amount / (float)BaseResourceAmount;
-        mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
+        if (Recolor)
+        {
+            MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
+            float amountLeft = (float)amount / (float)BaseResourceAmount;
+            mesh.material.SetColor("_Color", new Color(amountLeft, amountLeft, amountLeft));
+        }
     }
 
     public bool HasResources()
@@ -109,8 +170,65 @@ public class ResourceNode : MonoBehaviour
         return resourceAmount > 0;
     }
 
+    public int GetResources()
+    {
+        return resourceAmount;
+    }
+
     public int GetResourcesFuture()
     {
         return futureResourceAmount;
+    }
+
+    public ResourceNodeData GetData()
+    {
+        ResourceNodeData data = new ResourceNodeData(myGuid, TeamIsKnown, respawningResources, BaseResourceAmount, resourceType, CanRespawn, TimeToRespawn, DestroyWhenEmpty, resourceAmount, futureResourceAmount, gameObject.transform.position, gameObject.transform.localEulerAngles, Prefab, respawnSeconds, Enabled);
+        return data;
+    }
+
+    public void SetData(ResourceNodeData data)
+    {
+        gameObject.SetActive(false);
+        myGuid = Guid.Parse(data.MyGuid);
+        gameObject.transform.parent = GameObject.Find("Resources").transform.Find(resourceType.ToString() + "s").transform;
+        respawningResources = data.RespawningResources;
+        BaseResourceAmount = data.BaseResourceAmount;
+        resourceType = data.ResourceType;
+        CanRespawn = data.CanRespawn;
+        TimeToRespawn = data.TimeToRespawn;
+        DestroyWhenEmpty = data.DestroyWhenEmpty;
+        resourceAmount = data.ResourceAmount;
+        futureResourceAmount = data.FutureResourceAmount;
+        ColorResource(resourceAmount);
+        TeamIsKnown = data.TeamIsKnown;
+        respawnSeconds = data.RespawnSeconds;
+        gameObject.GetComponent<MeshRenderer>().enabled = (TeamIsKnown & (1 << GameWorld.Instance.LocalTeamId)) > 0;
+
+        Enabled = data.Enabled;
+        if (!Enabled)
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
+        gameObject.SetActive(true);
+        if (respawningResources)
+        {
+            StartCoroutine(respawnResource(respawnSeconds));
+        }
+        gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
+    }
+
+    public void UpdateVolume()
+    {
+        if (audioSrc != null)
+        {
+            if (PlayerPrefs.HasKey("Volume"))
+            {
+                audioSrc.volume = PlayerPrefs.GetFloat("Volume");
+            }
+            if (resourceType == ResourceType.Crystal)
+            {
+                audioSrc.volume *= 1.5f;
+            }
+        }
     }
 }

@@ -4,52 +4,77 @@ using UnityEngine.SceneManagement;
 public class GameMenuScript : MonoBehaviour
 {
     [SerializeField]
-    private GameObject GameMenu;
+    private GameObject PauseMenuPanel;
 
     [SerializeField]
-    private GameObject GameSettingsMenu;
+    private GameObject SettingsMenuPanel;
 
     [SerializeField]
-    private AudioSource audioSrc;
+    private GameObject LoadMenuPanel;
 
+    [SerializeField]
+    private GameObject SaveMenuPanel;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (PlayerPrefs.HasKey("Volume"))
-        {
-            audioSrc.volume = PlayerPrefs.GetFloat("Volume");
-        }
-    }
+    [SerializeField]
+    private UiController UIgameobject;
+
+    private bool paused = false;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown("escape"))
         {
-            if (!GameMenu.activeSelf)
-            {
-                GameMenu.SetActive(true);
-                Time.timeScale = 0;
-            }
-            else
+            if (paused)
             {
                 ResumeGame();
             }
+            else
+            {
+                PauseGame();
+            }
+            paused = !paused;
         }
     }
+
     public void ResumeGame()
     {
-        GameMenu.SetActive(false);
-        Time.timeScale = 1;
+        LoadMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(false);
+        SettingsMenuPanel.SetActive(false);
+        PauseMenuPanel.SetActive(false);
+        TimeController.Instance.ResumeGame();
     }
-    public void ReturnToMenu()
+
+    public void PauseGame()
     {
-        SceneManager.LoadScene("MainMenu");
+        PauseMenuPanel.SetActive(true);
+        TimeController.Instance.PauseGame();
     }
+
+    public void SaveMenu()
+    {
+        PauseMenuPanel.SetActive(false);
+        SaveMenuPanel.SetActive(true);
+        SaveMenuPanel.GetComponent<SaveMenuScript>().Refresh();
+    }
+
+    public void LoadMenu()
+    {
+        PauseMenuPanel.SetActive(false);
+        LoadMenuPanel.SetActive(true);
+        LoadMenuPanel.GetComponent<LoadMenuScript>().Refresh();
+    }
+
     public void SettingsMenu()
     {
-        GameMenu.SetActive(false);
-        GameSettingsMenu.SetActive(true);
+        PauseMenuPanel.SetActive(false);
+        SettingsMenuPanel.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        TimeController.Instance.ResumeGame(1f);
+        SceneManager.LoadScene("MainMenu");
     }
 }

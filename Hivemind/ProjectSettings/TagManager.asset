@@ -7,6 +7,10 @@ TagManager:
   - UI-Unit
   - UI-UnitGroup
   - Resource
+  - Ui-Mind
+  - UI-MindType
+  - MapBoundaries
+  - UI-MiniMap
   layers:
   - Default
   - TransparentFX
@@ -18,8 +22,8 @@ TagManager:
   - 
   - Minimap
   - Environment
-  - 
-  - 
+  - BaseFloor
+  - BaseRoom
   - 
   - 
   - 
