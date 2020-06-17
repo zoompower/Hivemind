@@ -12508,12 +12508,17 @@ PrefabInstance:
     - target: {fileID: 5659562022250165478, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: MindDatas.Array.data[0].CarryWeight
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5659562022250165478, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
       propertyPath: MindDatas.Array.data[1].AttackingQueen
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659562022250165478, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
+        type: 3}
+      propertyPath: MindDatas.Array.data[0].PreferredResource
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8228913769396678830, guid: d8fae2e4a2bb0fb4db1114f40a288a7c,
         type: 3}
