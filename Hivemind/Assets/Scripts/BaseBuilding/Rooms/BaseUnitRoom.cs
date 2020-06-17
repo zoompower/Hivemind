@@ -109,8 +109,9 @@ public abstract class BaseUnitRoom : BaseRoom
 
         if (!Parent.Loaded)
         {
-            singleFree = true;
+            //singleFree = true;
         }
+        baseController.GetGameResources().AddResources(RespawnCost);
     }
 
     internal void AttachUnitGroup()
