@@ -11,4 +11,3 @@ public class GroupIdChangedEventArgs : EventArgs
         this.newGuid = newGuid;
     }
 }
-

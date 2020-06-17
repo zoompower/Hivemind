@@ -10,6 +10,7 @@ public class MindBuilderTabbed : MonoBehaviour
 
     //get resourcemind UI elements
     private Slider CarryWeight;
+
     private CombatMind combat;
     public GameObject combatMindPanel;
     private InputField EstimatedDifference;
@@ -17,6 +18,7 @@ public class MindBuilderTabbed : MonoBehaviour
 
     //save old minds
     private Gathering gather;
+
     [SerializeField]
     private ColorBlock HighlightedColorBlock = new ColorBlock()
     {
@@ -32,6 +34,7 @@ public class MindBuilderTabbed : MonoBehaviour
 
     //get combatmind UI elements
     private InputField PrefferedHealth;
+
     private Dropdown PrefferedType;
     public GameObject resourceMindPanel;
     private Toggle Scouting;
@@ -98,14 +101,14 @@ public class MindBuilderTabbed : MonoBehaviour
 
     internal void GenerateMind()
     {
-        gather = (Gathering) mindGroup.Minds.Find(mind => mind.GetType() == typeof(Gathering));
+        gather = (Gathering)mindGroup.Minds.Find(mind => mind.GetType() == typeof(Gathering));
         if (gather == null)
         {
             gather = new Gathering();
             mindGroup.Minds.Add(gather);
         }
 
-        combat = (CombatMind) mindGroup.Minds.Find(mind => mind.GetType() == typeof(CombatMind));
+        combat = (CombatMind)mindGroup.Minds.Find(mind => mind.GetType() == typeof(CombatMind));
         if (combat == null)
         {
             combat = new CombatMind();
@@ -128,8 +131,8 @@ public class MindBuilderTabbed : MonoBehaviour
         gather.carryWeight = (int)CarryWeight.value;
 
         gather.IsScout = Scouting.isOn;
-        gather.prefferedType = (ResourceType) PrefferedType.value;
-        gather.prefferedDirection = (Gathering.Direction) PrefferedDirection.value;
+        gather.prefferedType = (ResourceType)PrefferedType.value;
+        gather.prefferedDirection = (Gathering.Direction)PrefferedDirection.value;
     }
 
     public void UpdateResourceValues(int carryweight, bool scouting, ResourceType resType, Gathering.Direction direction)

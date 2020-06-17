@@ -12,8 +12,6 @@ public interface IMind
 
     bool IsBusy();
 
-    void GenerateUI();
-
     MindData GetData();
 
     void SetData(MindData mindData);

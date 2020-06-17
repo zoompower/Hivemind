@@ -32,7 +32,7 @@ public class BuildingTask
     {
         IsRemoved = data.IsRemoved;
         BaseBuildingTool = data.BaseBuildingTool;
-        if(data.AntGuid != "")
+        if (data.AntGuid != "")
         {
             Ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
         }

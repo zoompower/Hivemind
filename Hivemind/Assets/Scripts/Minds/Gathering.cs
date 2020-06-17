@@ -134,7 +134,7 @@ public class Gathering : IMind
                 break;
 
             case State.Gathering:
-                if(target == null)
+                if (target == null)
                 {
                     TargetResource();
                     break;
@@ -217,11 +217,6 @@ public class Gathering : IMind
     {
         var clone = new Gathering(prefferedType, carryWeight, prefferedDirection, IsScout);
         return clone;
-    }
-
-    public void GenerateUI()
-    {
-        throw new NotImplementedException();
     }
 
     private ResourceNode findResource()

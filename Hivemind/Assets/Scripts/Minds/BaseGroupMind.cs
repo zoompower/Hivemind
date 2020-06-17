@@ -15,7 +15,6 @@ public class BaseGroupMind : IMind
 
     public BaseGroupMind()
     {
-
     }
 
     public void Initiate(Ant ant)
@@ -62,7 +61,7 @@ public class BaseGroupMind : IMind
             target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.2f + task.BaseTile.transform.position;
             if (Vector3.Distance(target, ant.transform.position) < 1 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
             {
-                if(!ant.GetAgent().isOnNavMesh)
+                if (!ant.GetAgent().isOnNavMesh)
                 {
                     ant.GetAgent().enabled = true;
                 }
@@ -105,11 +104,6 @@ public class BaseGroupMind : IMind
         return new BaseGroupMind();
     }
 
-    public void GenerateUI()
-    {
-        throw new NotImplementedException();
-    }
-
     public double Likelihood()
     {
         return 10000;
@@ -139,4 +133,3 @@ public class BaseGroupMind : IMind
         }
     }
 }
-

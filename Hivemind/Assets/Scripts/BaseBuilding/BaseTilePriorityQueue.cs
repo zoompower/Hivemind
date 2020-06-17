@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-class BaseTilePriorityQueue
+internal class BaseTilePriorityQueue
 {
     private List<BaseTile> queue = new List<BaseTile>();
 

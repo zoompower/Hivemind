@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,18 +10,23 @@ public class BaseController : MonoBehaviour
 
     [SerializeField]
     private LayerMask[] ColisionLayers;
+
     private int LayerMask = 0;
 
     private BaseBuildingTool currentTool;
 
     [SerializeField]
     internal GameObject WallPrefab;
+
     [SerializeField]
     internal GameObject WorkerRoomPrefab;
+
     [SerializeField]
     internal GameObject UnbuildablePrefab;
+
     [SerializeField]
     internal GameObject IndestructablePrefab;
+
     [SerializeField]
     internal GameObject ScalingWorkerRoomPrefab;
 
@@ -31,13 +35,16 @@ public class BaseController : MonoBehaviour
     public BuildingQueue BuildingQueue;
 
     public QueenRoom QueenRoom { get; private set; }
+
     [SerializeField]
     public Transform TeleporterExitTransform;
+
     [SerializeField]
     public Transform TeleporterEntranceTransform;
 
     [HideInInspector]
     public Vector3 TeleporterExit;
+
     [HideInInspector]
     public Vector3 TeleporterEntrance;
 
@@ -47,7 +54,7 @@ public class BaseController : MonoBehaviour
 
     private GameResources gameResources = new GameResources();
 
-    void Awake()
+    private void Awake()
     {
         if (TeleporterEntranceTransform != null && TeleporterExitTransform != null)
         {
@@ -70,7 +77,7 @@ public class BaseController : MonoBehaviour
         SetTool((int)BaseBuildingTool.Default);
     }
 
-    void Update()
+    private void Update()
     {
         if (TeamID != GameWorld.Instance.LocalTeamId) return;
 
@@ -174,13 +181,16 @@ public class BaseController : MonoBehaviour
                 if (tile.RoomScript != null && !tile.RoomScript.IsRoom())
                     return tile.RoomScript.HighlightPrefab;
                 break;
+
             case BaseBuildingTool.DestroyRoom:
                 if (tile.RoomScript != null && tile.RoomScript.IsRoom())
                     return tile.RoomScript.HighlightPrefab;
                 break;
+
             case BaseBuildingTool.Wall:
                 // TODO: when building walls is gonna be a thing
                 break;
+
             case BaseBuildingTool.AntRoom:
                 if (tile.RoomScript == null)
                 {
@@ -205,10 +215,13 @@ public class BaseController : MonoBehaviour
         {
             case BaseBuildingTool.Default:
                 return WallPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+
             case BaseBuildingTool.DestroyRoom:
                 return WorkerRoomPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+
             case BaseBuildingTool.Wall:
                 return WallPrefab.GetComponent<BaseRoom>().HighlightPrefab;
+
             case BaseBuildingTool.AntRoom:
                 return WorkerRoomPrefab.GetComponent<BaseRoom>().HighlightPrefab;
         }

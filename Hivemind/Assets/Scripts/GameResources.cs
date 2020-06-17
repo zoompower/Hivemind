@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Data;
 using System;
 using System.Collections.Generic;
+
 public class GameResources
 {
     public event EventHandler OnResourceAmountChanged;
@@ -74,13 +75,17 @@ public class GameResources
         {
             case BaseBuildingTool.Default:
                 break;
+
             case BaseBuildingTool.DestroyRoom:
                 break;
+
             case BaseBuildingTool.Wall:
                 break;
+
             case BaseBuildingTool.AntRoom:
                 totalCost = new Dictionary<ResourceType, int>() { { ResourceType.Rock, 10 } };
                 break;
+
             default:
                 break;
         }
