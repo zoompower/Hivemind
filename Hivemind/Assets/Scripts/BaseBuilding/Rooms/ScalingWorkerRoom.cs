@@ -8,8 +8,11 @@ class ScalingWorkerRoom : WorkerRoom
         return RoomType.ScalingWorkerRoom;
     }
 
-    private void Start()
+    private void Awake()
     {
+        UnitResource = "Prefabs/WorkerAnt";
+        RespawnCost = new Dictionary<ResourceType, int>() { { ResourceType.Food, 1 } };
+        DefaultRespawnTime = 30;
         InvokeRepeating("CheckAndScale", 1f, 1f);
     }
 

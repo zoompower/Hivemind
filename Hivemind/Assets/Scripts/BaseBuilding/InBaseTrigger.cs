@@ -34,7 +34,7 @@ public class InBaseTrigger : MonoBehaviour
         {
             if (GetComponentInParent<BaseController>().TeamID == ant.TeamID)
             {
-                ant.isAtBase = true;
+                ant.isAtBase = false;
             }
             ant.ChangeScale(outBaseAntScale, outBaseMinimapScale);
         }

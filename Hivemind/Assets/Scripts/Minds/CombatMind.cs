@@ -17,10 +17,12 @@ public class CombatMind : IMind
 
     private State state = State.Idle;
     private bool leavingBase = false;
+    private State nextState;
     private bool enterBase = false;
     private Vector3 TeleporterExit;
 
     public Direction prefferedDirection { get; set; }
+    public Vector3 TeleporterEntrance { get; private set; }
 
     public bool AttackingQueen;
 
@@ -79,7 +81,7 @@ public class CombatMind : IMind
 
                 if (AttackingQueen)
                 {
-                    state = State.AttackingQueen;
+                    ant.StartCoroutine(ExitBase(State.AttackingQueen));
                 }
 
                 if (CheckSurroundings())
@@ -290,10 +292,14 @@ public class CombatMind : IMind
     private IEnumerator ExitBase(State nextState)
     {
         leavingBase = true;
+        this.nextState = nextState;
+        ant.GetAgent().SetDestination(TeleporterEntrance);
+        yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) < 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
         state = nextState;
         leavingBase = false;
+        busy = true;
     }
 
     private IEnumerator EnterBase(Vector3 nextPosition)
@@ -313,6 +319,8 @@ public class CombatMind : IMind
     public void Initiate(Ant ant)
     {
         this.ant = ant;
+        TeleporterEntrance = ant.GetBaseController().TeleporterEntrance;
+        TeleporterExit = ant.GetBaseController().TeleporterExit;
     }
 
     public double Likelihood()
