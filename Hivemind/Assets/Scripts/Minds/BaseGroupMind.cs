@@ -38,6 +38,9 @@ public class BaseGroupMind : IMind
     {
         if (IsBusy() || waiting) return;
 
+        if (ant.GetAgent().isStopped == true)
+            ant.GetAgent().isStopped = false;
+
         var job = controller.BuildingQueue.GetJob(ant);
         if (job != null)
         {
