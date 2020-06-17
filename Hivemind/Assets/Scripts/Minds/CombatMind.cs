@@ -54,7 +54,7 @@ public class CombatMind : IMind
         NorthWest
     }
 
-    public CombatMind() : this(9999, false) { }
+    public CombatMind() : this(2, false) { }
 
     public CombatMind(int engageRange, bool attackingQueen)
     {
