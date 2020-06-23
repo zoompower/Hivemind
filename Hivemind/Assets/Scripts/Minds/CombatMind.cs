@@ -82,6 +82,7 @@ public class CombatMind : IMind
                 
                 if (AttackingQueen)
                 {
+                    if(ant.AtBase())
                     ant.StartCoroutine(ExitBase(State.AttackingQueen));
                 }
 
