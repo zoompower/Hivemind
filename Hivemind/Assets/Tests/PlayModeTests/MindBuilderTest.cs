@@ -113,8 +113,8 @@ namespace Tests.PlayModeTests
                 {
                     CombatMind combat = (CombatMind)mind1;
                     CombatMind combat2 = (CombatMind)mind2;
-                    if (!(combat.GetMinEstimatedDifference() == combat2.GetMinEstimatedDifference() &&
-                        combat.GetPrefferedHealth() == combat2.GetPrefferedHealth()))
+                    if (!(combat.AttackingQueen == combat2.AttackingQueen &&
+                        combat.EngageRange == combat2.EngageRange))
                     {
                         returnvalue = false;
                     }

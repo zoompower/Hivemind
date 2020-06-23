@@ -83,7 +83,7 @@ public class Gathering : IMind
         switch (state)
         {
             case State.Idle:
-                if (ant.GetAgent().isOnNavMesh)
+                if (ant.GetAgent().isOnNavMesh && ant.GetAgent().isStopped == false)
                 {
                     ant.GetAgent().isStopped = true;
                 }

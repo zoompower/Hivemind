@@ -6,12 +6,14 @@ using UnityEngine.AI;
 public class Ant : MonoBehaviour
 {
     public Guid myGuid = Guid.NewGuid();
+    public int SpatialPositionId;
     private NavMeshAgent agent;
     public float baseSpeed;
     public float currentSpeed;
     public int damage;
 
     public int health;
+    public bool alive;
     public string Prefab;
 
     private List<IMind> minds = new List<IMind>();
@@ -56,6 +58,7 @@ public class Ant : MonoBehaviour
     private void Start()
     {
         var baseControllers = FindObjectsOfType<BaseController>();
+
         foreach (var controller in baseControllers)
         {
             if (controller.TeamID == TeamID)
@@ -66,6 +69,7 @@ public class Ant : MonoBehaviour
         }
 
         var unitControllers = FindObjectsOfType<UnitController>();
+
         foreach (var controller in unitControllers)
         {
             if (controller.TeamId == TeamID)
@@ -74,11 +78,16 @@ public class Ant : MonoBehaviour
                 break;
             }
         }
+
+        miniMapRenderer.GetComponent<SpriteRenderer>().color = GetBaseController().TeamColor;
+
+        alive = true;
         AddEventListeners();
     }
 
     public void OnDestroy()
     {
+        unitController.OnUnitDestroy(unitGroupID);
         GameWorld.Instance.RemoveAnt(this);
         RemoveEventListeners();
     }
@@ -86,6 +95,7 @@ public class Ant : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        CheckAlive();
         if (!IsBusy())
             UpdateMind();
 
@@ -130,6 +140,34 @@ public class Ant : MonoBehaviour
         return false;
     }
 
+    public void SetClosestEnemy(Ant c)
+    {
+        closestEnemy = c;
+    }
+
+    public void Die()
+    {
+        if (SpatialPositionId > 0)
+        {
+            FindObjectOfType<SpatialPartition>().GetSpatialFromGrid(SpatialPositionId).Remove(gameObject);
+        }
+        else if (SpatialPositionId == int.MinValue)
+        {
+            GameWorld.Instance.GetCurrentBase(this).GetSpatialPartition().Remove(gameObject);
+        }
+        Destroy(gameObject);
+    }
+
+    public bool CheckAlive()
+    {
+        if (health < 1)
+        {
+            alive = false;
+            Die();
+        }
+        return alive;
+    }
+
     public NavMeshAgent GetAgent()
     {
         return agent;
@@ -159,6 +197,7 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
+
             var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
             if (mindGroupMind != null)
             {

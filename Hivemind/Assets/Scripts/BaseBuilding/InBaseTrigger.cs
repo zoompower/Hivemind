@@ -17,9 +17,12 @@ public class InBaseTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var ant = other.GetComponent<Ant>();
-        if (ant != null && GetComponentInParent<BaseController>().TeamID == ant.TeamID)
+        if (ant != null)
         {
-            ant.isAtBase = true;
+            if (GetComponentInParent<BaseController>().TeamID == ant.TeamID)
+            {
+                ant.isAtBase = true;
+            }
             ant.ChangeScale(inBaseAntScale, inBaseMinimapScale);
         }
     }
@@ -27,9 +30,12 @@ public class InBaseTrigger : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         var ant = other.GetComponent<Ant>();
-        if (ant != null && GetComponentInParent<BaseController>().TeamID == ant.TeamID)
+        if (ant != null)
         {
-            ant.isAtBase = false;
+            if (GetComponentInParent<BaseController>().TeamID == ant.TeamID)
+            {
+                ant.isAtBase = false;
+            }
             ant.ChangeScale(outBaseAntScale, outBaseMinimapScale);
         }
     }

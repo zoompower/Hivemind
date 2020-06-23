@@ -54,7 +54,12 @@ public class BaseController : MonoBehaviour
 
     private GameResources gameResources = new GameResources();
 
-    private void Awake()
+    [SerializeField]
+    public Color TeamColor;
+
+    private BaseSpatialPartition baseSpatialPartition;
+
+    void Awake()
     {
         if (TeleporterEntranceTransform != null && TeleporterExitTransform != null)
         {
@@ -282,5 +287,15 @@ public class BaseController : MonoBehaviour
         }
 
         gameResources.SetData(data.GameResources);
+    }
+
+    public void RegisterSpatial(BaseSpatialPartition partition)
+    {
+        baseSpatialPartition = partition;
+    }
+
+    public BaseSpatialPartition GetSpatialPartition()
+    {
+        return baseSpatialPartition;
     }
 }

@@ -34,11 +34,6 @@ public class GameWorld : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        UiController = FindObjectOfType<UiController>();
-    }
-
     public ResourceNode FindNearestUnknownResource(Vector3 antPosition, int teamID)
     {
         ResourceNode closest = null;
@@ -68,6 +63,11 @@ public class GameWorld : MonoBehaviour
         {
             Load();
         }
+    }
+
+    public void SetUiController(UiController controller)
+    {
+        UiController = controller;
     }
 
     public ResourceNode FindNearestKnownResource(Vector3 antPosition, ResourceType prefType, int teamID)
@@ -277,5 +277,30 @@ public class GameWorld : MonoBehaviour
         {
             UiController.UpdateEventText("Save file not found!", Color.red);
         }
+    }
+
+    public void QueenDied(int teamid)
+    {
+        string EndGameMessage = "Victory";
+        if (teamid == LocalTeamId)
+        {
+            EndGameMessage = "Defeat";
+        }
+        UiController.ShowEndGameScreen(EndGameMessage);
+    }
+
+    public BaseController GetCurrentBase(Ant ant)
+    {
+        if (ant.SpatialPositionId == int.MinValue)
+        {
+            for (int i = 0; i < BaseControllerList.Count; i++)
+            {
+                if (BaseControllerList[i].GetSpatialPartition().HasEntity(ant))
+                {
+                    return BaseControllerList[i];
+                }
+            }
+        }
+        return null;
     }
 }
