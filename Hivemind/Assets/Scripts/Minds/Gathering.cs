@@ -265,7 +265,14 @@ public class Gathering : IMind
             ant.StopCoroutine(ReturnToBase());
             scouting = false;
             nextHarvest = target.DecreaseFutureResources(carryWeight - carryingObjects.Count);
-            ant.GetAgent().SetDestination(target.GetPosition());
+            if (ant.AtBase())
+            {
+                ant.StartCoroutine(ExitBase(State.MovingToResource));
+            }
+            else
+            {
+                ant.GetAgent().SetDestination(target.GetPosition());
+            }
             state = State.MovingToResource;
             busy = true;
         }
