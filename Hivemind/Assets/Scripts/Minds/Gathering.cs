@@ -204,6 +204,10 @@ public class Gathering : IMind
                         state = State.Idle;
                         busy = false;
                     }
+                    else
+                    {
+                        ant.GetAgent().SetDestination(ant.GetBaseController().GetPosition());
+                    }
                 }
 
                 break;
