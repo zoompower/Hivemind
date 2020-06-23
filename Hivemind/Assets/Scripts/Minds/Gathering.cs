@@ -69,6 +69,8 @@ public class Gathering : IMind
     public int carryWeight { get; set; }
     public Direction prefferedDirection { get; set; }
 
+    private Vector3 nextPosition;
+
     public void Initiate(Ant ant)
     {
         this.ant = ant;
@@ -78,7 +80,18 @@ public class Gathering : IMind
 
     public void Execute()
     {
-        if (leavingBase || enterBase) return;
+        if (leavingBase)
+        {
+            if (Vector3.Distance(ant.GetAgent().destination, TeleporterEntrance) > 1f && Vector3.Distance(ant.GetAgent().destination, TeleporterExit) > 1f)
+                ant.StartCoroutine(ExitBase(nextState));
+            return;
+        }
+        if (enterBase)
+        {
+            if (Vector3.Distance(ant.GetAgent().destination, this.nextPosition) > 1f && Vector3.Distance(ant.GetAgent().destination, TeleporterExit) > 1f)
+                ant.StartCoroutine(EnterBase(this.nextPosition));
+            return;
+        }
 
         switch (state)
         {
@@ -283,6 +296,7 @@ public class Gathering : IMind
     private IEnumerator EnterBase(Vector3 nextPosition)
     {
         enterBase = true;
+        this.nextPosition = nextPosition;
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterExit) < 1f);
         ant.GetAgent().SetDestination(nextPosition);
