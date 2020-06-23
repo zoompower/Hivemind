@@ -113,7 +113,7 @@ NavMeshSettings:
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
-    manualCellSize: 0
+    manualCellSize: 1
     cellSize: 0.01
     manualTileSize: 0
     tileSize: 256
@@ -27825,6 +27825,12 @@ PrefabInstance:
       propertyPath: IsIndestructable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
+        type: 3}
+      propertyPath: StartObject
+      value: 
+      objectReference: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
+        type: 3}
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -29356,6 +29362,12 @@ PrefabInstance:
       propertyPath: IsIndestructable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
+        type: 3}
+      propertyPath: StartObject
+      value: 
+      objectReference: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
+        type: 3}
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -43883,6 +43895,12 @@ PrefabInstance:
       propertyPath: IsIndestructable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
+        type: 3}
+      propertyPath: StartObject
+      value: 
+      objectReference: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
+        type: 3}
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -48109,8 +48127,7 @@ PrefabInstance:
         type: 3}
       propertyPath: StartObject
       value: 
-      objectReference: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: ShowDebugInfo
@@ -49993,6 +50010,12 @@ PrefabInstance:
       propertyPath: IsIndestructable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 979918627986714477, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
+        type: 3}
+      propertyPath: StartObject
+      value: 
+      objectReference: {fileID: 7377537905761463474, guid: 25b957907206bbe4fb3f04e73495963f,
+        type: 3}
     - target: {fileID: 1138614240160577454, guid: d4a9009ae1db7ef4d8b1c3e4d7f88d3d,
         type: 3}
       propertyPath: m_LocalPosition.x
