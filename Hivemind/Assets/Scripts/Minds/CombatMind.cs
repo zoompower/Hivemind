@@ -208,7 +208,7 @@ public class CombatMind : IMind
         }
         else if (ant.SpatialPositionId == int.MinValue)
         {
-            entityList = GameWorld.Instance.GetCurrentBase(ant).GetSpatialPartition()?.GetEntities();
+            entityList = GameWorld.Instance.GetCurrentBase(ant)?.GetSpatialPartition()?.GetEntities();
         }
         target = null;
         foreach (GameObject a in entityList)
