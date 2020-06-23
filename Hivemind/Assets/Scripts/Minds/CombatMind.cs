@@ -317,11 +317,6 @@ public class CombatMind : IMind
         enterBase = false;
     }
 
-    public void GenerateUI()
-    {
-        throw new NotImplementedException();
-    }
-
     public void Initiate(Ant ant)
     {
         this.ant = ant;
