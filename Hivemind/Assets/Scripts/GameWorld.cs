@@ -17,7 +17,7 @@ public class GameWorld : MonoBehaviour
     public UiController UiController;
     public List<UnitController> UnitControllerList = new List<UnitController>();
     public List<BaseController> BaseControllerList = new List<BaseController>();
-    public BasicAi Ai;
+    public List<BasicAi> AIList = new List<BasicAi>();
 
     public int LocalTeamId = 0;
 
@@ -113,6 +113,16 @@ public class GameWorld : MonoBehaviour
         AntList.Remove(ant);
     }
 
+    public void AddAI(BasicAi AI)
+    {
+        AIList.Add(AI);
+    }
+
+    public void RemoveAI(BasicAi AI)
+    {
+        AIList.Remove(AI);
+    }
+
     public void AddUnitController(UnitController unitController)
     {
         UnitControllerList.Add(unitController);
@@ -164,7 +174,7 @@ public class GameWorld : MonoBehaviour
             Resources = ResourceList,
             Ants = AntList,
             BaseControllers = BaseControllerList,
-            BasicAIData = Ai.GetData()
+            BasicAi = AIList
         };
 
         foreach (var unitController in UnitControllerList)
@@ -269,7 +279,10 @@ public class GameWorld : MonoBehaviour
             {
                 controller.SetData(saveObject.BaseControllerData.FirstOrDefault(data => data.TeamID == controller.TeamID));
             }
-            Ai.SetData(saveObject.BasicAIData);
+            for (int i = 0; i < saveObject.BasicAi.Count; i++)
+            {
+                AIList[i].SetData(saveObject.BasicAIData[i]);
+            }
             if (name == "QuickSave")
             {
                 UiController.UpdateEventText("QuickLoad Complete!");

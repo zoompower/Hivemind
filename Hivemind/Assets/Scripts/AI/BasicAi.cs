@@ -1,6 +1,4 @@
 ﻿using Assets.Scripts.Data;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicAi : MonoBehaviour
@@ -12,7 +10,7 @@ public class BasicAi : MonoBehaviour
 
     private void Awake()
     {
-        GameWorld.Instance.Ai = this;
+        GameWorld.Instance.AddAI(this);
     }
 
     void Start()
