@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Data;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,11 @@ public class BasicAi : MonoBehaviour
     private UnitController unitController;
     private bool waitingForMindsGotten;
     private int coolingDown = 0;
+
+    private void Awake()
+    {
+        GameWorld.Instance.Ai = this;
+    }
 
     void Start()
     {
@@ -65,5 +71,16 @@ public class BasicAi : MonoBehaviour
     private void OverrideMinds(DataEditor[] datas)
     {
         unitController.MindGroupList.OverrideMinds(datas);
+    }
+
+    public BasicAIData GetData()
+    {
+        return new BasicAIData(waitingForMindsGotten, coolingDown);
+    }
+
+    public void SetData(BasicAIData data)
+    {
+        waitingForMindsGotten = data.WaitingForMindsGotten;
+        coolingDown = data.CoolingDown;
     }
 }

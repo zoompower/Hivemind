@@ -17,6 +17,7 @@ public class GameWorld : MonoBehaviour
     public UiController UiController;
     public List<UnitController> UnitControllerList = new List<UnitController>();
     public List<BaseController> BaseControllerList = new List<BaseController>();
+    public BasicAi Ai;
 
     public int LocalTeamId = 0;
 
@@ -157,7 +158,8 @@ public class GameWorld : MonoBehaviour
             LevelName = SceneManager.GetActiveScene().name,
             Resources = ResourceList,
             Ants = AntList,
-            BaseControllers = BaseControllerList
+            BaseControllers = BaseControllerList,
+            BasicAIData = Ai.GetData()
         };
 
         foreach (var unitController in UnitControllerList)
@@ -262,6 +264,7 @@ public class GameWorld : MonoBehaviour
             {
                 BaseControllerList[i].SetData(saveObject.BaseControllerData[i]);
             }
+            Ai.SetData(saveObject.BasicAIData);
             if (name == "QuickSave")
             {
                 UiController.UpdateEventText("QuickLoad Complete!");

@@ -18,6 +18,7 @@ namespace Assets.Scripts
         public List<TeamMindGroupData> TeamMindGroupData = new List<TeamMindGroupData>();
         public List<BaseController> BaseControllers = new List<BaseController>();
         public List<BaseControllerData> BaseControllerData = new List<BaseControllerData>();
+        public BasicAIData BasicAIData;
 
         public string ToJson()
         {
