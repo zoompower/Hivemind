@@ -303,4 +303,16 @@ public class GameWorld : MonoBehaviour
         }
         return null;
     }
+
+    public BaseController GetEnemyBase(int teamId)
+    {
+        foreach (BaseController b in BaseControllerList)
+        {
+            if (b.TeamID != teamId)
+            {
+                return b;
+            }
+        }
+        return null;
+    }
 }

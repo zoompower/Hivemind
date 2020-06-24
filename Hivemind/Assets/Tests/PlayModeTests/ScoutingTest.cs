@@ -38,7 +38,7 @@ namespace Tests.PlayModeTests
                 mind.Initiate(ant);
             }
             MindGroup mindGroup = unitControl.MindGroupList.GetMindGroupFromIndex(1);
-            mindGroup.Minds = new List<IMind>() { gather, new CombatMind() };
+            mindGroup.SetMinds(new List<IMind>() { gather, new CombatMind() });
             var Id = mindGroup.AddUnit(new UnitGroup(uiController.unitIconBase));
             ant.SetunitGroupID(Id);
         }
