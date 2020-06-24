@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class CombatMind : IMind
 {
@@ -31,6 +30,7 @@ public class CombatMind : IMind
     private Timer AttackCooldown;
     private bool AttackOnCooldown;
     private bool enteredEnemyBase = false;
+
     public enum State
     {
         Idle,
@@ -41,6 +41,7 @@ public class CombatMind : IMind
         Engaging,
         MovingToNest
     }
+
     public enum Direction
     {
         None,
@@ -54,7 +55,9 @@ public class CombatMind : IMind
         NorthWest
     }
 
-    public CombatMind() : this(2, false) { }
+    public CombatMind() : this(2, false)
+    {
+    }
 
     public CombatMind(int engageRange, bool attackingQueen)
     {
@@ -79,11 +82,11 @@ public class CombatMind : IMind
         switch (state)
         {
             case State.Idle:
-                
+
                 if (AttackingQueen)
                 {
-                    if(ant.AtBase())
-                    ant.StartCoroutine(ExitBase(State.AttackingQueen));
+                    if (ant.AtBase())
+                        ant.StartCoroutine(ExitBase(State.AttackingQueen));
                 }
 
                 if (CheckSurroundings())
@@ -100,8 +103,8 @@ public class CombatMind : IMind
                     {
                         state = State.MovingToTarget;
                     }
-                   
-                    if(Vector3.Distance(GetEnemyBase().TeleporterExitTransform.position, ant.GetAgent().destination) > 1f && !enteredEnemyBase)
+
+                    if (Vector3.Distance(GetEnemyBase().TeleporterExitTransform.position, ant.GetAgent().destination) > 1f && !enteredEnemyBase)
                     {
                         ant.GetAgent().SetDestination(GetEnemyBase().TeleporterExitTransform.position);
                     }
@@ -116,7 +119,6 @@ public class CombatMind : IMind
                     {
                         AttackQueen();
                     }
-
                 }
 
                 break;
@@ -227,7 +229,6 @@ public class CombatMind : IMind
         }
         if (target != null) { FoundEnemy = true; }
 
-
         return FoundEnemy;
     }
 
@@ -249,6 +250,7 @@ public class CombatMind : IMind
         AttackCooldown.Stop();
         AttackOnCooldown = false;
     }
+
     private void SurroundingcheckCooldownElapsed(object sender, ElapsedEventArgs e)
     {
         Surroundingcheck.Stop();
@@ -269,6 +271,7 @@ public class CombatMind : IMind
             return false;
         }
     }
+
     private bool AttackQueen()
     {
         if (!AttackOnCooldown)
@@ -355,7 +358,7 @@ public class CombatMind : IMind
 
     public MindData GetData()
     {
-        return new CombatData(minEstimatedDifference, prefferedHealth, ant, busy);
+        return new CombatData(minEstimatedDifference, prefferedHealth, ant, busy, state, leavingBase, nextState, enterBase, TeleporterExit, prefferedDirection, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
     }
 
     public void SetData(MindData mindData)
@@ -363,11 +366,35 @@ public class CombatMind : IMind
         CombatData data = mindData as CombatData;
         minEstimatedDifference = data.MinEstimatedDifference;
         prefferedHealth = data.PrefferedHealth;
+        busy = data.Busy;
+        state = data.State;
+        leavingBase = data.LeavingBase;
+        nextState = data.NextState;
+        enterBase = data.EnterBase;
+        TeleporterExit = new Vector3(data.TeleporterExitX, data.TeleporterExitY, data.TeleporterExitZ);
+        prefferedDirection = data.PrefferedDirection;
+        TeleporterEntrance = new Vector3(data.TeleporterEntranceX, data.TeleporterEntranceY, data.TeleporterEntranceZ);
+        AttackingQueen = data.AttackingQueen;
+        EngageRange = data.EngageRange;
+        enteredEnemyBase = data.EnteredEnemyBase;
+        AttackCooldown = new Timer(1000);
+        AttackCooldown.Elapsed += AttackCooldownElapsed;
+        Surroundingcheck = new Timer(1000);
+        Surroundingcheck.Elapsed += SurroundingcheckCooldownElapsed;
         if (data.AntGuid != "")
         {
             ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
+            ant.UpdateSpeed();
+            if (data.TargetGuid != "")
+            {
+                target = GameWorld.Instance.FindAnt(Guid.Parse(data.TargetGuid));
+                ant.GetAgent().SetDestination(target.transform.position);
+            }
+            if (leavingBase)
+            {
+                ant.StartCoroutine(ExitBase(nextState));
+            }
         }
-        busy = data.Busy;
     }
 
     public bool IsBusy()

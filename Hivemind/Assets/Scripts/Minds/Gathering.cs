@@ -444,7 +444,6 @@ public class Gathering : IMind
                 carryResource(GameWorld.Instance.FindResourceNode(Guid.Parse(guid)));
             }
             ant.UpdateSpeed();
-            ant.StopAllCoroutines();
             if (scouting)
             {
                 ant.StartCoroutine(Scout(data.ScoutSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));

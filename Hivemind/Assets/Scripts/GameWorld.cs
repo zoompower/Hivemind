@@ -244,15 +244,13 @@ public class GameWorld : MonoBehaviour
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
-
-            foreach (UnitController controller in UnitControllerList)
-            {
-                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
-            }
-
             for (int i = 0; i < AntList.Count;)
             {
                 AntList[i].Destroy();
+            }
+            foreach (UnitController controller in UnitControllerList)
+            {
+                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
             }
             for (int i = 0; i < saveObject.Ants.Count; i++)
             {
