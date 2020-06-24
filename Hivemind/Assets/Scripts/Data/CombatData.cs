@@ -7,7 +7,6 @@ namespace Assets.Scripts.Data
     [Serializable]
     public class CombatData : MindData
     {
-        public float MinEstimatedDifference;
         public int PrefferedHealth;
         public string AntGuid;
         public bool Busy;
@@ -15,10 +14,6 @@ namespace Assets.Scripts.Data
         public bool LeavingBase;
         public State NextState;
         public bool EnterBase;
-        public float TeleporterExitX;
-        public float TeleporterExitY;
-        public float TeleporterExitZ;
-        public Direction PrefferedDirection;
         public float TeleporterEntranceX;
         public float TeleporterEntranceY;
         public float TeleporterEntranceZ;

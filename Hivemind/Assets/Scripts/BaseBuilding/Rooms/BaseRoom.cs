@@ -5,7 +5,7 @@ public abstract class BaseRoom : MonoBehaviour
     public GameObject HighlightPrefab;
 
     protected UnitController unitController;
-    public BaseController baseController;
+    protected BaseController baseController;
 
     public abstract RoomType GetRoomType();
 

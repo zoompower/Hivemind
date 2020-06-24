@@ -188,14 +188,12 @@ public class BaseTile : MonoBehaviour
                 InitializeObject(GetComponentInParent<BaseController>().WorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
                 (RoomScript as BaseUnitRoom).RespawnTimer = data.RespawnTime;
-                (RoomScript as BaseUnitRoom).transform.parent.GetComponentInParent<BaseController>().GetGameResources().SubtractResources((RoomScript as BaseUnitRoom).RespawnCost);
                 break;
 
             case RoomType.ScalingWorkerRoom:
                 InitializeObject(GetComponentInParent<BaseController>().ScalingWorkerRoomPrefab, true);
                 (RoomScript as BaseUnitRoom).GroupId = Guid.Parse(data.GroupID);
                 (RoomScript as BaseUnitRoom).RespawnTimer = data.RespawnTime;
-                (RoomScript as BaseUnitRoom).transform.parent.GetComponentInParent<BaseController>().GetGameResources().SubtractResources((RoomScript as BaseUnitRoom).RespawnCost);
                 break;
         }
         if (CurrTile != null)
