@@ -197,7 +197,7 @@ public class Gathering : IMind
                             foreach (var gameObject in carryingObjects) Object.Destroy(gameObject);
                             carryingObjects.Clear();
                             gatheredResources.Clear();
-                            ant.currentSpeed = ant.baseSpeed;
+                            ant.currentSpeed = ant.baseSpeed * 2;
                             ant.UpdateSpeed();
                         }
 

@@ -43,6 +43,7 @@ public class BaseTile : MonoBehaviour
     internal GameObject HighlightPrefab;
 
     internal bool Loaded = false;
+    private int f =0;
 
     private void Awake()
     {
@@ -60,8 +61,15 @@ public class BaseTile : MonoBehaviour
 
     private void Update()
     {
-        if (!Loaded)
-            Loaded = true;
+        if (f < 5)
+        {
+            f++;
+        }
+        else
+        {
+            if (!Loaded)
+                Loaded = true;
+        }
     }
 
     private void OnDestroy()
