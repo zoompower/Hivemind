@@ -66,6 +66,11 @@ public class BasicAi : MonoBehaviour
         }
     }
 
+    public int GetTeamId()
+    {
+        return basecontroller.TeamID;
+    }
+
     private void OverrideMinds(DataEditor[] datas)
     {
         unitController.MindGroupList.OverrideMinds(datas);
@@ -73,7 +78,7 @@ public class BasicAi : MonoBehaviour
 
     public BasicAIData GetData()
     {
-        return new BasicAIData(waitingForMindsGotten, coolingDown);
+        return new BasicAIData(waitingForMindsGotten, coolingDown, GetTeamId());
     }
 
     public void SetData(BasicAIData data)

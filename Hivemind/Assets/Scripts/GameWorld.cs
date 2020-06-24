@@ -279,9 +279,9 @@ public class GameWorld : MonoBehaviour
             {
                 controller.SetData(saveObject.BaseControllerData.FirstOrDefault(data => data.TeamID == controller.TeamID));
             }
-            for (int i = 0; i < saveObject.BasicAi.Count; i++)
+            foreach (BasicAi basicAi in AIList)
             {
-                AIList[i].SetData(saveObject.BasicAIData[i]);
+                basicAi.SetData(saveObject.BasicAIData.FirstOrDefault(data => data.TeamID == basicAi.GetTeamId()));
             }
             if (name == "QuickSave")
             {

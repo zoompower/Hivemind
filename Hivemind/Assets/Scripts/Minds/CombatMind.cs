@@ -357,21 +357,18 @@ public class CombatMind : IMind
 
     public MindData GetData()
     {
-        return new CombatData(minEstimatedDifference, prefferedHealth, ant, busy, state, leavingBase, nextState, enterBase, TeleporterExit, prefferedDirection, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
+        return new CombatData(prefferedHealth, ant, busy, state, leavingBase, nextState, enterBase, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
     }
 
     public void SetData(MindData mindData)
     {
         CombatData data = mindData as CombatData;
-        minEstimatedDifference = data.MinEstimatedDifference;
         prefferedHealth = data.PrefferedHealth;
         busy = data.Busy;
         state = data.State;
         leavingBase = data.LeavingBase;
         nextState = data.NextState;
         enterBase = data.EnterBase;
-        TeleporterExit = new Vector3(data.TeleporterExitX, data.TeleporterExitY, data.TeleporterExitZ);
-        prefferedDirection = data.PrefferedDirection;
         TeleporterEntrance = new Vector3(data.TeleporterEntranceX, data.TeleporterEntranceY, data.TeleporterEntranceZ);
         AttackingQueen = data.AttackingQueen;
         EngageRange = data.EngageRange;

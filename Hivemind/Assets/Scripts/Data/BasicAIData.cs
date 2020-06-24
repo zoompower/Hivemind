@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.Data
 {
@@ -11,11 +7,13 @@ namespace Assets.Scripts.Data
     {
         public bool WaitingForMindsGotten;
         public int CoolingDown;
+        public int TeamID;
 
-        public BasicAIData(bool waitingForMindsGotten, int coolingDown)
+        public BasicAIData(bool waitingForMindsGotten, int coolingDown, int teamID)
         {
             WaitingForMindsGotten = waitingForMindsGotten;
             CoolingDown = coolingDown;
+            TeamID = teamID;
         }
     }
 }

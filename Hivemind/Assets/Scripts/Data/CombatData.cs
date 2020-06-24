@@ -22,9 +22,8 @@ namespace Assets.Scripts.Data
         public int EngageRange;
         public bool EnteredEnemyBase;
 
-        public CombatData(float minEstimatedDifference, int prefferedHealth, Ant ant, bool busy, State state, bool leavingBase, State nextState, bool enterBase, Vector3 teleporterExit, Direction prefferedDirection, Vector3 teleporterEntrance, bool attackingQueen, Ant target, int engageRange, bool enteredEnemyBase)
+        public CombatData(int prefferedHealth, Ant ant, bool busy, State state, bool leavingBase, State nextState, bool enterBase, Vector3 teleporterEntrance, bool attackingQueen, Ant target, int engageRange, bool enteredEnemyBase)
         {
-            MinEstimatedDifference = minEstimatedDifference;
             PrefferedHealth = prefferedHealth;
             if (ant != null)
             {
@@ -38,10 +37,6 @@ namespace Assets.Scripts.Data
             TeleporterEntranceX = teleporterEntrance.x;
             TeleporterEntranceY = teleporterEntrance.y;
             TeleporterEntranceZ = teleporterEntrance.z;
-            PrefferedDirection = prefferedDirection;
-            TeleporterExitX = teleporterExit.x;
-            TeleporterExitY = teleporterExit.y;
-            TeleporterExitZ = teleporterExit.z;
             AttackingQueen = attackingQueen;
             if (target != null)
             {
