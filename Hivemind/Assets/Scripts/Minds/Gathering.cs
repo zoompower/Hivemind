@@ -299,8 +299,8 @@ public class Gathering : IMind
         yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterEntrance) < 1f);
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => !ant.AtBase());
-        state = nextState;
         leavingBase = false;
+        state = nextState;
         busy = true;
     }
 
