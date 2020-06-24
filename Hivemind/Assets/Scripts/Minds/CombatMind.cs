@@ -86,7 +86,13 @@ public class CombatMind : IMind
                 if (AttackingQueen)
                 {
                     if (ant.AtBase())
+                    {
                         ant.StartCoroutine(ExitBase(State.AttackingQueen));
+                    }
+                    else
+                    {
+                        state = State.AttackingQueen;
+                    }
                 }
 
                 if (CheckSurroundings())
@@ -190,14 +196,7 @@ public class CombatMind : IMind
 
     private BaseController GetEnemyBase()
     {
-        foreach (BaseController b in GameWorld.Instance.BaseControllerList)
-        {
-            if (b.TeamID != ant.TeamID)
-            {
-                return b;
-            }
-        }
-        return null;
+        return GameWorld.Instance.GetEnemyBase(ant.TeamID);
     }
 
     private bool CheckSurroundings()

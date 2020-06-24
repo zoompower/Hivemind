@@ -6,8 +6,8 @@ internal class DataEditorDrawer : PropertyDrawer
 {
     private Rect contentPosition;
 
-	float GatheringPropCount = 4;
-	float CombatPropCount = 2;
+    float GatheringPropCount = 4;
+    float CombatPropCount = 2;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -36,18 +36,10 @@ internal class DataEditorDrawer : PropertyDrawer
             EditorGUI.indentLevel = 0;
             EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("PreferredResource"));
 
-		if (property.FindPropertyRelative("type").intValue == (int)MindType.Combat)
-		{
-			// Vision Radius integer
-			contentPosition.y += 18f;
-			EditorGUI.indentLevel = 0;
-			EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("VisionRadius"));
-
-			// Scouting bool
-			contentPosition.y += 18f;
-			EditorGUI.indentLevel = 0;
-			EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("AttackingQueen"));
-		}
+            // Preferred Direction enum
+            contentPosition.y += 18f;
+            EditorGUI.indentLevel = 0;
+            EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("PreferredDirection"));
 
             // Scouting bool
             contentPosition.y += 18f;
@@ -61,6 +53,11 @@ internal class DataEditorDrawer : PropertyDrawer
             contentPosition.y += 18f;
             EditorGUI.indentLevel = 0;
             EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("VisionRadius"));
+
+            // Scouting bool
+            contentPosition.y += 18f;
+            EditorGUI.indentLevel = 0;
+            EditorGUI.PropertyField(contentPosition, property.FindPropertyRelative("AttackingQueen"));
         }
 
         EditorGUI.EndProperty();

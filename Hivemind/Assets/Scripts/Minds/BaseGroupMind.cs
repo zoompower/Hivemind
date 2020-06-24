@@ -61,8 +61,8 @@ public class BaseGroupMind : IMind
         {
             if (task.IsRemoved) return false;
 
-            target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.2f + task.BaseTile.transform.position;
-            if (Vector3.Distance(target, ant.transform.position) < 1 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
+            target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.4f + task.BaseTile.transform.position;
+            if (Vector3.Distance(target, ant.transform.position) < 2 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
             {
                 if (!ant.GetAgent().isOnNavMesh)
                 {
@@ -71,7 +71,7 @@ public class BaseGroupMind : IMind
                 ant.GetAgent().SetDestination(target);
             }
 
-            if (Vector3.Distance(target, ant.transform.position) < 0.3)
+            if (Vector3.Distance(target, ant.transform.position) < 0.6)
             {
                 return false;
             }
@@ -109,7 +109,7 @@ public class BaseGroupMind : IMind
 
     public double Likelihood()
     {
-        return 10000;
+        return 55;
     }
 
     public bool IsBusy()

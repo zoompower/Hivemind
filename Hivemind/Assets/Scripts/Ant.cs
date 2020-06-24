@@ -197,10 +197,11 @@ public class Ant : MonoBehaviour
     {
         if (AtBase())
         {
-            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.Minds;
+            var mindGroupMind = unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID)?.GetMinds();
             if (mindGroupMind != null)
             {
                 minds.Clear();
+                unitController.MindGroupList.GetMindGroupFromUnitId(unitGroupID).RegisterMindGotten(this);
                 for (var i = 0; i < mindGroupMind.Count; i++)
                 {
                     minds.Add(mindGroupMind[i].Clone());
