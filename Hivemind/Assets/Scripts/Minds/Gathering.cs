@@ -306,6 +306,8 @@ public class Gathering : IMind
         this.nextPosition = nextPosition;
         ant.GetAgent().SetDestination(TeleporterExit);
         yield return new WaitUntil(() => Vector3.Distance(ant.transform.position, TeleporterExit) < 1f);
+        ant.GetAgent().SetDestination(TeleporterEntrance);
+        yield return new WaitUntil(() => ant.AtBase());
         ant.GetAgent().SetDestination(nextPosition);
         enterBase = false;
     }
