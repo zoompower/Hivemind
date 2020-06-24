@@ -171,13 +171,13 @@ public class BuildingQueue
         foreach (BuildingTaskData buildingTaskData in data.Queue)
         {
             BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
-            task.SetData(buildingTaskData);
+            task.SetData(buildingTaskData, controller);
             Queue.Add(task);
         }
         foreach (BuildingTaskData buildingTaskData in data.WaitQueue)
         {
             BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
-            task.SetData(buildingTaskData);
+            task.SetData(buildingTaskData, controller);
             WaitQueue.Add(task);
         }
         controller = GameWorld.Instance.FindBaseController(data.ControllerID);

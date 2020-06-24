@@ -17,6 +17,7 @@ public class GameWorld : MonoBehaviour
     public UiController UiController;
     public List<UnitController> UnitControllerList = new List<UnitController>();
     public List<BaseController> BaseControllerList = new List<BaseController>();
+    public List<BasicAi> AIList = new List<BasicAi>();
 
     public int LocalTeamId = 0;
 
@@ -112,9 +113,24 @@ public class GameWorld : MonoBehaviour
         AntList.Remove(ant);
     }
 
+    public void AddAI(BasicAi AI)
+    {
+        AIList.Add(AI);
+    }
+
+    public void RemoveAI(BasicAi AI)
+    {
+        AIList.Remove(AI);
+    }
+
     public void AddUnitController(UnitController unitController)
     {
         UnitControllerList.Add(unitController);
+    }
+
+    public void RemoveUnitController(UnitController unitController)
+    {
+        UnitControllerList.Remove(unitController);
     }
 
     public void AddBaseController(BaseController baseController)
@@ -157,7 +173,8 @@ public class GameWorld : MonoBehaviour
             LevelName = SceneManager.GetActiveScene().name,
             Resources = ResourceList,
             Ants = AntList,
-            BaseControllers = BaseControllerList
+            BaseControllers = BaseControllerList,
+            BasicAi = AIList
         };
 
         foreach (var unitController in UnitControllerList)
@@ -244,15 +261,13 @@ public class GameWorld : MonoBehaviour
                 GameObject newNode = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/Resources/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newNode.GetComponent<ResourceNode>().SetData(data);
             }
-
-            foreach (UnitController controller in UnitControllerList)
-            {
-                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
-            }
-
             for (int i = 0; i < AntList.Count;)
             {
                 AntList[i].Destroy();
+            }
+            foreach (UnitController controller in UnitControllerList)
+            {
+                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
             }
             for (int i = 0; i < saveObject.Ants.Count; i++)
             {
@@ -260,9 +275,13 @@ public class GameWorld : MonoBehaviour
                 GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newAnt.GetComponent<Ant>().SetData(data);
             }
-            for (int i = 0; i < BaseControllerList.Count; i++)
+            foreach (BaseController controller in BaseControllerList)
             {
-                BaseControllerList[i].SetData(saveObject.BaseControllerData[i]);
+                controller.SetData(saveObject.BaseControllerData.FirstOrDefault(data => data.TeamID == controller.TeamID));
+            }
+            foreach (BasicAi basicAi in AIList)
+            {
+                basicAi.SetData(saveObject.BasicAIData.FirstOrDefault(data => data.TeamID == basicAi.GetTeamId()));
             }
             if (name == "QuickSave")
             {

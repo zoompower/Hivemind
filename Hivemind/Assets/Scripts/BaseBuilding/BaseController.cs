@@ -281,12 +281,12 @@ public class BaseController : MonoBehaviour
         TeleporterEntrance = new Vector3(data.TeleporterEntranceX, data.TeleporterEntranceY, data.TeleporterEntranceZ);
         BuildingQueue.SetData(data.queueData);
 
+        gameResources.SetData(data.GameResources);
+
         foreach (BaseTileData baseTileData in data.BaseTileData)
         {
             gameObject.transform.Find(baseTileData.Name).GetComponent<BaseTile>().SetData(baseTileData);
         }
-
-        gameResources.SetData(data.GameResources);
     }
 
     public void RegisterSpatial(BaseSpatialPartition partition)

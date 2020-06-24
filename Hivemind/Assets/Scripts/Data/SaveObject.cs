@@ -18,6 +18,8 @@ namespace Assets.Scripts
         public List<TeamMindGroupData> TeamMindGroupData = new List<TeamMindGroupData>();
         public List<BaseController> BaseControllers = new List<BaseController>();
         public List<BaseControllerData> BaseControllerData = new List<BaseControllerData>();
+        public List<BasicAi> BasicAi = new List<BasicAi>();
+        public List<BasicAIData> BasicAIData = new List<BasicAIData>();
 
         public string ToJson()
         {
@@ -36,6 +38,10 @@ namespace Assets.Scripts
             foreach (BaseController baseController in BaseControllers)
             {
                 BaseControllerData.Add(baseController.GetData());
+            }
+            foreach (BasicAi basicAi in BasicAi)
+            {
+                BasicAIData.Add(basicAi.GetData());
             }
             return JsonUtility.ToJson(this);
         }

@@ -24,6 +24,7 @@ public class UnitController : MonoBehaviour
         MindGroupList.OverrideMinds(MindDatas);
 
         TeamId = GetComponent<BaseController>().TeamID;
+        GameWorld.Instance.AddUnitController(this);
     }
 
     private void Start()
@@ -33,7 +34,6 @@ public class UnitController : MonoBehaviour
             uiController = FindObjectOfType<UiController>();
             uiController.RegisterUnitController(this);
         }
-        GameWorld.Instance.AddUnitController(this);
     }
 
     public Guid CreateUnitGroup()
@@ -142,6 +142,11 @@ public class UnitController : MonoBehaviour
                 MindGroupList.DeleteUnitGroup(group);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameWorld.Instance.RemoveUnitController(this);
     }
 
     public MindGroup GetMindGroup(int Index)

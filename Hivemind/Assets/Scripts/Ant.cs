@@ -233,7 +233,7 @@ public class Ant : MonoBehaviour
 
     public AntData GetData()
     {
-        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.localScale);
+        return new AntData(myGuid, baseSpeed, currentSpeed, damage, health, minds, unitGroupID, closestEnemy, isAtBase, Prefab, TeamID, gameObject.transform.position, gameObject.transform.localEulerAngles, gameObject.transform.localScale, miniMapRenderer.transform.localScale);
     }
 
     public void SetData(AntData data)
@@ -258,6 +258,17 @@ public class Ant : MonoBehaviour
         gameObject.SetActive(true);
         gameObject.transform.localEulerAngles = new Vector3(data.RotationX, data.RotationY, data.RotationZ);
         transform.localScale = new Vector3(data.ScaleX, data.ScaleY, data.ScaleZ);
+        miniMapRenderer.localScale = new Vector3(data.MinimapScaleX, data.MinimapScaleY, data.MinimapScaleZ);
+        var baseControllers = FindObjectsOfType<BaseController>();
+
+        foreach (var controller in baseControllers)
+        {
+            if (controller.TeamID == TeamID)
+            {
+                baseController = controller;
+                break;
+            }
+        }
         GetComponent<NavMeshAgent>().enabled = true;
         for (int i = 0; i < minds.Count; i++)
         {
