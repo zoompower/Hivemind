@@ -265,9 +265,9 @@ public class GameWorld : MonoBehaviour
                 GameObject newAnt = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/{data.Prefab}"), new Vector3(data.PositionX, data.PositionY, data.PositionZ), Quaternion.identity);
                 newAnt.GetComponent<Ant>().SetData(data);
             }
-            for (int i = 0; i < BaseControllerList.Count; i++)
+            foreach (BaseController controller in BaseControllerList)
             {
-                BaseControllerList[i].SetData(saveObject.BaseControllerData[i]);
+                controller.SetData(saveObject.BaseControllerData.FirstOrDefault(data => data.TeamID == controller.TeamID));
             }
             Ai.SetData(saveObject.BasicAIData);
             if (name == "QuickSave")

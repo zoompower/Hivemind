@@ -28,7 +28,7 @@ public class BuildingTask
         return new BuildingTaskData(IsRemoved, BaseBuildingTool, Ant, HighlightObj, BaseTile);
     }
 
-    public void SetData(BuildingTaskData data)
+    public void SetData(BuildingTaskData data, BaseController controller)
     {
         IsRemoved = data.IsRemoved;
         BaseBuildingTool = data.BaseBuildingTool;
@@ -36,7 +36,7 @@ public class BuildingTask
         {
             Ant = GameWorld.Instance.FindAnt(Guid.Parse(data.AntGuid));
         }
-        BaseTile = GameObject.Find(data.BaseTileName).GetComponent<BaseTile>();
+        BaseTile = controller.transform.Find(data.BaseTileName).GetComponent<BaseTile>();
         HighlightObj = (GameObject)GameObject.Instantiate(Resources.Load($"Prefabs/BaseBuilding/{data.HighlightObjPrefab}"), BaseTile.transform);
     }
 }
