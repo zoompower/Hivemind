@@ -19,13 +19,14 @@ public class InBaseTrigger : MonoBehaviour
         var ant = other.GetComponent<Ant>();
         if (ant != null)
         {
-            ant.currentSpeed *= 1.8f;
+            ant.currentSpeed  = ant.baseSpeed * 1.8f;
             if (GetComponentInParent<BaseController>().TeamID == ant.TeamID)
             {
                 ant.isAtBase = true;
-                ant.currentSpeed *= 2;
+                ant.currentSpeed = ant.baseSpeed * 2;
             }
             ant.ChangeScale(inBaseAntScale, inBaseMinimapScale);
+            ant.GetAgent().acceleration = 30;
             ant.UpdateSpeed();
         }
     }
@@ -41,6 +42,7 @@ public class InBaseTrigger : MonoBehaviour
             }
             ant.ChangeScale(outBaseAntScale, outBaseMinimapScale);
             ant.currentSpeed = ant.baseSpeed;
+            ant.GetAgent().acceleration = 7;
             ant.UpdateSpeed();
         }
     }
