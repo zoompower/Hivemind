@@ -17,8 +17,7 @@ public class MindGroupList
             mindGroupList.Add(new MindGroup(obj));
             if (mindGroupList.Count == 1)
             {
-                mindGroupList[0].Minds.Clear();
-                mindGroupList[0].Minds.Add(new BaseGroupMind());
+                mindGroupList[0].SetMinds(new List<IMind>() { new BaseGroupMind(), new CombatMind() });
             }
         }
     }
@@ -115,6 +114,16 @@ public class MindGroupList
         }
     }
 
+    internal int GetTotalAliveAnts()
+    {
+        int Total = 0;
+        foreach (MindGroup group in mindGroupList)
+        {
+            Total += group.GetTotalCurrentUnitCount();
+        }
+        return Total;
+    }
+
     public void DeleteUnitGroup(UnitGroup unitGroup)
     {
         GetMindGroupFromUnitId(unitGroup.UnitGroupId)?.RemoveUnit(unitGroup);
@@ -161,7 +170,7 @@ public class MindGroupList
                     overrideMindList.Add(dataInfo.GenerateMind());
                 }
                 var group = mindGroupList[i];
-                group.Minds = overrideMindList;
+                group.SetMinds(overrideMindList);
             }
         }
     }

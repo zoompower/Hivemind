@@ -79,11 +79,17 @@ public class CombatMind : IMind
         switch (state)
         {
             case State.Idle:
-                
+
                 if (AttackingQueen)
                 {
-                    if(ant.AtBase())
-                    ant.StartCoroutine(ExitBase(State.AttackingQueen));
+                    if (ant.AtBase())
+                    {
+                        ant.StartCoroutine(ExitBase(State.AttackingQueen));
+                    }
+                    else
+                    {
+                        state = State.AttackingQueen;
+                    }
                 }
 
                 if (CheckSurroundings())
@@ -100,8 +106,8 @@ public class CombatMind : IMind
                     {
                         state = State.MovingToTarget;
                     }
-                   
-                    if(Vector3.Distance(GetEnemyBase().TeleporterExitTransform.position, ant.GetAgent().destination) > 1f && !enteredEnemyBase)
+
+                    if (Vector3.Distance(GetEnemyBase().TeleporterExitTransform.position, ant.GetAgent().destination) > 1f && !enteredEnemyBase)
                     {
                         ant.GetAgent().SetDestination(GetEnemyBase().TeleporterExitTransform.position);
                     }
@@ -188,14 +194,7 @@ public class CombatMind : IMind
 
     private BaseController GetEnemyBase()
     {
-        foreach (BaseController b in GameWorld.Instance.BaseControllerList)
-        {
-            if (b.TeamID != ant.TeamID)
-            {
-                return b;
-            }
-        }
-        return null;
+        return GameWorld.Instance.GetEnemyBase(ant.TeamID);
     }
 
     private bool CheckSurroundings()

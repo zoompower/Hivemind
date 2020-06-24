@@ -109,7 +109,7 @@ public class BaseGroupMind : IMind
 
     public double Likelihood()
     {
-        return 10000;
+        return 55;
     }
 
     public bool IsBusy()

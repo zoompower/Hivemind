@@ -36,7 +36,7 @@ namespace Tests.PlayModeTests
                 mind.Initiate(ant);
             }
             MindGroup mindGroup = GameObject.FindObjectOfType<UnitController>().MindGroupList.GetMindGroupFromIndex(1);
-            mindGroup.Minds = new List<IMind>() { gather };
+            mindGroup.SetMinds(new List<IMind>() { gather });
             var Id = mindGroup.AddUnit(new UnitGroup(uiController.unitIconBase));
             ant.SetunitGroupID(Id);
             resource = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Resources/crystal") as GameObject);

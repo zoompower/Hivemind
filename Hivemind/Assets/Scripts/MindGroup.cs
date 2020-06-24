@@ -10,6 +10,12 @@ public class MindGroup
 
     public List<UnitGroup> unitGroupList;
 
+    public int Count { get; private set; }
+
+    private List<IMind> Minds;
+
+    public int MindPoints { get; set; }
+
     public MindGroup(GameObject UiObject)
     {
         unitGroupList = new List<UnitGroup>();
@@ -19,15 +25,20 @@ public class MindGroup
         UIUnitGroup = UiObject;
     }
 
-    public int Count { get; private set; }
-
-    public List<IMind> Minds;
-
-    public int MindPoints { get; set; }
-
     public bool Equals(MindGroup other)
     {
         return UIUnitGroup.Equals(other.UIUnitGroup);
+    }
+
+    internal int GetTotalCurrentUnitCount()
+    {
+        int totalCount = 0;
+        foreach (var unitGroup in unitGroupList)
+        {
+            totalCount += unitGroup.CurrentUnits;
+        }
+
+        return totalCount;
     }
 
     public bool Equals(GameObject groupObject)
@@ -128,5 +139,30 @@ public class MindGroup
             unitGroupList.Add(newUnitGroup);
             UpdateLayout();
         }
+    }
+
+
+    List<Ant> antsGottenNewMinds = new List<Ant>();
+    internal bool NewMindsGotten()
+    {
+        return antsGottenNewMinds.Count == GetTotalCurrentUnitCount();
+    }
+    public List<IMind> GetMinds()
+    {
+        return Minds;
+    }
+
+    public void RegisterMindGotten(Ant ant)
+    {
+        if (!antsGottenNewMinds.Contains(ant))
+        {
+            antsGottenNewMinds.Add(ant);
+        }
+    }
+
+    public void SetMinds(List<IMind> minds)
+    {
+        Minds = minds;
+        antsGottenNewMinds = new List<Ant>();
     }
 }

@@ -181,7 +181,7 @@ public class Gathering : IMind
                 break;
 
             case State.MovingToStorage:
-                if (ant.GetBaseController()?.QueenRoom != null)
+                if (ant.GetBaseController() != null)
                 {
                     if (ant.AtBase())
                     {

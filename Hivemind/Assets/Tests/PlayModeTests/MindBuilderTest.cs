@@ -45,11 +45,11 @@ namespace Tests.PlayModeTests
         {
             MindGroup mindGroup = unitControl.MindGroupList.GetMindGroupFromIndex(1);
             Gathering gather = new Gathering();
-            for (int i = 0; i < mindGroup.Minds.Count; i++)
+            for (int i = 0; i < mindGroup.GetMinds().Count; i++)
             {
-                if (mindGroup.Minds[i].GetType() == typeof(Gathering))
+                if (mindGroup.GetMinds()[i].GetType() == typeof(Gathering))
                 {
-                    gather = (Gathering)mindGroup.Minds[i];
+                    gather = (Gathering)mindGroup.GetMinds()[i];
                 }
             }
             uiController.UI_OpenMindBuilder(1);
@@ -79,9 +79,9 @@ namespace Tests.PlayModeTests
             }
             if (valid)
             {
-                for (int i = 0; i < mindGroup.Minds.Count; i++)
+                for (int i = 0; i < mindGroup.GetMinds().Count; i++)
                 {
-                    if (!MindEquals(mindGroup.Minds[i], ant.GetMinds()[i]))
+                    if (!MindEquals(mindGroup.GetMinds()[i], ant.GetMinds()[i]))
                     {
                         valid = false;
                     }

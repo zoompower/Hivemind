@@ -27,6 +27,6 @@ internal class ScalingWorkerRoom : WorkerRoom
 
     private Dictionary<ResourceType, int> GetScaledUpgradeCost()
     {
-        return new Dictionary<ResourceType, int>() { { ResourceType.Rock, Mathf.Clamp(5 + 1 * unitGroup.MaxUnits, 6, 12) } }; ;
+        return new Dictionary<ResourceType, int>() { { ResourceType.Rock, Mathf.Clamp(4 + 2 * unitGroup.MaxUnits, 6, 14) } }; ;
     }
 }
