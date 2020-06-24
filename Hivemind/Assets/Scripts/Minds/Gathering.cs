@@ -100,12 +100,19 @@ public class Gathering : IMind
                 break;
 
             case State.Scouting:
+                if (ant.AtBase())
+                {
+                    ant.StopCoroutine(ReturnToBase());
+                    ant.StopCoroutine(Scout());
+                    preparingReturn = false;
+                    scouting = false;
+                    ant.StartCoroutine(ExitBase(State.Scouting));
+                }
                 if (!preparingReturn)
                 {
                     preparingReturn = true;
                     ant.StartCoroutine(ReturnToBase());
                 }
-
                 if (!scouting)
                 {
                     var tempTarget = GameWorld.Instance.FindNearestUnknownResource(ant.transform.position, ant.TeamID);

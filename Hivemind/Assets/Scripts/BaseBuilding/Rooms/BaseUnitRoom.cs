@@ -40,9 +40,9 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void RemoveEventListeners()
     {
-        if(TeamId == GameWorld.Instance.LocalTeamId)
+        if (TeamId == GameWorld.Instance.LocalTeamId)
         {
-        unitController.OnGroupIdChange -= ChangeGroupID;
+            unitController.OnGroupIdChange -= ChangeGroupID;
         }
     }
 
