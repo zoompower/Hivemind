@@ -144,6 +144,11 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameWorld.Instance.RemoveUnitController(this);
+    }
+
     public MindGroup GetMindGroup(int Index)
     {
         return MindGroupList.GetMindGroupFromIndex(Index);

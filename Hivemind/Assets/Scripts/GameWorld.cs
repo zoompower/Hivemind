@@ -118,6 +118,11 @@ public class GameWorld : MonoBehaviour
         UnitControllerList.Add(unitController);
     }
 
+    public void RemoveUnitController(UnitController unitController)
+    {
+        UnitControllerList.Remove(unitController);
+    }
+
     public void AddBaseController(BaseController baseController)
     {
         BaseControllerList.Add(baseController);
@@ -164,10 +169,7 @@ public class GameWorld : MonoBehaviour
 
         foreach (var unitController in UnitControllerList)
         {
-            if(unitController != null)
-            {
-                saveObject.TeamMindGroups.Add(new TeamMindGroup(unitController.TeamId, unitController.MindGroupList.GetMindGroupList()));
-            }
+            saveObject.TeamMindGroups.Add(new TeamMindGroup(unitController.TeamId, unitController.MindGroupList.GetMindGroupList()));
         }
 
         string json = saveObject.ToJson();
@@ -255,10 +257,7 @@ public class GameWorld : MonoBehaviour
             }
             foreach (UnitController controller in UnitControllerList)
             {
-                if(controller != null)
-                {
-                    controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
-                }
+                controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
             }
             for (int i = 0; i < saveObject.Ants.Count; i++)
             {
