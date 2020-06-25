@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -136,6 +137,14 @@ public class Gathering : IMind
             case State.MovingToResource:
                 if (target != null)
                 {
+                    if ((Vector3.Distance(ant.GetAgent().velocity, new Vector3(0, 0, 0)) < 1f))
+                    {
+                        NavMeshPath path = new NavMeshPath();
+                        if (ant.GetAgent().CalculatePath(target.GetPosition(), path))
+                        {
+                            ant.GetAgent().SetPath(path);
+                        }
+                    }
                     if (Vector3.Distance(ant.transform.position, target.GetPosition()) < 1f)
                         state = State.Gathering;
                     if (Vector3.Distance(ant.GetAgent().destination, target.GetPosition()) > 1f)
