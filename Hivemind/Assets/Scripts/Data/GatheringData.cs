@@ -18,7 +18,7 @@ namespace Assets.Scripts.Data
         public bool PreparingReturn;
         public bool Scouting;
         public string TargetGuid;
-        public ResourceType PrefferedType;
+        public ResourceType ExclusiveType;
         public int CarryWeight;
         public Direction PrefferedDirection;
         public bool Busy;
@@ -28,14 +28,14 @@ namespace Assets.Scripts.Data
         public float ScoutDestinationX;
         public float ScoutDestinationY;
         public float ScoutDestinationZ;
-        public float ScoutSeconds;
+        public float ScoutDeciSeconds;
         public float ReturnSeconds;
         public bool EnterBase;
         public float TeleporterExitX;
         public float TeleporterExitY;
         public float TeleporterExitZ;
 
-        public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType prefferedType, int carryWeight, Direction prefferedDirection, bool busy, bool leavingBase, State state, State nextState, Vector3 scoutingDestination, float scoutSeconds, float returnSeconds, bool enterbase, Vector3 teleporterExit)
+        public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType exclusiveType, int carryWeight, Direction prefferedDirection, bool busy, bool leavingBase, State state, State nextState, Vector3 scoutingDestination, float scoutDeciSeconds, float returnSeconds, bool enterbase, Vector3 teleporterExit)
         {
             if (ant != null)
             {
@@ -52,7 +52,7 @@ namespace Assets.Scripts.Data
             {
                 TargetGuid = target.myGuid.ToString();
             }
-            PrefferedType = prefferedType;
+            ExclusiveType = exclusiveType;
             CarryWeight = carryWeight;
             PrefferedDirection = prefferedDirection;
             Busy = busy;
@@ -62,7 +62,7 @@ namespace Assets.Scripts.Data
             ScoutDestinationX = scoutingDestination.x;
             ScoutDestinationY = scoutingDestination.y;
             ScoutDestinationZ = scoutingDestination.z;
-            ScoutSeconds = scoutSeconds;
+            ScoutDeciSeconds = scoutDeciSeconds;
             ReturnSeconds = returnSeconds;
             EnterBase = enterbase;
             TeleporterExitX = teleporterExit.x;

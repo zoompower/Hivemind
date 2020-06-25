@@ -77,7 +77,7 @@ public class GameWorld : MonoBehaviour
         float minDistance = float.MaxValue;
         foreach (ResourceNode resource in ResourceList)
         {
-            if ((resource.TeamIsKnown & (1 << teamID)) > 0 && (prefType == ResourceType.Unknown || resource.resourceType == prefType))
+            if ((resource.TeamIsKnown & (1 << teamID)) > 0 && (prefType == ResourceType.None || resource.resourceType == prefType))
             {
                 if (resource.GetResourcesFuture() > 0)
                 {

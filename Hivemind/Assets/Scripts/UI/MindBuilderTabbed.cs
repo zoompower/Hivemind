@@ -19,7 +19,7 @@ public class MindBuilderTabbed : MonoBehaviour
     public GameObject resourceMindPanel;
     // Resource mind elements
     private Slider CarryWeight;
-    private Dropdown PrefferedType;
+    private Dropdown ExclusiveType;
     private Dropdown PrefferedDirection;
     private Toggle Scouting;
     private Toggle SmartResources;
@@ -41,7 +41,7 @@ public class MindBuilderTabbed : MonoBehaviour
         //initialize all UI elements
         CarryWeight = resourceMindPanel.GetComponentsInChildren<Slider>().Where(x => x.name.Equals("CarryWeight")).FirstOrDefault();
         CarryWeightChanged();
-        PrefferedType = resourceMindPanel.GetComponentsInChildren<Dropdown>().FirstOrDefault(x => x.name.Equals("ResourceType"));
+        ExclusiveType = resourceMindPanel.GetComponentsInChildren<Dropdown>().FirstOrDefault(x => x.name.Equals("ResourceType"));
         PrefferedDirection = resourceMindPanel.GetComponentsInChildren<Dropdown>().FirstOrDefault(x => x.name.Equals("ScoutDirection"));
         Scouting = resourceMindPanel.GetComponentsInChildren<Toggle>().FirstOrDefault(x => x.name.Equals("Scouting"));
         //SmartResources = resourceMindPanel.GetComponentsInChildren<Toggle>().Where(x => x.name.Equals("SmartResources")).FirstOrDefault();
@@ -51,7 +51,7 @@ public class MindBuilderTabbed : MonoBehaviour
         //Formation = resourceMindPanel.GetComponentsInChildren<Dropdown>().Where(x => x.name.Equals("Formation")).FirstOrDefault();
 
         //make dropdownmenu's
-        PrefferedType.ClearOptions();
+        ExclusiveType.ClearOptions();
         var resourceTypes = Enum.GetValues(typeof(ResourceType));
         var dropdownElements = new List<Dropdown.OptionData>();
         for (var i = 0; i < resourceTypes.Length; i++)
@@ -60,7 +60,7 @@ public class MindBuilderTabbed : MonoBehaviour
         var buttons = GetComponentsInChildren<Button>();
         var resButton = buttons.FirstOrDefault(x => x.name == "ResourceMindTab");
         resButton.colors = HighlightedColorBlock;
-        PrefferedType.AddOptions(dropdownElements);
+        ExclusiveType.AddOptions(dropdownElements);
         dropdownElements.Clear();
         PrefferedDirection.ClearOptions();
         var directionTypes = Enum.GetValues(typeof(Gathering.Direction));
@@ -109,7 +109,7 @@ public class MindBuilderTabbed : MonoBehaviour
             mindGroup.GetMinds().Add(combat);
         }
 
-        UpdateResourceValues(gather.carryWeight, gather.IsScout, gather.prefferedType, gather.prefferedDirection);
+        UpdateResourceValues(gather.carryWeight, gather.IsScout, gather.ExclusiveType, gather.prefferedDirection);
 
         UpdateCombatValues(combat.EngageRange, combat.AttackingQueen);
     }
@@ -125,7 +125,7 @@ public class MindBuilderTabbed : MonoBehaviour
         gather.carryWeight = (int)CarryWeight.value;
 
         gather.IsScout = Scouting.isOn;
-        gather.prefferedType = (ResourceType)PrefferedType.value;
+        gather.ExclusiveType = (ResourceType)ExclusiveType.value;
         gather.prefferedDirection = (Gathering.Direction)PrefferedDirection.value;
     }
 
@@ -140,7 +140,7 @@ public class MindBuilderTabbed : MonoBehaviour
         //CarryWeight.placeholder.GetComponent<Text>().text = carryweight.ToString();
         CarryWeight.value = carryweight;
         Scouting.isOn = scouting;
-        PrefferedType.value = (int)resType;
+        ExclusiveType.value = (int)resType;
         PrefferedDirection.value = (int)direction;
         // SmartResources.isOn = gather.smartResources;
     }

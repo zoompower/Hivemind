@@ -221,7 +221,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
         var sb = new StringBuilder();
 
         foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
-            if (resourceType != ResourceType.Unknown)
+            if (resourceType != ResourceType.None)
                 sb.Append($" {resourceType}: {baseController.GetGameResources().GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();

@@ -39,7 +39,7 @@ namespace Tests.PlayModeTests
 
         [TestCase(ResourceType.Crystal, 2, Direction.East, true)]
         [TestCase(ResourceType.Rock, 2, Direction.East, true)]
-        [TestCase(ResourceType.Unknown, 5, Direction.South, false)]
+        [TestCase(ResourceType.None, 5, Direction.South, false)]
         [TestCase(ResourceType.Rock, 4, Direction.West, true)]
         public void UpdateResourceMindCorrectly(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
         {
@@ -101,7 +101,7 @@ namespace Tests.PlayModeTests
                 {
                     Gathering gather = (Gathering)mind1;
                     Gathering gather2 = (Gathering)mind2;
-                    if (!(gather.prefferedType == gather2.prefferedType &&
+                    if (!(gather.ExclusiveType == gather2.ExclusiveType &&
                         gather.prefferedDirection == gather2.prefferedDirection &&
                         gather.carryWeight == gather2.carryWeight &&
                         gather.IsScout == gather2.IsScout))

@@ -46,28 +46,28 @@ public class Gathering : IMind
     public State state = State.Idle;
     private State nextState;
     private Vector3 scoutingDestination;
-    private float scoutSeconds;
+    private float scoutDeciSeconds;
     private float returnSeconds;
 
     private Vector3 TeleporterExit;
     private Vector3 TeleporterEntrance;
     private bool enterBase = false;
 
-    public Gathering() : this(ResourceType.Unknown, 1, Direction.None)
+    public Gathering() : this(ResourceType.None, 1, Direction.None)
     {
     }
 
     public Gathering(ResourceType resType, int carryweight, Direction exploreDirection, bool isScout = false)
     {
-        prefferedType = resType;
+        ExclusiveType = resType;
         carryWeight = carryweight;
         prefferedDirection = exploreDirection;
         IsScout = isScout;
     }
 
-    public ResourceType prefferedType { get; set; }
-    public int carryWeight { get; set; }
-    public Direction prefferedDirection { get; set; }
+    public ResourceType ExclusiveType;
+    public int carryWeight;
+    public Direction prefferedDirection;
 
     private Vector3 nextPosition;
 
@@ -116,7 +116,7 @@ public class Gathering : IMind
                 if (!scouting)
                 {
                     var tempTarget = GameWorld.Instance.FindNearestUnknownResource(ant.transform.position, ant.TeamID);
-                    if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 2f)
+                    if (tempTarget != null && Vector3.Distance(ant.transform.position, tempTarget.GetPosition()) < 3f)
                     {
                         target = tempTarget;
                         ant.StartCoroutine(EnterBase(ant.GetBaseController().GetPosition()));
@@ -235,17 +235,14 @@ public class Gathering : IMind
 
     public IMind Clone()
     {
-        var clone = new Gathering(prefferedType, carryWeight, prefferedDirection, IsScout);
+        var clone = new Gathering(ExclusiveType, carryWeight, prefferedDirection, IsScout);
         return clone;
     }
 
     private ResourceNode findResource()
     {
         if (carryWeight <= 0) return null;
-
-        var resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, prefferedType, ant.TeamID);
-        if (prefferedType != ResourceType.Unknown && resourceNode == null)
-            resourceNode = GameWorld.Instance.FindNearestKnownResource((ant.AtBase()) ? TeleporterExit : ant.transform.position, ResourceType.Unknown, ant.TeamID);
+        ResourceNode resourceNode = GameWorld.Instance.FindNearestKnownResource(ant.AtBase() ? TeleporterExit : ant.transform.position, ExclusiveType, ant.TeamID);
         return resourceNode;
     }
 
@@ -333,62 +330,62 @@ public class Gathering : IMind
 
     private IEnumerator Scout(float seconds = -1f, Vector3 scoutingDestination = new Vector3())
     {
-        scoutSeconds = seconds;
-        if (scoutSeconds < 0f)
+        scoutDeciSeconds = seconds;
+        if (scoutDeciSeconds < 0f)
         {
-            scoutSeconds = Random.Range(1, 3);
+            scoutDeciSeconds = Random.Range(5, 20);
         }
         if (scoutingDestination == new Vector3())
         {
-            scoutingDestination = new Vector3(ant.transform.position.x + Random.Range(-5, 5), ant.transform.position.y, ant.transform.position.z + Random.Range(-5, 5));
+            scoutingDestination = new Vector3(ant.transform.position.x + Random.Range(-10, 10), ant.transform.position.y, ant.transform.position.z + Random.Range(-10, 10));
             switch (prefferedDirection)
             {
                 case Direction.None:
                     break;
 
                 case Direction.North:
-                    scoutingDestination.z += 2;
+                    scoutingDestination.z += 4;
                     break;
 
                 case Direction.West:
-                    scoutingDestination.x -= 2;
+                    scoutingDestination.x -= 4;
                     break;
 
                 case Direction.South:
-                    scoutingDestination.z -= 2;
+                    scoutingDestination.z -= 4;
                     break;
 
                 case Direction.East:
-                    scoutingDestination.x += 2;
+                    scoutingDestination.x += 4;
                     break;
 
                 case Direction.NorthWest:
-                    scoutingDestination.z += 2;
-                    scoutingDestination.x -= 2;
+                    scoutingDestination.z += 4;
+                    scoutingDestination.x -= 4;
                     break;
 
                 case Direction.NorthEast:
-                    scoutingDestination.z += 2;
-                    scoutingDestination.x += 2;
+                    scoutingDestination.z += 4;
+                    scoutingDestination.x += 4;
                     break;
 
                 case Direction.SouthEast:
-                    scoutingDestination.z -= 2;
-                    scoutingDestination.x += 2;
+                    scoutingDestination.z -= 4;
+                    scoutingDestination.x += 4;
                     break;
 
                 case Direction.SouthWest:
-                    scoutingDestination.z -= 2;
-                    scoutingDestination.x -= 2;
+                    scoutingDestination.z -= 4;
+                    scoutingDestination.x -= 4;
                     break;
             }
         }
         this.scoutingDestination = scoutingDestination;
         ant.GetAgent().SetDestination(scoutingDestination);
-        while (scoutSeconds > 0f)
+        while (scoutDeciSeconds > 0f)
         {
             yield return new WaitForSeconds(0.1f);
-            scoutSeconds -= 0.1f;
+            scoutDeciSeconds -= 1f;
         }
         scouting = false;
     }
@@ -416,7 +413,7 @@ public class Gathering : IMind
 
     public MindData GetData()
     {
-        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, prefferedType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutSeconds, returnSeconds, enterBase, TeleporterExit);
+        return new GatheringData(ant, gatheredResources, inventory, IsScout, nextHarvest, preparingReturn, scouting, target, ExclusiveType, carryWeight, prefferedDirection, busy, leavingBase, state, nextState, scoutingDestination, scoutDeciSeconds, returnSeconds, enterBase, TeleporterExit);
     }
 
     public void SetData(MindData mindData)
@@ -437,7 +434,7 @@ public class Gathering : IMind
         leavingBase = data.LeavingBase;
         state = data.State;
         nextState = data.NextState;
-        prefferedType = data.PrefferedType;
+        ExclusiveType = data.ExclusiveType;
         carryWeight = data.CarryWeight;
         prefferedDirection = data.PrefferedDirection;
         enterBase = data.EnterBase;
@@ -452,7 +449,7 @@ public class Gathering : IMind
             ant.StopAllCoroutines();
             if (scouting)
             {
-                ant.StartCoroutine(Scout(data.ScoutSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));
+                ant.StartCoroutine(Scout(data.ScoutDeciSeconds, new Vector3(data.ScoutDestinationX, data.ScoutDestinationY, data.ScoutDestinationZ)));
             }
             if (preparingReturn)
             {
