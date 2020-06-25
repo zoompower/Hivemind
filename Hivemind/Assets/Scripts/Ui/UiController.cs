@@ -176,6 +176,11 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
             //check if the mouse was inside the minimap UI
             if (scaledX < 1 && scaledX > 0 && scaledY < 1 && scaledY > 0)
             {
+                //creates a curve as to make the minimap a tiny bit more accurate
+                scaledX = (scaledX - 0.5f) * 6;
+                scaledY = (scaledY - 0.5f) * 6;
+                scaledX = 1 / (1 + (float)Math.Pow(Math.E, -scaledX));
+                scaledY = 1 / (1 + (float)Math.Pow(Math.E, -scaledY));
                 //return the number of the minimap and also the scale of where the mouse is so it does not have to be calculated again
                 return (true, i, scaledX, scaledY);
             }
