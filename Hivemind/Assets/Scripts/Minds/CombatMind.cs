@@ -213,15 +213,18 @@ public class CombatMind : IMind
             entityList = GameWorld.Instance.GetCurrentBase(ant)?.GetSpatialPartition()?.GetEntities();
         }
         target = null;
-        foreach (GameObject a in entityList)
+        if (entityList != null)
         {
-            if (a && a.GetComponent<Ant>())
+            foreach (GameObject a in entityList)
             {
-                if (a.GetComponent<Ant>().TeamID != ant.TeamID && a.GetComponent<Ant>() != ant && a.GetComponent<Ant>().alive)
+                if (a && a.GetComponent<Ant>())
                 {
-                    if (target == null || Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, target.transform.position))
+                    if (a.GetComponent<Ant>().TeamID != ant.TeamID && a.GetComponent<Ant>() != ant && a.GetComponent<Ant>().alive)
                     {
-                        target = a.GetComponent<Ant>();
+                        if (target == null || Vector3.Distance(ant.transform.position, a.transform.position) < Vector3.Distance(ant.transform.position, target.transform.position))
+                        {
+                            target = a.GetComponent<Ant>();
+                        }
                     }
                 }
             }
