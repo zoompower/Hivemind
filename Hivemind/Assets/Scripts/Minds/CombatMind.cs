@@ -105,7 +105,7 @@ public class CombatMind : IMind
             case State.AttackingQueen:
                 if (AttackingQueen)
                 {
-                    if (CheckAttackDistance())
+                    if (CheckAttackDistance() || CheckSurroundings())
                     {
                         state = State.MovingToTarget;
                     }
@@ -234,7 +234,7 @@ public class CombatMind : IMind
     private bool CheckAttackDistance()
     {
         if (target == null) return false;
-        if (Vector3.Distance(ant.transform.position, target.transform.position) < 1f)
+        if (Vector3.Distance(ant.transform.position, target.transform.position) < 10f * ant.transform.localScale.x)
         {
             return true;
         }
