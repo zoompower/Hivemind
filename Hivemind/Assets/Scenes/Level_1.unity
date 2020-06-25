@@ -3096,6 +3096,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food_01 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8782,6 +8792,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food_01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9627,6 +9647,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Food_01 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -12961,6 +12991,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food_01 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14605,6 +14645,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food_01 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15405,6 +15455,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Food_01 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -18378,6 +18438,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Food_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -27526,6 +27596,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6325439411182789441, guid: 960fc05fafd97de4eb717f2d03d853c6,
+        type: 3}
+      propertyPath: BaseResourceAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325439411182789441, guid: 960fc05fafd97de4eb717f2d03d853c6,
+        type: 3}
+      propertyPath: TimeToRespawn
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7706516986412892012, guid: 960fc05fafd97de4eb717f2d03d853c6,
         type: 3}
       propertyPath: m_RootOrder
