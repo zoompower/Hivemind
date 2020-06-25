@@ -56,7 +56,7 @@ namespace Tests.PlayModeTests
         public IEnumerator AntHasReturnedToBase()
         {
             ant.GetAgent().enabled = true;
-            yield return new WaitForSeconds(41f);
+            yield return new WaitForSeconds(61f);
             Gathering gather = (Gathering)ant.GetMinds()[0];
             Assert.AreNotEqual(Gathering.State.Scouting, gather.state);
         }

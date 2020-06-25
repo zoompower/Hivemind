@@ -333,50 +333,50 @@ public class Gathering : IMind
         scoutDeciSeconds = seconds;
         if (scoutDeciSeconds < 0f)
         {
-            scoutDeciSeconds = Random.Range(5, 20);
+            scoutDeciSeconds = Random.Range(5, 30);
         }
         if (scoutingDestination == new Vector3())
         {
-            scoutingDestination = new Vector3(ant.transform.position.x + Random.Range(-10, 10), ant.transform.position.y, ant.transform.position.z + Random.Range(-10, 10));
+            scoutingDestination = new Vector3(ant.transform.position.x + Random.Range(-8, 8), ant.transform.position.y, ant.transform.position.z + Random.Range(-8, 8));
             switch (prefferedDirection)
             {
                 case Direction.None:
                     break;
 
                 case Direction.North:
-                    scoutingDestination.z += 4;
+                    scoutingDestination.z += 6;
                     break;
 
                 case Direction.West:
-                    scoutingDestination.x -= 4;
+                    scoutingDestination.x -= 6;
                     break;
 
                 case Direction.South:
-                    scoutingDestination.z -= 4;
+                    scoutingDestination.z -= 6;
                     break;
 
                 case Direction.East:
-                    scoutingDestination.x += 4;
+                    scoutingDestination.x += 6;
                     break;
 
                 case Direction.NorthWest:
-                    scoutingDestination.z += 4;
-                    scoutingDestination.x -= 4;
+                    scoutingDestination.z += 6;
+                    scoutingDestination.x -= 6;
                     break;
 
                 case Direction.NorthEast:
-                    scoutingDestination.z += 4;
-                    scoutingDestination.x += 4;
+                    scoutingDestination.z += 6;
+                    scoutingDestination.x += 6;
                     break;
 
                 case Direction.SouthEast:
-                    scoutingDestination.z -= 4;
-                    scoutingDestination.x += 4;
+                    scoutingDestination.z -= 6;
+                    scoutingDestination.x += 6;
                     break;
 
                 case Direction.SouthWest:
-                    scoutingDestination.z -= 4;
-                    scoutingDestination.x -= 4;
+                    scoutingDestination.z -= 6;
+                    scoutingDestination.x -= 6;
                     break;
             }
         }
@@ -395,7 +395,7 @@ public class Gathering : IMind
         returnSeconds = seconds;
         if (seconds < 0f)
         {
-            returnSeconds = Random.Range(30, 40);
+            returnSeconds = Random.Range(30, 60);
         }
         while (returnSeconds > 0f)
         {
