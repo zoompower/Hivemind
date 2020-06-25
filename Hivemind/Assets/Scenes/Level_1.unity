@@ -3099,12 +3099,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -8795,12 +8795,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -9651,12 +9651,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -12994,12 +12994,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -14648,12 +14648,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -15459,12 +15459,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -18442,12 +18442,12 @@ PrefabInstance:
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4342020678060636888, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7982747976283476484, guid: 8cc99f0d22c09a544aa717525f330a2f,
         type: 3}
@@ -27599,12 +27599,12 @@ PrefabInstance:
     - target: {fileID: 6325439411182789441, guid: 960fc05fafd97de4eb717f2d03d853c6,
         type: 3}
       propertyPath: BaseResourceAmount
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6325439411182789441, guid: 960fc05fafd97de4eb717f2d03d853c6,
         type: 3}
       propertyPath: TimeToRespawn
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7706516986412892012, guid: 960fc05fafd97de4eb717f2d03d853c6,
         type: 3}
