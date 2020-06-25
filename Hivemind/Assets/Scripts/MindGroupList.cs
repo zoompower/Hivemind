@@ -124,6 +124,16 @@ public class MindGroupList
         return Total;
     }
 
+    internal int GetTotalPossibleAnts()
+    {
+        int Total = 0;
+        foreach (MindGroup group in mindGroupList)
+        {
+            Total += group.GetTotalMaxUnitCount();
+        }
+        return Total;
+    }
+
     public void DeleteUnitGroup(UnitGroup unitGroup)
     {
         GetMindGroupFromUnitId(unitGroup.UnitGroupId)?.RemoveUnit(unitGroup);

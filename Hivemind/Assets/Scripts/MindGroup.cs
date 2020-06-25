@@ -41,6 +41,17 @@ public class MindGroup
         return totalCount;
     }
 
+    internal int GetTotalMaxUnitCount()
+    {
+        int totalCount = 0;
+        foreach (var unitGroup in unitGroupList)
+        {
+            totalCount += unitGroup.MaxUnits;
+        }
+
+        return totalCount;
+    }
+
     public bool Equals(GameObject groupObject)
     {
         if (UIUnitGroup.Equals(groupObject))
@@ -140,7 +151,6 @@ public class MindGroup
             UpdateLayout();
         }
     }
-
 
     List<Ant> antsGottenNewMinds = new List<Ant>();
     internal bool NewMindsGotten()

@@ -1,12 +1,22 @@
 ﻿using Assets.Scripts.Data;
+using System;
 using UnityEngine;
 
 public class BasicAi : MonoBehaviour
 {
     private BaseController basecontroller;
     private UnitController unitController;
-    private bool waitingForMindsGotten;
+
+    private AttackingState attackingState = AttackingState.Idle;
     private int coolingDown = 0;
+    private int attackCount = 0;
+
+    public enum AttackingState
+    {
+        Idle,
+        GatherAtBase,
+        Attack
+    }
 
     private void Awake()
     {
@@ -23,41 +33,49 @@ public class BasicAi : MonoBehaviour
 
     private void ExecuteRules()
     {
-        var gameResources = basecontroller.GetGameResources();
-        int totalUnits = unitController.MindGroupList.GetMindGroupFromIndex(1).GetTotalCurrentUnitCount();
+        var currentResources = basecontroller.GetGameResources();
+        int totalAliveUnits = unitController.MindGroupList.GetTotalAliveAnts();
+        int totalAllowedUnits = unitController.MindGroupList.GetTotalPossibleAnts();
+        // The curve for this calculation is https://www.desmos.com/calculator/zshcxyt744, for X we take attackCount times two to get an easier curve for what its purpose.
+        int minimumAttackAmount = (int)Math.Round((3f * Math.Pow(1.04d, (attackCount * 2) + 20)) - 1.5d);
 
-        if (gameResources.GetResourceAmount(ResourceType.Food) <= unitController.MindGroupList.GetMindGroupFromIndex(1).GetTotalCurrentUnitCount())
+        if (totalAliveUnits >= minimumAttackAmount && coolingDown <= 0 && currentResources.GetResourceAmount(ResourceType.Food) > totalAllowedUnits)
         {
-            OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(ResourceType.Food, 1, Gathering.Direction.None, true), DataEditor.GetCombatEditor() });
-        }
-        else if (gameResources.GetResourceAmount(ResourceType.Food) > totalUnits && totalUnits <= GameWorld.Instance.GetEnemyBase(basecontroller.TeamID).GetComponent<UnitController>().MindGroupList.GetTotalAliveAnts())
-        {
-            OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(ResourceType.Rock, 1, Gathering.Direction.None, true), DataEditor.GetCombatEditor() });
-        }
-        else if (totalUnits > 5 && coolingDown <= 0)
-        {
-            if (gameResources.GetResourceAmount(ResourceType.Food) > totalUnits && totalUnits != 0 && !waitingForMindsGotten)
+            if (attackingState == AttackingState.Idle)
             {
-                waitingForMindsGotten = true;
+                attackingState = AttackingState.GatherAtBase;
                 OverrideMinds(new DataEditor[] { DataEditor.GetCombatEditor(5, false) });
             }
-            if (unitController.MindGroupList.GetMindGroupFromIndex(1).NewMindsGotten())
+            if (unitController.MindGroupList.GetMindGroupFromIndex(1).NewMindsGotten() && attackingState != AttackingState.Idle)
             {
-                if (gameResources.GetResourceAmount(ResourceType.Food) > totalUnits && totalUnits != 0 && waitingForMindsGotten)
+                if (currentResources.GetResourceAmount(ResourceType.Food) > totalAliveUnits && attackingState == AttackingState.GatherAtBase)
                 {
-                    waitingForMindsGotten = false;
+                    attackingState = AttackingState.Attack;
                     OverrideMinds(new DataEditor[] { DataEditor.GetCombatEditor(5, true) });
                 }
                 else
                 {
                     OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(), DataEditor.GetCombatEditor() });
-                    coolingDown = 20;
+                    coolingDown = 60;
+                    attackCount++;
+                    attackingState = AttackingState.Idle;
                 }
             }
         }
+        else if (currentResources.GetResourceAmount(ResourceType.Food) <= totalAllowedUnits * 2 && attackingState == AttackingState.Idle)
+        {
+            attackingState = AttackingState.Idle;
+            OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(ResourceType.Food, 1, Gathering.Direction.None, true), DataEditor.GetCombatEditor() });
+        }
+        else if (totalAllowedUnits < minimumAttackAmount)
+        {
+            attackingState = AttackingState.Idle;
+            OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(ResourceType.Rock, 1, Gathering.Direction.None, true), DataEditor.GetCombatEditor() });
+        }
         else
         {
-            OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(ResourceType.Rock, 1, Gathering.Direction.None, true), DataEditor.GetCombatEditor() });
+            attackingState = AttackingState.Idle;
+            OverrideMinds(new DataEditor[] { DataEditor.GetGatheringEditor(ResourceType.None, 1, Gathering.Direction.None, true), DataEditor.GetCombatEditor() });
         }
 
         if (coolingDown > 0)
@@ -78,12 +96,13 @@ public class BasicAi : MonoBehaviour
 
     public BasicAIData GetData()
     {
-        return new BasicAIData(waitingForMindsGotten, coolingDown, GetTeamId());
+        return new BasicAIData(attackingState, coolingDown, attackCount, GetTeamId());
     }
 
     public void SetData(BasicAIData data)
     {
-        waitingForMindsGotten = data.WaitingForMindsGotten;
+        attackingState = data.AttackingState;
         coolingDown = data.CoolingDown;
+        attackCount = data.AttackCount;
     }
 }

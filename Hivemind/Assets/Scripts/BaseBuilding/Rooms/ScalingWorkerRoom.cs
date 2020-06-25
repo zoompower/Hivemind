@@ -12,7 +12,7 @@ internal class ScalingWorkerRoom : WorkerRoom
     {
         UnitResource = "Prefabs/WorkerAnt";
         RespawnCost = new Dictionary<ResourceType, int>() { { ResourceType.Food, 1 } };
-        DefaultRespawnTime = 30;
+        DefaultRespawnTime = 15;
         InvokeRepeating("CheckAndScale", 1f, 1f);
     }
 
