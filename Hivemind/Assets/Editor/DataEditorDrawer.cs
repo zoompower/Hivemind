@@ -6,8 +6,8 @@ internal class DataEditorDrawer : PropertyDrawer
 {
     private Rect contentPosition;
 
-    float GatheringPropCount = 4;
-    float CombatPropCount = 2;
+    private float GatheringPropCount = 4;
+    private float CombatPropCount = 2;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
