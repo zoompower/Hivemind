@@ -10,6 +10,8 @@ public class MindGroup
 
     public List<UnitGroup> unitGroupList;
 
+    private List<Ant> antsGottenNewMinds = new List<Ant>();
+
     public int Count { get; private set; }
 
     private List<IMind> Minds;
@@ -149,7 +151,6 @@ public class MindGroup
         }
     }
 
-    private List<Ant> antsGottenNewMinds = new List<Ant>();
     internal bool NewMindsGotten()
     {
         return antsGottenNewMinds.Count == GetTotalCurrentUnitCount();
