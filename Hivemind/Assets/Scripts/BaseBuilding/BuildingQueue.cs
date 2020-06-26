@@ -45,6 +45,11 @@ public class BuildingQueue
         return null;
     }
 
+    internal void RemoveJob(BuildingTask task)
+    {
+        task.Ant = null;
+    }
+
     public void AddNewJob(BaseTile tile, BaseBuildingTool tool)
     {
         BuildingTask existingTask = Queue.FirstOrDefault(task => task.BaseTile == tile) ?? WaitQueue.FirstOrDefault(task => task.BaseTile == tile);

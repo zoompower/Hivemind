@@ -12,9 +12,18 @@ public class BaseGroupMind : IMind
     private bool busy = false;
     private float waitTimer;
     private bool waiting;
+    private BuildingTask task;
 
     public BaseGroupMind()
     {
+    }
+
+    ~BaseGroupMind()
+    {
+        if (task != null)
+        {
+            controller.BuildingQueue.RemoveJob(task);
+        }
     }
 
     public void Initiate(Ant ant)
@@ -58,6 +67,7 @@ public class BaseGroupMind : IMind
         Vector3 target = (Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) / 4) + task.BaseTile.transform.position;
         ant.GetAgent().SetDestination(target);
 
+        this.task = task;
         yield return new WaitWhile(() =>
         {
             if (task.IsRemoved) return false;
@@ -90,7 +100,7 @@ public class BaseGroupMind : IMind
 
             controller.BuildingQueue.FinishTask(task);
         }
-
+        this.task = null;
         controller.GetComponent<UnitController>().MindGroupList.UpdateMaxUnitAmount();
         busy = false;
     }
