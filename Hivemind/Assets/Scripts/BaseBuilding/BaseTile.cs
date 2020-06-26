@@ -43,7 +43,7 @@ public class BaseTile : MonoBehaviour
     internal GameObject HighlightPrefab;
 
     internal bool Loaded = false;
-    private int f =0;
+    private int WaitLoaded = 0;
 
     private void Awake()
     {
@@ -61,9 +61,9 @@ public class BaseTile : MonoBehaviour
 
     private void Update()
     {
-        if (f < 5)
+        if (WaitLoaded < 5)
         {
-            f++;
+            WaitLoaded++;
         }
         else
         {
