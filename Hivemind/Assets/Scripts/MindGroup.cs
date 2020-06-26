@@ -14,8 +14,6 @@ public class MindGroup
 
     private List<IMind> Minds;
 
-    public int MindPoints { get; set; }
-
     public MindGroup(GameObject UiObject)
     {
         unitGroupList = new List<UnitGroup>();
@@ -128,14 +126,13 @@ public class MindGroup
 
     public MindGroupData GetData()
     {
-        return new MindGroupData(unitGroupList, Count, Minds, MindPoints);
+        return new MindGroupData(unitGroupList, Count, Minds);
     }
 
     public void SetData(MindGroupData data, GameObject parent, GameObject UiObject)
     {
         Minds = data.Minds;
         Count = data.Count;
-        MindPoints = data.MindPoints;
         for (int i = 0; i < Minds.Count; i++)
         {
             Minds[i].SetData(data.MindData[i]);
