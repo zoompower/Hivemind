@@ -331,11 +331,11 @@ public class GameWorld : MonoBehaviour
 
     public BaseController GetEnemyBase(int teamId)
     {
-        foreach (BaseController b in BaseControllerList)
+        foreach (BaseController controller in BaseControllerList)
         {
-            if (b.TeamID != teamId)
+            if (controller.TeamID != teamId)
             {
-                return b;
+                return controller;
             }
         }
         return null;
