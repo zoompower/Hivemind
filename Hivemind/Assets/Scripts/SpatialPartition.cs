@@ -29,10 +29,11 @@ public class SpatialPartition : MonoBehaviour
                 go.transform.localScale = new Vector3((go.transform.localScale.x / width), 1, (go.transform.localScale.z / depth));
                 go.name = "CollisionBox(" + i + "," + j + ")";
                 go.transform.Find("SpatialPartitioning");
-                go.GetComponent<SpatialPartitioning>().width = j;
-                go.GetComponent<SpatialPartitioning>().height = i;
-                go.GetComponent<SpatialPartitioning>().Id = id;
-                Grid.Add(id, go.GetComponent<SpatialPartitioning>());
+                SpatialPartitioning sp = go.GetComponent<SpatialPartitioning>();
+                sp.width = j;
+                sp.height = i;
+                sp.Id = id;
+                Grid.Add(id, sp);
                 id++;
             }
         }
