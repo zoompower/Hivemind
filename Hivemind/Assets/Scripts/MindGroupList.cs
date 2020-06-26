@@ -126,6 +126,7 @@ public class MindGroupList
         return Total;
     }
 
+
     public int GetTotalPossibleAnts()
     {
         int Total = 0;
