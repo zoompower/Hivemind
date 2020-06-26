@@ -140,9 +140,9 @@ public class Ant : MonoBehaviour
         return false;
     }
 
-    public void SetClosestEnemy(Ant c)
+    public void SetClosestEnemy(Ant closestEnemy)
     {
-        closestEnemy = c;
+        this.closestEnemy = closestEnemy;
     }
 
     public void Die()
