@@ -61,6 +61,10 @@ public class BaseGroupMind : IMind
         yield return new WaitWhile(() =>
         {
             if (task.IsRemoved) return false;
+            if (task.BaseBuildingTool == BaseBuildingTool.AntRoom && controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() >= GameWorld.UnitLimit)
+            {
+                controller.BuildingQueue.CancelTask(task);
+            }
 
             target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.4f + task.BaseTile.transform.position;
             if (Vector3.Distance(target, ant.transform.position) < 2 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)

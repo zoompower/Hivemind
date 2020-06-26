@@ -18,7 +18,7 @@ internal class ScalingWorkerRoom : WorkerRoom
 
     private void CheckAndScale()
     {
-        if (GameResources.EnoughResources(GetScaledUpgradeCost(), baseController.GetGameResources()))
+        if (baseController.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() < GameWorld.UnitLimit && GameResources.EnoughResources(GetScaledUpgradeCost(), baseController.GetGameResources()))
         {
             baseController.GetGameResources().SubtractResources(GetScaledUpgradeCost());
             unitGroup.AddMax();

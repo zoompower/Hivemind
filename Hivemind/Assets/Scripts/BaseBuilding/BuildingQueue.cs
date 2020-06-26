@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class BuildingQueue
@@ -31,8 +32,15 @@ public class BuildingQueue
 
         if (job != null)
         {
-            job.Ant = ant;
-            return job;
+            if (job.BaseBuildingTool == BaseBuildingTool.AntRoom && controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() >= GameWorld.UnitLimit)
+            {
+                Remove(job, true);
+            }
+            else
+            {
+                job.Ant = ant;
+                return job;
+            }
         }
 
         return null;
@@ -59,7 +67,7 @@ public class BuildingQueue
                     break;
 
                 case BaseBuildingTool.AntRoom:
-                    if (!tile.IsUnbuildable && tile.RoomScript == null && CalculateAndDoCost(BaseBuildingTool.AntRoom))
+                    if (controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() < GameWorld.UnitLimit && !tile.IsUnbuildable && tile.RoomScript == null && CalculateAndDoCost(BaseBuildingTool.AntRoom))
                     {
                         Add(buildingTask);
                     }
@@ -94,10 +102,21 @@ public class BuildingQueue
 
     public void FinishTask(BuildingTask task)
     {
+        if (task.BaseBuildingTool == BaseBuildingTool.AntRoom && controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() >= GameWorld.UnitLimit)
+        {
+            CancelTask(task);
+        }
         if (task.IsRemoved) return;
 
         task.BaseTile.AntDoesAction(task.BaseBuildingTool);
         Remove(task);
+    }
+
+    public void CancelTask(BuildingTask task)
+    {
+        if (task.IsRemoved) return;
+
+        Remove(task, true);
     }
 
     public void VerifyTasks()

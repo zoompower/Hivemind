@@ -197,7 +197,7 @@ public class BaseController : MonoBehaviour
                 break;
 
             case BaseBuildingTool.AntRoom:
-                if (tile.RoomScript == null)
+                if (tile.RoomScript == null && GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() < GameWorld.UnitLimit)
                 {
                     if (enoughResources)
                     {

@@ -112,20 +112,15 @@ public class UnitController : MonoBehaviour
             if (pair.Value == 0)
             {
                 uGroup.SetMaxUnits(uGroup.MaxUnits - totalCount);
+                uGroup.SetCurrentUnits(ants.Count - totalCount, true);
             }
             else
             {
-                uGroup.SetMaxUnits(pair.Value);
+                uGroup.SetMaxUnits(count);
+                uGroup.SetCurrentUnits(count, true);
             }
 
-            uGroup.SetCurrentUnits(count, true);
-
-            for (int i = totalCount; i < totalCount + pair.Value && i < ants.Count; i++)
-            {
-                ants[i].unitGroupID = pair.Key;
-            }
-
-            totalCount += pair.Value;
+            totalCount += count;
         }
     }
 

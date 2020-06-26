@@ -37,7 +37,7 @@ public class BasicAi : MonoBehaviour
         int totalAliveUnits = unitController.MindGroupList.GetTotalAliveAnts();
         int totalAllowedUnits = unitController.MindGroupList.GetTotalPossibleAnts();
         // The curve for this calculation is https://www.desmos.com/calculator/zshcxyt744, for X we take attackCount times two to get an easier curve for what its purpose.
-        int minimumAttackAmount = (int)Math.Round((3f * Math.Pow(1.04d, (attackCount * 2) + 20)) - 1.5d);
+        int minimumAttackAmount = Math.Min((int)Math.Round((3f * Math.Pow(1.04d, (attackCount * 2) + 20)) - 1.5d), GameWorld.UnitLimit);
 
         if (totalAliveUnits >= minimumAttackAmount && coolingDown <= 0 && currentResources.GetResourceAmount(ResourceType.Food) > totalAllowedUnits)
         {
