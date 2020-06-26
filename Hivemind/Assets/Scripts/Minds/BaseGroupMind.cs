@@ -82,7 +82,6 @@ public class BaseGroupMind : IMind
             }
             return true;
         });
-
         ant.GetAgent().ResetPath();
 
         if (!task.IsRemoved)
@@ -92,6 +91,7 @@ public class BaseGroupMind : IMind
             controller.BuildingQueue.FinishTask(task);
         }
 
+        controller.GetComponent<UnitController>().MindGroupList.UpdateMaxUnitAmount();
         busy = false;
     }
 

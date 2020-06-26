@@ -11,10 +11,7 @@ public class WorkerRoomButton : MonoBehaviour
 
     private void Start()
     {
-        var o = GameWorld.Instance.UnitControllerList;
-        var i = GameWorld.Instance.UnitControllerList.Where(controller => controller.TeamId == GameWorld.Instance.LocalTeamId).FirstOrDefault().MindGroupList;
-        i.OnAmountGet += UpdateText;
-        i.logevents();
+        GameWorld.Instance.UnitControllerList.Where(controller => controller.TeamId == GameWorld.Instance.LocalTeamId).FirstOrDefault().MindGroupList.OnAmountGet += UpdateText;
     }
 
     private void UpdateText(object sender, AmountChangedEventArgs args)

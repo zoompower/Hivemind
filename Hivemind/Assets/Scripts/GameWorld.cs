@@ -270,6 +270,10 @@ public class GameWorld : MonoBehaviour
             foreach (UnitController controller in UnitControllerList)
             {
                 controller.SetData(saveObject.TeamMindGroupData.FirstOrDefault(data => data.TeamId == controller.TeamId).MindGroupDataList);
+                if(controller.TeamId == LocalTeamId)
+                {
+                    controller.MindGroupList.UpdateMaxUnitAmount();
+                }
             }
             for (int i = 0; i < saveObject.Ants.Count; i++)
             {

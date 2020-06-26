@@ -133,16 +133,14 @@ public class MindGroupList
         {
             Total += group.GetTotalMaxUnitCount();
         }
-        OnAmountGet.Invoke(null, new AmountChangedEventArgs(Total));
         return Total;
     }
-    public void logevents()
-    {
-        var i = OnAmountGet.GetInvocationList();
-        Debug.Log(OnAmountGet.GetInvocationList());
-        OnAmountGet.Invoke(null, new AmountChangedEventArgs(GetTotalPossibleAnts()));
-    }
 
+    public void UpdateMaxUnitAmount()
+    {
+        if (OnAmountGet != null)
+            OnAmountGet.Invoke(null, new AmountChangedEventArgs(GetTotalPossibleAnts()));
+    }
     public void DeleteUnitGroup(UnitGroup unitGroup)
     {
         GetMindGroupFromUnitId(unitGroup.UnitGroupId)?.RemoveUnit(unitGroup);
