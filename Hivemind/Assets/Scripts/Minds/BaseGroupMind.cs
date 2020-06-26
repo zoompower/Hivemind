@@ -47,6 +47,7 @@ public class BaseGroupMind : IMind
         }
         else
         {
+            ant.GetAgent().SetDestination(controller.GetPosition());
             ant.StartCoroutine(Wait(1));
         }
     }

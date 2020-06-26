@@ -94,6 +94,11 @@ public class BasicAi : MonoBehaviour
         unitController.MindGroupList.OverrideMinds(datas);
     }
 
+    private void OnDestroy()
+    {
+        GameWorld.Instance.RemoveAI(this);
+    }
+
     public BasicAIData GetData()
     {
         return new BasicAIData(attackingState, coolingDown, attackCount, GetTeamId());
