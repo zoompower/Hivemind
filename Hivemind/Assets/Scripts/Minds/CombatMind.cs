@@ -343,7 +343,7 @@ public class CombatMind : IMind
 
     public MindData GetData()
     {
-        return new CombatData( ant, busy, state, leavingBase, nextState, enterBase, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
+        return new CombatData(ant, busy, state, leavingBase, nextState, enterBase, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
     }
 
     public void SetData(MindData mindData)
