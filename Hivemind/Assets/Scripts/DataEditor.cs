@@ -32,6 +32,7 @@ public class DataEditor
 
             case MindType.Combat:
                 return new CombatMind(VisionRadius, AttackingQueen);
+                
             default:
                 return null;
         }
