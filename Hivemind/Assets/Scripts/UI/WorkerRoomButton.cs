@@ -22,7 +22,7 @@ public class WorkerRoomButton : MonoBehaviour
     private void UpdateText(object sender, AmountChangedEventArgs args)
     {
         myText.text = $"Worker Room \n(Costs 10 rocks) \n({GameWorld.UnitLimit - args.Amount} Remaining)";
-        if(args.Amount >= GameWorld.UnitLimit)
+        if (args.Amount >= GameWorld.UnitLimit)
         {
             myButton.interactable = false;
         }
