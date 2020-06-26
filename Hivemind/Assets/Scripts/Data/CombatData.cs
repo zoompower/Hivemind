@@ -7,7 +7,6 @@ namespace Assets.Scripts.Data
     [Serializable]
     public class CombatData : MindData
     {
-        public int PrefferedHealth;
         public string AntGuid;
         public bool Busy;
         public State State;
@@ -22,9 +21,8 @@ namespace Assets.Scripts.Data
         public int EngageRange;
         public bool EnteredEnemyBase;
 
-        public CombatData(int prefferedHealth, Ant ant, bool busy, State state, bool leavingBase, State nextState, bool enterBase, Vector3 teleporterEntrance, bool attackingQueen, Ant target, int engageRange, bool enteredEnemyBase)
+        public CombatData(Ant ant, bool busy, State state, bool leavingBase, State nextState, bool enterBase, Vector3 teleporterEntrance, bool attackingQueen, Ant target, int engageRange, bool enteredEnemyBase)
         {
-            PrefferedHealth = prefferedHealth;
             if (ant != null)
             {
                 AntGuid = ant.myGuid.ToString();

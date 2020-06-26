@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class CombatMind : IMind
 {
-    private float minEstimatedDifference;
-    private int prefferedHealth;
     private Ant ant;
     private bool busy;
     private Timer Surroundingcheck;
@@ -33,7 +31,6 @@ public class CombatMind : IMind
     public enum State
     {
         Idle,
-        Scouting,
         AttackingQueen,
         Escort,
         MovingToTarget,
@@ -346,13 +343,12 @@ public class CombatMind : IMind
 
     public MindData GetData()
     {
-        return new CombatData(prefferedHealth, ant, busy, state, leavingBase, nextState, enterBase, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
+        return new CombatData( ant, busy, state, leavingBase, nextState, enterBase, TeleporterEntrance, AttackingQueen, target, EngageRange, enteredEnemyBase);
     }
 
     public void SetData(MindData mindData)
     {
         CombatData data = mindData as CombatData;
-        prefferedHealth = data.PrefferedHealth;
         busy = data.Busy;
         state = data.State;
         leavingBase = data.LeavingBase;
