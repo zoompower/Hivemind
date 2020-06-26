@@ -64,7 +64,6 @@ public class MindGroupList
         newUnitGroup.MergeGroupIntoThis(oldUnitGroup);
 
         DeleteUnitGroup(oldUnitGroup);
-
         return new GroupIdChangedEventArgs(mergeGroup, newUnitGroup.UnitGroupId);
     }
 
@@ -114,6 +113,7 @@ public class MindGroupList
                 return;
             }
         }
+        UpdateMaxUnitAmount();
     }
 
     internal int GetTotalAliveAnts()
