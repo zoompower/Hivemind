@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Data;
+﻿using Assets.Scripts;
+using Assets.Scripts.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class MindGroupList
 {
     public List<MindGroup> mindGroupList;
+    public event EventHandler<AmountChangedEventArgs> OnAmountGet;
 
     public MindGroupList(GameObject[] unitGroupObjects)
     {
@@ -124,14 +126,21 @@ public class MindGroupList
         return Total;
     }
 
-    internal int GetTotalPossibleAnts()
+    public int GetTotalPossibleAnts()
     {
         int Total = 0;
         foreach (MindGroup group in mindGroupList)
         {
             Total += group.GetTotalMaxUnitCount();
         }
+        OnAmountGet.Invoke(null, new AmountChangedEventArgs(Total));
         return Total;
+    }
+    public void logevents()
+    {
+        var i = OnAmountGet.GetInvocationList();
+        Debug.Log(OnAmountGet.GetInvocationList());
+        OnAmountGet.Invoke(null, new AmountChangedEventArgs(GetTotalPossibleAnts()));
     }
 
     public void DeleteUnitGroup(UnitGroup unitGroup)
