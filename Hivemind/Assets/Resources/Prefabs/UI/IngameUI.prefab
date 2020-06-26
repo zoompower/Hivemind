@@ -3571,7 +3571,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5730913412891698982}
   m_HandleRect: {fileID: 5046053474626722188}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4046,6 +4046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myText: {fileID: 5973020128886901941}
+  myButton: {fileID: 548447172192851652}
 --- !u!1 &5067163348472759525
 GameObject:
   m_ObjectHideFlags: 0
