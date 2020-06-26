@@ -62,6 +62,7 @@ public class SaveMenuScript : MonoBehaviour
 
     public void SetSelectedSaveFile(SaveFileButtonScript buttonScript)
     {
+        newSaveInput.text = "";
         foreach (Transform child in contentBox.transform)
         {
             child.gameObject.GetComponent<Button>().interactable = true;

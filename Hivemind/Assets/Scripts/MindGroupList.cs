@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Data;
+﻿using Assets.Scripts;
+using Assets.Scripts.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class MindGroupList
 {
     public List<MindGroup> mindGroupList;
+    public event EventHandler<AmountChangedEventArgs> OnAmountGet;
 
     public MindGroupList(GameObject[] unitGroupObjects)
     {
@@ -17,8 +19,7 @@ public class MindGroupList
             mindGroupList.Add(new MindGroup(obj));
             if (mindGroupList.Count == 1)
             {
-                mindGroupList[0].Minds.Clear();
-                mindGroupList[0].Minds.Add(new BaseGroupMind());
+                mindGroupList[0].SetMinds(new List<IMind>() { new BaseGroupMind(), new CombatMind() });
             }
         }
     }
@@ -63,7 +64,6 @@ public class MindGroupList
         newUnitGroup.MergeGroupIntoThis(oldUnitGroup);
 
         DeleteUnitGroup(oldUnitGroup);
-
         return new GroupIdChangedEventArgs(mergeGroup, newUnitGroup.UnitGroupId);
     }
 
@@ -113,8 +113,34 @@ public class MindGroupList
                 return;
             }
         }
+        UpdateMaxUnitAmount();
     }
 
+    internal int GetTotalAliveAnts()
+    {
+        int Total = 0;
+        foreach (MindGroup group in mindGroupList)
+        {
+            Total += group.GetTotalCurrentUnitCount();
+        }
+        return Total;
+    }
+
+    public int GetTotalPossibleAnts()
+    {
+        int Total = 0;
+        foreach (MindGroup group in mindGroupList)
+        {
+            Total += group.GetTotalMaxUnitCount();
+        }
+        return Total;
+    }
+
+    public void UpdateMaxUnitAmount()
+    {
+        if (OnAmountGet != null)
+            OnAmountGet.Invoke(null, new AmountChangedEventArgs(GetTotalPossibleAnts()));
+    }
     public void DeleteUnitGroup(UnitGroup unitGroup)
     {
         GetMindGroupFromUnitId(unitGroup.UnitGroupId)?.RemoveUnit(unitGroup);
@@ -161,7 +187,7 @@ public class MindGroupList
                     overrideMindList.Add(dataInfo.GenerateMind());
                 }
                 var group = mindGroupList[i];
-                group.Minds = overrideMindList;
+                group.SetMinds(overrideMindList);
             }
         }
     }

@@ -8,14 +8,17 @@ internal class ScalingWorkerRoom : WorkerRoom
         return RoomType.ScalingWorkerRoom;
     }
 
-    private void Start()
+    private void Awake()
     {
+        UnitResource = "Prefabs/WorkerAnt";
+        RespawnCost = new Dictionary<ResourceType, int>() { { ResourceType.Food, 1 } };
+        DefaultRespawnTime = 15;
         InvokeRepeating("CheckAndScale", 1f, 1f);
     }
 
     private void CheckAndScale()
     {
-        if (GameResources.EnoughResources(GetScaledUpgradeCost(), baseController.GetGameResources()))
+        if (baseController.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() < GameWorld.UnitLimit && GameResources.EnoughResources(GetScaledUpgradeCost(), baseController.GetGameResources()))
         {
             baseController.GetGameResources().SubtractResources(GetScaledUpgradeCost());
             unitGroup.AddMax();
@@ -24,6 +27,6 @@ internal class ScalingWorkerRoom : WorkerRoom
 
     private Dictionary<ResourceType, int> GetScaledUpgradeCost()
     {
-        return new Dictionary<ResourceType, int>() { { ResourceType.Rock, Mathf.Clamp(3 + 2 * unitGroup.MaxUnits, 5, 15) } }; ;
+        return new Dictionary<ResourceType, int>() { { ResourceType.Rock, Mathf.Clamp(4 + 2 * unitGroup.MaxUnits, 6, 14) } }; ;
     }
 }

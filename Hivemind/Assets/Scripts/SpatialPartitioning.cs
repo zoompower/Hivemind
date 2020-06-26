@@ -7,6 +7,7 @@ public class SpatialPartitioning : MonoBehaviour
     public List<SpatialPartitioning> Neighbors;
     public List<SpatialPartitioning> ExtraNeighbors;
 
+    public int Id;
     public int height;
     public int width;
 
@@ -18,32 +19,23 @@ public class SpatialPartitioning : MonoBehaviour
         SetNeighbors();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //TO DO: delete this when done DEBUGGING
-        /*
-        if(Entities.Count != 0)
-        {
-            Debug.ClearDeveloperConsole();
-            Debug.Log(this.name+" Count: "+Entities.Count);
-        }*/
-    }
-
     private void OnTriggerEnter(Collider entity)
     {
         Entities.Add(entity.gameObject);
+        if (entity.GetComponent<Ant>())
+        {
+            entity.GetComponent<Ant>().SpatialPositionId = Id;
+        }
     }
 
     private void OnTriggerExit(Collider entity)
     {
-        Entities.Remove(entity.gameObject);
+        Remove(entity.gameObject);
     }
 
     public List<GameObject> GetEntitiesWithNeigbors()
     {
-        //TO DO: Check the code while in practice, optimize for actual use
-        List<GameObject> EntitiesWithNeighbors = Entities;
+        List<GameObject> EntitiesWithNeighbors = new List<GameObject>(Entities);
 
         List<SpatialPartitioning> Test;
 
@@ -61,7 +53,10 @@ public class SpatialPartitioning : MonoBehaviour
         {
             foreach (GameObject ant in neig.Entities)
             {
-                EntitiesWithNeighbors.Add(ant);
+                if (ant)
+                {
+                    EntitiesWithNeighbors.Add(ant);
+                }
             }
         }
         return EntitiesWithNeighbors;
@@ -96,12 +91,17 @@ public class SpatialPartitioning : MonoBehaviour
 
         for (int i = 0; i < cords.GetLength(0); i++)
         {
-            GameObject NeigGameObject = GameObject.Find($"CollisionBox({height + cords[i,0]},{width + cords[i, 1]})");
-            if(NeigGameObject != null)
+            GameObject NeigGameObject = GameObject.Find($"CollisionBox({height + cords[i, 0]},{width + cords[i, 1]})");
+            if (NeigGameObject != null)
             {
                 SpatialPartitioning NeighCollider = NeigGameObject.GetComponent<SpatialPartitioning>();
                 Neighbors.Add(NeighCollider);
             }
         }
+    }
+
+    internal void Remove(GameObject gameObject)
+    {
+        Entities.Remove(gameObject);
     }
 }

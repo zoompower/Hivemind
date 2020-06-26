@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum ResourceType
 {
-    Unknown,
+    None,
     Rock,
     Crystal,
     Food
@@ -18,7 +18,7 @@ public class ResourceNode : MonoBehaviour
 
     public GameObject baseObject;
     public int BaseResourceAmount = 4;
-    public ResourceType resourceType = ResourceType.Unknown;
+    public ResourceType resourceType = ResourceType.None;
     public bool CanRespawn = false;
     public bool Enabled = true;
 

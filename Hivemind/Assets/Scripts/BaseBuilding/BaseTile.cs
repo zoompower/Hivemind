@@ -43,6 +43,7 @@ public class BaseTile : MonoBehaviour
     internal GameObject HighlightPrefab;
 
     internal bool Loaded = false;
+    private int WaitLoaded = 0;
 
     private void Awake()
     {
@@ -60,8 +61,15 @@ public class BaseTile : MonoBehaviour
 
     private void Update()
     {
-        if (!Loaded)
-            Loaded = true;
+        if (WaitLoaded < 5)
+        {
+            WaitLoaded++;
+        }
+        else
+        {
+            if (!Loaded)
+                Loaded = true;
+        }
     }
 
     private void OnDestroy()
@@ -148,7 +156,7 @@ public class BaseTile : MonoBehaviour
         if (StartObject != null && StartObject.GetComponent<MeshFilter>() != null && ShowMeshPreview)
         {
             Gizmos.color = MeshColor;
-            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, Quaternion.Euler(0, (DefaultRotation < 0) ? 0 : DefaultRotation, 0), transform.localScale);
+            Gizmos.DrawWireMesh(StartObject.GetComponent<MeshFilter>().sharedMesh, transform.position, Quaternion.Euler(0, (DefaultRotation < 0) ? 0 : DefaultRotation, 0), transform.lossyScale);
         }
 
         if (ShowDebugInfo)

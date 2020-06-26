@@ -24,6 +24,7 @@ public class UnitController : MonoBehaviour
         MindGroupList.OverrideMinds(MindDatas);
 
         TeamId = GetComponent<BaseController>().TeamID;
+        GameWorld.Instance.AddUnitController(this);
     }
 
     private void Start()
@@ -33,7 +34,6 @@ public class UnitController : MonoBehaviour
             uiController = FindObjectOfType<UiController>();
             uiController.RegisterUnitController(this);
         }
-        GameWorld.Instance.AddUnitController(this);
     }
 
     public Guid CreateUnitGroup()
@@ -112,20 +112,15 @@ public class UnitController : MonoBehaviour
             if (pair.Value == 0)
             {
                 uGroup.SetMaxUnits(uGroup.MaxUnits - totalCount);
+                uGroup.SetCurrentUnits(ants.Count - totalCount, true);
             }
             else
             {
-                uGroup.SetMaxUnits(pair.Value);
+                uGroup.SetMaxUnits(count);
+                uGroup.SetCurrentUnits(count, true);
             }
 
-            uGroup.SetCurrentUnits(count, true);
-
-            for (int i = totalCount; i < totalCount + pair.Value && i < ants.Count; i++)
-            {
-                ants[i].unitGroupID = pair.Key;
-            }
-
-            totalCount += pair.Value;
+            totalCount += count;
         }
     }
 
@@ -142,6 +137,11 @@ public class UnitController : MonoBehaviour
                 MindGroupList.DeleteUnitGroup(group);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameWorld.Instance.RemoveUnitController(this);
     }
 
     public MindGroup GetMindGroup(int Index)

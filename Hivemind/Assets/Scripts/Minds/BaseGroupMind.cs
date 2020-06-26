@@ -12,9 +12,18 @@ public class BaseGroupMind : IMind
     private bool busy = false;
     private float waitTimer;
     private bool waiting;
+    private BuildingTask task;
 
     public BaseGroupMind()
     {
+    }
+
+    ~BaseGroupMind()
+    {
+        if (task != null)
+        {
+            controller.BuildingQueue.RemoveJob(task);
+        }
     }
 
     public void Initiate(Ant ant)
@@ -37,6 +46,9 @@ public class BaseGroupMind : IMind
     {
         if (IsBusy() || waiting) return;
 
+        if (ant.GetAgent().isStopped == true)
+            ant.GetAgent().isStopped = false;
+
         var job = controller.BuildingQueue.GetJob(ant);
         if (job != null)
         {
@@ -44,6 +56,7 @@ public class BaseGroupMind : IMind
         }
         else
         {
+            ant.GetAgent().SetDestination(controller.GetPosition());
             ant.StartCoroutine(Wait(1));
         }
     }
@@ -54,12 +67,17 @@ public class BaseGroupMind : IMind
         Vector3 target = (Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) / 4) + task.BaseTile.transform.position;
         ant.GetAgent().SetDestination(target);
 
+        this.task = task;
         yield return new WaitWhile(() =>
         {
             if (task.IsRemoved) return false;
+            if (task.BaseBuildingTool == BaseBuildingTool.AntRoom && controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() >= GameWorld.UnitLimit)
+            {
+                controller.BuildingQueue.CancelTask(task);
+            }
 
-            target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.2f + task.BaseTile.transform.position;
-            if (Vector3.Distance(target, ant.transform.position) < 1 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
+            target = Vector3.Normalize(ant.transform.position - task.BaseTile.transform.position) * 1.4f + task.BaseTile.transform.position;
+            if (Vector3.Distance(target, ant.transform.position) < 2 && Vector3.Distance(target, ant.GetAgent().destination) > 0.1f)
             {
                 if (!ant.GetAgent().isOnNavMesh)
                 {
@@ -68,13 +86,12 @@ public class BaseGroupMind : IMind
                 ant.GetAgent().SetDestination(target);
             }
 
-            if (Vector3.Distance(target, ant.transform.position) < 0.3)
+            if (Vector3.Distance(target, ant.transform.position) < 0.6)
             {
                 return false;
             }
             return true;
         });
-
         ant.GetAgent().ResetPath();
 
         if (!task.IsRemoved)
@@ -83,7 +100,8 @@ public class BaseGroupMind : IMind
 
             controller.BuildingQueue.FinishTask(task);
         }
-
+        this.task = null;
+        controller.GetComponent<UnitController>().MindGroupList.UpdateMaxUnitAmount();
         busy = false;
     }
 
@@ -106,7 +124,7 @@ public class BaseGroupMind : IMind
 
     public double Likelihood()
     {
-        return 10000;
+        return 55;
     }
 
     public bool IsBusy()

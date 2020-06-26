@@ -65,6 +65,7 @@ MonoBehaviour:
   TeleporterEntranceTransform: {fileID: 0}
   TeleporterExit: {x: 0, y: 0, z: 0}
   TeleporterEntrance: {x: 0, y: 0, z: 0}
+  TeamColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &5659562022250165478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +92,7 @@ GameObject:
   - component: {fileID: 8888611467676301667}
   - component: {fileID: 2917349141467741771}
   - component: {fileID: 8108060859643536694}
+  - component: {fileID: 8118473907256198925}
   m_Layer: 0
   m_Name: InBaseTrigger
   m_TagString: Untagged
@@ -141,3 +143,15 @@ MonoBehaviour:
   inBaseMinimapScale: 50
   outBaseAntScale: 0.1
   outBaseMinimapScale: 150
+--- !u!114 &8118473907256198925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9091765219717218699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31e6ef4073efee246ab6313f2a1d1cb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

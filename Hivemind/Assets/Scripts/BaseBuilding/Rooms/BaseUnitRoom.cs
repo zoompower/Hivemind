@@ -40,7 +40,10 @@ public abstract class BaseUnitRoom : BaseRoom
 
     private void RemoveEventListeners()
     {
-        unitController.OnGroupIdChange -= ChangeGroupID;
+        if (TeamId == GameWorld.Instance.LocalTeamId)
+        {
+            unitController.OnGroupIdChange -= ChangeGroupID;
+        }
     }
 
     private void ChangeGroupID(object sender, GroupIdChangedEventArgs e)
@@ -109,9 +112,8 @@ public abstract class BaseUnitRoom : BaseRoom
 
         if (!Parent.Loaded)
         {
-            //singleFree = true;
+            singleFree = true;
         }
-        baseController.GetGameResources().AddResources(RespawnCost);
     }
 
     internal void AttachUnitGroup()

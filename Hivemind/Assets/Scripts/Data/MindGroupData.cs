@@ -9,7 +9,6 @@ namespace Assets.Scripts.Data
     {
         public List<UnitGroupData> UnitGroupDataList = new List<UnitGroupData>();
         public int Count;
-        public int MindPoints;
 
         [SerializeReference]
         public List<IMind> Minds;
@@ -17,7 +16,7 @@ namespace Assets.Scripts.Data
         [SerializeReference]
         public List<MindData> MindData = new List<MindData>();
 
-        public MindGroupData(List<UnitGroup> unitGroupList, int count, List<IMind> minds, int mindPoints)
+        public MindGroupData(List<UnitGroup> unitGroupList, int count, List<IMind> minds)
         {
             foreach (UnitGroup unitGroup in unitGroupList)
             {
@@ -29,7 +28,6 @@ namespace Assets.Scripts.Data
             {
                 MindData.Add(mind.GetData());
             }
-            MindPoints = mindPoints;
         }
     }
 }

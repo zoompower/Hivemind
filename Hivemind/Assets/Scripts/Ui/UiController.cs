@@ -24,6 +24,8 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
 
     [SerializeField] private GameObject EventDisplayer;
 
+    [SerializeField] private GameObject EndGameScreen;
+
     private UnitController unitController;
     private BaseController baseController;
 
@@ -70,6 +72,9 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
 
     private void Start()
     {
+        if (GameWorld.Instance)
+            GameWorld.Instance.SetUiController(this);
+
         if (FindObjectOfType<CameraController>() != null)
         {
             mainCamera = FindObjectOfType<CameraController>().gameObject;
@@ -171,6 +176,11 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
             //check if the mouse was inside the minimap UI
             if (scaledX < 1 && scaledX > 0 && scaledY < 1 && scaledY > 0)
             {
+                //creates a curve as to make the minimap a tiny bit more accurate
+                scaledX = (scaledX - 0.5f) * 6;
+                scaledY = (scaledY - 0.5f) * 6;
+                scaledX = 1 / (1 + (float)Math.Pow(Math.E, -scaledX));
+                scaledY = 1 / (1 + (float)Math.Pow(Math.E, -scaledY));
                 //return the number of the minimap and also the scale of where the mouse is so it does not have to be calculated again
                 return (true, i, scaledX, scaledY);
             }
@@ -216,7 +226,7 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
         var sb = new StringBuilder();
 
         foreach (var resourceType in (ResourceType[])Enum.GetValues(typeof(ResourceType)))
-            if (resourceType != ResourceType.Unknown)
+            if (resourceType != ResourceType.None)
                 sb.Append($" {resourceType}: {baseController.GetGameResources().GetResourceAmount(resourceType)}");
 
         resourceTextBox.text = sb.ToString();
@@ -317,5 +327,11 @@ public class UiController : MonoBehaviour, IDragHandler, IEndDragHandler, IPoint
     private string FormatResource(string spriteName, int val)
     {
         return $" <sprite={spriteName}> ({val}/999)";
+    }
+
+    public void ShowEndGameScreen(string endGameScreenText)
+    {
+        EndGameScreen.SetActive(true);
+        EndGameScreen.GetComponentsInChildren<TMP_Text>().FirstOrDefault(x => x.name == "EndGameText").text = endGameScreenText;
     }
 }

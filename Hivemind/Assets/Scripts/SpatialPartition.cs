@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SpatialPartition : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject obj;
+
+    public Dictionary<int, SpatialPartitioning> Grid = new Dictionary<int, SpatialPartitioning>();
 
     [SerializeField]
     private int width;
@@ -13,6 +15,7 @@ public class SpatialPartition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int id = 1;
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < depth; j++)
@@ -26,9 +29,18 @@ public class SpatialPartition : MonoBehaviour
                 go.transform.localScale = new Vector3((go.transform.localScale.x / width), 1, (go.transform.localScale.z / depth));
                 go.name = "CollisionBox(" + i + "," + j + ")";
                 go.transform.Find("SpatialPartitioning");
-                go.GetComponent<SpatialPartitioning>().width = j;
-                go.GetComponent<SpatialPartitioning>().height = i;
+                SpatialPartitioning sp = go.GetComponent<SpatialPartitioning>();
+                sp.width = j;
+                sp.height = i;
+                sp.Id = id;
+                Grid.Add(id, sp);
+                id++;
             }
         }
+    }
+
+    public SpatialPartitioning GetSpatialFromGrid(int Id)
+    {
+        return Grid[Id];
     }
 }

@@ -31,11 +31,23 @@ public class BuildingQueue
 
         if (job != null)
         {
-            job.Ant = ant;
-            return job;
+            if (job.BaseBuildingTool == BaseBuildingTool.AntRoom && controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() >= GameWorld.UnitLimit)
+            {
+                Remove(job, true);
+            }
+            else
+            {
+                job.Ant = ant;
+                return job;
+            }
         }
 
         return null;
+    }
+
+    internal void RemoveJob(BuildingTask task)
+    {
+        task.Ant = null;
     }
 
     public void AddNewJob(BaseTile tile, BaseBuildingTool tool)
@@ -59,7 +71,7 @@ public class BuildingQueue
                     break;
 
                 case BaseBuildingTool.AntRoom:
-                    if (!tile.IsUnbuildable && tile.RoomScript == null && CalculateAndDoCost(BaseBuildingTool.AntRoom))
+                    if (controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() < GameWorld.UnitLimit && !tile.IsUnbuildable && tile.RoomScript == null && CalculateAndDoCost(BaseBuildingTool.AntRoom))
                     {
                         Add(buildingTask);
                     }
@@ -94,10 +106,21 @@ public class BuildingQueue
 
     public void FinishTask(BuildingTask task)
     {
+        if (task.BaseBuildingTool == BaseBuildingTool.AntRoom && controller.GetComponent<UnitController>().MindGroupList.GetTotalPossibleAnts() >= GameWorld.UnitLimit)
+        {
+            CancelTask(task);
+        }
         if (task.IsRemoved) return;
 
         task.BaseTile.AntDoesAction(task.BaseBuildingTool);
         Remove(task);
+    }
+
+    public void CancelTask(BuildingTask task)
+    {
+        if (task.IsRemoved) return;
+
+        Remove(task, true);
     }
 
     public void VerifyTasks()
@@ -171,13 +194,13 @@ public class BuildingQueue
         foreach (BuildingTaskData buildingTaskData in data.Queue)
         {
             BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
-            task.SetData(buildingTaskData);
+            task.SetData(buildingTaskData, controller);
             Queue.Add(task);
         }
         foreach (BuildingTaskData buildingTaskData in data.WaitQueue)
         {
             BuildingTask task = new BuildingTask(null, BaseBuildingTool.Default);
-            task.SetData(buildingTaskData);
+            task.SetData(buildingTaskData, controller);
             WaitQueue.Add(task);
         }
         controller = GameWorld.Instance.FindBaseController(data.ControllerID);
