@@ -21,6 +21,8 @@ public class GameWorld : MonoBehaviour
 
     public int LocalTeamId = 0;
 
+    public static int UnitLimit = 50;
+
     private void Awake()
     {
         if (Instance == null)
