@@ -19,7 +19,7 @@ public class InBaseTrigger : MonoBehaviour
         var ant = other.GetComponent<Ant>();
         if (ant != null)
         {
-            ant.currentSpeed  = ant.baseSpeed * 1.8f;
+            ant.currentSpeed = ant.baseSpeed * 1.8f;
             if (GetComponentInParent<BaseController>().TeamID == ant.TeamID)
             {
                 ant.isAtBase = true;
