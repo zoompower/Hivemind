@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicAi : MonoBehaviour
 {
-    private BaseController basecontroller;
+    private BaseController baseController;
     private UnitController unitController;
 
     private AttackingState attackingState = AttackingState.Idle;
@@ -26,14 +26,14 @@ public class BasicAi : MonoBehaviour
     void Start()
     {
         unitController = GetComponent<UnitController>();
-        basecontroller = GetComponent<BaseController>();
+        baseController = GetComponent<BaseController>();
 
         InvokeRepeating("ExecuteRules", 1, 1);
     }
 
     private void ExecuteRules()
     {
-        var currentResources = basecontroller.GetGameResources();
+        var currentResources = baseController.GetGameResources();
         int totalAliveUnits = unitController.MindGroupList.GetTotalAliveAnts();
         int totalAllowedUnits = unitController.MindGroupList.GetTotalPossibleAnts();
         // The curve for this calculation is https://www.desmos.com/calculator/zshcxyt744, for X we take attackCount times two to get an easier curve for what its purpose.
@@ -86,7 +86,7 @@ public class BasicAi : MonoBehaviour
 
     public int GetTeamId()
     {
-        return basecontroller.TeamID;
+        return baseController.TeamID;
     }
 
     private void OverrideMinds(DataEditor[] datas)

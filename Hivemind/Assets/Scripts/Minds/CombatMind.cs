@@ -20,7 +20,6 @@ public class CombatMind : IMind
     private bool enterBase = false;
     private Vector3 TeleporterExit;
 
-    public Direction prefferedDirection { get; set; }
     public Vector3 TeleporterEntrance { get; private set; }
 
     public bool AttackingQueen;
@@ -40,19 +39,6 @@ public class CombatMind : IMind
         MovingToTarget,
         Engaging,
         MovingToNest
-    }
-
-    public enum Direction
-    {
-        None,
-        North,
-        NorthEast,
-        East,
-        SouthEast,
-        South,
-        SouthWest,
-        West,
-        NorthWest
     }
 
     public CombatMind() : this(2, false)
