@@ -47,7 +47,7 @@ public class Gathering : IMind
     public State state = State.Idle;
     private State nextState;
     private Vector3 scoutingDestination;
-    private float scoutDeciSeconds;
+    private int scoutDeciSeconds;
     private float returnSeconds;
 
     private Vector3 TeleporterExit;
@@ -337,7 +337,7 @@ public class Gathering : IMind
         gatheredResources.Add(resource.myGuid.ToString());
     }
 
-    private IEnumerator Scout(float seconds = -1f, Vector3 scoutingDestination = new Vector3())
+    private IEnumerator Scout(int seconds = -1, Vector3 scoutingDestination = new Vector3())
     {
         scoutDeciSeconds = seconds;
         if (scoutDeciSeconds < 0f)
@@ -394,7 +394,7 @@ public class Gathering : IMind
         while (scoutDeciSeconds > 0f)
         {
             yield return new WaitForSeconds(0.1f);
-            scoutDeciSeconds -= 1f;
+            scoutDeciSeconds -= 1;
         }
         scouting = false;
     }

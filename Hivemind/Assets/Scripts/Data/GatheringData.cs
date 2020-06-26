@@ -28,14 +28,14 @@ namespace Assets.Scripts.Data
         public float ScoutDestinationX;
         public float ScoutDestinationY;
         public float ScoutDestinationZ;
-        public float ScoutDeciSeconds;
+        public int ScoutDeciSeconds;
         public float ReturnSeconds;
         public bool EnterBase;
         public float TeleporterExitX;
         public float TeleporterExitY;
         public float TeleporterExitZ;
 
-        public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType exclusiveType, int carryWeight, Direction prefferedDirection, bool busy, bool leavingBase, State state, State nextState, Vector3 scoutingDestination, float scoutDeciSeconds, float returnSeconds, bool enterbase, Vector3 teleporterExit)
+        public GatheringData(Ant ant, List<string> gatheredResources, Dictionary<ResourceType, int> inventory, bool isScout, int nextHarvest, bool preparingReturn, bool scouting, ResourceNode target, ResourceType exclusiveType, int carryWeight, Direction prefferedDirection, bool busy, bool leavingBase, State state, State nextState, Vector3 scoutingDestination, int scoutDeciSeconds, float returnSeconds, bool enterbase, Vector3 teleporterExit)
         {
             if (ant != null)
             {
