@@ -26,7 +26,7 @@ public class WorkerRoomButton : MonoBehaviour
         {
             myButton.interactable = false;
         }
-        else if(myBaseController.GetGameResources().GetResourceAmounts()[ResourceType.Rock] >= 10)
+        else if (myBaseController.GetGameResources().GetResourceAmounts()[ResourceType.Rock] >= 10)
         {
             myButton.interactable = true;
         }
